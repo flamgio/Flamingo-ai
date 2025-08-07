@@ -26,7 +26,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         createdAt: new Date(),
         updatedAt: new Date(),
       };
-      
+
       res.json(demoUser);
     } catch (error) {
       console.error("Error fetching user:", error);
@@ -48,7 +48,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/conversations", conditionalAuth, async (req, res) => {
     try {
       const { title } = req.body;
-      
+
       // Create a mock conversation for demo
       const conversation = {
         id: `conv_${Date.now()}`,
@@ -57,7 +57,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         createdAt: new Date(),
         updatedAt: new Date()
       };
-      
+
       res.json(conversation);
     } catch (error) {
       console.error("Error creating conversation:", error);
@@ -79,7 +79,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/agent", conditionalAuth, async (req, res) => {
     try {
       const { prompt, conversationId } = req.body;
-      
+
       // Mock AI response with realistic content
       const response = {
         id: `msg_${Date.now()}`,
@@ -93,7 +93,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         },
         createdAt: new Date()
       };
-      
+
       res.json(response);
     } catch (error) {
       console.error("Error processing AI request:", error);
@@ -105,12 +105,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/admin/auth", (req, res) => {
     const { adminKey } = req.body;
     const correctAdminKey = process.env.ADMIN_KEY || "flamgio_admin_2024";
-    
+
     if (adminKey === correctAdminKey) {
       res.json({ success: true });
     } else {
       res.status(401).json({ success: false, message: "Invalid admin key" });
     }
+  });
+
+  // Logout route
+  app.get("/api/logout", (req, res) => {
+    // Clear any session data and redirect to landing page
+    res.redirect('/');
   });
 
   const httpServer = createServer(app);

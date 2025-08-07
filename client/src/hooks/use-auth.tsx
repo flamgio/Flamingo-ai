@@ -21,11 +21,13 @@ export function useAuth() {
 
   const logoutMutation = useMutation({
     mutationFn: async () => {
-      // Redirect to logout endpoint
-      window.location.href = '/api/logout';
+      // Call logout endpoint
+      await apiRequest('GET', '/api/logout');
     },
     onSuccess: () => {
       queryClient.clear();
+      // Redirect to landing page after successful logout
+      window.location.href = '/';
     },
   });
 

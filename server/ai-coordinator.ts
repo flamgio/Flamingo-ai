@@ -1,8 +1,7 @@
 /**
  * AI Coordinator - Routes prompts to appropriate AI models
- * Integrates with existing agent-server for intelligent model selection
+ * Handles intelligent model selection and routing
  */
-import agentServer from './lib/agent-server';
 
 interface AIModel {
   id: string;
@@ -42,9 +41,21 @@ class AICoordinator {
       }
     }
 
-    // Use agent-server's complexity analysis
-    const isComplex = agentServer.analyzeComplexity(prompt);
-    return isComplex ? 'cloud-best' : 'local-hf';
+    // Simple complexity analysis based on prompt length and keywords
+    const isComplex = this.analyzeComplexity(prompt);
+    return isComplex ? 'kimi-k2' : 'local-hf';
+  }
+
+  /**
+   * Simple complexity analysis for prompt routing
+   */
+  private analyzeComplexity(prompt: string): boolean {
+    const complexKeywords = ['analyze', 'complex', 'detailed', 'comprehensive', 'research', 'explain', 'compare'];
+    const isLong = prompt.length > 200;
+    const hasComplexKeywords = complexKeywords.some(keyword => 
+      prompt.toLowerCase().includes(keyword)
+    );
+    return isLong || hasComplexKeywords;
   }
 
   /**
@@ -52,9 +63,9 @@ class AICoordinator {
    */
   async generateResponse(prompt: string, selectedModel: string): Promise<string> {
     try {
-      // Route through agent-server for actual AI processing
-      const response = await agentServer.routePrompt(prompt, 'system');
-      return response.content;
+      // This would integrate with actual AI processing
+      // For now, return a placeholder that indicates the model would be used
+      return `Response from ${this.getModelName(selectedModel)}: ${prompt}`;
     } catch (error) {
       console.error('AI Coordinator error:', error);
       throw new Error('Failed to generate AI response');

@@ -61,6 +61,18 @@ export default {
           border: "var(--sidebar-border)",
           ring: "var(--sidebar-ring)",
         },
+        flamingo: {
+          50: "var(--flamingo-50)",
+          100: "var(--flamingo-100)",
+          200: "var(--flamingo-200)",
+          300: "var(--flamingo-300)",
+          400: "var(--flamingo-400)",
+          500: "var(--flamingo-500)",
+          600: "var(--flamingo-600)",
+          700: "var(--flamingo-700)",
+          800: "var(--flamingo-800)",
+          900: "var(--flamingo-900)",
+        },
       },
       fontFamily: {
         sans: ["var(--font-sans)"],

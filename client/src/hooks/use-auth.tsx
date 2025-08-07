@@ -21,9 +21,10 @@ export function useAuth() {
 
   const logoutMutation = useMutation({
     mutationFn: async () => {
-      // Clear local data and redirect
+      // Clear local data first
       queryClient.clear();
-      window.location.href = '/api/logout';
+      // Just redirect to home instead of API endpoint
+      window.location.href = '/';
     },
   });
 

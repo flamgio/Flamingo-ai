@@ -113,12 +113,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Logout route
-  app.get("/api/logout", (req, res) => {
-    // Clear any session data and redirect to landing page
-    res.redirect('/');
-  });
-
   const httpServer = createServer(app);
   return httpServer;
 }

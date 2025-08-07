@@ -21,13 +21,9 @@ export function useAuth() {
 
   const logoutMutation = useMutation({
     mutationFn: async () => {
-      // Call logout endpoint
-      await apiRequest('GET', '/api/logout');
-    },
-    onSuccess: () => {
+      // Clear local data and redirect
       queryClient.clear();
-      // Redirect to landing page after successful logout
-      window.location.href = '/';
+      window.location.href = '/api/logout';
     },
   });
 

@@ -110,9 +110,14 @@ export default function Landing() {
             <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-2">
                 <div className="w-8 h-8 bg-gradient-to-br from-flamingo-400 to-flamingo-600 rounded-lg flex items-center justify-center">
-                  <i className="fas fa-robot text-white text-sm"></i>
+                  <span className="text-white text-sm font-bold">FA</span>
                 </div>
-                <span className="text-xl font-bold text-gray-900 dark:text-white">Flamgio AI</span>
+                <button 
+                  onClick={() => setLocation('/')}
+                  className="text-xl font-bold text-gray-900 dark:text-white hover:text-flamingo-600 dark:hover:text-flamingo-400 transition-colors"
+                >
+                  Flamgio AI
+                </button>
               </div>
             </div>
             

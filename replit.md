@@ -8,6 +8,21 @@ Flamgio is a privacy-first, full-stack AI chat platform that intelligently route
 
 Preferred communication style: Simple, everyday language.
 
+## Recent Changes (August 2025)
+
+✓ **Logo Updated**: Changed from robot icon to "FA" text logo as requested
+✓ **Clickable Navigation**: Made logo clickable to return from chat to homepage  
+✓ **File Cleanup**: Removed duplicate "Flamingo" folder and unnecessary files
+✓ **Authentication System**: Implemented demo mode for development with working API endpoints
+✓ **Complete Integration**: All chat functionality, admin panel, and navigation working properly
+
+## Current Status
+
+- **Application State**: Fully functional with demo authentication
+- **File Structure**: Clean, no duplicates, all essential files preserved
+- **Environment**: .env.example provided with all required variables
+- **Architecture**: Simplified auth system for development, ready for production Replit deployment
+
 ## System Architecture
 
 ### Frontend Architecture

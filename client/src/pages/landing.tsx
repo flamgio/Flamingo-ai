@@ -31,14 +31,14 @@ const ChatPreview = () => (
         <span className="text-sm font-medium text-gray-600 dark:text-gray-300">Flamgio AI Chat</span>
       </div>
     </div>
-    
+
     <div className="p-6 space-y-4 h-80 overflow-y-auto">
       <div className="flex justify-end">
         <div className="chat-message-user px-4 py-2 rounded-lg max-w-xs">
           <p className="text-sm">How does your agent system work?</p>
         </div>
       </div>
-      
+
       <div className="flex justify-start">
         <div className="space-y-2">
           <div className="flex items-center space-x-2">
@@ -58,7 +58,7 @@ const ChatPreview = () => (
           </div>
         </div>
       </div>
-      
+
       <div className="flex justify-start">
         <div className="chat-message-assistant px-4 py-3 rounded-lg">
           <div className="flex space-x-1">
@@ -120,7 +120,7 @@ export default function Landing() {
                 </button>
               </div>
             </div>
-            
+
             <div className="flex items-center space-x-4">
               <button
                 data-testid="theme-toggle"
@@ -130,7 +130,7 @@ export default function Landing() {
                 <i className="fas fa-moon dark:hidden"></i>
                 <i className="fas fa-sun hidden dark:inline"></i>
               </button>
-              
+
               <Button
                 data-testid="nav-chat-btn"
                 onClick={handleGetStarted}
@@ -147,7 +147,7 @@ export default function Landing() {
       {/* Hero Section */}
       <section className="relative overflow-hidden pt-16">
         <div className="absolute inset-0 flamingo-gradient"></div>
-        
+
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-8">
@@ -164,11 +164,11 @@ export default function Landing() {
                   Your conversations stay private with our advanced memory system.
                 </p>
               </div>
-              
+
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button
                   data-testid="get-started-btn"
-                  onClick={handleGetStarted}
+                  onClick={() => setLocation('/login')}
                   disabled={isLoading}
                   size="lg"
                   className="bg-gradient-to-r from-flamingo-500 to-flamingo-600 hover:from-flamingo-600 hover:to-flamingo-700 text-white px-8 py-4 text-lg font-semibold transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl"
@@ -186,7 +186,7 @@ export default function Landing() {
                   Watch Demo
                 </Button>
               </div>
-              
+
               {/* Feature Highlights */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-8">
                 {[
@@ -203,7 +203,7 @@ export default function Landing() {
                 ))}
               </div>
             </div>
-            
+
             <div className="relative">
               <ChatPreview />
               <div className="absolute -top-4 -right-4 w-20 h-20 bg-flamingo-400/20 rounded-full blur-xl"></div>
@@ -212,7 +212,7 @@ export default function Landing() {
           </div>
         </div>
       </section>
-      
+
       {/* Features Section */}
       <section className="py-20 bg-gray-50 dark:bg-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -224,7 +224,7 @@ export default function Landing() {
               Experience the next generation of AI chat with intelligent routing, persistent memory, and privacy-first design.
             </p>
           </div>
-          
+
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             <FeatureCard
               icon="fas fa-route"

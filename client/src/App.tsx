@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import { queryClient } from "./lib/queryClient";
 import Landing from "@/pages/landing";
+import Login from "@/pages/login";
 import SignUp from "@/pages/signup";
 import Chat from "@/pages/chat";
 import Admin from "@/pages/admin";
@@ -14,6 +15,7 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={Landing} />
+      <Route path="/login" component={Login} />
       <Route path="/signup" component={SignUp} />
       <Route path="/chat" component={Chat} />
       <Route path="/admin" component={Admin} />

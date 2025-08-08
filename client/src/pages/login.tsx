@@ -7,18 +7,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/hooks/use-auth";
 
-export default function Signup() {
+export default function Login() {
   const [, setLocation] = useLocation();
-  const { user, signup, signupError, isSignupLoading } = useAuth();
+  const { user, login, loginError, isLoginLoading } = useAuth();
   const [formData, setFormData] = useState({
     email: "",
-    firstName: "",
-    lastName: "",
-    password: "",
-    confirmPassword: ""
+    password: ""
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [isLoading, setIsLoading] = useState(false);
 
   // Redirect if already authenticated
   if (user) {
@@ -28,43 +24,26 @@ export default function Signup() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
     setErrors({});
 
     // Basic validation
     const newErrors: Record<string, string> = {};
     
     if (!formData.email) newErrors.email = "Email is required";
-    if (!formData.firstName) newErrors.firstName = "First name is required";
-    if (!formData.lastName) newErrors.lastName = "Last name is required";
     if (!formData.password) newErrors.password = "Password is required";
-    if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = "Passwords do not match";
-    }
-    if (formData.password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters";
-    }
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
-      setIsLoading(false);
       return;
     }
 
     try {
-      await signup({
-        email: formData.email,
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        password: formData.password,
-      });
+      await login(formData);
       // Redirect is handled in the mutation's onSuccess
     } catch (error: any) {
-      console.error('Signup failed:', error);
-      const errorMessage = error?.response?.data?.message || 'Failed to create account. Please try again.';
+      console.error('Login failed:', error);
+      const errorMessage = error?.response?.data?.message || 'Login failed. Please try again.';
       setErrors({ submit: errorMessage });
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -129,50 +108,19 @@ export default function Signup() {
         <div className="max-w-md w-full space-y-8">
           <div className="text-center">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
-              Create Your Account
+              Welcome Back
             </h2>
             <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-              Join Flamgio AI and start chatting with intelligent agents
+              Sign in to your Flamgio AI account
             </p>
           </div>
           
           <Card>
             <CardHeader>
-              <CardTitle className="text-center">Sign Up</CardTitle>
+              <CardTitle className="text-center">Sign In</CardTitle>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="firstName">First Name</Label>
-                    <Input
-                      id="firstName"
-                      type="text"
-                      value={formData.firstName}
-                      onChange={(e) => handleInputChange('firstName', e.target.value)}
-                      placeholder="John"
-                      className={errors.firstName ? "border-red-500" : ""}
-                    />
-                    {errors.firstName && (
-                      <p className="text-red-500 text-xs mt-1">{errors.firstName}</p>
-                    )}
-                  </div>
-                  <div>
-                    <Label htmlFor="lastName">Last Name</Label>
-                    <Input
-                      id="lastName"
-                      type="text"
-                      value={formData.lastName}
-                      onChange={(e) => handleInputChange('lastName', e.target.value)}
-                      placeholder="Doe"
-                      className={errors.lastName ? "border-red-500" : ""}
-                    />
-                    {errors.lastName && (
-                      <p className="text-red-500 text-xs mt-1">{errors.lastName}</p>
-                    )}
-                  </div>
-                </div>
-                
                 <div>
                   <Label htmlFor="email">Email Address</Label>
                   <Input
@@ -203,49 +151,34 @@ export default function Signup() {
                   )}
                 </div>
                 
-                <div>
-                  <Label htmlFor="confirmPassword">Confirm Password</Label>
-                  <Input
-                    id="confirmPassword"
-                    type="password"
-                    value={formData.confirmPassword}
-                    onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
-                    placeholder="••••••••"
-                    className={errors.confirmPassword ? "border-red-500" : ""}
-                  />
-                  {errors.confirmPassword && (
-                    <p className="text-red-500 text-xs mt-1">{errors.confirmPassword}</p>
-                  )}
-                </div>
-                
-                {errors.submit && (
+                {(errors.submit || loginError) && (
                   <div className="text-red-500 text-sm text-center">
-                    {errors.submit}
+                    {errors.submit || (loginError as any)?.response?.data?.message || 'Login failed'}
                   </div>
                 )}
                 
                 <Button
                   type="submit"
                   className="w-full bg-gradient-to-r from-flamingo-500 to-flamingo-600 hover:from-flamingo-600 hover:to-flamingo-700"
-                  disabled={isLoading}
+                  disabled={isLoginLoading}
                 >
-                  {isLoading ? (
+                  {isLoginLoading ? (
                     <i className="fas fa-spinner fa-spin mr-2"></i>
                   ) : (
-                    <i className="fas fa-user-plus mr-2"></i>
+                    <i className="fas fa-sign-in-alt mr-2"></i>
                   )}
-                  Create Account
+                  Sign In
                 </Button>
               </form>
               
               <div className="mt-6 text-center">
                 <p className="text-sm text-gray-600 dark:text-gray-400">
-                  Already have an account?{' '}
+                  Don't have an account?{' '}
                   <button
-                    onClick={() => setLocation('/')}
+                    onClick={() => setLocation('/signup')}
                     className="text-flamingo-600 dark:text-flamingo-400 hover:text-flamingo-500 font-medium"
                   >
-                    Sign in here
+                    Sign up here
                   </button>
                 </p>
               </div>

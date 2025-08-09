@@ -198,9 +198,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // AI agent endpoint
   app.post("/api/agent", authenticateToken, async (req: AuthRequest, res) => {
     try {
-      const { prompt, conversationId } = req.body;
+      const { prompt, conversationId, selectedModel } = req.body;
 
-      // Verify conversation belongs to user
+      if (!prompt) {
+        return res.status(400).json({ message: "Prompt is required" });
+      }
+
+      // Verify conversation belongs to user if provided
       if (conversationId) {
         const conversation = await db
           .select()
@@ -213,6 +217,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
         }
       }
 
+      // Import and use AI coordinator
+      const { aiCoordinator } = await import('./ai-coordinator');
+      
+      // Select the best model for the prompt
+      const chosenModel = aiCoordinator.selectBestModel(prompt, selectedModel);
+      
       // Save user message
       const userMessage = await db
         .insert(messages)
@@ -223,19 +233,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         })
         .returning();
 
-      // Generate AI response (mock for now)
-      const aiResponse = {
-        id: `msg_${Date.now()}`,
-        conversationId,
-        role: "assistant",
-        content: `Hello! I'm Flamgio AI. You asked: "${prompt}"\n\nThis is a demonstration of the intelligent agent routing system. In production, this message would be processed by either:\n\n• **Local Hugging Face models** for simple queries\n• **Cloud models (OpenRouter)** for complex analysis\n\nThe system automatically selects the best model based on your prompt complexity and maintains conversation memory across all interactions.`,
-        selectedModel: "flamgio-coordinator",
-        metadata: {
-          routingDecision: "demo-mode",
-          processingTime: "125ms"
-        },
-        createdAt: new Date()
-      };
+      // Generate AI response using the coordinator
+      const aiResponse = await aiCoordinator.generateResponse(prompt, chosenModel);
 
       // Save AI response
       const savedResponse = await db
@@ -244,8 +243,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
           conversationId,
           role: "assistant",
           content: aiResponse.content,
-          selectedModel: aiResponse.selectedModel,
-          metadata: aiResponse.metadata,
+          selectedModel: aiResponse.model,
+          metadata: {
+            processingTime: `${aiResponse.processingTime}ms`,
+            tokensUsed: aiResponse.tokensUsed,
+            routingDecision: aiResponse.model.includes('facebook/') || aiResponse.model.includes('microsoft/') ? 'local-hf' : 'cloud-openrouter'
+          },
         })
         .returning();
 

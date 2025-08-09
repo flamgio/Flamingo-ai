@@ -22,7 +22,7 @@ export default function Signup() {
 
   // Redirect if already authenticated
   if (user) {
-    setLocation('/chat');
+    setLocation('/dashboard');
     return null;
   }
 

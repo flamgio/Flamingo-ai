@@ -18,7 +18,7 @@ export default function Login() {
 
   // Redirect if already authenticated
   if (user) {
-    setLocation('/chat');
+    setLocation('/dashboard');
     return null;
   }
 
@@ -189,3 +189,4 @@ export default function Login() {
     </div>
   );
 }
+

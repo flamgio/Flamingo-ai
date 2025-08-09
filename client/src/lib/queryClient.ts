@@ -1,4 +1,39 @@
 import { QueryClient, QueryFunction } from "@tanstack/react-query";
+import axios, { AxiosResponse } from "axios";
+
+// Create axios instance with proper JWT handling
+export const apiRequest = axios.create({
+  baseURL: '',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
+// Add request interceptor to include JWT token
+apiRequest.interceptors.request.use((config) => {
+  const token = localStorage.getItem('flamgio-token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
+// Add response interceptor to handle auth errors
+apiRequest.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      // Clear invalid token
+      localStorage.removeItem('flamgio-token');
+      delete apiRequest.defaults.headers.common['Authorization'];
+      // Redirect to login if not already there
+      if (!window.location.pathname.includes('/login') && !window.location.pathname.includes('/signup')) {
+        window.location.href = '/login';
+      }
+    }
+    return Promise.reject(error);
+  }
+);
 
 async function throwIfResNotOk(res: Response) {
   if (!res.ok) {
@@ -7,29 +42,23 @@ async function throwIfResNotOk(res: Response) {
   }
 }
 
-export async function apiRequest(
-  method: string,
-  url: string,
-  data?: unknown | undefined,
-): Promise<Response> {
-  const res = await fetch(url, {
-    method,
-    headers: data ? { "Content-Type": "application/json" } : {},
-    body: data ? JSON.stringify(data) : undefined,
-    credentials: "include",
-  });
-
-  await throwIfResNotOk(res);
-  return res;
-}
-
 type UnauthorizedBehavior = "returnNull" | "throw";
 export const getQueryFn: <T>(options: {
   on401: UnauthorizedBehavior;
 }) => QueryFunction<T> =
   ({ on401: unauthorizedBehavior }) =>
   async ({ queryKey }) => {
+    const token = localStorage.getItem('flamgio-token');
+    const headers: HeadersInit = {
+      'Content-Type': 'application/json',
+    };
+    
+    if (token) {
+      headers.Authorization = `Bearer ${token}`;
+    }
+    
     const res = await fetch(queryKey.join("/") as string, {
+      headers,
       credentials: "include",
     });
 

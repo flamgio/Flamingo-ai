@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/use-auth";
+import { motion } from "framer-motion";
 
 interface FeatureCardProps {
   icon: string;
@@ -10,13 +11,20 @@ interface FeatureCardProps {
 }
 
 const FeatureCard = ({ icon, title, description }: FeatureCardProps) => (
-  <div className="bg-white dark:bg-gray-700 p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow">
-    <div className="w-12 h-12 bg-gradient-to-br from-flamingo-100 to-flamingo-200 dark:from-flamingo-900/30 dark:to-flamingo-800/30 rounded-lg flex items-center justify-center mb-6">
-      <i className={`${icon} text-flamingo-600 dark:text-flamingo-400 text-xl`}></i>
+  <motion.div 
+    className="bg-white dark:bg-gray-700 p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow"
+    whileHover={{ y: -5, transition: { duration: 0.2 } }}
+    initial={{ opacity: 0, y: 30 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.6 }}
+    viewport={{ once: true }}
+  >
+    <div className="w-12 h-12 bg-gradient-to-br from-blue-100 to-sky-200 dark:from-blue-900/30 dark:to-sky-800/30 rounded-lg flex items-center justify-center mb-6">
+      <i className={`${icon} text-blue-600 dark:text-blue-400 text-xl`}></i>
     </div>
     <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">{title}</h3>
     <p className="text-gray-600 dark:text-gray-300">{description}</p>
-  </div>
+  </motion.div>
 );
 
 const ChatPreview = () => (
@@ -81,15 +89,7 @@ export default function Landing() {
     if (user) {
       setLocation('/chat');
     } else {
-      setIsLoading(true);
-      try {
-        await login();
-        setLocation('/chat');
-      } catch (error) {
-        console.error('Login failed:', error);
-      } finally {
-        setIsLoading(false);
-      }
+      setLocation('/login');
     }
   };
 
@@ -109,12 +109,12 @@ export default function Landing() {
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-gradient-to-br from-flamingo-400 to-flamingo-600 rounded-lg flex items-center justify-center">
+                <div className="w-8 h-8 bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg flex items-center justify-center">
                   <span className="text-white text-sm font-bold">FA</span>
                 </div>
                 <button 
                   onClick={() => setLocation('/')}
-                  className="text-xl font-bold text-gray-900 dark:text-white hover:text-flamingo-600 dark:hover:text-flamingo-400 transition-colors"
+                  className="text-xl font-bold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
                 >
                   Flamgio AI
                 </button>
@@ -135,7 +135,7 @@ export default function Landing() {
                 data-testid="nav-chat-btn"
                 onClick={handleGetStarted}
                 disabled={isLoading}
-                className="bg-gradient-to-r from-flamingo-500 to-flamingo-600 hover:from-flamingo-600 hover:to-flamingo-700 text-white"
+                className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white"
               >
                 {isLoading ? 'Loading...' : 'Start Chatting'}
               </Button>
@@ -146,69 +146,122 @@ export default function Landing() {
 
       {/* Hero Section */}
       <section className="relative overflow-hidden pt-16">
-        <div className="absolute inset-0 flamingo-gradient"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-sky-50 to-cyan-50 dark:from-gray-900 dark:via-blue-900/20 dark:to-gray-900"></div>
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="space-y-8">
+            <motion.div 
+              className="space-y-8"
+              initial={{ opacity: 0, x: -50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+            >
               <div className="space-y-4">
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white leading-tight">
+                <motion.h1 
+                  className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white leading-tight"
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.2 }}
+                >
                   Privacy-First{' '}
-                  <span className="bg-gradient-to-r from-flamingo-500 to-flamingo-600 bg-clip-text text-transparent">
+                  <span className="bg-gradient-to-r from-blue-500 to-sky-600 bg-clip-text text-transparent">
                     AI Chat
                   </span>{' '}
                   Platform
-                </h1>
-                <p className="text-xl text-gray-600 dark:text-gray-300 leading-relaxed">
+                </motion.h1>
+                <motion.p 
+                  className="text-xl text-gray-600 dark:text-gray-300 leading-relaxed"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.4 }}
+                >
                   Intelligent agent system combining local Hugging Face models with cloud AI. 
                   Your conversations stay private with our advanced memory system.
-                </p>
+                </motion.p>
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Button
-                  data-testid="get-started-btn"
-                  onClick={() => setLocation('/login')}
-                  disabled={isLoading}
-                  size="lg"
-                  className="bg-gradient-to-r from-flamingo-500 to-flamingo-600 hover:from-flamingo-600 hover:to-flamingo-700 text-white px-8 py-4 text-lg font-semibold transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl"
+              <motion.div 
+                className="flex flex-col sm:flex-row gap-4"
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.6 }}
+              >
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                 >
-                  <i className="fas fa-rocket mr-2"></i>
-                  {isLoading ? 'Loading...' : 'Get Started Free'}
-                </Button>
-                <Button
-                  data-testid="watch-demo-btn"
-                  variant="outline"
-                  size="lg"
-                  className="border-2 border-flamingo-500 text-flamingo-600 dark:text-flamingo-400 px-8 py-4 text-lg font-semibold hover:bg-flamingo-50 dark:hover:bg-flamingo-900/20"
+                  <Button
+                    data-testid="get-started-btn"
+                    onClick={() => setLocation('/login')}
+                    disabled={isLoading}
+                    size="lg"
+                    className="bg-gradient-to-r from-blue-400 to-blue-600 hover:from-blue-500 hover:to-blue-700 text-white px-8 py-4 text-lg font-semibold transition-all duration-200 shadow-lg hover:shadow-xl"
+                  >
+                    <i className="fas fa-rocket mr-2"></i>
+                    {isLoading ? 'Loading...' : 'Get Started Free'}
+                  </Button>
+                </motion.div>
+                <motion.div
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
                 >
-                  <i className="fas fa-play mr-2"></i>
-                  Watch Demo
-                </Button>
-              </div>
+                  <Button
+                    data-testid="watch-demo-btn"
+                    variant="outline"
+                    size="lg"
+                    className="border-2 border-blue-400 text-blue-600 dark:text-blue-300 px-8 py-4 text-lg font-semibold hover:bg-blue-50 dark:hover:bg-blue-900/20"
+                  >
+                    <i className="fas fa-play mr-2"></i>
+                    Watch Demo
+                  </Button>
+                </motion.div>
+              </motion.div>
 
               {/* Feature Highlights */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-8">
+              <motion.div 
+                className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-8"
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.8 }}
+              >
                 {[
                   { icon: 'fas fa-shield-alt', text: 'Privacy First' },
                   { icon: 'fas fa-brain', text: 'Smart Routing' },
                   { icon: 'fas fa-memory', text: 'Persistent Memory' }
                 ].map((feature, index) => (
-                  <div key={index} className="flex items-center space-x-3">
-                    <div className="w-10 h-10 bg-flamingo-100 dark:bg-flamingo-900/30 rounded-lg flex items-center justify-center">
-                      <i className={`${feature.icon} text-flamingo-600 dark:text-flamingo-400`}></i>
+                  <motion.div
+                    key={index}
+                    className="flex items-center space-x-3 p-4 rounded-lg bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-gray-200 dark:border-gray-700"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 1.0 + index * 0.1 }}
+                    whileHover={{ y: -5, transition: { duration: 0.2 } }}
+                  >
+                    <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
+                      <i className={`${feature.icon} text-blue-600 dark:text-blue-400`}></i>
                     </div>
                     <span className="text-gray-700 dark:text-gray-300 font-medium">{feature.text}</span>
-                  </div>
+                  </motion.div>
                 ))}
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
 
-            <div className="relative">
-              <ChatPreview />
-              <div className="absolute -top-4 -right-4 w-20 h-20 bg-flamingo-400/20 rounded-full blur-xl"></div>
-              <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-flamingo-300/20 rounded-full blur-xl"></div>
-            </div>
+            <motion.div 
+              className="relative"
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+            >
+              <motion.div
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.8, delay: 0.5 }}
+              >
+                <ChatPreview />
+              </motion.div>
+              <div className="absolute -top-4 -right-4 w-20 h-20 bg-blue-400/20 rounded-full blur-xl"></div>
+              <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-sky-300/20 rounded-full blur-xl"></div>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -216,14 +269,20 @@ export default function Landing() {
       {/* Features Section */}
       <section className="py-20 bg-gray-50 dark:bg-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
+          <motion.div 
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+          >
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
               Powerful Features for Modern AI
             </h2>
             <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
               Experience the next generation of AI chat with intelligent routing, persistent memory, and privacy-first design.
             </p>
-          </div>
+          </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             <FeatureCard

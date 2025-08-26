@@ -1,5 +1,4 @@
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -30,7 +29,7 @@ export default function Login() {
 
     // Basic validation
     const newErrors: Record<string, string> = {};
-    
+
     if (!formData.email) newErrors.email = "Email is required";
     if (!formData.password) newErrors.password = "Password is required";
 
@@ -88,7 +87,7 @@ export default function Login() {
                 </button>
               </div>
             </div>
-            
+
             <div className="flex items-center space-x-4">
               <button
                 onClick={handleThemeToggle}
@@ -158,7 +157,7 @@ export default function Login() {
               Sign in to your Flamgio AI account
             </p>
           </div>
-          
+
           <Card>
             <CardHeader>
               <CardTitle className="text-center">Sign In</CardTitle>
@@ -179,7 +178,7 @@ export default function Login() {
                     <p className="text-red-500 text-xs mt-1">{errors.email}</p>
                   )}
                 </div>
-                
+
                 <div>
                   <Label htmlFor="password">Password</Label>
                   <Input
@@ -194,13 +193,13 @@ export default function Login() {
                     <p className="text-red-500 text-xs mt-1">{errors.password}</p>
                   )}
                 </div>
-                
+
                 {(errors.submit || loginError) && (
                   <div className="text-red-500 text-sm text-center">
                     {errors.submit || (loginError as any)?.response?.data?.message || 'Login failed'}
                   </div>
                 )}
-                
+
                 <Button
                   type="submit"
                   className="w-full bg-gradient-to-r from-flamingo-500 to-flamingo-600 hover:from-flamingo-600 hover:to-flamingo-700"
@@ -214,7 +213,7 @@ export default function Login() {
                   Sign In
                 </Button>
               </form>
-              
+
               <div className="mt-6 text-center">
                 <p className="text-sm text-gray-600 dark:text-gray-400">
                   Don't have an account?{' '}
@@ -233,4 +232,3 @@ export default function Login() {
     </div>
   );
 }
-

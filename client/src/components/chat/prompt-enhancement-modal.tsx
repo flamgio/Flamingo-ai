@@ -30,6 +30,7 @@ export default function PromptEnhancementModal({
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4 backdrop-blur-sm"
+    >
       <AnimatePresence>
         <motion.div
           initial={{ scale: 0.8, opacity: 0, y: 50 }}
@@ -222,6 +223,6 @@ export default function PromptEnhancementModal({
           </Card>
         </motion.div>
       </AnimatePresence>
-    </div>
+    </motion.div>
   );
 }

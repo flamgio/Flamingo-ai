@@ -1,5 +1,4 @@
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -23,10 +22,11 @@ export default function Signup() {
   const [showSuccess, setShowSuccess] = useState(false);
 
   // Redirect if already authenticated
-  if (user) {
-    setLocation('/dashboard');
-    return null;
-  }
+  useEffect(() => {
+    if (user) {
+      setLocation('/dashboard');
+    }
+  }, [user, setLocation]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -35,7 +35,7 @@ export default function Signup() {
 
     // Basic validation
     const newErrors: Record<string, string> = {};
-    
+
     if (!formData.email) newErrors.email = "Email is required";
     if (!formData.firstName) newErrors.firstName = "First name is required";
     if (!formData.lastName) newErrors.lastName = "Last name is required";
@@ -109,7 +109,7 @@ export default function Signup() {
                 </button>
               </div>
             </div>
-            
+
             <div className="flex items-center space-x-4">
               <button
                 onClick={handleThemeToggle}
@@ -185,7 +185,7 @@ export default function Signup() {
               Join Flamgio AI and start chatting with intelligent agents
             </p>
           </div>
-          
+
           <Card>
             <CardHeader>
               <CardTitle className="text-center">Sign Up</CardTitle>
@@ -222,7 +222,7 @@ export default function Signup() {
                     )}
                   </div>
                 </div>
-                
+
                 <div>
                   <Label htmlFor="email">Email Address</Label>
                   <Input
@@ -237,7 +237,7 @@ export default function Signup() {
                     <p className="text-red-500 text-xs mt-1">{errors.email}</p>
                   )}
                 </div>
-                
+
                 <div>
                   <Label htmlFor="password">Password</Label>
                   <Input
@@ -252,7 +252,7 @@ export default function Signup() {
                     <p className="text-red-500 text-xs mt-1">{errors.password}</p>
                   )}
                 </div>
-                
+
                 <div>
                   <Label htmlFor="confirmPassword">Confirm Password</Label>
                   <Input
@@ -267,13 +267,13 @@ export default function Signup() {
                     <p className="text-red-500 text-xs mt-1">{errors.confirmPassword}</p>
                   )}
                 </div>
-                
+
                 {errors.submit && (
                   <div className="text-red-500 text-sm text-center">
                     {errors.submit}
                   </div>
                 )}
-                
+
                 <Button
                   type="submit"
                   className="w-full bg-gradient-to-r from-flamingo-500 to-flamingo-600 hover:from-flamingo-600 hover:to-flamingo-700"
@@ -287,7 +287,7 @@ export default function Signup() {
                   Create Account
                 </Button>
               </form>
-              
+
               <div className="mt-6 text-center">
                 <p className="text-sm text-gray-600 dark:text-gray-400">
                   Already have an account?{' '}

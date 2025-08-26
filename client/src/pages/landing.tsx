@@ -168,7 +168,7 @@ export default function Landing() {
             animation: "gradientShift 3s ease-in-out infinite"
           }}
         >
-          ✨ Flamgio AI Experience ✨
+          Welcome To Flamingo Ai! ✨
         </motion.div>
       </div>
 

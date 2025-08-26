@@ -19,17 +19,17 @@ export default function ChatSidebar({
 }: ChatSidebarProps) {
   const formatDate = (date: string | Date | null) => {
     if (!date) return 'Unknown';
-    
+
     try {
       const dateObj = typeof date === 'string' ? new Date(date) : date;
       if (isNaN(dateObj.getTime())) return 'Invalid Date';
-      
+
       const now = new Date();
       const diffMs = now.getTime() - dateObj.getTime();
       const diffMins = Math.floor(diffMs / (1000 * 60));
       const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
       const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-      
+
       if (diffMins < 60) return `${diffMins} mins ago`;
       if (diffHours < 24) return `${diffHours} hours ago`;
       if (diffDays === 1) return 'Yesterday';
@@ -66,14 +66,14 @@ export default function ChatSidebar({
             New Chat
           </Button>
         </div>
-        
+
         {/* Chat History */}
         <ScrollArea className="flex-1 p-4">
           <div className="space-y-2">
             <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-3">
               Recent Chats
             </h3>
-            
+
             {conversations.length === 0 ? (
               <div className="text-center py-8">
                 <div className="w-12 h-12 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-3">
@@ -104,7 +104,7 @@ export default function ChatSidebar({
             )}
           </div>
         </ScrollArea>
-        
+
         {/* Sidebar Footer */}
         <div className="p-4 border-t border-blue-200 dark:border-gray-700">
           <Button

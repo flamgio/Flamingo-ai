@@ -17,15 +17,21 @@ import {
 // Admin authentication middleware
 function authenticateAdmin(req: any, res: any, next: any) {
   const adminSession = req.headers.authorization;
+  const xAdminSession = req.headers['x-admin-session'];
   const correctAdminKey = process.env.ADMIN_KEY || "FLAMINGO2024";
   
   // Check for session-based auth first
-  if (req.headers['x-admin-session'] === 'authenticated') {
+  if (xAdminSession === 'authenticated') {
     return next();
   }
   
-  // Check for direct admin key
+  // Check for direct admin key in headers or query
   if (adminSession === correctAdminKey || req.query.adminKey === correctAdminKey) {
+    return next();
+  }
+  
+  // Check body for admin key
+  if (req.body && req.body.adminKey === correctAdminKey) {
     return next();
   }
   

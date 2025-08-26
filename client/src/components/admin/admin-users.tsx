@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -20,7 +19,7 @@ interface UserData {
 
 export default function AdminUsers() {
   const [searchTerm, setSearchTerm] = useState("");
-  
+
   const { data: users, isLoading } = useQuery<UserData[]>({
     queryKey: ['/api/admin/users'],
     queryFn: getQueryFn({ on401: "throw" }),
@@ -41,7 +40,7 @@ export default function AdminUsers() {
     };
 
     const config = statusConfig[status as keyof typeof statusConfig] || statusConfig.inactive;
-    
+
     return (
       <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${config.color}`}>
         {status.charAt(0).toUpperCase() + status.slice(1)}

@@ -33,7 +33,7 @@ export default function PerplexityChat({ conversationId, initialMessages = [] }:
     original: string;
     enhanced: string;
   } | null>(null);
-  
+
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -90,29 +90,36 @@ export default function PerplexityChat({ conversationId, initialMessages = [] }:
   };
 
   const checkForEnhancement = async (prompt: string) => {
-    if (prompt.trim().length < 15) {
-      // Send short messages directly
+    if (prompt.trim().length < 10) { // Skip very short prompts
       await handleSendMessage(prompt, false);
       return;
     }
 
-    setIsEnhancing(true);
-    setShowEnhancementModal(true);
-
     try {
+      setIsEnhancing(true);
+      // Show enhancement modal immediately with loading state
+      setEnhancementData({
+        original: prompt,
+        enhanced: ''
+      });
+      setShowEnhancementModal(true);
+
       const response = await apiRequest.post('/api/enhance-prompt', { prompt });
-      
+
       if (response.data.needsEnhancement) {
         setEnhancementData({
           original: response.data.original,
           enhanced: response.data.enhanced
         });
+        // Modal stays open to show enhanced version
       } else {
+        // If no enhancement needed, close modal and send original
         setShowEnhancementModal(false);
         await handleSendMessage(prompt, false);
       }
     } catch (error) {
       console.error('Enhancement check failed:', error);
+      // Close modal and fallback to original prompt
       setShowEnhancementModal(false);
       await handleSendMessage(prompt, false);
     } finally {
@@ -123,10 +130,10 @@ export default function PerplexityChat({ conversationId, initialMessages = [] }:
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!inputValue.trim() || isLoading) return;
-    
+
     const prompt = inputValue.trim();
     setInputValue("");
-    
+
     await checkForEnhancement(prompt);
   };
 
@@ -139,11 +146,11 @@ export default function PerplexityChat({ conversationId, initialMessages = [] }:
 
   const handleEnhancementChoice = async (useEnhanced: boolean) => {
     if (!enhancementData) return;
-    
+
     const finalPrompt = useEnhanced ? enhancementData.enhanced : enhancementData.original;
     setShowEnhancementModal(false);
     setEnhancementData(null);
-    
+
     await handleSendMessage(finalPrompt, useEnhanced);
   };
 

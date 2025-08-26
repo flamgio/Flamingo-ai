@@ -1,6 +1,7 @@
 
 import { useState } from "react";
 import { useLocation } from "wouter";
+import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -19,6 +20,7 @@ export default function Signup() {
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isLoading, setIsLoading] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
 
   // Redirect if already authenticated
   if (user) {
@@ -58,7 +60,11 @@ export default function Signup() {
         lastName: formData.lastName,
         password: formData.password,
       });
-      // Redirect is handled in the mutation's onSuccess
+      setShowSuccess(true);
+      setTimeout(() => {
+        setShowSuccess(false);
+        // Redirect is handled in the mutation's onSuccess
+      }, 2500);
     } catch (error: any) {
       console.error('Signup failed:', error);
       const errorMessage = error?.response?.data?.message || 'Failed to create account. Please try again.';
@@ -123,6 +129,50 @@ export default function Signup() {
           </div>
         </div>
       </nav>
+
+      {/* Success Popup */}
+      <AnimatePresence>
+        {showSuccess && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.5, y: -100 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.5, y: -100 }}
+            className="fixed top-20 left-1/2 transform -translate-x-1/2 z-50"
+          >
+            <motion.div
+              animate={{ 
+                y: [0, -10, 0],
+                scale: [1, 1.02, 1]
+              }}
+              transition={{ 
+                duration: 0.8,
+                repeat: 3
+              }}
+              className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-10 py-6 rounded-3xl shadow-2xl border border-blue-400"
+            >
+              <div className="flex items-center space-x-4">
+                <motion.div
+                  animate={{ 
+                    rotate: [0, 360],
+                    scale: [1, 1.2, 1]
+                  }}
+                  transition={{ 
+                    duration: 2,
+                    repeat: Infinity
+                  }}
+                  className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center"
+                >
+                  <i className="fas fa-rocket text-white text-xl"></i>
+                </motion.div>
+                <div>
+                  <h3 className="font-bold text-xl">Account Created! 🚀</h3>
+                  <p className="text-blue-100 text-sm">Welcome to Flamingo AI - Let's get started!</p>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Main Content */}
       <div className="pt-16 min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">

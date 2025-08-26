@@ -1,6 +1,7 @@
 
 import { useState } from "react";
 import { useLocation } from "wouter";
+import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -15,6 +16,7 @@ export default function Login() {
     password: ""
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [showSuccess, setShowSuccess] = useState(false);
 
   // Redirect if already authenticated
   if (user) {
@@ -39,7 +41,11 @@ export default function Login() {
 
     try {
       await login(formData);
-      // Redirect is handled in the mutation's onSuccess
+      setShowSuccess(true);
+      setTimeout(() => {
+        setShowSuccess(false);
+        // Redirect is handled in the mutation's onSuccess
+      }, 2000);
     } catch (error: any) {
       console.error('Login failed:', error);
       const errorMessage = error?.response?.data?.message || 'Login failed. Please try again.';
@@ -102,6 +108,44 @@ export default function Login() {
           </div>
         </div>
       </nav>
+
+      {/* Success Popup */}
+      <AnimatePresence>
+        {showSuccess && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8, y: -50 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.8, y: -50 }}
+            className="fixed top-20 left-1/2 transform -translate-x-1/2 z-50"
+          >
+            <motion.div
+              animate={{ 
+                rotate: [0, 5, -5, 0],
+                scale: [1, 1.05, 1]
+              }}
+              transition={{ 
+                duration: 0.6,
+                repeat: 2
+              }}
+              className="bg-gradient-to-r from-green-500 to-emerald-600 text-white px-8 py-4 rounded-2xl shadow-2xl border border-green-400"
+            >
+              <div className="flex items-center space-x-3">
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                  className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center"
+                >
+                  <i className="fas fa-check text-white text-lg"></i>
+                </motion.div>
+                <div>
+                  <h3 className="font-bold text-lg">Welcome Back! 🎉</h3>
+                  <p className="text-green-100 text-sm">Login successful - redirecting...</p>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Main Content */}
       <div className="pt-16 min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">

@@ -99,23 +99,14 @@ export default function ChatSidebar({
         </ScrollArea>
         
         {/* Sidebar Footer */}
-        <div className="p-4 border-t border-gray-200 dark:border-gray-700 space-y-2">
+        <div className="p-4 border-t border-blue-200 dark:border-gray-700">
           <Button
             data-testid="settings-btn"
             variant="ghost"
-            className="w-full justify-start"
+            className="w-full justify-start text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300"
           >
             <i className="fas fa-cog mr-3"></i>
             Settings
-          </Button>
-          <Button
-            data-testid="sidebar-admin-btn"
-            variant="ghost"
-            className="w-full justify-start"
-            onClick={onAdminAccess}
-          >
-            <i className="fas fa-shield-alt mr-3"></i>
-            Admin Panel
           </Button>
         </div>
       </div>

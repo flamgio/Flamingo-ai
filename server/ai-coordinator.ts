@@ -1,16 +1,19 @@
 /**
  * AI Coordinator - Routes prompts to appropriate AI models
- * Handles intelligent model selection and routing between OpenRouter and Hugging Face
+ * Handles intelligent model selection and routing between OpenRouter, Hugging Face, and Puter.js
  */
 
 import axios from 'axios';
+import { puterIntegration } from './puter-integration';
+import { geminiEnhancer } from './gemini-enhancer';
 
 interface AIModel {
   id: string;
   name: string;
-  type: 'local' | 'cloud';
+  type: 'local' | 'cloud' | 'advanced';
   available: boolean;
   endpoint?: string;
+  complexity: 'simple' | 'medium' | 'complex';
 }
 
 interface AIResponse {
@@ -22,18 +25,19 @@ interface AIResponse {
 
 class AICoordinator {
   private models: AIModel[] = [
-    // Hugging Face local models
-    { id: 'microsoft/DialoGPT-medium', name: 'DialoGPT Medium (HF)', type: 'local', available: true },
-    { id: 'facebook/blenderbot-400M-distill', name: 'BlenderBot 400M (HF)', type: 'local', available: true },
+    // OpenRouter cloud models for simple tasks
+    { id: 'openai/gpt-3.5-turbo', name: 'GPT-3.5 Turbo', type: 'cloud', available: true, complexity: 'simple' },
+    { id: 'anthropic/claude-3-haiku', name: 'Claude 3 Haiku', type: 'cloud', available: true, complexity: 'simple' },
     
-    // OpenRouter cloud models (7 free models)
-    { id: 'openai/gpt-3.5-turbo', name: 'GPT-3.5 Turbo', type: 'cloud', available: true },
-    { id: 'anthropic/claude-3-haiku', name: 'Claude 3 Haiku', type: 'cloud', available: true },
-    { id: 'meta-llama/llama-2-70b-chat', name: 'Llama 2 70B Chat', type: 'cloud', available: true },
-    { id: 'mistralai/mixtral-8x7b-instruct', name: 'Mixtral 8x7B Instruct', type: 'cloud', available: true },
-    { id: 'google/gemma-7b-it', name: 'Gemma 7B IT', type: 'cloud', available: true },
-    { id: 'microsoft/wizardlm-2-8x22b', name: 'WizardLM 2 8x22B', type: 'cloud', available: true },
-    { id: 'qwen/qwen-2-72b-instruct', name: 'Qwen 2 72B Instruct', type: 'cloud', available: true }
+    // Hugging Face models for medium tasks
+    { id: 'microsoft/DialoGPT-medium', name: 'DialoGPT Medium (HF)', type: 'local', available: true, complexity: 'medium' },
+    { id: 'facebook/blenderbot-400M-distill', name: 'BlenderBot 400M (HF)', type: 'local', available: true, complexity: 'medium' },
+    { id: 'mistralai/mixtral-8x7b-instruct', name: 'Mixtral 8x7B Instruct', type: 'cloud', available: true, complexity: 'medium' },
+    
+    // Puter.js advanced models for complex tasks
+    { id: 'puter/gpt-4', name: 'GPT-4 (Puter)', type: 'advanced', available: puterIntegration.isAvailable(), complexity: 'complex' },
+    { id: 'puter/claude-3-opus', name: 'Claude 3 Opus (Puter)', type: 'advanced', available: puterIntegration.isAvailable(), complexity: 'complex' },
+    { id: 'puter/gemini-pro', name: 'Gemini Pro (Puter)', type: 'advanced', available: puterIntegration.isAvailable(), complexity: 'complex' },
   ];
 
   /**
@@ -55,8 +59,8 @@ class AICoordinator {
       }
     }
 
-    // Simple complexity analysis based on prompt length and keywords
-    const isComplex = this.analyzeComplexity(prompt);
+    // Analyze prompt complexity
+    const complexity = this.analyzePromptComplexity(prompt);
     const isPrivacySensitive = this.analyzePrivacy(prompt);
     
     // Route to local HF models for privacy-sensitive content
@@ -64,13 +68,74 @@ class AICoordinator {
       return 'microsoft/DialoGPT-medium';
     }
     
-    // Route to cloud models for complex queries
-    if (isComplex) {
-      return 'anthropic/claude-3-haiku';
+    // Route based on complexity level
+    switch (complexity) {
+      case 'complex':
+        // Use Puter.js for advanced tasks if available
+        const advancedModel = this.models.find(m => m.type === 'advanced' && m.available);
+        return advancedModel ? advancedModel.id : 'anthropic/claude-3-haiku';
+        
+      case 'medium':
+        // Use Hugging Face or medium OpenRouter models
+        return 'mistralai/mixtral-8x7b-instruct';
+        
+      case 'simple':
+      default:
+        // Use OpenRouter for simple tasks
+        return 'openai/gpt-3.5-turbo';
     }
+  }
+
+  /**
+   * Enhanced complexity analysis
+   */
+  private analyzePromptComplexity(prompt: string): 'simple' | 'medium' | 'complex' {
+    const length = prompt.length;
+    const wordCount = prompt.split(/\s+/).length;
     
-    // Default to local model for simple queries
-    return 'facebook/blenderbot-400M-distill';
+    // Simple greetings and short queries
+    const simplePatterns = [
+      /^hi$/i, /^hello$/i, /^hey$/i, /^how are you/i, 
+      /^good morning/i, /^good afternoon/i, /^good evening/i,
+      /^thanks?$/i, /^thank you$/i, /^what.*\?$/i
+    ];
+    
+    // Complex task indicators
+    const complexKeywords = [
+      'analyze', 'research', 'comprehensive', 'detailed analysis', 'step by step', 
+      'algorithm', 'programming', 'code', 'implementation', 'architecture',
+      'compare and contrast', 'pros and cons', 'advantages and disadvantages',
+      'create', 'build', 'develop', 'design', 'plan', 'strategy'
+    ];
+    
+    // Medium complexity indicators
+    const mediumKeywords = [
+      'explain', 'describe', 'how does', 'what is', 'why', 'when',
+      'example', 'summarize', 'overview', 'difference', 'comparison'
+    ];
+
+    const isSimple = simplePatterns.some(pattern => pattern.test(prompt.trim()));
+    if (isSimple || (length < 20 && wordCount < 5)) {
+      return 'simple';
+    }
+
+    const hasComplexKeywords = complexKeywords.some(keyword => 
+      prompt.toLowerCase().includes(keyword)
+    );
+    
+    if (hasComplexKeywords || length > 200 || wordCount > 40) {
+      return 'complex';
+    }
+
+    const hasMediumKeywords = mediumKeywords.some(keyword => 
+      prompt.toLowerCase().includes(keyword)
+    );
+    
+    if (hasMediumKeywords || (length > 50 && wordCount > 10)) {
+      return 'medium';
+    }
+
+    return 'simple';
   }
 
   /**
@@ -96,9 +161,9 @@ class AICoordinator {
   }
 
   /**
-   * Generate AI response using selected model
+   * Generate AI response using selected model with prompt enhancement
    */
-  async generateResponse(prompt: string, selectedModel: string): Promise<AIResponse> {
+  async generateResponse(prompt: string, selectedModel: string, useEnhancement: boolean = false): Promise<AIResponse> {
     const startTime = Date.now();
     const model = this.models.find(m => m.id === selectedModel);
     
@@ -107,15 +172,30 @@ class AICoordinator {
     }
 
     try {
+      let finalPrompt = prompt;
+      
+      // Apply prompt enhancement if requested and needed
+      if (useEnhancement && geminiEnhancer.needsEnhancement(prompt)) {
+        const enhanced = await geminiEnhancer.enhancePrompt(prompt);
+        finalPrompt = enhanced.enhanced;
+        console.log(`Enhanced prompt: ${enhanced.original} -> ${enhanced.enhanced}`);
+      }
+
       let content: string;
       let tokensUsed = 0;
 
-      if (model.type === 'cloud') {
-        content = await this.callOpenRouterAPI(prompt, selectedModel);
-        tokensUsed = Math.ceil(prompt.length / 4); // Rough token estimate
+      if (model.type === 'advanced') {
+        // Use Puter.js for advanced models
+        const puterModel = selectedModel.replace('puter/', '');
+        const puterResponse = await puterIntegration.processComplexPrompt(finalPrompt, puterModel);
+        content = puterResponse.content;
+        tokensUsed = puterResponse.tokensUsed || 0;
+      } else if (model.type === 'cloud') {
+        content = await this.callOpenRouterAPI(finalPrompt, selectedModel);
+        tokensUsed = Math.ceil(finalPrompt.length / 4); // Rough token estimate
       } else {
-        content = await this.callHuggingFaceAPI(prompt, selectedModel);
-        tokensUsed = Math.ceil(prompt.length / 4);
+        content = await this.callHuggingFaceAPI(finalPrompt, selectedModel);
+        tokensUsed = Math.ceil(finalPrompt.length / 4);
       }
 
       const processingTime = Date.now() - startTime;

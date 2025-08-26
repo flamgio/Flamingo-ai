@@ -195,10 +195,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Prompt enhancement endpoint
+  app.post("/api/enhance-prompt", authenticateToken, async (req: AuthRequest, res) => {
+    const { enhancePromptRoute } = await import('./routes-enhancement');
+    await enhancePromptRoute(req, res);
+  });
+
   // AI agent endpoint
   app.post("/api/agent", authenticateToken, async (req: AuthRequest, res) => {
     try {
-      const { prompt, conversationId, selectedModel } = req.body;
+      const { prompt, conversationId, selectedModel, useEnhancement = false } = req.body;
 
       if (!prompt) {
         return res.status(400).json({ message: "Prompt is required" });
@@ -223,24 +229,40 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Select the best model for the prompt
       const chosenModel = aiCoordinator.selectBestModel(prompt, selectedModel);
       
+      // Create conversation if none provided
+      let finalConversationId = conversationId;
+      if (!finalConversationId) {
+        const newConversation = await db
+          .insert(conversations)
+          .values({
+            id: crypto.randomUUID(),
+            userId: req.user.id,
+            title: prompt.slice(0, 50) + (prompt.length > 50 ? '...' : ''),
+          })
+          .returning();
+        finalConversationId = newConversation[0].id;
+      }
+
       // Save user message
       const userMessage = await db
         .insert(messages)
         .values({
-          conversationId,
+          id: crypto.randomUUID(),
+          conversationId: finalConversationId,
           role: "user",
           content: prompt,
         })
         .returning();
 
-      // Generate AI response using the coordinator
-      const aiResponse = await aiCoordinator.generateResponse(prompt, chosenModel);
+      // Generate AI response using the coordinator with optional enhancement
+      const aiResponse = await aiCoordinator.generateResponse(prompt, chosenModel, useEnhancement);
 
       // Save AI response
       const savedResponse = await db
         .insert(messages)
         .values({
-          conversationId,
+          id: crypto.randomUUID(),
+          conversationId: finalConversationId,
           role: "assistant",
           content: aiResponse.content,
           selectedModel: aiResponse.model,
@@ -262,10 +284,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Admin authentication endpoint
   app.post("/api/admin/auth", (req, res) => {
     const { adminKey } = req.body;
-    const correctAdminKey = process.env.ADMIN_KEY || "flamgio_admin_2024";
+    // Admin access code: FLAMINGO2024
+    const correctAdminKey = process.env.ADMIN_KEY || "FLAMINGO2024";
 
     if (adminKey === correctAdminKey) {
-      res.json({ success: true });
+      res.json({ success: true, message: "Admin access granted" });
     } else {
       res.status(401).json({ success: false, message: "Invalid admin key" });
     }

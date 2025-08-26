@@ -144,6 +144,34 @@ export default function Landing() {
         </div>
       </nav>
 
+      {/* Animated Text Overlay */}
+      <div className="fixed inset-0 pointer-events-none z-40 overflow-hidden">
+        <motion.div
+          className="absolute top-1/2 -translate-y-1/2 whitespace-nowrap text-6xl md:text-8xl font-bold"
+          initial={{ x: "-100vw", opacity: 0 }}
+          animate={{ 
+            x: ["-100vw", "50vw", "200vw"],
+            opacity: [0, 1, 1, 0]
+          }}
+          transition={{
+            duration: 10,
+            times: [0, 0.2, 0.8, 1],
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+          style={{
+            background: "linear-gradient(45deg, #ff6b6b, #ffffff, #ff8e8e, #ffffff)",
+            backgroundSize: "400% 400%",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            backgroundClip: "text",
+            animation: "gradientShift 3s ease-in-out infinite"
+          }}
+        >
+          ✨ Flamgio AI Experience ✨
+        </motion.div>
+      </div>
+
       {/* Hero Section */}
       <section className="relative overflow-hidden pt-16">
         <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-sky-50 to-cyan-50 dark:from-gray-900 dark:via-blue-900/20 dark:to-gray-900"></div>

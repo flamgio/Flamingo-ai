@@ -57,8 +57,8 @@ export default function ChatInput({ onSendMessage, disabled }: ChatInputProps) {
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="Ask anything... I'll route it to the best model!"
-            className="w-full bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl px-4 py-3 pr-12 resize-none focus:outline-none focus:ring-2 focus:ring-flamingo-500 focus:border-transparent transition-colors min-h-[52px] max-h-[150px]"
+            placeholder="Type your message here... ✨"
+            className="w-full bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl px-4 py-3 pr-12 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 min-h-[52px] max-h-[150px] shadow-sm hover:shadow-md"
             disabled={disabled || isSubmitting}
             style={{ height: 'auto' }}
           />
@@ -67,12 +67,12 @@ export default function ChatInput({ onSendMessage, disabled }: ChatInputProps) {
             type="submit"
             size="sm"
             disabled={!message.trim() || disabled || isSubmitting}
-            className="absolute right-3 top-3 w-8 h-8 bg-gradient-to-r from-flamingo-500 to-flamingo-600 hover:from-flamingo-600 hover:to-flamingo-700 text-white p-0"
+            className="absolute right-3 top-3 w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white p-0 shadow-lg transform hover:scale-110 transition-all duration-200"
           >
             {isSubmitting ? (
               <i className="fas fa-spinner fa-spin text-sm"></i>
             ) : (
-              <i className="fas fa-paper-plane text-sm"></i>
+              <i className="fas fa-paper-plane text-sm transform hover:translate-x-1 transition-transform duration-200"></i>
             )}
           </Button>
         </form>

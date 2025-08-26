@@ -1,7 +1,9 @@
+import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import type { Conversation } from "@shared/schema";
 import { formatDistanceToNow } from 'date-fns';
+import SettingsModal from './settings-modal';
 
 interface ChatSidebarProps {
   conversations: Conversation[];
@@ -18,6 +20,7 @@ export default function ChatSidebar({
   onClose, 
   onAdminAccess 
 }: ChatSidebarProps) {
+  const [showSettings, setShowSettings] = useState(false);
   const formatDate = (date: string | Date | null) => {
     if (!date) return 'Unknown';
 
@@ -48,7 +51,7 @@ export default function ChatSidebar({
         {/* Sidebar Header */}
         <div className="p-6 border-b border-gray-200 dark:border-gray-700">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Chats</h2>
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Conversations</h2>
             <Button
               data-testid="sidebar-close"
               variant="ghost"
@@ -61,10 +64,10 @@ export default function ChatSidebar({
           </div>
           <Button 
             data-testid="new-chat-btn"
-            className="w-full bg-gradient-to-r from-flamingo-500 to-flamingo-600 hover:from-flamingo-600 hover:to-flamingo-700 text-white"
+            className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white shadow-lg transform hover:scale-105 transition-all duration-200"
           >
             <i className="fas fa-plus mr-2"></i>
-            New Chat
+            New Conversation
           </Button>
         </div>
 
@@ -111,12 +114,19 @@ export default function ChatSidebar({
           <Button
             data-testid="settings-btn"
             variant="ghost"
-            className="w-full justify-start text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300"
+            className="w-full justify-start text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transform hover:scale-105 transition-all duration-200"
+            onClick={() => setShowSettings(true)}
           >
             <i className="fas fa-cog mr-3"></i>
             Settings
           </Button>
         </div>
+
+        {/* Settings Modal */}
+        <SettingsModal 
+          isOpen={showSettings} 
+          onClose={() => setShowSettings(false)} 
+        />
       </div>
     </>
   );

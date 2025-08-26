@@ -106,15 +106,14 @@ export default function Chat() {
                   <i className="fas fa-bars"></i>
                 </Button>
                 <div>
-                  <h1 className="text-lg font-semibold text-gray-900 dark:text-white">Flamingo AI</h1>
-                  <p className="text-sm text-blue-600 dark:text-blue-400">Intelligent AI routing with prompt enhancement</p>
+                  <h1 className="text-lg font-semibold text-gray-900 dark:text-white">Chat Interface</h1>
                 </div>
               </div>
               
               <div className="flex items-center space-x-2">
-                <span className="text-xs bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-3 py-1 rounded-full font-medium">
+                <span className="text-xs bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 px-3 py-1 rounded-full font-medium">
                   <i className="fas fa-circle text-green-500 mr-1"></i>
-                  Enhanced AI Ready
+                  Online
                 </span>
               </div>
             </div>

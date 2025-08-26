@@ -29,21 +29,21 @@ export default function ChatMessage({ message }: ChatMessageProps) {
   };
 
   const getModelDisplayName = (model?: string | null) => {
-    if (!model) return 'AI';
+    if (!model) return 'Quantum Mind';
     
     const modelNames: Record<string, string> = {
-      'kimi-k2': 'Kimi-K2',
-      'kimi-dev-72b': 'Kimi-Dev-72B',
-      'mixtral-8x7b': 'Mixtral-8x7B',
-      'mythomax-l2': 'MythoMax-L2',
-      'nous-capybara': 'Nous-Capybara',
-      'kimi-vl-a3b': 'Kimi-VL-A3B',
-      'llama-3.3-70b': 'Llama-3.3-70B',
-      'local-hf': 'Local Model',
-      'coordinator': 'AI Coordinator'
+      'kimi-k2': 'Neural Core K2',
+      'kimi-dev-72b': 'Quantum Dev-72B',
+      'mixtral-8x7b': 'Hybrid Matrix-8x7B',
+      'mythomax-l2': 'Mythos Engine-L2',
+      'nous-capybara': 'Nous Intelligence',
+      'kimi-vl-a3b': 'Vision Core-A3B',
+      'llama-3.3-70b': 'Lambda Brain-3.3',
+      'local-hf': 'Local Neural Net',
+      'coordinator': 'Quantum Coordinator'
     };
     
-    return modelNames[model] || model;
+    return modelNames[model] || 'Quantum Mind';
   };
 
   if (message.role === 'user') {
@@ -64,15 +64,16 @@ export default function ChatMessage({ message }: ChatMessageProps) {
   return (
     <div className="flex justify-start" data-testid="assistant-message">
       <div className="flex items-start space-x-3 max-w-2xl">
-        <div className="w-8 h-8 bg-gray-200 dark:bg-gray-600 rounded-full flex items-center justify-center flex-shrink-0">
-          <i className="fas fa-robot text-gray-600 dark:text-gray-300 text-sm"></i>
+        <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-blue-600 rounded-full flex items-center justify-center flex-shrink-0 shadow-md">
+          <i className="fas fa-brain text-white text-sm"></i>
         </div>
         <div className="space-y-2 flex-1">
           <div className="flex items-center space-x-2">
             <span 
               data-testid="model-tag"
-              className="text-xs bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-2 py-1 rounded-full"
+              className="text-xs bg-gradient-to-r from-purple-100 to-blue-100 dark:from-purple-900/30 dark:to-blue-900/30 text-purple-700 dark:text-purple-300 px-3 py-1 rounded-full font-medium shadow-sm"
             >
+              <i className="fas fa-microchip mr-1"></i>
               {getModelDisplayName(message.selectedModel)}
             </span>
             <span className="text-xs text-gray-500 dark:text-gray-400">

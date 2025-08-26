@@ -30,7 +30,7 @@ class PuterIntegration {
    */
   async processComplexPrompt(prompt: string, selectedModel?: string): Promise<PuterResponse> {
     if (!this.isAvailable()) {
-      throw new Error('Puter.js not configured');
+      throw new Error('Puter.js not configured - missing API key or endpoint');
     }
 
     try {
@@ -44,15 +44,21 @@ class PuterIntegration {
         {
           model: model,
           messages: [
+            { 
+              role: 'system', 
+              content: 'You are a helpful AI assistant. Provide detailed, accurate, and contextual responses.' 
+            },
             { role: 'user', content: prompt }
           ],
           max_tokens: 2000,
-          temperature: 0.7
+          temperature: 0.7,
+          stream: false
         },
         {
           headers: {
             'Authorization': `Bearer ${process.env.PUTER_API_KEY}`,
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'User-Agent': 'Replit-AI-Agent/1.0'
           },
           timeout: 60000 // 60 seconds for complex tasks
         }
@@ -60,15 +66,36 @@ class PuterIntegration {
 
       const processingTime = Date.now() - startTime;
 
+      // Handle different response formats
+      let content = 'No response generated';
+      if (response.data.choices && response.data.choices[0]) {
+        content = response.data.choices[0].message?.content || response.data.choices[0].text || content;
+      } else if (response.data.content) {
+        content = response.data.content;
+      } else if (response.data.text) {
+        content = response.data.text;
+      }
+
       return {
-        content: response.data.choices[0]?.message?.content || 'No response generated',
+        content: content.trim(),
         model: `puter-${model}`,
         processingTime,
-        tokensUsed: response.data.usage?.total_tokens || 0
+        tokensUsed: response.data.usage?.total_tokens || Math.ceil(content.length / 4)
       };
     } catch (error) {
       console.error('Puter.js integration error:', error);
-      throw new Error('Failed to process with Puter.js');
+      
+      // Provide more specific error information
+      if (error.response) {
+        console.error('Response error:', error.response.status, error.response.data);
+        throw new Error(`Puter.js API error: ${error.response.status} - ${error.response.data?.error?.message || 'Unknown error'}`);
+      } else if (error.request) {
+        console.error('Request error:', error.message);
+        throw new Error('Failed to connect to Puter.js API - network error');
+      } else {
+        console.error('Setup error:', error.message);
+        throw new Error(`Puter.js configuration error: ${error.message}`);
+      }
     }
   }
 

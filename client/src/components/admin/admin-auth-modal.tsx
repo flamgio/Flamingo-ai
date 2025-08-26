@@ -1,7 +1,8 @@
+
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { apiRequest } from "@/lib/api";
 import { useToast } from "@/hooks/use-toast";
 
@@ -69,17 +70,20 @@ export default function AdminAuthModal({ isOpen, onClose, onSuccess }: AdminAuth
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-md bg-white dark:bg-gray-800 border border-blue-200 dark:border-blue-800">
+      <DialogContent className="sm:max-w-md bg-white dark:bg-blue-900/95 border border-blue-200 dark:border-blue-700 shadow-2xl">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold text-center bg-gradient-to-r from-blue-600 to-blue-700 bg-clip-text text-transparent">
+          <DialogTitle className="text-2xl font-bold text-center text-blue-700 dark:text-blue-300">
             <i className="fas fa-shield-alt mr-2"></i>
-            Admin Access
+            Admin Access Required
           </DialogTitle>
+          <DialogDescription className="text-center text-blue-600 dark:text-blue-400">
+            This area is restricted to authorized administrators only
+          </DialogDescription>
         </DialogHeader>
         
         <form onSubmit={handleSubmit} className="space-y-6 mt-6">
           <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+            <label className="text-sm font-medium text-blue-700 dark:text-blue-300">
               Access Code
             </label>
             <Input
@@ -87,13 +91,10 @@ export default function AdminAuthModal({ isOpen, onClose, onSuccess }: AdminAuth
               value={adminKey}
               onChange={(e) => setAdminKey(e.target.value)}
               placeholder="Enter admin access code"
-              className="w-full border-blue-200 focus:border-blue-500 focus:ring-blue-500"
+              className="w-full border-blue-200 focus:border-blue-500 focus:ring-blue-500 bg-white dark:bg-blue-900/30"
               disabled={isLoading}
               autoFocus
             />
-            <p className="text-xs text-gray-500 dark:text-gray-400">
-              This area is restricted to authorized administrators only
-            </p>
           </div>
 
           <div className="flex space-x-3">
@@ -102,14 +103,14 @@ export default function AdminAuthModal({ isOpen, onClose, onSuccess }: AdminAuth
               variant="outline"
               onClick={handleClose}
               disabled={isLoading}
-              className="flex-1"
+              className="flex-1 border-blue-200 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20"
             >
               Cancel
             </Button>
             <Button
               type="submit"
               disabled={isLoading || !adminKey.trim()}
-              className="flex-1 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700"
+              className="flex-1 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white"
             >
               {isLoading ? (
                 <>
@@ -126,7 +127,7 @@ export default function AdminAuthModal({ isOpen, onClose, onSuccess }: AdminAuth
           </div>
         </form>
         
-        <div className="text-center mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+        <div className="text-center mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-700">
           <p className="text-xs text-blue-700 dark:text-blue-300">
             <i className="fas fa-info-circle mr-1"></i>
             This system requires valid administrator credentials

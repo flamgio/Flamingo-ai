@@ -1,10 +1,12 @@
-import { useQuery } from "@tanstack/react-query";
+
+import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { useQuery } from "@tanstack/react-query";
 import { getQueryFn } from "@/lib/queryClient";
-import { useState } from "react";
 
 interface UserData {
   id: string;
@@ -47,117 +49,117 @@ export default function AdminUsers() {
     );
   };
 
-  return (
-    <div className="p-8">
-      <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-8">User Management</h1>
-      
-      <Card>
+  if (isLoading) {
+    return (
+      <Card className="bg-white dark:bg-blue-900/20 border-blue-200 dark:border-blue-700">
         <CardHeader>
-          <div className="flex items-center justify-between">
-            <CardTitle>User List</CardTitle>
-            <div className="flex items-center space-x-3">
-              <Input
-                data-testid="user-search-input"
-                type="text"
-                placeholder="Search users..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-64"
-              />
-              <Button
-                data-testid="export-users-btn"
-                className="bg-gradient-to-r from-flamingo-500 to-flamingo-600 hover:from-flamingo-600 hover:to-flamingo-700"
-              >
-                Export
+          <CardTitle className="text-blue-800 dark:text-blue-200">User Management</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            {[...Array(5)].map((_, i) => (
+              <div key={i} className="animate-pulse">
+                <div className="h-12 bg-blue-100 dark:bg-blue-800 rounded"></div>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  return (
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-2xl font-bold text-blue-800 dark:text-blue-200 mb-2">User Management</h1>
+        <p className="text-blue-600 dark:text-blue-400">Manage registered users and their activity</p>
+      </div>
+
+      <Card className="bg-white dark:bg-blue-900/20 border-blue-200 dark:border-blue-700">
+        <CardHeader>
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <CardTitle className="text-blue-800 dark:text-blue-200 flex items-center">
+              <i className="fas fa-users mr-2 text-blue-600"></i>
+              Registered Users ({filteredUsers.length})
+            </CardTitle>
+            <div className="flex items-center space-x-2">
+              <div className="relative">
+                <i className="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-blue-500 text-sm"></i>
+                <Input
+                  placeholder="Search users..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pl-10 w-64 border-blue-200 focus:border-blue-500 focus:ring-blue-500 bg-white dark:bg-blue-900/30"
+                />
+              </div>
+              <Button className="bg-blue-500 hover:bg-blue-600 text-white">
+                <i className="fas fa-plus mr-2"></i>
+                Add User
               </Button>
             </div>
           </div>
         </CardHeader>
-        
         <CardContent>
-          {isLoading ? (
-            <div className="space-y-4">
-              {[...Array(5)].map((_, i) => (
-                <div key={i} className="animate-pulse flex items-center space-x-4 py-3">
-                  <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-24"></div>
-                  <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-32"></div>
-                  <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-20"></div>
-                  <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-16"></div>
-                </div>
-              ))}
-            </div>
-          ) : filteredUsers.length === 0 ? (
+          {filteredUsers.length === 0 ? (
             <div className="text-center py-8">
-              <div className="w-12 h-12 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-3">
-                <i className="fas fa-users text-gray-400 dark:text-gray-500"></i>
-              </div>
-              <p className="text-gray-500 dark:text-gray-400">
-                {searchTerm ? 'No users match your search' : 'No users found'}
-              </p>
+              <i className="fas fa-users text-blue-300 text-4xl mb-4"></i>
+              <p className="text-blue-600 dark:text-blue-400">No users found</p>
             </div>
           ) : (
             <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead className="bg-gray-50 dark:bg-gray-700">
-                  <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                      User ID
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                      Email
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                      Name
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                      Conversations
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                      Last Active
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                      Status
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                      Actions
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+              <Table>
+                <TableHeader>
+                  <TableRow className="border-blue-200 dark:border-blue-700">
+                    <TableHead className="text-blue-700 dark:text-blue-300">User</TableHead>
+                    <TableHead className="text-blue-700 dark:text-blue-300">Email</TableHead>
+                    <TableHead className="text-blue-700 dark:text-blue-300">Conversations</TableHead>
+                    <TableHead className="text-blue-700 dark:text-blue-300">Last Active</TableHead>
+                    <TableHead className="text-blue-700 dark:text-blue-300">Status</TableHead>
+                    <TableHead className="text-blue-700 dark:text-blue-300">Actions</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
                   {filteredUsers.map((user) => (
-                    <tr key={user.id} data-testid={`user-row-${user.id}`}>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                        {user.id.substring(0, 12)}...
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                        {user.email || 'N/A'}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                        {user.firstName || user.lastName ? `${user.firstName || ''} ${user.lastName || ''}`.trim() : 'N/A'}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                        {user.conversationCount}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                        {user.lastActive}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        {getStatusBadge(user.status)}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm">
-                        <Button
-                          data-testid={`view-user-${user.id}`}
-                          variant="ghost"
-                          size="sm"
-                          className="text-flamingo-600 dark:text-flamingo-400 hover:text-flamingo-800 dark:hover:text-flamingo-300"
-                        >
-                          View
-                        </Button>
-                      </td>
-                    </tr>
+                    <TableRow key={user.id} className="border-blue-100 dark:border-blue-800 hover:bg-blue-50/50 dark:hover:bg-blue-900/10">
+                      <TableCell>
+                        <div className="flex items-center space-x-3">
+                          <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center">
+                            <span className="text-white text-sm font-semibold">
+                              {user.firstName?.charAt(0)}{user.lastName?.charAt(0)}
+                            </span>
+                          </div>
+                          <div>
+                            <p className="font-medium text-blue-800 dark:text-blue-200">
+                              {user.firstName} {user.lastName}
+                            </p>
+                            <p className="text-xs text-blue-500 dark:text-blue-400">ID: {user.id.slice(0, 8)}</p>
+                          </div>
+                        </div>
+                      </TableCell>
+                      <TableCell className="text-blue-600 dark:text-blue-400">{user.email}</TableCell>
+                      <TableCell>
+                        <Badge className="bg-blue-100 text-blue-800 dark:bg-blue-800/30 dark:text-blue-200">
+                          {user.conversationCount || 0}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="text-blue-600 dark:text-blue-400">{user.lastActive || 'Never'}</TableCell>
+                      <TableCell>
+                        {getStatusBadge(user.status || 'inactive')}
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex space-x-2">
+                          <Button size="sm" variant="outline" className="border-blue-200 text-blue-600 hover:bg-blue-50">
+                            <i className="fas fa-eye text-xs"></i>
+                          </Button>
+                          <Button size="sm" variant="outline" className="border-red-200 text-red-600 hover:bg-red-50">
+                            <i className="fas fa-trash text-xs"></i>
+                          </Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
                   ))}
-                </tbody>
-              </table>
+                </TableBody>
+              </Table>
             </div>
           )}
         </CardContent>

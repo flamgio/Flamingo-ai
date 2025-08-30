@@ -85,6 +85,11 @@ export default function Landing() {
   const [, setLocation] = useLocation();
   const { user, login } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
+  const [showContent, setShowContent] = useState(false);
+
+  const handleAnimationComplete = () => {
+    setShowContent(true);
+  };
 
   const handleGetStarted = async () => {
     if (user) {
@@ -101,6 +106,10 @@ export default function Landing() {
       document.documentElement.classList.contains('dark') ? 'dark' : 'light'
     );
   };
+
+  if (!showContent) {
+    return <IntroAnimation onComplete={handleAnimationComplete} />;
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-pink-50 to-purple-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 transition-colors duration-300 relative overflow-hidden">

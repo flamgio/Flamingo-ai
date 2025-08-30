@@ -58,7 +58,7 @@ class PuterIntegration {
           headers: {
             'Authorization': `Bearer ${process.env.PUTER_API_KEY}`,
             'Content-Type': 'application/json',
-            'User-Agent': 'Replit-AI-Agent/1.0'
+            'User-Agent': 'Flamingo-AI-Agent/1.0'
           },
           timeout: 60000 // 60 seconds for complex tasks
         }

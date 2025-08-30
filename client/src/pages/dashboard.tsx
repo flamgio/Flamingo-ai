@@ -5,6 +5,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import PricingSection from "@/components/pricing-section";
 
 export default function Dashboard() {
   const [, setLocation] = useLocation();
@@ -198,6 +199,9 @@ export default function Dashboard() {
             </Card>
           </motion.div>
         </div>
+
+        {/* Pricing Section */}
+        <PricingSection />
       </div>
     </div>
   );

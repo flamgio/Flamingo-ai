@@ -13,6 +13,7 @@ import {
   optionalAuth,
   type AuthRequest 
 } from "./auth";
+import { chatRouter } from "./routes-chat.js";
 
 // Admin authentication middleware
 function authenticateAdmin(req: any, res: any, next: any) {
@@ -388,6 +389,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ message: "Internal server error" });
     }
   });
+
+  // Add chat router
+  app.use("/api", chatRouter);
 
   const httpServer = createServer(app);
   return httpServer;

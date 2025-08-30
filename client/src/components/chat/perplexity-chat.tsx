@@ -59,18 +59,25 @@ export default function PerplexityChat({ conversationId, initialMessages = [] }:
     setIsLoading(true);
 
     try {
-      const response = await apiRequest.post('/api/agent', {
+      const response = await apiRequest('POST', '/api/chat', {
         prompt: messageContent,
-        conversationId,
-        useEnhancement
+        enhanced: useEnhancement ? enhancementData?.enhanced : null
       });
+
+      const result = await response.json();
 
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
-        content: response.data.content,
-        selectedModel: response.data.selectedModel,
-        metadata: response.data.metadata,
+        content: result.text,
+        selectedModel: result.model,
+        metadata: {
+          provider: result.provider,
+          model: result.model,
+          wordCount: result.wordCount,
+          task: result.task,
+          signature: result.signature
+        },
         createdAt: new Date().toISOString()
       };
 

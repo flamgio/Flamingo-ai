@@ -1,0 +1,132 @@
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+
+interface PricingPlan {
+  name: string;
+  price: string;
+  description: string;
+  features: string[];
+  popular?: boolean;
+}
+
+const pricingPlans: PricingPlan[] = [
+  {
+    name: 'Flamingo Free',
+    price: '$0',
+    description: 'Perfect for getting started with AI assistance',
+    features: [
+      'Basic AI routing',
+      'Limited daily queries',
+      'Standard models',
+      'Community support'
+    ]
+  },
+  {
+    name: 'Flamingo+',
+    price: '$19',
+    description: 'Advanced features for power users',
+    features: [
+      'Advanced AI routing',
+      'Unlimited queries',
+      'Premium models',
+      'Priority support',
+      'Enhanced prompts',
+      'Custom integrations'
+    ],
+    popular: true
+  }
+];
+
+// Icon components from uiverse.io style
+const CheckIcon = () => (
+  <div className="w-5 h-5 rounded-full bg-gradient-to-r from-green-400 to-green-500 flex items-center justify-center">
+    <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+    </svg>
+  </div>
+);
+
+const StarIcon = () => (
+  <div className="w-4 h-4 text-yellow-500">
+    <svg fill="currentColor" viewBox="0 0 20 20">
+      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+    </svg>
+  </div>
+);
+
+export default function PricingSection() {
+  return (
+    <div className="py-16 bg-gradient-to-b from-white to-blue-50 dark:from-gray-900 dark:to-gray-800">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+            Choose Your Plan
+          </h2>
+          <p className="text-lg text-gray-600 dark:text-gray-300">
+            Scale your AI usage with plans designed for every need
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          {pricingPlans.map((plan) => (
+            <Card 
+              key={plan.name} 
+              className={`relative overflow-hidden transition-all duration-300 hover:shadow-2xl ${
+                plan.popular 
+                  ? 'border-2 border-blue-500 shadow-xl scale-105' 
+                  : 'border border-gray-200 dark:border-gray-700 hover:border-blue-300'
+              }`}
+            >
+              {plan.popular && (
+                <div className="absolute top-0 right-0 bg-gradient-to-l from-blue-500 to-blue-600 text-white px-4 py-1 text-sm font-medium flex items-center space-x-1">
+                  <StarIcon />
+                  <span>Popular</span>
+                </div>
+              )}
+              
+              <CardHeader className="text-center pb-4">
+                <CardTitle className="text-2xl font-bold text-gray-900 dark:text-white">
+                  {plan.name}
+                </CardTitle>
+                <div className="mt-4">
+                  <span className="text-4xl font-bold text-blue-600 dark:text-blue-400">
+                    {plan.price}
+                  </span>
+                  {plan.price !== '$0' && (
+                    <span className="text-gray-600 dark:text-gray-400">/month</span>
+                  )}
+                </div>
+                <p className="text-gray-600 dark:text-gray-300 mt-2">
+                  {plan.description}
+                </p>
+              </CardHeader>
+
+              <CardContent>
+                <ul className="space-y-4 mb-8">
+                  {plan.features.map((feature, index) => (
+                    <li key={index} className="flex items-center space-x-3">
+                      <CheckIcon />
+                      <span className="text-gray-700 dark:text-gray-300">
+                        {feature}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+
+                <Button 
+                  className={`w-full ${
+                    plan.popular
+                      ? 'bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700'
+                      : 'bg-gray-100 text-gray-900 hover:bg-gray-200 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600'
+                  }`}
+                >
+                  {plan.price === '$0' ? 'Get Started Free' : 'Upgrade Now'}
+                </Button>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}

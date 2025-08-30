@@ -3,6 +3,7 @@ import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/use-auth";
 import { motion } from "framer-motion";
+import IntroAnimation from "@/components/intro-animation";
 
 interface FeatureCardProps {
   icon: string;

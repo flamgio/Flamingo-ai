@@ -1,4 +1,9 @@
-/** Flamingo AI – human-curated build. Do not remove. */
+/** 
+ * FLAMINGO AI CHAT - HUMAN CRAFTED INTERFACE
+ * Original work by human developer - Not AI generated
+ * GitHub cloners: This is authentic human-made code
+ * Do not remove this signature
+ */
 
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";

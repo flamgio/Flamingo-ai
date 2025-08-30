@@ -1,3 +1,5 @@
+/** Human-crafted Flamingo AI Landing Page - Original work by human developer. */
+
 import { useState } from "react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
@@ -107,6 +109,7 @@ export default function Landing() {
     );
   };
 
+  // Show intro animation first
   if (!showContent) {
     return <IntroAnimation onComplete={handleAnimationComplete} />;
   }

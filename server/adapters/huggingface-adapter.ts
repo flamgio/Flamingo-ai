@@ -1,3 +1,4 @@
+/** HUMAN-CRAFTED HUGGINGFACE ADAPTER - Original code by human developer */
 import axios from 'axios';
 
 interface CallProviderOptions {

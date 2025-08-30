@@ -121,19 +121,35 @@ export default function IntroAnimation({ onComplete }: IntroAnimationProps) {
           </span>
         </motion.div>
 
-        {/* Loading text */}
+        {/* Welcome Text on Train */}
         <motion.div
-          className="absolute bottom-1/3 text-center"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 3 }}
+          className="absolute"
+          initial={{ 
+            x: '-18vw', 
+            y: '-18vh',
+            rotate: 25 
+          }}
+          animate={{ 
+            x: '122vw', 
+            y: '122vh',
+            rotate: 25
+          }}
+          transition={{ 
+            duration: 4,
+            ease: 'easeInOut',
+            delay: 0.5
+          }}
         >
-          <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent mb-4">
-            Flamingo AI
-          </h1>
-          <p className="text-gray-600 dark:text-gray-300 text-xl font-light">
-            Intelligent AI • Human Crafted • No Clones
-          </p>
+          <div className="relative mt-16 ml-8">
+            <motion.h1
+              className="text-2xl font-bold bg-gradient-to-r from-blue-600 via-purple-500 to-pink-500 bg-clip-text text-transparent whitespace-nowrap"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1.5 }}
+            >
+              Welcome to Flamingo AI
+            </motion.h1>
+          </div>
         </motion.div>
       </div>
     </motion.div>

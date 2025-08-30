@@ -393,6 +393,44 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Add chat router
   app.use("/api", chatRouter);
 
+  // Puter integration route - Human crafted
+  app.post("/api/puter-chat", async (req, res) => {
+    try {
+      const { prompt } = req.body;
+      
+      if (!prompt) {
+        return res.status(400).json({ error: "Prompt is required" });
+      }
+
+      // Use the Puter adapter to generate response
+      const { callProvider } = await import("./adapters/puter-adapter");
+      const result = await callProvider({
+        prompt,
+        task: "chat",
+        options: { temperature: 0.7, maxTokens: 1500 }
+      });
+
+      res.json({
+        response: result.text,
+        model: result.model,
+        provider: result.provider
+      });
+    } catch (error: any) {
+      console.error("Puter chat error:", error);
+      res.status(500).json({ error: "Puter integration failed" });
+    }
+  });
+
+  app.get("/api/puter-status", async (req, res) => {
+    try {
+      // Check if Puter is configured and available
+      const apiKey = process.env.PUTER_API_KEY;
+      res.json({ available: !!apiKey, status: "ready" });
+    } catch (error) {
+      res.json({ available: false, status: "error" });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }

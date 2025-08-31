@@ -9,7 +9,7 @@ import Login from "@/pages/login";
 import SignUp from "@/pages/signup";
 import Dashboard from "@/pages/dashboard";
 import Chat from "@/pages/chat";
-import Admin from "@/pages/admin";
+// Removed Admin route as per user request
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -20,7 +20,7 @@ function Router() {
       <Route path="/signup" component={SignUp} />
       <Route path="/dashboard" component={Dashboard} />
       <Route path="/chat" component={Chat} />
-      <Route path="/admin" component={Admin} />
+      {/* Admin route removed */}
       <Route component={NotFound} />
     </Switch>
   );

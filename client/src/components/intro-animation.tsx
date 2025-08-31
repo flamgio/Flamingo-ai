@@ -1,3 +1,4 @@
+
 /** Human-made Flamingo AI - Original work, not generated. Do not remove this signature. */
 
 import { useState, useEffect } from 'react';
@@ -26,131 +27,123 @@ export default function IntroAnimation({ onComplete }: IntroAnimationProps) {
 
   return (
     <motion.div
-      className="fixed inset-0 z-50 bg-gradient-to-br from-white via-blue-50 to-red-50 dark:from-gray-900 dark:via-blue-900 dark:to-red-900 flex items-center justify-center overflow-hidden"
+      className="fixed inset-0 z-50 bg-gradient-to-br from-black via-gray-900 to-black flex items-center justify-center overflow-hidden"
       initial={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.8 }}
     >
       <div className="relative w-full h-full flex items-center justify-center">
-        {/* Train Animation - Upper left to lower right diagonal */}
+        {/* Logo in center */}
         <motion.div
-          className="absolute"
-          initial={{ 
-            x: '-20vw', 
-            y: '-20vh',
-            rotate: 25 
-          }}
-          animate={{ 
-            x: '120vw', 
-            y: '120vh',
-            rotate: 25
-          }}
-          transition={{ 
-            duration: 4,
-            ease: 'easeInOut',
-            delay: 0.5
-          }}
-        >
-          {/* Train with enhanced design */}
-          <div className="relative">
-            <motion.div
-              className="w-32 h-16 bg-gradient-to-r from-blue-600 via-purple-500 to-pink-500 rounded-xl shadow-2xl relative overflow-hidden"
-              whileHover={{ scale: 1.05 }}
-            >
-              {/* Train body with metallic gradient */}
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-600 via-purple-500 to-pink-500 rounded-xl"></div>
-              
-              {/* Windows */}
-              <div className="absolute top-2 left-3 w-4 h-4 bg-white/80 rounded-md"></div>
-              <div className="absolute top-2 left-9 w-4 h-4 bg-white/80 rounded-md"></div>
-              <div className="absolute top-2 right-3 w-4 h-4 bg-white/80 rounded-md"></div>
-              
-              {/* Front light */}
-              <div className="absolute top-6 right-1 w-3 h-3 bg-yellow-300 rounded-full shadow-lg"></div>
-              
-              {/* Wheels */}
-              <div className="absolute -bottom-2 left-2 w-4 h-4 bg-gray-700 rounded-full shadow-md"></div>
-              <div className="absolute -bottom-2 left-8 w-4 h-4 bg-gray-700 rounded-full shadow-md"></div>
-              <div className="absolute -bottom-2 right-2 w-4 h-4 bg-gray-700 rounded-full shadow-md"></div>
-              
-              {/* White + light-red glow blend in middle - Human curated effect */}
-              <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/60 to-transparent rounded-xl"
-                initial={{ 
-                  x: '-150%',
-                  background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.8), rgba(255,200,200,0.6), transparent)'
-                }}
-                animate={{ 
-                  x: '150%',
-                  background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.8), rgba(255,200,200,0.6), transparent)'
-                }}
-                transition={{ 
-                  duration: 2,
-                  ease: 'easeInOut',
-                  delay: 1.5
-                }}
-              />
-              
-              {/* Steam effect */}
-              <motion.div
-                className="absolute -top-2 left-4 w-2 h-6 bg-white/40 rounded-full"
-                animate={{ 
-                  scaleY: [1, 1.5, 1],
-                  opacity: [0.4, 0.8, 0.4]
-                }}
-                transition={{ 
-                  duration: 1,
-                  repeat: Infinity,
-                  ease: 'easeInOut'
-                }}
-              />
-            </motion.div>
-          </div>
-        </motion.div>
-
-        {/* Human Made Badge */}
-        <motion.div
-          className="absolute bottom-8 right-8 flex items-center space-x-2 bg-white/90 dark:bg-gray-800/90 px-4 py-2 rounded-full shadow-lg"
-          initial={{ opacity: 0, scale: 0.8 }}
+          className="relative z-10"
+          initial={{ opacity: 0, scale: 0.5 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 2 }}
+          transition={{ duration: 1, delay: 0.5 }}
         >
-          <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-          <span className="text-sm font-medium text-gray-700 dark:text-gray-200">
-            Human Curated
-          </span>
+          {/* Logo Box with Fire Background */}
+          <motion.div
+            className="relative w-32 h-32 bg-black rounded-xl shadow-2xl border-2 border-white/20 flex items-center justify-center mb-6"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 1 }}
+          >
+            {/* Fire effect inside logo */}
+            <div className="absolute inset-0 rounded-xl overflow-hidden">
+              <motion.div
+                className="absolute bottom-0 left-0 right-0 h-full bg-gradient-to-t from-red-600 via-orange-500 to-yellow-400 rounded-xl"
+                initial={{ scaleY: 0, transformOrigin: "bottom" }}
+                animate={{ scaleY: 1 }}
+                transition={{ duration: 2, delay: 1.5 }}
+              />
+              
+              {/* Animated flames */}
+              {[...Array(8)].map((_, i) => (
+                <motion.div
+                  key={i}
+                  className="absolute w-4 h-8 bg-gradient-to-t from-red-500 via-orange-400 to-yellow-300 rounded-full"
+                  style={{
+                    left: `${10 + i * 10}%`,
+                    bottom: '0%'
+                  }}
+                  animate={{
+                    scaleY: [0.8, 1.2, 0.9, 1.1, 0.8],
+                    opacity: [0.7, 1, 0.8, 1, 0.7],
+                    x: [0, 2, -1, 1, 0]
+                  }}
+                  transition={{
+                    duration: 1 + Math.random() * 0.5,
+                    repeat: Infinity,
+                    delay: 2 + i * 0.1
+                  }}
+                />
+              ))}
+            </div>
+
+            {/* Box and Fire icons in white */}
+            <div className="relative z-10 flex items-center justify-center space-x-2">
+              <i className="fas fa-cube text-white text-2xl"></i>
+              <i className="fas fa-fire text-white text-2xl"></i>
+            </div>
+          </motion.div>
+
+          {/* Logo Text */}
+          <motion.h1
+            className="text-4xl font-bold text-white text-center"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 2 }}
+          >
+            Flamingo
+          </motion.h1>
+
+          {/* Welcome Text */}
+          <motion.p
+            className="text-xl text-gray-300 text-center mt-4"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 2.5 }}
+          >
+            Welcome to Flamgio AI
+          </motion.p>
         </motion.div>
 
-        {/* Welcome Text on Train */}
+        {/* Burning Effect Overlay */}
         <motion.div
-          className="absolute"
-          initial={{ 
-            x: '-18vw', 
-            y: '-18vh',
-            rotate: 25 
-          }}
-          animate={{ 
-            x: '122vw', 
-            y: '122vh',
-            rotate: 25
-          }}
-          transition={{ 
-            duration: 4,
-            ease: 'easeInOut',
-            delay: 0.5
-          }}
-        >
-          <div className="relative mt-16 ml-8">
-            <motion.h1
-              className="text-2xl font-bold bg-gradient-to-r from-blue-600 via-purple-500 to-pink-500 bg-clip-text text-transparent whitespace-nowrap"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1.5 }}
-            >
-              Welcome to Flamingo AI
-            </motion.h1>
-          </div>
-        </motion.div>
+          className="absolute inset-0 bg-gradient-to-t from-red-600/20 via-orange-500/10 to-transparent"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 2, delay: 3 }}
+        />
+
+        {/* Fire particles */}
+        {[...Array(20)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-2 h-2 bg-gradient-to-t from-red-500 to-yellow-400 rounded-full"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${80 + Math.random() * 20}%`
+            }}
+            animate={{
+              y: [-50, -200],
+              opacity: [1, 0],
+              scale: [1, 0.5]
+            }}
+            transition={{
+              duration: 2 + Math.random() * 2,
+              repeat: Infinity,
+              delay: 2 + Math.random() * 3
+            }}
+          />
+        ))}
+
+        {/* Burning screen effect at the end */}
+        <motion.div
+          className="absolute inset-0 bg-gradient-to-t from-red-600 via-orange-500 to-yellow-400"
+          initial={{ scaleY: 0, transformOrigin: "bottom" }}
+          animate={{ scaleY: 1 }}
+          transition={{ duration: 1, delay: 4 }}
+        />
       </div>
     </motion.div>
   );

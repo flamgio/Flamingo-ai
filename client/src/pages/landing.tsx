@@ -122,8 +122,14 @@ export default function Landing() {
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg flex items-center justify-center">
-                  <span className="text-white text-sm font-bold">FA</span>
+                {/* New Logo: Box and Fire */}
+                <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center relative overflow-hidden">
+                  <svg className="w-full h-full" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    {/* Fire Icon (White) */}
+                    <path d="M16 28C16 28 24 20 24 14C24 8 18 8 16 10C14 8 8 8 8 14C8 20 16 28 16 28Z" fill="white"/>
+                    {/* Box Icon (White) */}
+                    <path d="M10 10H22V22H10V10Z" stroke="white" strokeWidth="2" fill="none"/>
+                  </svg>
                 </div>
                 <button 
                   onClick={() => setLocation('/')}
@@ -181,7 +187,7 @@ export default function Landing() {
             animation: "gradientShift 3s ease-in-out infinite"
           }}
         >
-          Welcome To Flamingo Ai! ✨
+          Welcome to Flamgio AI
         </motion.div>
       </div>
 
@@ -336,6 +342,7 @@ export default function Landing() {
               title="PostgreSQL Memory"
               description="User-specific conversation storage with PostgreSQL ensures your chat history is preserved and easily accessible."
             />
+            {/* Admin Dashboard is now hidden from regular users */}
             <FeatureCard
               icon="fas fa-tachometer-alt"
               title="Admin Dashboard"

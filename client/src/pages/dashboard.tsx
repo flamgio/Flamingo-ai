@@ -1,4 +1,3 @@
-
 import { useEffect } from "react";
 import { useLocation } from "wouter";
 import { useAuth } from "@/hooks/use-auth";
@@ -42,10 +41,11 @@ export default function Dashboard() {
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center shadow-md">
-                  <span className="text-white text-sm font-bold">FA</span>
-                </div>
-                <button 
+                <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center border border-gray-300 dark:border-gray-600">
+              <i className="fas fa-cube text-white text-xs mr-1"></i>
+              <i className="fas fa-fire text-white text-xs"></i>
+            </div>
+                <button
                   onClick={() => setLocation('/')}
                   className="text-xl font-bold text-blue-700 dark:text-blue-300 hover:text-blue-800 dark:hover:text-blue-200 transition-colors"
                 >
@@ -53,7 +53,7 @@ export default function Dashboard() {
                 </button>
               </div>
             </div>
-            
+
             <div className="flex items-center space-x-4">
               <span className="text-sm text-blue-600 dark:text-blue-300 font-medium">
                 Welcome, {user.firstName}
@@ -75,7 +75,7 @@ export default function Dashboard() {
       <div className="pt-16 min-h-screen">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           {/* Welcome Section */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
@@ -85,7 +85,7 @@ export default function Dashboard() {
               Welcome to Flamgio AI Dashboard
             </h1>
             <p className="text-xl text-blue-600 dark:text-blue-300 max-w-3xl mx-auto">
-              Your privacy-first AI chat platform with intelligent model routing. 
+              Your privacy-first AI chat platform with intelligent model routing.
               Start chatting with our advanced AI models or manage your account.
             </p>
           </motion.div>
@@ -161,7 +161,7 @@ export default function Dashboard() {
                         <p className="text-blue-600 dark:text-blue-400 text-sm">Your conversations stay private with local model options</p>
                       </div>
                     </div>
-                    
+
                     <div className="flex items-start space-x-3">
                       <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0 shadow-md">
                         <i className="fas fa-route text-white text-sm"></i>
@@ -172,7 +172,7 @@ export default function Dashboard() {
                       </div>
                     </div>
                   </div>
-                  
+
                   <div className="space-y-4">
                     <div className="flex items-start space-x-3">
                       <div className="w-8 h-8 bg-blue-700 rounded-full flex items-center justify-center flex-shrink-0 shadow-md">
@@ -183,7 +183,7 @@ export default function Dashboard() {
                         <p className="text-blue-600 dark:text-blue-400 text-sm">Conversations are saved and context maintained</p>
                       </div>
                     </div>
-                    
+
                     <div className="flex items-start space-x-3">
                       <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0 shadow-md">
                         <i className="fas fa-mobile-alt text-white text-sm"></i>

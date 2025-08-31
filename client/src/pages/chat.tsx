@@ -52,8 +52,9 @@ export default function Chat() {
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center shadow-md">
-                  <span className="text-white text-sm font-bold font-mono">FA</span>
+                <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center border border-gray-300 dark:border-gray-600">
+                  <i className="fas fa-cube text-white text-xs mr-1"></i>
+                  <i className="fas fa-fire text-white text-xs"></i>
                 </div>
                 <button 
                   onClick={() => setLocation('/')}
@@ -63,7 +64,7 @@ export default function Chat() {
                 </button>
               </div>
             </div>
-            
+
             <div className="flex items-center space-x-4">
               <Button
                 data-testid="logout-btn"
@@ -88,7 +89,7 @@ export default function Chat() {
           onClose={() => setSidebarOpen(false)}
           onAdminAccess={handleAdminAccess}
         />
-        
+
         {/* Mobile Sidebar Overlay */}
         {isMobile && sidebarOpen && (
           <div 
@@ -96,7 +97,7 @@ export default function Chat() {
             onClick={() => setSidebarOpen(false)}
           />
         )}
-        
+
         {/* Main Chat Area */}
         <div className="flex-1 flex flex-col">
           {/* Chat Header */}
@@ -116,7 +117,7 @@ export default function Chat() {
                   <h1 className="text-lg font-semibold text-gray-900 dark:text-white">Chat Interface</h1>
                 </div>
               </div>
-              
+
               <div className="flex items-center space-x-2">
                 <span className="text-xs bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 px-3 py-1 rounded-full font-medium">
                   <i className="fas fa-circle text-green-500 mr-1"></i>
@@ -125,7 +126,7 @@ export default function Chat() {
               </div>
             </div>
           </div>
-          
+
           {/* Perplexity-style Chat Area */}
           <PerplexityChat 
             conversationId={currentConversation?.id}

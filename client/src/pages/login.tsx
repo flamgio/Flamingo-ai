@@ -79,8 +79,9 @@ export default function Login() {
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-gradient-to-br from-flamingo-400 to-flamingo-600 rounded-lg flex items-center justify-center">
-                  <span className="text-white text-sm font-bold">FA</span>
+                <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center border border-gray-300 dark:border-gray-600">
+                  <i className="fas fa-cube text-white text-xs mr-1"></i>
+                  <i className="fas fa-fire text-white text-xs"></i>
                 </div>
                 <button 
                   onClick={() => setLocation('/')}

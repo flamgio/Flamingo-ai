@@ -100,10 +100,11 @@ export default function Signup() {
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-gradient-to-br from-flamingo-400 to-flamingo-600 rounded-lg flex items-center justify-center">
-                  <span className="text-white text-sm font-bold">FA</span>
+                <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center border border-gray-300 dark:border-gray-600">
+                  <i className="fas fa-cube text-white text-xs mr-1"></i>
+                  <i className="fas fa-fire text-white text-xs"></i>
                 </div>
-                <button 
+                <button
                   onClick={() => setLocation('/')}
                   className="text-xl font-bold text-gray-900 dark:text-white hover:text-flamingo-600 dark:hover:text-flamingo-400 transition-colors"
                 >
@@ -142,11 +143,11 @@ export default function Signup() {
             className="fixed top-20 left-1/2 transform -translate-x-1/2 z-50"
           >
             <motion.div
-              animate={{ 
+              animate={{
                 y: [0, -10, 0],
                 scale: [1, 1.02, 1]
               }}
-              transition={{ 
+              transition={{
                 duration: 0.8,
                 repeat: 3
               }}
@@ -154,11 +155,11 @@ export default function Signup() {
             >
               <div className="flex items-center space-x-4">
                 <motion.div
-                  animate={{ 
+                  animate={{
                     rotate: [0, 360],
                     scale: [1, 1.2, 1]
                   }}
-                  transition={{ 
+                  transition={{
                     duration: 2,
                     repeat: Infinity
                   }}

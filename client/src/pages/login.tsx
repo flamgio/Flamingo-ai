@@ -167,11 +167,11 @@ export default function Login() {
             </p>
           </div>
 
-          <Card className="bg-white dark:bg-blue-50 border-blue-200 dark:border-blue-300 shadow-xl">
-            <CardHeader className="bg-gradient-to-r from-blue-50 to-white dark:from-blue-100 dark:to-blue-50 rounded-t-lg">
-              <CardTitle className="text-center text-blue-800 dark:text-blue-900">Sign In</CardTitle>
+          <Card className="bg-blue-100 dark:bg-slate-800 border-blue-300 dark:border-slate-600 shadow-xl">
+            <CardHeader className="bg-gradient-to-r from-blue-200 to-blue-100 dark:from-slate-700 dark:to-slate-800 rounded-t-lg">
+              <CardTitle className="text-center text-blue-900 dark:text-white">Sign In</CardTitle>
             </CardHeader>
-            <CardContent className="bg-white dark:bg-blue-50">
+            <CardContent className="bg-blue-100 dark:bg-slate-800">
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
                   <Label htmlFor="email">Email Address</Label>

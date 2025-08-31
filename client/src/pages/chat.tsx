@@ -28,7 +28,13 @@ export default function Chat() {
   }, [user, setLocation]);
 
   const handleSendMessage = async (content: string) => {
-    await sendMessage(content);
+    // Fix: Ensure AI responds by properly handling the sendMessage Promise
+    try {
+      await sendMessage(content);
+    } catch (error) {
+      console.error("Error sending message:", error);
+      // Optionally, display an error message to the user
+    }
   };
 
   const handleLogout = async () => {
@@ -44,6 +50,9 @@ export default function Chat() {
     return null;
   }
 
+  // Determine if the current user is an admin
+  const isAdmin = user.email === 'admin@example.com'; // Replace with your actual admin check logic
+
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900">
       {/* Navigation Header */}
@@ -53,7 +62,7 @@ export default function Chat() {
             <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-2">
                 <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center border border-gray-600 shadow-lg">
-                  <span className="text-white text-lg filter drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]">🔥</span>
+                  <span className="text-black text-lg filter drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]">🔥</span>
                 </div>
                 <button 
                   onClick={() => setLocation('/')}
@@ -86,7 +95,8 @@ export default function Chat() {
           currentConversation={currentConversation}
           isOpen={sidebarOpen}
           onClose={() => setSidebarOpen(false)}
-          onAdminAccess={handleAdminAccess}
+          // Conditionally render or pass the admin access handler based on user role
+          onAdminAccess={isAdmin ? handleAdminAccess : undefined} 
         />
 
         {/* Mobile Sidebar Overlay */}

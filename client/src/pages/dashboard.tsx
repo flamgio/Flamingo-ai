@@ -42,7 +42,7 @@ export default function Dashboard() {
             <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-2">
                 <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center border border-gray-600 shadow-lg">
-                  <span className="text-white text-lg filter drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]">🔥</span>
+                  <span className="text-black text-lg filter drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]">🔥</span>
                 </div>
                 <button
                   onClick={() => setLocation('/')}
@@ -114,28 +114,57 @@ export default function Dashboard() {
               </Card>
             </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-            >
-              <Card className="hover:shadow-lg transition-shadow cursor-pointer h-full bg-white dark:bg-blue-900/20 border-blue-200 dark:border-blue-700 hover:bg-blue-50/50 dark:hover:bg-blue-800/30" onClick={handleAdminAccess}>
-                <CardHeader>
-                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-700 rounded-lg flex items-center justify-center mb-4 shadow-md">
-                    <i className="fas fa-shield-alt text-white text-xl"></i>
-                  </div>
-                  <CardTitle className="text-blue-800 dark:text-blue-200">Admin Panel</CardTitle>
-                  <CardDescription className="text-blue-600 dark:text-blue-300">
-                    Access administrative features and settings
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-blue-500 dark:text-blue-400">
-                    Manage users, monitor system performance, and configure AI models
-                  </p>
-                </CardContent>
-              </Card>
-            </motion.div>
+            {/* Admin Panel - Only show for admin users */}
+            {user?.email === 'admin@flamgio.ai' && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+              >
+                <Card className="hover:shadow-lg transition-shadow cursor-pointer h-full bg-white dark:bg-blue-900/20 border-blue-200 dark:border-blue-700 hover:bg-blue-50/50 dark:hover:bg-blue-800/30" onClick={handleAdminAccess}>
+                  <CardHeader>
+                    <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-700 rounded-lg flex items-center justify-center mb-4 shadow-md">
+                      <i className="fas fa-shield-alt text-white text-xl"></i>
+                    </div>
+                    <CardTitle className="text-blue-800 dark:text-blue-200">Admin Panel</CardTitle>
+                    <CardDescription className="text-blue-600 dark:text-blue-300">
+                      Access administrative features and settings
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm text-blue-500 dark:text-blue-400">
+                      Manage users, monitor system performance, and configure AI models
+                    </p>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            )}
+
+            {/* Additional feature card for non-admin users */}
+            {user?.email !== 'admin@flamgio.ai' && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+              >
+                <Card className="hover:shadow-lg transition-shadow h-full bg-white dark:bg-blue-900/20 border-blue-200 dark:border-blue-700">
+                  <CardHeader>
+                    <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-700 rounded-lg flex items-center justify-center mb-4 shadow-md">
+                      <i className="fas fa-cog text-white text-xl"></i>
+                    </div>
+                    <CardTitle className="text-blue-800 dark:text-blue-200">Settings</CardTitle>
+                    <CardDescription className="text-blue-600 dark:text-blue-300">
+                      Customize your chat experience and preferences
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm text-blue-500 dark:text-blue-400">
+                      Manage your profile, notifications, and model preferences
+                    </p>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            )}
           </div>
 
           {/* Features Section */}

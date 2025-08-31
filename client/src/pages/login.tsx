@@ -80,9 +80,9 @@ export default function Login() {
             <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-2">
                 <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center border border-gray-600 shadow-lg">
-                  <span className="text-white text-lg filter drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]">🔥</span>
+                  <span className="text-black text-lg filter drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]">🔥</span>
                 </div>
-                <button 
+                <button
                   onClick={() => setLocation('/')}
                   className="text-xl font-bold text-gray-900 dark:text-white hover:text-flamingo-600 dark:hover:text-flamingo-400 transition-colors"
                 >
@@ -121,11 +121,11 @@ export default function Login() {
             className="fixed top-20 left-1/2 transform -translate-x-1/2 z-50"
           >
             <motion.div
-              animate={{ 
+              animate={{
                 rotate: [0, 5, -5, 0],
                 scale: [1, 1.05, 1]
               }}
-              transition={{ 
+              transition={{
                 duration: 0.6,
                 repeat: 2
               }}

@@ -1,5 +1,3 @@
-
-
 /** Human-made Flamingo AI - Original work, not generated. Do not remove this signature. */
 
 import { useState, useEffect } from 'react';
@@ -18,13 +16,13 @@ export default function IntroAnimation({ onComplete }: IntroAnimationProps) {
   useEffect(() => {
     // Logo appears first
     const logoTimer = setTimeout(() => setShowLogo(true), 500);
-    
+
     // Text appears after logo
     const textTimer = setTimeout(() => setShowText(true), 1500);
-    
+
     // Fire animation starts from top
     const fireTimer = setTimeout(() => setShowFire(true), 2500);
-    
+
     // Complete animation
     const completeTimer = setTimeout(() => {
       setShowAnimation(false);
@@ -60,7 +58,7 @@ export default function IntroAnimation({ onComplete }: IntroAnimationProps) {
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
             <div className="w-24 h-24 bg-black rounded-2xl flex items-center justify-center border-2 border-gray-600 shadow-2xl">
-              <span className="text-white text-4xl filter drop-shadow-[0_0_12px_rgba(255,255,255,0.9)]">🔥</span>
+              <span className="text-black text-4xl filter drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]">🔥</span>
             </div>
           </motion.div>
         )}
@@ -89,7 +87,7 @@ export default function IntroAnimation({ onComplete }: IntroAnimationProps) {
           </motion.p>
         )}
 
-        {/* Fire Animation from Top */}
+        {/* Paper Burning Animation */}
         {showFire && (
           <>
             {/* Main fire curtain from top */}
@@ -173,4 +171,3 @@ export default function IntroAnimation({ onComplete }: IntroAnimationProps) {
     </motion.div>
   );
 }
-

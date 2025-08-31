@@ -124,7 +124,7 @@ export default function Landing() {
               <div className="flex items-center space-x-2">
                 {/* New Logo: Black background box with fire emoji and white glow */}
                 <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center border border-gray-600 shadow-lg">
-                  <span className="text-white text-lg filter drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]">🔥</span>
+                  <span className="text-black text-lg filter drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]">🔥</span>
                 </div>
                 <button 
                   onClick={() => setLocation('/')}
@@ -313,9 +313,9 @@ export default function Landing() {
             />
             {/* Admin Dashboard is now hidden from regular users */}
             <FeatureCard
-              icon="fas fa-tachometer-alt"
-              title="Admin Dashboard"
-              description="Comprehensive admin panel with user logs, model usage statistics, and system monitoring capabilities."
+              icon="fas fa-cog"
+              title="User Settings"
+              description="Customize your chat experience with personalized settings and model preferences."
             />
             <FeatureCard
               icon="fas fa-mobile-alt"

@@ -20,7 +20,8 @@ function Router() {
       <Route path="/signup" component={SignUp} />
       <Route path="/dashboard" component={Dashboard} />
       <Route path="/chat" component={Chat} />
-      {/* Admin route removed */}
+      <Route path="/admin" component={() => import("./pages/admin").then(m => m.default)} />
+      <Route path="/not-found" component={NotFound} />
       <Route component={NotFound} />
     </Switch>
   );

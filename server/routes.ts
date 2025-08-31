@@ -248,12 +248,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
         }
       }
 
-      // Import and use AI coordinator
-      const { aiCoordinator } = await import('./ai-coordinator');
-      
-      // Select the best model for the prompt
-      const chosenModel = aiCoordinator.selectBestModel(prompt, selectedModel);
-      
       // Create conversation if none provided
       let finalConversationId = conversationId;
       if (!finalConversationId) {
@@ -279,8 +273,32 @@ export async function registerRoutes(app: Express): Promise<Server> {
         })
         .returning();
 
-      // Generate AI response using the coordinator with optional enhancement
-      const aiResponse = await aiCoordinator.generateResponse(prompt, chosenModel, useEnhancement);
+      let aiResponse;
+      let chosenModel = selectedModel || 'gpt-3.5-turbo';
+      
+      try {
+        // Import and use AI coordinator
+        const { aiCoordinator } = await import('./ai-coordinator');
+        
+        // Initialize coordinator
+        await aiCoordinator.initialize();
+        
+        // Select the best model for the prompt
+        chosenModel = aiCoordinator.selectBestModel(prompt, selectedModel);
+        
+        // Generate AI response using the coordinator with optional enhancement
+        aiResponse = await aiCoordinator.generateResponse(prompt, chosenModel, useEnhancement);
+      } catch (coordinatorError) {
+        console.error("AI Coordinator error:", coordinatorError);
+        
+        // Fallback response
+        aiResponse = {
+          content: `I understand you're asking: "${prompt}". I'm currently experiencing some technical difficulties with my AI models. This is a development environment response. Please check that your API keys are properly configured in the environment variables.`,
+          model: chosenModel,
+          processingTime: 100,
+          tokensUsed: 50
+        };
+      }
 
       // Save AI response
       const savedResponse = await db

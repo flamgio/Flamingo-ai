@@ -225,25 +225,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
     await enhancePromptRoute(req, res);
   });
 
-  // Agent endpoint for AI responses
-  app.post('/api/agent', async (req, res) => {
-    // Check if user is authenticated via session
-    if (!req.session?.user?.id) {
-      return res.status(401).json({ message: 'Authentication required' });
-    }
-
+  // AI agent endpoint
+  app.post('/api/agent', authenticateToken, async (req: AuthRequest, res) => {
     try {
-      const user = req.session.user;
-
-
-      const { prompt, conversationId } = req.body;
+      const { prompt } = req.body;
 
       if (!prompt) {
         return res.status(400).json({ error: 'Message is required' });
       }
 
       // Add basic rate limiting
-      const userId = user.id;
+      const userId = (req as any).user?.id;
       if (!userId) {
         return res.status(403).json({ message: 'Invalid or expired token' });
       }

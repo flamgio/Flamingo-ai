@@ -41,10 +41,9 @@ export default function Dashboard() {
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center border border-gray-300 dark:border-gray-600">
-              <i className="fas fa-cube text-white text-xs mr-1"></i>
-              <i className="fas fa-fire text-white text-xs"></i>
-            </div>
+                <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center border border-gray-600 shadow-lg">
+                  <span className="text-white text-lg filter drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]">🔥</span>
+                </div>
                 <button
                   onClick={() => setLocation('/')}
                   className="text-xl font-bold text-blue-700 dark:text-blue-300 hover:text-blue-800 dark:hover:text-blue-200 transition-colors"

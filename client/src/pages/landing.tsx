@@ -122,14 +122,9 @@ export default function Landing() {
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-2">
-                {/* New Logo: Box and Fire */}
-                <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center relative overflow-hidden">
-                  <svg className="w-full h-full" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    {/* Fire Icon (White) */}
-                    <path d="M16 28C16 28 24 20 24 14C24 8 18 8 16 10C14 8 8 8 8 14C8 20 16 28 16 28Z" fill="white"/>
-                    {/* Box Icon (White) */}
-                    <path d="M10 10H22V22H10V10Z" stroke="white" strokeWidth="2" fill="none"/>
-                  </svg>
+                {/* New Logo: Black background box with fire emoji and white glow */}
+                <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center border border-gray-600 shadow-lg">
+                  <span className="text-white text-lg filter drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]">🔥</span>
                 </div>
                 <button 
                   onClick={() => setLocation('/')}
@@ -163,33 +158,7 @@ export default function Landing() {
         </div>
       </nav>
 
-      {/* Animated Text Overlay */}
-      <div className="fixed inset-0 pointer-events-none z-40 overflow-hidden">
-        <motion.div
-          className="absolute top-1/2 -translate-y-1/2 whitespace-nowrap text-6xl md:text-8xl font-bold"
-          initial={{ x: "-100vw", opacity: 0 }}
-          animate={{ 
-            x: ["-100vw", "50vw", "200vw"],
-            opacity: [0, 1, 1, 0]
-          }}
-          transition={{
-            duration: 10,
-            times: [0, 0.2, 0.8, 1],
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-          style={{
-            background: "linear-gradient(45deg, #ff6b6b, #ffffff, #ff8e8e, #ffffff)",
-            backgroundSize: "400% 400%",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            backgroundClip: "text",
-            animation: "gradientShift 3s ease-in-out infinite"
-          }}
-        >
-          Welcome to Flamgio AI
-        </motion.div>
-      </div>
+      
 
       {/* Hero Section */}
       <section className="relative overflow-hidden pt-16">

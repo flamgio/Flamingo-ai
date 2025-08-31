@@ -8,12 +8,24 @@ interface IntroAnimationProps {
 }
 
 export default function IntroAnimation({ onComplete }: IntroAnimationProps) {
-  const [showAnimation, setShowAnimation] = useState(true);
+  const [showAnimation, setShowAnimation] = useState(() => {
+    // Check if animation has been shown in this session
+    return !sessionStorage.getItem('flamgio-intro-shown');
+  });
   const [showLogo, setShowLogo] = useState(false);
   const [showText, setShowText] = useState(false);
   const [showFire, setShowFire] = useState(false);
 
   useEffect(() => {
+    // If animation shouldn't show, complete immediately
+    if (!showAnimation) {
+      onComplete();
+      return;
+    }
+
+    // Mark animation as shown for this session
+    sessionStorage.setItem('flamgio-intro-shown', 'true');
+
     // Logo appears first
     const logoTimer = setTimeout(() => setShowLogo(true), 500);
 
@@ -35,7 +47,7 @@ export default function IntroAnimation({ onComplete }: IntroAnimationProps) {
       clearTimeout(fireTimer);
       clearTimeout(completeTimer);
     };
-  }, [onComplete]);
+  }, [onComplete, showAnimation]);
 
   if (!showAnimation) {
     return null;

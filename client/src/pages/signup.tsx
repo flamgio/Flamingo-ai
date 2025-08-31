@@ -209,7 +209,7 @@ export default function Signup() {
                       value={formData.firstName}
                       onChange={(e) => handleInputChange('firstName', e.target.value)}
                       placeholder="John"
-                      className={errors.firstName ? "border-red-500" : "text-black"}
+                      className={errors.firstName ? "border-red-500 text-blue-600" : "text-blue-600"}
                     />
                     {errors.firstName && (
                       <p className="text-red-500 text-xs mt-1">{errors.firstName}</p>
@@ -223,7 +223,7 @@ export default function Signup() {
                       value={formData.lastName}
                       onChange={(e) => handleInputChange('lastName', e.target.value)}
                       placeholder="Doe"
-                      className={errors.lastName ? "border-red-500" : "text-black"}
+                      className={errors.lastName ? "border-red-500 text-blue-600" : "text-blue-600"}
                     />
                     {errors.lastName && (
                       <p className="text-red-500 text-xs mt-1">{errors.lastName}</p>
@@ -239,7 +239,7 @@ export default function Signup() {
                     value={formData.email}
                     onChange={(e) => handleInputChange('email', e.target.value)}
                     placeholder="john@example.com"
-                    className={errors.email ? "border-red-500" : "text-black"}
+                    className={errors.email ? "border-red-500 text-blue-600" : "text-blue-600"}
                   />
                   {errors.email && (
                     <p className="text-red-500 text-xs mt-1">{errors.email}</p>
@@ -254,7 +254,7 @@ export default function Signup() {
                     value={formData.password}
                     onChange={(e) => handleInputChange('password', e.target.value)}
                     placeholder="••••••••"
-                    className={errors.password ? "border-red-500" : "text-black"}
+                    className={errors.password ? "border-red-500 text-blue-600" : "text-blue-600"}
                   />
                   {errors.password && (
                     <p className="text-red-500 text-xs mt-1">{errors.password}</p>
@@ -269,7 +269,7 @@ export default function Signup() {
                     value={formData.confirmPassword}
                     onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
                     placeholder="••••••••"
-                    className={errors.confirmPassword ? "border-red-500" : "text-black"}
+                    className={errors.confirmPassword ? "border-red-500 text-blue-600" : "text-blue-600"}
                   />
                   {errors.confirmPassword && (
                     <p className="text-red-500 text-xs mt-1">{errors.confirmPassword}</p>

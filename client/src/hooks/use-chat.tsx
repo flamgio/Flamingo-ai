@@ -40,30 +40,15 @@ export function useChat() {
         setCurrentConversationId(conversationId);
       }
 
-      // Send message using new chat endpoint
-      const response = await apiRequest('POST', '/api/chat', {
-        prompt: content
+      // Send message using agent endpoint
+      const response = await apiRequest('POST', '/api/agent', {
+        prompt: content,
+        conversationId: conversationId,
+        selectedModel: 'gpt-3.5-turbo',
+        useEnhancement: false
       });
 
       const result = await response.json();
-      
-      // Store message in conversation
-      await apiRequest('POST', `/api/conversations/${conversationId}/messages`, {
-        content: content,
-        role: 'user'
-      });
-      
-      await apiRequest('POST', `/api/conversations/${conversationId}/messages`, {
-        content: result.text,
-        role: 'assistant',
-        metadata: {
-          provider: result.provider,
-          model: result.model,
-          wordCount: result.wordCount,
-          task: result.task,
-          signature: result.signature
-        }
-      });
 
       return result;
     },

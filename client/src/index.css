@@ -11,7 +11,7 @@
   * {
     border-color: hsl(var(--border));
   }
-  
+
   body {
     background-color: hsl(var(--background));
     color: hsl(var(--foreground));
@@ -103,24 +103,24 @@
   .chat-message-user {
     @apply bg-blue-100 dark:bg-blue-900/30 text-blue-900 dark:text-blue-100;
   }
-  
+
   .chat-message-assistant {
     @apply bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 shadow-sm border border-slate-200 dark:border-slate-600;
   }
-  
+
   .chat-input-container {
     @apply bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 rounded-2xl shadow-lg;
   }
-  
+
   .chat-sidebar {
     @apply bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-600;
   }
-  
+
   /* Perplexity-style animations */
   .typing-animation {
     @apply animate-pulse;
   }
-  
+
   @keyframes typing {
     0%, 60%, 100% {
       transform: scale(0.8);
@@ -131,25 +131,25 @@
       opacity: 1;
     }
   }
-  
+
   .animate-typing {
     animation: typing 1.4s infinite ease-in-out;
   }
-  
+
   /* Gradient backgrounds */
   .gradient-bg {
     background: linear-gradient(135deg, rgb(239 246 255) 0%, rgb(219 234 254) 50%, rgb(191 219 254) 100%);
   }
-  
+
   .dark .gradient-bg {
     background: linear-gradient(135deg, rgb(15 23 42) 0%, rgb(30 41 59) 50%, rgb(51 65 85) 100%);
   }
-  
+
   /* Landing page animations */
   .fade-in-up {
     animation: fadeInUp 0.6s ease-out forwards;
   }
-  
+
   @keyframes fadeInUp {
     from {
       opacity: 0;
@@ -160,11 +160,11 @@
       transform: translateY(0);
     }
   }
-  
+
   .float-animation {
     animation: float 6s ease-in-out infinite;
   }
-  
+
   @keyframes float {
     0%, 100% {
       transform: translateY(0px);
@@ -180,6 +180,32 @@
     }
     50% {
       background-position: 100% 50%;
+    }
+  }
+
+  @keyframes fireRise {
+    0% {
+      transform: translateY(0) scale(1);
+      opacity: 0.8;
+    }
+    100% {
+      transform: translateY(-50px) scale(0.5);
+      opacity: 0;
+    }
+  }
+
+  @keyframes paperBurn {
+    0% {
+      transform: translateX(0) translateY(0) scale(1);
+      opacity: 0.8;
+    }
+    50% {
+      transform: translateX(30px) translateY(-20px) scale(1.2);
+      opacity: 1;
+    }
+    100% {
+      transform: translateX(80px) translateY(-40px) scale(0.3);
+      opacity: 0;
     }
   }
 }

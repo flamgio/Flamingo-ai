@@ -101,7 +101,7 @@ export default function Signup() {
             <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-2">
                 <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center border border-gray-600 shadow-lg">
-                  <span className="text-black text-3xl filter drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]">🔥</span>
+                  <span className="text-black text-3xl">🔥</span>
                 </div>
                 <button
                   onClick={() => setLocation('/')}
@@ -203,7 +203,7 @@ export default function Signup() {
                       value={formData.firstName}
                       onChange={(e) => handleInputChange('firstName', e.target.value)}
                       placeholder="John"
-                      className={errors.firstName ? "border-red-500" : ""}
+                      className={errors.firstName ? "border-red-500" : "text-black"}
                     />
                     {errors.firstName && (
                       <p className="text-red-500 text-xs mt-1">{errors.firstName}</p>
@@ -217,7 +217,7 @@ export default function Signup() {
                       value={formData.lastName}
                       onChange={(e) => handleInputChange('lastName', e.target.value)}
                       placeholder="Doe"
-                      className={errors.lastName ? "border-red-500" : ""}
+                      className={errors.lastName ? "border-red-500" : "text-black"}
                     />
                     {errors.lastName && (
                       <p className="text-red-500 text-xs mt-1">{errors.lastName}</p>
@@ -233,7 +233,7 @@ export default function Signup() {
                     value={formData.email}
                     onChange={(e) => handleInputChange('email', e.target.value)}
                     placeholder="john@example.com"
-                    className={errors.email ? "border-red-500" : ""}
+                    className={errors.email ? "border-red-500" : "text-black"}
                   />
                   {errors.email && (
                     <p className="text-red-500 text-xs mt-1">{errors.email}</p>
@@ -248,7 +248,7 @@ export default function Signup() {
                     value={formData.password}
                     onChange={(e) => handleInputChange('password', e.target.value)}
                     placeholder="••••••••"
-                    className={errors.password ? "border-red-500" : ""}
+                    className={errors.password ? "border-red-500" : "text-black"}
                   />
                   {errors.password && (
                     <p className="text-red-500 text-xs mt-1">{errors.password}</p>
@@ -263,7 +263,7 @@ export default function Signup() {
                     value={formData.confirmPassword}
                     onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
                     placeholder="••••••••"
-                    className={errors.confirmPassword ? "border-red-500" : ""}
+                    className={errors.confirmPassword ? "border-red-500" : "text-black"}
                   />
                   {errors.confirmPassword && (
                     <p className="text-red-500 text-xs mt-1">{errors.confirmPassword}</p>

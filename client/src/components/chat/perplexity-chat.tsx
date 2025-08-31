@@ -59,9 +59,18 @@ export default function PerplexityChat({ conversationId, initialMessages = [] }:
     setIsLoading(true);
 
     try {
-      const response = await apiRequest('POST', '/api/chat', {
-        prompt: messageContent,
-        enhanced: useEnhancement ? enhancementData?.enhanced : null
+      const response = await fetch('/api/agent', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify({
+          prompt: messageContent,
+          conversationId: conversationId,
+          selectedModel: 'gpt-3.5-turbo',
+          useEnhancement: useEnhancement ? enhancementData?.enhanced : null
+        })
       });
 
       const result = await response.json();

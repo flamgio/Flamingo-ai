@@ -174,8 +174,9 @@ export default function Login() {
                     type="email"
                     value={formData.email}
                     onChange={(e) => handleInputChange('email', e.target.value)}
+                    className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-black rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
                     placeholder="john@example.com"
-                    className={errors.email ? "border-red-500" : ""}
+                    required
                   />
                   {errors.email && (
                     <p className="text-red-500 text-xs mt-1">{errors.email}</p>
@@ -189,8 +190,9 @@ export default function Login() {
                     type="password"
                     value={formData.password}
                     onChange={(e) => handleInputChange('password', e.target.value)}
+                    className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-black rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
                     placeholder="••••••••"
-                    className={errors.password ? "border-red-500" : ""}
+                    required
                   />
                   {errors.password && (
                     <p className="text-red-500 text-xs mt-1">{errors.password}</p>

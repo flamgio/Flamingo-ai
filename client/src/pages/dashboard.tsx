@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react"; // Added useState
 import { useLocation } from "wouter";
 import { useAuth } from "@/hooks/use-auth";
 import { motion } from "framer-motion";
@@ -9,6 +9,7 @@ import PricingSection from "@/components/pricing-section";
 export default function Dashboard() {
   const [, setLocation] = useLocation();
   const { user, logout } = useAuth();
+  const [showSettings, setShowSettings] = useState(false); // Added state for settings modal
 
   useEffect(() => {
     if (!user) {
@@ -65,13 +66,23 @@ export default function Dashboard() {
                 <i className="fas fa-sign-out-alt mr-2"></i>
                 Logout
               </Button>
+              {/* Settings Button */}
+              <Button
+                data-testid="settings-btn"
+                variant="ghost"
+                onClick={() => setShowSettings(true)}
+                className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300"
+              >
+                <i className="fas fa-cog mr-2"></i>
+                Settings
+              </Button>
             </div>
           </div>
         </div>
       </nav>
 
       {/* Main Content */}
-      <div className="pt-16 min-h-screen">
+      <div className="min-h-screen">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           {/* Welcome Section */}
           <motion.div
@@ -231,6 +242,52 @@ export default function Dashboard() {
         {/* Pricing Section */}
         <PricingSection />
       </div>
+
+      {/* Settings Modal */}
+      {showSettings && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-md mx-4">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Settings</h3>
+              <button
+                onClick={() => setShowSettings(false)}
+                className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+              >
+                <i className="fas fa-times"></i>
+              </button>
+            </div>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Profile Settings
+                </label>
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-gray-600 dark:text-gray-400">Name:</span>
+                    <span className="text-sm font-medium text-gray-900 dark:text-white">
+                      {user?.firstName} {user?.lastName}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-gray-600 dark:text-gray-400">Email:</span>
+                    <span className="text-sm font-medium text-gray-900 dark:text-white">
+                      {user?.email}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div className="pt-4 border-t border-gray-200 dark:border-gray-600">
+                <Button
+                  onClick={() => setShowSettings(false)}
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+                >
+                  Close
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

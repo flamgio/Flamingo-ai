@@ -58,7 +58,7 @@ export default function IntroAnimation({ onComplete }: IntroAnimationProps) {
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
             <div className="w-24 h-24 bg-black rounded-2xl flex items-center justify-center border-2 border-gray-600 shadow-2xl">
-              <span className="text-black text-4xl filter drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]">🔥</span>
+              <span className="text-black text-4xl">🔥</span>
             </div>
           </motion.div>
         )}

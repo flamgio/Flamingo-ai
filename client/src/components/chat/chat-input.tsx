@@ -57,8 +57,8 @@ export default function ChatInput({ onSendMessage, disabled }: ChatInputProps) {
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="Type your message here... ✨"
-            className="w-full bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl px-4 py-3 pr-12 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 min-h-[52px] max-h-[150px] shadow-sm hover:shadow-md"
+            placeholder="Ask me anything..."
+            className="w-full bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl px-4 py-3 pr-12 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 min-h-[52px] max-h-[150px] shadow-sm hover:shadow-md text-black dark:text-white placeholder:text-black dark:placeholder:text-gray-400"
             disabled={disabled || isSubmitting}
             style={{ height: 'auto' }}
           />

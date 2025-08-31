@@ -263,7 +263,7 @@ export default function PerplexityChat({ conversationId, initialMessages = [] }:
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               onKeyDown={handleKeyDown}
-              className="border-0 resize-none focus:ring-0 bg-transparent text-sm leading-relaxed min-h-[52px] max-h-32"
+              className="border-0 resize-none focus:ring-0 bg-transparent text-sm leading-relaxed min-h-[52px] max-h-32 placeholder-black dark:placeholder-white"
               disabled={isLoading}
             />
             <div className="absolute bottom-3 right-3 flex items-center space-x-2">

@@ -199,6 +199,15 @@
     @apply bg-red-500 hover:bg-red-600 text-white;
   }
 
+  /* Ensure input text is black */
+  input, textarea {
+    @apply text-black dark:text-white;
+  }
+
+  input::placeholder, textarea::placeholder {
+    @apply text-black dark:text-gray-400;
+  }
+
   
 }
 

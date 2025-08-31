@@ -194,11 +194,11 @@ export default function Signup() {
             </p>
           </div>
 
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-center">Sign Up</CardTitle>
+          <Card className="bg-white dark:bg-blue-50 border-blue-200 dark:border-blue-300 shadow-xl">
+            <CardHeader className="bg-gradient-to-r from-blue-50 to-white dark:from-blue-100 dark:to-blue-50 rounded-t-lg">
+              <CardTitle className="text-center text-blue-800 dark:text-blue-900">Sign Up</CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="bg-white dark:bg-blue-50">
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>

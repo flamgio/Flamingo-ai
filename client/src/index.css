@@ -194,6 +194,11 @@
     }
   }
 
+  /* Remove yellow from button styles */
+  .chat-input button {
+    @apply bg-red-500 hover:bg-red-600 text-white;
+  }
+
   
 }
 

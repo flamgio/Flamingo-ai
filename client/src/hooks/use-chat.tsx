@@ -28,13 +28,13 @@ export function useChat() {
   const sendMessageMutation = useMutation({
     mutationFn: async (content: string) => {
       let conversationId = currentConversationId;
-      
+
       // Create new conversation if none exists
       if (!conversationId) {
         const conversationResponse = await apiRequest('POST', '/api/conversations', {
           title: content.substring(0, 50) + (content.length > 50 ? '...' : '')
         });
-        
+
         const newConversation = await conversationResponse.json();
         conversationId = newConversation.id;
         setCurrentConversationId(conversationId);

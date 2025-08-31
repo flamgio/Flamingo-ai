@@ -98,7 +98,7 @@ export default function IntroAnimation({ onComplete }: IntroAnimationProps) {
           <>
             {/* Main fire overlay */}
             <motion.div
-              className="absolute inset-0 bg-gradient-to-t from-red-600 via-orange-500 to-yellow-400"
+              className="absolute inset-0 bg-gradient-to-t from-red-600 via-orange-500 to-red-400"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 1.5, ease: "easeOut" }}
@@ -108,7 +108,7 @@ export default function IntroAnimation({ onComplete }: IntroAnimationProps) {
             {[...Array(20)].map((_, i) => (
               <motion.div
                 key={i}
-                className="absolute w-2 h-2 bg-yellow-400 rounded-full"
+                className="absolute w-2 h-2 bg-red-500 rounded-full"
                 style={{
                   left: `${20 + Math.random() * 60}%`,
                   top: `${60 + Math.random() * 30}%`

@@ -1,17 +1,16 @@
-
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { db } from "./db";
 import { users, conversations, messages } from "@shared/schema";
 import { eq } from "drizzle-orm";
-import { 
-  generateToken, 
-  hashPassword, 
-  comparePassword, 
-  authenticateToken, 
+import {
+  generateToken,
+  hashPassword,
+  comparePassword,
+  authenticateToken,
   optionalAuth,
-  type AuthRequest 
+  type AuthRequest
 } from "./auth";
 import { chatRouter } from "./routes-chat.js";
 
@@ -20,27 +19,27 @@ function authenticateAdmin(req: any, res: any, next: any) {
   const adminSession = req.headers.authorization;
   const xAdminSession = req.headers['x-admin-session'];
   const correctAdminKey = process.env.ADMIN_KEY || "FLAMINGO2024";
-  
+
   // Check for session-based auth first
   if (xAdminSession === 'authenticated') {
     return next();
   }
-  
+
   // Check for direct admin key in headers or query
   if (adminSession === correctAdminKey || req.query.adminKey === correctAdminKey) {
     return next();
   }
-  
+
   // Check body for admin key
   if (req.body && req.body.adminKey === correctAdminKey) {
     return next();
   }
-  
+
   return res.status(401).json({ message: "Unauthorized - Admin access required" });
 }
 
 export async function registerRoutes(app: Express): Promise<Server> {
-  
+
   // Authentication routes
   app.post("/api/auth/signup", async (req, res) => {
     try {
@@ -68,7 +67,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       // Hash password and create user
       const hashedPassword = await hashPassword(password);
-      
+
       const newUser = await db
         .insert(users)
         .values({
@@ -227,12 +226,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // AI agent endpoint
-  app.post("/api/agent", authenticateToken, async (req: AuthRequest, res) => {
+  app.post('/api/agent', authenticateToken, async (req: AuthRequest, res) => {
     try {
-      const { prompt, conversationId, selectedModel, useEnhancement = false } = req.body;
+      const { prompt } = req.body;
 
       if (!prompt) {
-        return res.status(400).json({ message: "Prompt is required" });
+        return res.status(400).json({ error: 'Message is required' });
+      }
+
+      // Add basic rate limiting
+      const userId = (req as any).user?.id;
+      if (!userId) {
+        return res.status(403).json({ message: 'Invalid or expired token' });
       }
 
       // Verify conversation belongs to user if provided
@@ -275,22 +280,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       let aiResponse;
       let chosenModel = selectedModel || 'gpt-3.5-turbo';
-      
+
       try {
         // Import and use AI coordinator
         const { aiCoordinator } = await import('./ai-coordinator');
-        
+
         // Initialize coordinator
         await aiCoordinator.initialize();
-        
+
         // Select the best model for the prompt
         chosenModel = aiCoordinator.selectBestModel(prompt, selectedModel);
-        
+
         // Generate AI response using the coordinator with optional enhancement
         aiResponse = await aiCoordinator.generateResponse(prompt, chosenModel, useEnhancement);
       } catch (coordinatorError) {
         console.error("AI Coordinator error:", coordinatorError);
-        
+
         // Fallback response
         aiResponse = {
           content: `I understand you're asking: "${prompt}". I'm currently experiencing some technical difficulties with my AI models. This is a development environment response. Please check that your API keys are properly configured in the environment variables.`,
@@ -341,7 +346,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const totalUsers = await db.select().from(users);
       const totalConversations = await db.select().from(conversations);
-      
+
       const stats = {
         totalUsers: totalUsers.length,
         totalConversations: totalConversations.length,
@@ -357,7 +362,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           }
         ]
       };
-      
+
       res.json(stats);
     } catch (error) {
       console.error("Error fetching admin stats:", error);
@@ -375,7 +380,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         lastActive: 'Recently',
         status: 'active' as const
       }));
-      
+
       res.json(usersWithoutPasswords);
     } catch (error) {
       console.error("Error fetching admin users:", error);
@@ -400,7 +405,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           { name: 'CodeLlama', status: 'inactive', type: 'local', description: 'Code generation model' }
         ]
       };
-      
+
       res.json(envData);
     } catch (error) {
       console.error("Error fetching admin env:", error);
@@ -415,7 +420,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/puter-chat", async (req, res) => {
     try {
       const { prompt } = req.body;
-      
+
       if (!prompt) {
         return res.status(400).json({ error: "Prompt is required" });
       }

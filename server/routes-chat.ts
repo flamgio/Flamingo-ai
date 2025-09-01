@@ -14,9 +14,9 @@ const chatRequestSchema = z.object({
 function createErrorResponse(error: any, requestId: string) {
   const timestamp = new Date().toISOString();
   const errorMessage = error.message || 'Internal server error';
-  
+
   console.error(`[${requestId}] ${timestamp} Error:`, errorMessage);
-  
+
   return {
     error: errorMessage,
     requestId,
@@ -26,7 +26,7 @@ function createErrorResponse(error: any, requestId: string) {
 
 router.post("/chat", async (req, res) => {
   const requestId = uuidv4();
-  
+
   try {
     // Validate request
     const validation = chatRequestSchema.safeParse(req.body);
@@ -38,17 +38,17 @@ router.post("/chat", async (req, res) => {
     }
 
     const { prompt, enhanced } = validation.data;
-    
+
     // Add Flamingo signature to response headers
     res.set('X-Flamingo-Signature', process.env.FLAMINGO_SIGNATURE || 'Built by Flamingo (human curated)');
-    
+
     // Route the prompt through the orchestrator
     const result = await routePrompt(prompt, { enhanced });
-    
+
     console.log(`[${requestId}] Successfully processed prompt with ${result.provider}`);
-    
+
     res.json(result);
-    
+
   } catch (error: any) {
     const errorResponse = createErrorResponse(error, requestId);
     res.status(500).json(errorResponse);

@@ -57,7 +57,13 @@ export const authenticateToken = async (req: AuthRequest, res: Response, next: N
       return res.status(403).json({ message: 'User not found' });
     }
 
-    req.user = user[0];
+    // Add session tracking for concurrent users
+    req.user = {
+      ...user[0],
+      sessionId: `${user[0].id}-${Date.now()}`,
+      lastActive: new Date()
+    };
+    
     next();
   } catch (error) {
     console.error('Auth middleware error:', error);

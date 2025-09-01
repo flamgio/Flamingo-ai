@@ -4,8 +4,21 @@ import { setupVite, serveStatic, log } from "./vite";
 import { validateEnvironment } from "./env-validation.js";
 
 const app = express();
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: false, limit: '10mb' }));
+
+// Add request tracking middleware for concurrent users
+app.use((req, res, next) => {
+  // Add request ID for tracking concurrent requests
+  req.headers['x-request-id'] = `req-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+  
+  // Set proper headers for concurrent handling
+  res.header('X-Content-Type-Options', 'nosniff');
+  res.header('X-Frame-Options', 'DENY');
+  res.header('X-XSS-Protection', '1; mode=block');
+  
+  next();
+});
 
 app.use((req, res, next) => {
   const start = Date.now();

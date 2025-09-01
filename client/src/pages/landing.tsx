@@ -88,9 +88,7 @@ export default function Landing() {
   const { user, isLoading } = useAuth();
   const [showIntro, setShowIntro] = useState(true);
 
-  const handleAnimationComplete = () => {
-    setShowContent(true);
-  };
+  
 
   const handleGetStarted = async () => {
     if (user) {
@@ -108,18 +106,12 @@ export default function Landing() {
     );
   };
 
-  // Redirect logged in users
-  if (user) {
-    return (
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="min-h-screen bg-gradient-to-br from-blue-900 to-purple-900 flex items-center justify-center"
-      >
-        <div className="text-white text-xl">Redirecting to dashboard...</div>
-      </motion.div>
-    );
-  }
+  // Redirect logged in users using useEffect to prevent setState during render
+  useEffect(() => {
+    if (user && !showIntro) {
+      setLocation('/dashboard');
+    }
+  }, [user, showIntro, setLocation]);
 
   // Show intro animation first
   if (showIntro) {

@@ -17,7 +17,7 @@ export default function AdminPage() {
     }
 
     // Check if user is admin
-    if (user.email !== 'admin@flamgio.ai') {
+    if (user.email !== 'admin@flamingo.ai') {
       setLocation('/dashboard');
       return;
     }
@@ -57,7 +57,7 @@ export default function AdminPage() {
                   onClick={() => setLocation('/dashboard')}
                   className="text-xl font-bold text-blue-700 dark:text-blue-300 hover:text-blue-800 dark:hover:text-blue-200 transition-colors"
                 >
-                  Flamgio AI - Admin
+                  Flamingo AI - Admin
                 </button>
               </div>
             </div>
@@ -80,7 +80,7 @@ export default function AdminPage() {
             Admin Dashboard
           </h1>
           <p className="text-xl text-blue-600 dark:text-blue-300">
-            Manage your Flamgio AI platform
+            Manage your Flamingo AI platform
           </p>
         </div>
 

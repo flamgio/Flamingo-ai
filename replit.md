@@ -1,8 +1,8 @@
-# Flamgio - AI Chat Platform
+# Flamingo - AI Chat Platform
 
 ## Overview
 
-Flamgio is a privacy-first, full-stack AI chat platform that intelligently routes user prompts between local Hugging Face models and cloud-based OpenRouter models. The platform features a modern React frontend with a Node.js/Express backend, designed to provide seamless AI conversations with intelligent model selection based on prompt complexity. The system includes conversation memory, user authentication, and a responsive chat interface inspired by modern AI platforms like Perplexity and ChatGPT.
+Flamingo is a privacy-first, full-stack AI chat platform that intelligently routes user prompts between local Hugging Face models and cloud-based OpenRouter models. The platform features a modern React frontend with a Node.js/Express backend, designed to provide seamless AI conversations with intelligent model selection based on prompt complexity. The system includes conversation memory, user authentication, and a responsive chat interface inspired by modern AI platforms like Perplexity and ChatGPT.
 
 ## User Preferences
 

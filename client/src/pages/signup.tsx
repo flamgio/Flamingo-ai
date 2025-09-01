@@ -90,7 +90,7 @@ export default function Signup() {
       {/* Success Popup */}
       <SuccessPopup
         show={showSuccess}
-        message="Account created successfully! Welcome to Flamgio."
+        message="Account created successfully! Welcome to Flamingo."
         onComplete={() => {
           setShowSuccess(false);
           setLocation('/dashboard');
@@ -111,7 +111,7 @@ export default function Signup() {
                     onClick={() => setLocation('/')}
                     className="text-xl font-bold text-gray-900 dark:text-white hover:text-flamingo-600 dark:hover:text-flamingo-400 transition-colors"
                   >
-                    Flamgio AI
+                    Flamingo AI
                   </button>
                 </div>
               </div>

@@ -84,7 +84,7 @@ export default function IntroAnimation({ onComplete }: IntroAnimationProps) {
           className="text-5xl md:text-7xl font-bold text-white mb-4"
         >
           <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-            Flamgio AI
+            Flamingo AI
           </span>
         </motion.h1>
 

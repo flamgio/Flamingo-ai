@@ -39,7 +39,7 @@ const ChatPreview = () => (
           <div className="w-3 h-3 bg-yellow-400 rounded-full"></div>
           <div className="w-3 h-3 bg-green-400 rounded-full"></div>
         </div>
-        <span className="text-sm font-medium text-gray-600 dark:text-gray-300">Flamgio AI Chat</span>
+        <span className="text-sm font-medium text-gray-600 dark:text-gray-300">Flamingo AI Chat</span>
       </div>
     </div>
 
@@ -132,7 +132,7 @@ export default function Landing() {
                   onClick={() => setLocation('/')}
                   className="text-xl font-bold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
                 >
-                  Flamgio AI
+                  Flamingo AI
                 </button>
               </div>
             </div>

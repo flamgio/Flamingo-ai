@@ -204,7 +204,7 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                 Settings
               </DialogTitle>
               <DialogDescription className="text-sm text-gray-600 dark:text-gray-400">
-                Customize your Flamgio AI experience
+                Customize your Flamingo AI experience
               </DialogDescription>
             </DialogHeader>
 

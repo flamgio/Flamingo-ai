@@ -111,7 +111,7 @@ export default function Login() {
                     onClick={() => setLocation('/')}
                     className="text-xl font-bold text-gray-900 dark:text-white hover:text-flamingo-600 dark:hover:text-flamingo-400 transition-colors"
                   >
-                    Flamgio AI
+                    Flamingo AI
                   </button>
                 </div>
               </div>

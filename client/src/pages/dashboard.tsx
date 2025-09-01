@@ -3,7 +3,6 @@ import { useLocation } from "wouter";
 import { useAuth } from "@/hooks/use-auth";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import PricingSection from "@/components/pricing-section";
 import logoImg from "@/assets/logo.png";
 
 export default function Dashboard() {
@@ -86,14 +85,25 @@ export default function Dashboard() {
           </button>
         </motion.div>
 
-        {/* Price Banner Space */}
+        {/* Explore Upgrade Button */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3 }}
-          className="w-full max-w-4xl"
+          className="w-full max-w-4xl flex justify-center"
         >
-          <PricingSection />
+          <button
+            onClick={() => setLocation('/pricing')}
+            className="button"
+          >
+            <div className="wrap">
+              <p>
+                <i className="fas fa-rocket"></i>
+                <span>Explore Upgrade Now</span>
+                <span>Unlock Premium Features</span>
+              </p>
+            </div>
+          </button>
         </motion.div>
       </div>
 

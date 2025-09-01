@@ -10,6 +10,7 @@ import Login from "./pages/login";
 import SignUp from "./pages/signup";
 import Dashboard from "./pages/dashboard";
 import Chat from "./pages/chat";
+import Pricing from "./pages/pricing";
 import NotFound from "./pages/not-found";
 import { ErrorBoundary } from "react-error-boundary";
 
@@ -45,6 +46,7 @@ function Router() {
       <Route path="/login" component={Login} />
       <Route path="/signup" component={SignUp} />
       <Route path="/dashboard" component={Dashboard} />
+      <Route path="/pricing" component={Pricing} />
       <Route path="/chat" component={Chat} />
       <Route path="/chat/:conversationId" component={Chat} />
       <Route path="/admin" component={() => {

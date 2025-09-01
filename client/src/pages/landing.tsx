@@ -124,13 +124,7 @@ export default function Landing() {
               <div className="flex items-center space-x-2">
                 {/* New Logo: Black background box with white fire icon */}
                 <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center border border-gray-600 shadow-lg">
-                  <svg 
-                    className="w-5 h-5 text-white"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M12 2L13.09 8.26L22 9L13.09 15.74L15.18 22L12 19L8.82 22L10.91 15.74L2 9L10.91 8.26L12 2Z"/>
-                  </svg>
+                  <span className="text-white font-bold text-sm">FA</span>
                 </div>
                 <button 
                   onClick={() => setLocation('/')}

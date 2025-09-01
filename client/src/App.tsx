@@ -1,4 +1,5 @@
 import { Switch, Route } from "wouter";
+import React from "react";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -20,7 +21,10 @@ function Router() {
       <Route path="/signup" component={SignUp} />
       <Route path="/dashboard" component={Dashboard} />
       <Route path="/chat" component={Chat} />
-      <Route path="/admin" component={() => import("./pages/admin").then(m => m.default)} />
+      <Route path="/admin" component={() => {
+        const AdminComponent = React.lazy(() => import("./pages/admin"));
+        return <React.Suspense fallback={<div>Loading...</div>}><AdminComponent /></React.Suspense>;
+      }} />
       <Route path="/not-found" component={NotFound} />
       <Route component={NotFound} />
     </Switch>

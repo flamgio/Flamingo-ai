@@ -68,13 +68,9 @@ export default function IntroAnimation({ onComplete }: IntroAnimationProps) {
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
             <div className="w-24 h-24 bg-black rounded-2xl flex items-center justify-center border-2 border-gray-600 shadow-2xl">
-              <svg 
-                className="w-12 h-12 text-white"
-                fill="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path d="M12 2L13.09 8.26L22 9L13.09 15.74L15.18 22L12 19L8.82 22L10.91 15.74L2 9L10.91 8.26L12 2Z"/>
-              </svg>
+              <span className="text-white font-bold text-4xl" style={{
+                textShadow: '0 0 10px rgba(255,255,255,0.8), 0 0 20px rgba(255,255,255,0.6)'
+              }}>FA</span>
             </div>
           </motion.div>
         )}

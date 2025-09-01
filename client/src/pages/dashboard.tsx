@@ -1,15 +1,14 @@
-import { useEffect, useState } from "react"; // Added useState
+import { useEffect, useState } from "react";
 import { useLocation } from "wouter";
 import { useAuth } from "@/hooks/use-auth";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import PricingSection from "@/components/pricing-section";
+import logoImg from "@/assets/logo.png";
 
 export default function Dashboard() {
   const [, setLocation] = useLocation();
   const { user, logout } = useAuth();
-  const [showSettings, setShowSettings] = useState(false); // Added state for settings modal
 
   useEffect(() => {
     if (!user) {
@@ -35,265 +34,88 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white dark:from-blue-950 dark:to-gray-900 transition-all duration-300">
-      {/* Navigation Header */}
-      <nav className="fixed top-0 left-0 right-0 bg-white/95 dark:bg-blue-900/95 backdrop-blur-md border-b border-blue-200 dark:border-blue-700 z-50 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center border border-gray-600 shadow-lg">
-                  <svg 
-                    className="w-5 h-5 text-white"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M12 2L13.09 8.26L22 9L13.09 15.74L15.18 22L12 19L8.82 22L10.91 15.74L2 9L10.91 8.26L12 2Z"/>
-                  </svg>
-                </div>
-                <button
-                  onClick={() => setLocation('/')}
-                  className="text-xl font-bold text-blue-700 dark:text-blue-300 hover:text-blue-800 dark:hover:text-blue-200 transition-colors"
-                >
-                  Flamgio AI
-                </button>
-              </div>
-            </div>
-
-            <div className="flex items-center space-x-4">
-              <span className="text-sm text-blue-600 dark:text-blue-300 font-medium">
-                Welcome, {user.firstName}
-              </span>
-              <Button
-                variant="ghost"
-                onClick={handleLogout}
-                className="text-blue-600 dark:text-blue-300 hover:bg-blue-50 dark:hover:bg-blue-800/30"
-              >
-                <i className="fas fa-sign-out-alt mr-2"></i>
-                Logout
-              </Button>
-              {/* Settings Button */}
-              <Button
-                data-testid="settings-btn"
-                variant="ghost"
-                onClick={() => setShowSettings(true)}
-                className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300"
-              >
-                <i className="fas fa-cog mr-2"></i>
-                Settings
-              </Button>
-            </div>
-          </div>
-        </div>
-      </nav>
-
-      {/* Main Content */}
-      <div className="min-h-screen">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          {/* Welcome Section */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
-          >
-            <h1 className="text-4xl font-bold text-blue-800 dark:text-blue-200 mb-4">
-              Welcome to Flamgio AI Dashboard
-            </h1>
-            <p className="text-xl text-blue-600 dark:text-blue-300 max-w-3xl mx-auto">
-              Your privacy-first AI chat platform with intelligent model routing.
-              Start chatting with our advanced AI models or manage your account.
-            </p>
-          </motion.div>
-
-          {/* Action Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12 max-w-4xl mx-auto">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-            >
-              <Card className="hover:shadow-lg transition-shadow cursor-pointer h-full bg-white dark:bg-blue-900/20 border-blue-200 dark:border-blue-700 hover:bg-blue-50/50 dark:hover:bg-blue-800/30" onClick={handleStartChat}>
-                <CardHeader>
-                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center mb-4 shadow-md">
-                    <i className="fas fa-comments text-white text-xl"></i>
-                  </div>
-                  <CardTitle className="text-blue-800 dark:text-blue-200">Start Chatting</CardTitle>
-                  <CardDescription className="text-blue-600 dark:text-blue-300">
-                    Begin a conversation with our intelligent AI agents
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-blue-500 dark:text-blue-400">
-                    Access local Hugging Face models and cloud-based OpenRouter models with automatic routing
-                  </p>
-                </CardContent>
-              </Card>
-            </motion.div>
-
-            {/* Admin Panel - Only show for admin users */}
-            {user?.email === 'admin@flamgio.ai' && (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-              >
-                <Card className="hover:shadow-lg transition-shadow cursor-pointer h-full bg-white dark:bg-blue-900/20 border-blue-200 dark:border-blue-700 hover:bg-blue-50/50 dark:hover:bg-blue-800/30" onClick={handleAdminAccess}>
-                  <CardHeader>
-                    <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-700 rounded-lg flex items-center justify-center mb-4 shadow-md">
-                      <i className="fas fa-shield-alt text-white text-xl"></i>
-                    </div>
-                    <CardTitle className="text-blue-800 dark:text-blue-200">Admin Panel</CardTitle>
-                    <CardDescription className="text-blue-600 dark:text-blue-300">
-                      Access administrative features and settings
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-blue-500 dark:text-blue-400">
-                      Manage users, monitor system performance, and configure AI models
-                    </p>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            )}
-
-            {/* Additional feature card for non-admin users */}
-            {user?.email !== 'admin@flamgio.ai' && (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-              >
-                <Card className="hover:shadow-lg transition-shadow h-full bg-white dark:bg-blue-900/20 border-blue-200 dark:border-blue-700">
-                  <CardHeader>
-                    <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-700 rounded-lg flex items-center justify-center mb-4 shadow-md">
-                      <i className="fas fa-cog text-white text-xl"></i>
-                    </div>
-                    <CardTitle className="text-blue-800 dark:text-blue-200">Settings</CardTitle>
-                    <CardDescription className="text-blue-600 dark:text-blue-300">
-                      Customize your chat experience and preferences
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-blue-500 dark:text-blue-400">
-                      Manage your profile, notifications, and model preferences
-                    </p>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            )}
-          </div>
-
-          {/* Features Section */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-          >
-            <Card className="bg-gradient-to-br from-blue-50 to-white dark:from-blue-950/50 dark:to-blue-900/30 border-blue-200 dark:border-blue-700 shadow-lg">
-              <CardHeader>
-                <CardTitle className="text-center text-2xl text-blue-800 dark:text-blue-200">Platform Features</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  <div className="space-y-4">
-                    <div className="flex items-start space-x-3">
-                      <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0 shadow-md">
-                        <i className="fas fa-shield-alt text-white text-sm"></i>
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-blue-800 dark:text-blue-200">Privacy First</h3>
-                        <p className="text-blue-600 dark:text-blue-400 text-sm">Your conversations stay private with local model options</p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-start space-x-3">
-                      <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0 shadow-md">
-                        <i className="fas fa-route text-white text-sm"></i>
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-blue-800 dark:text-blue-200">Smart Routing</h3>
-                        <p className="text-blue-600 dark:text-blue-400 text-sm">Automatically selects the best AI model for your query</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="space-y-4">
-                    <div className="flex items-start space-x-3">
-                      <div className="w-8 h-8 bg-blue-700 rounded-full flex items-center justify-center flex-shrink-0 shadow-md">
-                        <i className="fas fa-history text-white text-sm"></i>
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-blue-800 dark:text-blue-200">Persistent Memory</h3>
-                        <p className="text-blue-600 dark:text-blue-400 text-sm">Conversations are saved and context maintained</p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-start space-x-3">
-                      <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0 shadow-md">
-                        <i className="fas fa-mobile-alt text-white text-sm"></i>
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-blue-800 dark:text-blue-200">Mobile Responsive</h3>
-                        <p className="text-blue-600 dark:text-blue-400 text-sm">Works seamlessly on all devices</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
-        </div>
-
-        {/* Pricing Section */}
-        <PricingSection />
+    <div className="min-h-screen bg-black overflow-hidden relative">
+      {/* Logout Button - Top Right */}
+      <div className="fixed top-6 right-6 z-50">
+        <Button
+          variant="ghost"
+          onClick={handleLogout}
+          className="text-white/70 hover:text-white bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20"
+        >
+          <i className="fas fa-sign-out-alt mr-2"></i>
+          Logout
+        </Button>
       </div>
 
-      {/* Settings Modal */}
-      {showSettings && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-md mx-4">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Settings</h3>
-              <button
-                onClick={() => setShowSettings(false)}
-                className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-              >
-                <i className="fas fa-times"></i>
-              </button>
-            </div>
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Profile Settings
-                </label>
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-600 dark:text-gray-400">Name:</span>
-                    <span className="text-sm font-medium text-gray-900 dark:text-white">
-                      {user?.firstName} {user?.lastName}
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-600 dark:text-gray-400">Email:</span>
-                    <span className="text-sm font-medium text-gray-900 dark:text-white">
-                      {user?.email}
-                    </span>
-                  </div>
+      {/* Logo - Top Left */}
+      <div className="fixed top-6 left-6 z-50">
+        <img 
+          src={logoImg} 
+          alt="Flamingo AI" 
+          className="h-12 w-12 rounded-lg shadow-lg shadow-white/20" 
+        />
+      </div>
+
+      {/* Background Effects */}
+      <div className="absolute inset-0">
+        <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-black to-blue-900/20"></div>
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-white/5 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse"></div>
+      </div>
+
+      {/* Main Content */}
+      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4">
+        {/* Glowing Start Chat Box */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, type: "spring", bounce: 0.3 }}
+          className="mb-16"
+        >
+          <div 
+            onClick={handleStartChat}
+            className="group relative cursor-pointer"
+          >
+            {/* Outer Glow */}
+            <div className="absolute -inset-4 bg-gradient-to-r from-white/20 via-purple-500/20 to-white/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-700 group-hover:scale-110 animate-pulse"></div>
+            
+            {/* Inner Box */}
+            <div className="relative bg-gradient-to-r from-white/10 to-white/5 backdrop-blur-xl border border-white/30 rounded-2xl p-12 hover:scale-105 transition-all duration-500 group-hover:bg-gradient-to-r group-hover:from-white/15 group-hover:to-white/10">
+              {/* Animated Border */}
+              <div className="absolute -inset-px bg-gradient-to-r from-white/50 via-transparent to-white/50 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+              
+              <div className="relative text-center">
+                {/* Icon */}
+                <div className="mb-6 inline-flex items-center justify-center w-24 h-24 rounded-full bg-gradient-to-r from-white/20 to-white/10 backdrop-blur-lg border border-white/30 group-hover:scale-110 transition-all duration-500">
+                  <i className="fas fa-comments text-4xl text-white group-hover:text-white/90 transition-colors duration-300"></i>
                 </div>
-              </div>
-              <div className="pt-4 border-t border-gray-200 dark:border-gray-600">
-                <Button
-                  onClick={() => setShowSettings(false)}
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white"
-                >
-                  Close
-                </Button>
+                
+                {/* Text with Enchanted Animation */}
+                <h2 className="text-4xl md:text-5xl font-bold text-white mb-4 tracking-wide">
+                  <span className="inline-block animate-pulse bg-gradient-to-r from-white via-purple-200 to-white bg-clip-text text-transparent bg-300% animate-shimmer">
+                    Start Chat
+                  </span>
+                </h2>
+                
+                <p className="text-white/70 text-lg font-light">
+                  Begin your AI journey
+                </p>
               </div>
             </div>
           </div>
-        </div>
-      )}
+        </motion.div>
+
+        {/* Price Banner Space */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+          className="w-full max-w-4xl"
+        >
+          <PricingSection />
+        </motion.div>
+      </div>
+
     </div>
   );
 }

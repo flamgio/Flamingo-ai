@@ -227,3 +227,18 @@
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   @apply bg-blue-400 dark:bg-blue-500;
 }
+
+/* Enchanted Time Animation */
+@keyframes shimmer {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+.animate-shimmer {
+  background-size: 300% 300%;
+  animation: shimmer 3s ease-in-out infinite;
+}

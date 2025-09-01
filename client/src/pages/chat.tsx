@@ -1,10 +1,3 @@
-/** 
- * FLAMINGO AI CHAT - HUMAN CRAFTED INTERFACE
- * Original work by human developer - Not AI generated
- * GitHub cloners: This is authentic human-made code
- * Do not remove this signature
- */
-
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { useAuth } from "@/hooks/use-auth";
@@ -54,54 +47,15 @@ export default function Chat() {
   const isAdmin = user.email === 'admin@example.com'; // Replace with your actual admin check logic
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900">
-      {/* Navigation Header */}
-      <nav className="fixed top-0 left-0 right-0 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border-b border-blue-200/50 dark:border-blue-800/50 z-50 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center border border-gray-600 shadow-lg">
-                  <svg 
-                    className="w-5 h-5 text-white"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M12 2L13.09 8.26L22 9L13.09 15.74L15.18 22L12 19L8.82 22L10.91 15.74L2 9L10.91 8.26L12 2Z"/>
-                  </svg>
-                </div>
-                <button 
-                  onClick={() => setLocation('/')}
-                  className="text-xl font-bold bg-gradient-to-r from-blue-600 to-blue-700 bg-clip-text text-transparent hover:from-blue-700 hover:to-blue-800 transition-all duration-300"
-                >
-                  Flamgio AI
-                </button>
-              </div>
-            </div>
-
-            <div className="flex items-center space-x-4">
-              <Button
-                data-testid="logout-btn"
-                variant="ghost"
-                onClick={handleLogout}
-                className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300"
-              >
-                <i className="fas fa-sign-out-alt mr-2"></i>
-                Logout
-              </Button>
-            </div>
-          </div>
-        </div>
-      </nav>
-
-      <div className="flex h-[calc(100vh-4rem)] pt-16">
+    <div className="min-h-screen bg-black">
+      <div className="flex h-screen">
         {/* Sidebar */}
         <ChatSidebar 
           conversations={conversations}
           currentConversation={currentConversation}
           isOpen={sidebarOpen}
           onClose={() => setSidebarOpen(false)}
-          // Conditionally render or pass the admin access handler based on user role
+          onLogout={handleLogout}
           onAdminAccess={isAdmin ? handleAdminAccess : undefined} 
         />
 
@@ -115,31 +69,17 @@ export default function Chat() {
 
         {/* Main Chat Area */}
         <div className="flex-1 flex flex-col">
-          {/* Chat Header */}
-          <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-b border-blue-200 dark:border-gray-700 px-6 py-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-4">
-                <Button
-                  data-testid="sidebar-toggle"
-                  variant="ghost"
-                  size="sm"
-                  className="lg:hidden text-blue-600 dark:text-blue-400"
-                  onClick={() => setSidebarOpen(!sidebarOpen)}
-                >
-                  <i className="fas fa-bars"></i>
-                </Button>
-                <div>
-                  <h1 className="text-lg font-semibold text-gray-900 dark:text-white">Chat Interface</h1>
-                </div>
-              </div>
-
-              <div className="flex items-center space-x-2">
-                <span className="text-xs bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 px-3 py-1 rounded-full font-medium">
-                  <i className="fas fa-circle text-green-500 mr-1"></i>
-                  Online
-                </span>
-              </div>
-            </div>
+          {/* Mobile Sidebar Toggle - hidden by default */}
+          <div className="lg:hidden absolute top-4 left-4 z-50">
+            <Button
+              data-testid="sidebar-toggle"
+              variant="ghost"
+              size="sm"
+              className="text-white/70 hover:text-white bg-white/10 hover:bg-white/20"
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+            >
+              <i className="fas fa-bars"></i>
+            </Button>
           </div>
 
           {/* Perplexity-style Chat Area */}

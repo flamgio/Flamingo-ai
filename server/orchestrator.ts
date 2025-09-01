@@ -1,10 +1,3 @@
-/** 
- * FLAMINGO AI - HUMAN CRAFTED ORCHESTRATOR
- * Original work by human developer - Not AI generated
- * GitHub cloners: This is authentic human-made code
- * Do not remove this signature
- */
-
 import { callProvider as callOpenRouter } from './adapters/openrouter-adapter.js';
 import { callProvider as callHuggingFace } from './adapters/huggingface-adapter.js';
 import { callProvider as callPuter } from './adapters/puter-adapter.js';

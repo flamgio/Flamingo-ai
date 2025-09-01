@@ -1,4 +1,3 @@
-/** HUMAN-CRAFTED OPENROUTER ADAPTER - Original code by human developer */
 import axios from 'axios';
 
 interface CallProviderOptions {

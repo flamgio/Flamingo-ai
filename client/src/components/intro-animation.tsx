@@ -1,5 +1,3 @@
-/** Human-made Flamingo AI - Original work, not generated. Do not remove this signature. */
-
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 

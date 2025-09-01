@@ -234,9 +234,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
     try {
       const user = req.session.user;
-
-
-      const { prompt, conversationId } = req.body;
+      const { prompt, conversationId, selectedModel, useEnhancement } = req.body;
 
       if (!prompt) {
         return res.status(400).json({ error: 'Message is required' });
@@ -253,7 +251,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const conversation = await db
           .select()
           .from(conversations)
-          .where(eq(conversations.id, conversationId) && eq(conversations.userId, req.user.id))
+          .where(eq(conversations.id, conversationId) && eq(conversations.userId, user.id))
           .limit(1);
 
         if (conversation.length === 0) {
@@ -268,7 +266,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           .insert(conversations)
           .values({
             id: crypto.randomUUID(),
-            userId: req.user.id,
+            userId: user.id,
             title: prompt.slice(0, 50) + (prompt.length > 50 ? '...' : ''),
           })
           .returning();
@@ -290,26 +288,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
       let chosenModel = selectedModel || 'gpt-3.5-turbo';
 
       try {
-        // Import and use AI coordinator
-        const { aiCoordinator } = await import('./ai-coordinator');
-
-        // Initialize coordinator
-        await aiCoordinator.initialize();
-
-        // Select the best model for the prompt
-        chosenModel = aiCoordinator.selectBestModel(prompt, selectedModel);
-
-        // Generate AI response using the coordinator with optional enhancement
-        aiResponse = await aiCoordinator.generateResponse(prompt, chosenModel, useEnhancement);
-      } catch (coordinatorError) {
-        console.error("AI Coordinator error:", coordinatorError);
+        // Use orchestrator for AI responses
+        const { routePrompt } = await import('./orchestrator');
+        aiResponse = await routePrompt(prompt, { userId: user.id, enhanced: useEnhancement ? 'true' : null });
+        chosenModel = aiResponse.model || chosenModel;
+      } catch (orchestratorError) {
+        console.error("Orchestrator error:", orchestratorError);
 
         // Fallback response
         aiResponse = {
-          content: `I understand you're asking: "${prompt}". I'm currently experiencing some technical difficulties with my AI models. This is a development environment response. Please check that your API keys are properly configured in the environment variables.`,
+          text: `I understand you're asking: "${prompt}". I'm currently experiencing some technical difficulties with my AI models. This is a development environment response. Please check that your API keys are properly configured in the environment variables.`,
           model: chosenModel,
-          processingTime: 100,
-          tokensUsed: 50
+          provider: 'fallback',
+          wordCount: 50,
+          task: 'general',
+          signature: 'Flamingo AI',
+          requestId: crypto.randomUUID()
         };
       }
 
@@ -320,12 +314,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
           id: crypto.randomUUID(),
           conversationId: finalConversationId,
           role: "assistant",
-          content: aiResponse.content,
+          content: aiResponse.text,
           selectedModel: aiResponse.model,
           metadata: {
-            processingTime: `${aiResponse.processingTime}ms`,
-            tokensUsed: aiResponse.tokensUsed,
-            routingDecision: aiResponse.model.includes('facebook/') || aiResponse.model.includes('microsoft/') ? 'local-hf' : 'cloud-openrouter'
+            provider: aiResponse.provider,
+            task: aiResponse.task,
+            wordCount: aiResponse.wordCount,
+            signature: aiResponse.signature,
+            requestId: aiResponse.requestId
           },
         })
         .returning();

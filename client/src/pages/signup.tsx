@@ -1,5 +1,3 @@
-/** HUMAN-CRAFTED SIGNUP PAGE - Original UI design by human developer */
-
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
@@ -8,6 +6,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/hooks/use-auth";
+import SuccessPopup from "@/components/success-popup";
+import logoImg from "@/assets/logo.png";
 
 export default function Signup() {
   const [, setLocation] = useLocation();
@@ -63,10 +63,6 @@ export default function Signup() {
         password: formData.password,
       });
       setShowSuccess(true);
-      setTimeout(() => {
-        setShowSuccess(false);
-        setLocation('/chat');
-      }, 1500);
     } catch (error: any) {
       console.error('Signup failed:', error);
       const errorMessage = error?.response?.data?.message || 'Failed to create account. Please try again.';
@@ -93,7 +89,23 @@ export default function Signup() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white via-blue-50 to-blue-100 dark:from-gray-900 dark:via-blue-900 dark:to-gray-800 transition-colors duration-300">
+    <div className="min-h-screen bg-gradient-to-br from-black via-purple-900/30 to-black relative overflow-hidden">
+      {/* Background Effects */}
+      <div className="absolute inset-0">
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-white/5 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse"></div>
+      </div>
+
+      {/* Success Popup */}
+      <SuccessPopup 
+        show={showSuccess} 
+        onComplete={() => {
+          setShowSuccess(false);
+          setLocation('/dashboard');
+        }} 
+      />
+
+      <div className="relative z-10">
       {/* Navigation Header */}
       <nav className="fixed top-0 left-0 right-0 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

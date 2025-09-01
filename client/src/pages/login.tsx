@@ -2,60 +2,30 @@ import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { useAuth } from "@/hooks/use-auth";
 import SuccessPopup from "@/components/success-popup";
-import logoImg from "@/assets/logo.png";
 
 export default function Login() {
   const [, setLocation] = useLocation();
-  const { user, login, loginError, isLoginLoading } = useAuth();
-  const [formData, setFormData] = useState({
-    email: "",
-    password: ""
-  });
-  const [errors, setErrors] = useState<Record<string, string>>({});
   const [showSuccess, setShowSuccess] = useState(false);
 
-  // Redirect if already authenticated (use useEffect to avoid render issues)
   useEffect(() => {
-    if (user) {
-      setLocation('/dashboard');
+    const theme = localStorage.getItem('flamgio-theme') || 'light';
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
     }
-  }, [user, setLocation]);
+  }, []);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setErrors({});
-
-    // Basic validation
-    const newErrors: Record<string, string> = {};
-
-    if (!formData.email) newErrors.email = "Email is required";
-    if (!formData.password) newErrors.password = "Password is required";
-
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-      return;
-    }
-
+  const handleLogin = async () => {
     try {
-      await login(formData);
+      // Show success popup first
       setShowSuccess(true);
-    } catch (error: any) {
-      console.error('Login failed:', error);
-      const errorMessage = error?.response?.data?.message || 'Login failed. Please try again.';
-      setErrors({ submit: errorMessage });
-    }
-  };
-
-  const handleInputChange = (field: string, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
-    // Clear error when user starts typing
-    if (errors[field]) {
-      setErrors(prev => ({ ...prev, [field]: "" }));
+      
+      // Redirect to login endpoint after a short delay
+      setTimeout(() => {
+        window.location.href = '/api/login';
+      }, 2000);
+    } catch (error) {
+      console.error('Login error:', error);
     }
   };
 
@@ -85,207 +55,96 @@ export default function Login() {
       />
 
       <div className="relative z-10">
-      {/* Navigation Header */}
-      <nav className="fixed top-0 left-0 right-0 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center border border-gray-600 shadow-lg">
-                  <svg 
-                    className="w-5 h-5 text-white"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M12 2L13.09 8.26L22 9L13.09 15.74L15.18 22L12 19L8.82 22L10.91 15.74L2 9L10.91 8.26L12 2Z"/>
-                  </svg>
-                </div>
-                <button
-                  onClick={() => setLocation('/')}
-                  className="text-xl font-bold text-gray-900 dark:text-white hover:text-flamingo-600 dark:hover:text-flamingo-400 transition-colors"
-                >
-                  Flamgio AI
-                </button>
-              </div>
-            </div>
-
-            <div className="flex items-center space-x-4">
-              <button
-                onClick={handleThemeToggle}
-                className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-              >
-                <i className="fas fa-moon dark:hidden"></i>
-                <i className="fas fa-sun hidden dark:inline"></i>
-              </button>
-              <Button
-                variant="ghost"
-                onClick={() => setLocation('/')}
-                className="text-gray-600 dark:text-gray-400"
-              >
-                Back to Home
-              </Button>
-            </div>
-          </div>
-        </div>
-      </nav>
-
-      {/* Success Popup */}
-      <AnimatePresence>
-        {showSuccess && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8, y: -50 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.8, y: -50 }}
-            className="fixed top-20 left-1/2 transform -translate-x-1/2 z-50"
-          >
-            <motion.div
-              animate={{
-                rotate: [0, 5, -5, 0],
-                scale: [1, 1.05, 1]
-              }}
-              transition={{
-                duration: 0.6,
-                repeat: 2
-              }}
-              className="bg-gradient-to-r from-green-500 to-emerald-600 text-white px-8 py-4 rounded-2xl shadow-2xl border border-green-400"
-            >
-              <div className="flex items-center space-x-3">
-                <motion.div
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                  className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center"
-                >
-                  <i className="fas fa-check text-white text-lg"></i>
-                </motion.div>
-                <div>
-                  <h3 className="font-bold text-lg">Welcome Back! 🎉</h3>
-                  <p className="text-green-100 text-sm">Login successful - redirecting...</p>
-                </div>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Main Content */}
-      <div className="pt-16 min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-md w-full space-y-8">
-          <div className="text-center">
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
-              Welcome Back
-            </h2>
-            <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-              Sign in to your Flamgio AI account
-            </p>
-          </div>
-
-          <Card className="bg-blue-100 dark:bg-slate-800 border-blue-300 dark:border-slate-600 shadow-xl">
-            <CardHeader className="bg-gradient-to-r from-blue-200 to-blue-100 dark:from-slate-700 dark:to-slate-800 rounded-t-lg">
-              <CardTitle className="text-center text-blue-900 dark:text-white">Sign In</CardTitle>
-            </CardHeader>
-            <CardContent className="bg-blue-100 dark:bg-slate-800">
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div>
-                  <Label htmlFor="email">Email Address</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    value={formData.email}
-                    onChange={(e) => handleInputChange('email', e.target.value)}
-                    className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-blue-600 rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-                    placeholder="john@example.com"
-                    required
-                  />
-                  {errors.email && (
-                    <p className="text-red-500 text-xs mt-1">{errors.email}</p>
-                  )}
-                </div>
-
-                <div>
-                  <Label htmlFor="password">Password</Label>
-                  <Input
-                    id="password"
-                    type="password"
-                    value={formData.password}
-                    onChange={(e) => handleInputChange('password', e.target.value)}
-                    className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-blue-600 rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-                    placeholder="••••••••"
-                    required
-                  />
-                  {errors.password && (
-                    <p className="text-red-500 text-xs mt-1">{errors.password}</p>
-                  )}
-                </div>
-
-                {(errors.submit || loginError) && (
-                  <div className="text-red-500 text-sm text-center">
-                    {errors.submit || (loginError as any)?.response?.data?.message || 'Login failed'}
+        {/* Navigation Header */}
+        <nav className="fixed top-0 left-0 right-0 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 z-50">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex justify-between items-center h-16">
+              <div className="flex items-center space-x-4">
+                <div className="flex items-center space-x-2">
+                  <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center border border-gray-600 shadow-lg">
+                    <span className="text-white font-bold text-sm">FA</span>
                   </div>
-                )}
+                  <button
+                    onClick={() => setLocation('/')}
+                    className="text-xl font-bold text-gray-900 dark:text-white hover:text-flamingo-600 dark:hover:text-flamingo-400 transition-colors"
+                  >
+                    Flamgio AI
+                  </button>
+                </div>
+              </div>
 
-                <Button
-                  type="submit"
-                  className="w-full bg-gradient-to-r from-flamingo-500 to-flamingo-600 hover:from-flamingo-600 hover:to-flamingo-700"
-                  disabled={isLoginLoading}
+              <div className="flex items-center space-x-4">
+                <button
+                  onClick={handleThemeToggle}
+                  className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
                 >
-                  {isLoginLoading ? (
-                    <i className="fas fa-spinner fa-spin mr-2"></i>
-                  ) : (
-                    <i className="fas fa-sign-in-alt mr-2"></i>
-                  )}
-                  Sign In
+                  🌙
+                </button>
+                <Button
+                  variant="ghost"
+                  onClick={() => setLocation('/')}
+                  className="text-gray-600 dark:text-gray-400"
+                >
+                  Back to Home
                 </Button>
-              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
 
-              <div className="mt-6 text-center">
-                <p className="text-sm text-gray-600 dark:text-gray-400">
+        {/* Main Content */}
+        <div className="flex items-center justify-center min-h-screen pt-16">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="w-full max-w-md p-8 space-y-8"
+          >
+            <div className="text-center">
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: 0.2 }}
+                className="mx-auto w-16 h-16 bg-black rounded-xl flex items-center justify-center mb-6 border border-white/20 shadow-2xl"
+              >
+                <span className="text-white font-bold text-xl" style={{
+                  textShadow: '0 0 10px rgba(255,255,255,0.8), 0 0 20px rgba(255,255,255,0.6)'
+                }}>
+                  FA
+                </span>
+              </motion.div>
+              
+              <h2 className="text-3xl font-bold text-white mb-2">
+                Welcome Back
+              </h2>
+              <p className="text-gray-400">
+                Sign in to continue your AI journey
+              </p>
+            </div>
+
+            <div className="space-y-6">
+              <Button
+                onClick={handleLogin}
+                className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white py-3 text-lg font-medium shadow-lg hover:shadow-xl transition-all duration-300"
+                data-testid="button-login"
+              >
+                Sign In with Replit
+              </Button>
+
+              <div className="text-center">
+                <p className="text-gray-400">
                   Don't have an account?{' '}
                   <button
                     onClick={() => setLocation('/signup')}
-                    className="text-flamingo-600 dark:text-flamingo-400 hover:text-flamingo-500 font-medium"
+                    className="text-purple-400 hover:text-purple-300 font-medium transition-colors"
                   >
-                    Sign up here
+                    Sign up
                   </button>
                 </p>
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </motion.div>
         </div>
       </div>
-
-      {/* Success Popup - Human crafted animation */}
-      <AnimatePresence>
-        {showSuccess && (
-          <motion.div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/20"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          >
-            <motion.div
-              className="bg-white dark:bg-gray-800 rounded-xl shadow-xl p-8 max-w-sm mx-4"
-              initial={{ scale: 0.8, y: 20 }}
-              animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.8, y: 20 }}
-              transition={{ type: "spring", damping: 25, stiffness: 300 }}
-            >
-              <div className="text-center">
-                <div className="w-16 h-16 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <svg className="w-8 h-8 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                </div>
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                  Here you go!
-                </h3>
-                <p className="text-gray-600 dark:text-gray-300">
-                  Welcome to Flamingo AI
-                </p>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </div>
   );
 }

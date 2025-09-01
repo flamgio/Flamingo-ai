@@ -80,7 +80,7 @@ export default function Dashboard() {
             <div className="absolute -inset-4 bg-gradient-to-r from-white/20 via-purple-500/20 to-white/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-700 group-hover:scale-110 animate-pulse"></div>
             
             {/* Inner Box */}
-            <div className="relative bg-gradient-to-r from-white/10 to-white/5 backdrop-blur-xl border border-white/30 rounded-2xl p-12 hover:scale-105 transition-all duration-500 group-hover:bg-gradient-to-r group-hover:from-white/15 group-hover:to-white/10">
+            <div className="relative bg-gradient-to-r from-white/10 to-white/5 backdrop-blur-xl border border-white/30 rounded-2xl p-8 hover:scale-105 transition-all duration-500 group-hover:bg-gradient-to-r group-hover:from-white/15 group-hover:to-white/10">
               {/* Animated Border */}
               <div className="absolute -inset-px bg-gradient-to-r from-white/50 via-transparent to-white/50 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
               

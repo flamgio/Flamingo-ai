@@ -22,8 +22,13 @@ export async function callProvider(options: CallProviderOptions): Promise<Provid
   const apiKey = process.env.PUTER_API_KEY;
   const scriptUrl = process.env.PUTER_SCRIPT_URL || 'https://api.puter.com/v1/scripts';
   
+  // For development mode, provide a fallback response if no API key is configured
   if (!apiKey) {
-    throw new Error('Puter API key not configured');
+    return {
+      text: `🤖 Puter AI Response: "${prompt}"\n\nThis is a demo response from Puter.js integration. Configure PUTER_API_KEY to connect to real Puter AI services. The AI agent successfully routed your message to Puter, and responses will appear in this chat interface (no redirect to external Puter chat).`,
+      provider: 'Puter (Demo)',
+      model: 'puter-demo'
+    };
   }
 
   try {

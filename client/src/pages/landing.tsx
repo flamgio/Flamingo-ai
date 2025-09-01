@@ -213,7 +213,7 @@ export default function Landing() {
                     onClick={() => setLocation('/login')}
                     disabled={isLoading}
                     size="lg"
-                    className="bg-gradient-to-r from-blue-400 to-blue-600 hover:from-blue-500 hover:to-blue-700 text-white px-8 py-4 text-lg font-semibold transition-all duration-200 shadow-lg hover:shadow-xl"
+                    className="bg-gradient-to-r from-blue-400 to-blue-600 hover:from-blue-500 hover:to-blue-700 text-white px-6 py-3 text-base font-semibold transition-all duration-200 shadow-lg hover:shadow-xl"
                   >
                     <i className="fas fa-rocket mr-2"></i>
                     {isLoading ? 'Loading...' : 'Get Started Free'}
@@ -227,7 +227,7 @@ export default function Landing() {
                     data-testid="watch-demo-btn"
                     variant="outline"
                     size="lg"
-                    className="border-2 border-blue-400 text-blue-600 dark:text-blue-300 px-8 py-4 text-lg font-semibold hover:bg-blue-50 dark:hover:bg-blue-900/20"
+                    className="border-2 border-blue-400 text-blue-600 dark:text-blue-300 px-6 py-3 text-base font-semibold hover:bg-blue-50 dark:hover:bg-blue-900/20"
                   >
                     <i className="fas fa-play mr-2"></i>
                     Watch Demo

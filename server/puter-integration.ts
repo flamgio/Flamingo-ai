@@ -82,7 +82,7 @@ class PuterIntegration {
         processingTime,
         tokensUsed: response.data.usage?.total_tokens || Math.ceil(content.length / 4)
       };
-    } catch (error) {
+    } catch (error: any) {
       console.error('Puter.js integration error:', error);
       
       // Provide more specific error information

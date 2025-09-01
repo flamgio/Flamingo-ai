@@ -168,7 +168,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       const token = authHeader.substring(7);
-      const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-super-secret-jwt-key-change-this-in-production') as { userId: number };
+      const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-super-secret-jwt-key-change-this-in-production') as { userId: string };
 
       const user = await db.select().from(users).where(eq(users.id, decoded.userId)).limit(1);
       if (user.length === 0) {
@@ -256,15 +256,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
     await enhancePromptRoute(req, res);
   });
 
-  // Agent endpoint for AI responses
-  app.post('/api/agent', async (req, res) => {
-    // Check if user is authenticated via session
-    if (!req.session?.user?.id) {
-      return res.status(401).json({ message: 'Authentication required' });
-    }
-
+  // Agent endpoint for AI responses  
+  app.post('/api/agent', authenticateToken, async (req: AuthRequest, res) => {
     try {
-      const user = req.session.user;
+      const user = req.user;
       const { prompt, conversationId, selectedModel, useEnhancement } = req.body;
 
       if (!prompt) {

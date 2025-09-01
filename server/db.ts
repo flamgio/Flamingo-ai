@@ -6,6 +6,11 @@ import { users, conversations, messages } from "@shared/schema";
 
 neonConfig.webSocketConstructor = ws;
 
+// Configure for development
+if (process.env.NODE_ENV === 'development') {
+  // Set development specific config if needed
+}
+
 if (!process.env.DATABASE_URL) {
   console.warn("DATABASE_URL not set, using placeholder for development");
   process.env.DATABASE_URL = "postgresql://placeholder:placeholder@localhost:5432/placeholder";

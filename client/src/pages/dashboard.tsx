@@ -65,42 +65,25 @@ export default function Dashboard() {
 
       {/* Main Content */}
       <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4">
-        {/* Glowing Start Chat Box */}
+        {/* Custom Start Chat Button */}
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, type: "spring", bounce: 0.3 }}
           className="mb-16"
         >
-          <div 
+          <button
             onClick={handleStartChat}
-            className="group relative cursor-pointer"
+            className="button"
           >
-            {/* Outer Glow */}
-            <div className="absolute -inset-4 bg-gradient-to-r from-white/20 via-purple-500/20 to-white/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-700 group-hover:scale-110 animate-pulse"></div>
-            
-            {/* Inner Box */}
-            <div className="relative bg-gradient-to-r from-white/10 to-white/5 backdrop-blur-xl border border-white/30 rounded-2xl p-6 hover:scale-105 transition-all duration-500 group-hover:bg-gradient-to-r group-hover:from-white/15 group-hover:to-white/10">
-              {/* Animated Border */}
-              <div className="absolute -inset-px bg-gradient-to-r from-white/50 via-transparent to-white/50 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
-              
-              <div className="relative text-center">
-                {/* Icon */}
-                <div className="mb-3 inline-flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-r from-white/20 to-white/10 backdrop-blur-lg border border-white/30 group-hover:scale-110 transition-all duration-500">
-                  <i className="fas fa-comments text-lg text-white group-hover:text-white/90 transition-colors duration-300"></i>
-                </div>
-                
-                {/* Text with Professional Styling */}
-                <h2 className="text-xl md:text-2xl font-semibold text-white mb-2 tracking-wide">
-                  Start Chat
-                </h2>
-                
-                <p className="text-white/70 text-sm font-light">
-                  Begin your AI journey
-                </p>
-              </div>
+            <div className="wrap">
+              <p>
+                <i className="fas fa-comments"></i>
+                <span>Start Chat</span>
+                <span>Begin Journey</span>
+              </p>
             </div>
-          </div>
+          </button>
         </motion.div>
 
         {/* Price Banner Space */}

@@ -208,16 +208,20 @@ export default function Landing() {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  <Button
+                  <button
                     data-testid="get-started-btn"
                     onClick={() => setLocation('/login')}
                     disabled={isLoading}
-                    size="lg"
-                    className="bg-gradient-to-r from-blue-400 to-blue-600 hover:from-blue-500 hover:to-blue-700 text-white px-6 py-3 text-base font-semibold transition-all duration-200 shadow-lg hover:shadow-xl"
+                    className="button"
                   >
-                    <i className="fas fa-rocket mr-2"></i>
-                    {isLoading ? 'Loading...' : 'Get Started Free'}
-                  </Button>
+                    <div className="wrap">
+                      <p>
+                        <i className="fas fa-rocket"></i>
+                        <span>{isLoading ? 'Loading...' : 'Get Started Free'}</span>
+                        <span>{isLoading ? 'Loading...' : 'Start Your Journey'}</span>
+                      </p>
+                    </div>
+                  </button>
                 </motion.div>
                 <motion.div
                   whileHover={{ scale: 1.02 }}

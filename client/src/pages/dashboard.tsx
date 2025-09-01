@@ -86,18 +86,18 @@ export default function Dashboard() {
               
               <div className="relative text-center">
                 {/* Icon */}
-                <div className="mb-6 inline-flex items-center justify-center w-24 h-24 rounded-full bg-gradient-to-r from-white/20 to-white/10 backdrop-blur-lg border border-white/30 group-hover:scale-110 transition-all duration-500">
-                  <i className="fas fa-comments text-4xl text-white group-hover:text-white/90 transition-colors duration-300"></i>
+                <div className="mb-4 inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-r from-white/20 to-white/10 backdrop-blur-lg border border-white/30 group-hover:scale-110 transition-all duration-500">
+                  <i className="fas fa-comments text-2xl text-white group-hover:text-white/90 transition-colors duration-300"></i>
                 </div>
                 
                 {/* Text with Enchanted Animation */}
-                <h2 className="text-4xl md:text-5xl font-bold text-white mb-4 tracking-wide">
+                <h2 className="text-2xl md:text-3xl font-bold text-white mb-4 tracking-wide">
                   <span className="inline-block animate-pulse bg-gradient-to-r from-white via-purple-200 to-white bg-clip-text text-transparent bg-300% animate-shimmer">
                     Start Chat
                   </span>
                 </h2>
                 
-                <p className="text-white/70 text-lg font-light">
+                <p className="text-white/70 text-base font-light">
                   Begin your AI journey
                 </p>
               </div>

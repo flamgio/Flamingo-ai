@@ -108,12 +108,20 @@ export default function Landing() {
     );
   };
 
-  // Show intro animation first
+  // Redirect logged in users
   if (user) {
-    setLocation('/dashboard');
-    return null;
+    return (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="min-h-screen bg-gradient-to-br from-blue-900 to-purple-900 flex items-center justify-center"
+      >
+        <div className="text-white text-xl">Redirecting to dashboard...</div>
+      </motion.div>
+    );
   }
 
+  // Show intro animation first
   if (showIntro) {
     return <IntroAnimation onComplete={() => setShowIntro(false)} />;
   }

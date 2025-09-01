@@ -37,10 +37,10 @@ export function useAuth() {
   const loginMutation = useMutation({
     mutationFn: async (credentials: LoginCredentials) => {
       const response = await apiRequest.post<AuthResponse>('/api/auth/login', credentials);
-      return response;
+      return response.data;
     },
     onSuccess: (data) => {
-      localStorage.setItem('token', data.token);
+      localStorage.setItem('flamgio-token', data.token);
       queryClient.setQueryData(["/api/user"], data.user);
       queryClient.invalidateQueries({ queryKey: ["/api/user"] });
       // Don't auto-redirect here, let the component handle it
@@ -53,10 +53,10 @@ export function useAuth() {
   const signupMutation = useMutation({
     mutationFn: async (credentials: SignupCredentials) => {
       const response = await apiRequest.post<AuthResponse>('/api/auth/signup', credentials);
-      return response;
+      return response.data;
     },
     onSuccess: (data) => {
-      localStorage.setItem('token', data.token);
+      localStorage.setItem('flamgio-token', data.token);
       queryClient.setQueryData(["/api/user"], data.user);
       queryClient.invalidateQueries({ queryKey: ["/api/user"] });
       // Don't auto-redirect here, let the component handle it
@@ -71,7 +71,7 @@ export function useAuth() {
       await apiRequest.post('/api/auth/logout');
     },
     onSuccess: () => {
-      localStorage.removeItem('token');
+      localStorage.removeItem('flamgio-token');
       queryClient.clear();
       window.location.href = '/';
     },

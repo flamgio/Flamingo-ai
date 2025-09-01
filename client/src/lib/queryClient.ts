@@ -52,11 +52,11 @@ export const getQueryFn: <T>(options: {
     const headers: HeadersInit = {
       'Content-Type': 'application/json',
     };
-    
+
     if (token) {
       headers.Authorization = `Bearer ${token}`;
     }
-    
+
     const res = await fetch(queryKey.join("/") as string, {
       headers,
       credentials: "include",

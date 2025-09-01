@@ -1,4 +1,3 @@
-
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import { Request, Response, NextFunction } from 'express';
@@ -63,7 +62,7 @@ export const authenticateToken = async (req: AuthRequest, res: Response, next: N
       sessionId: `${user[0].id}-${Date.now()}`,
       lastActive: new Date()
     };
-    
+
     next();
   } catch (error) {
     console.error('Auth middleware error:', error);

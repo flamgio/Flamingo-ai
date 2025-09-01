@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getQueryFn, apiRequest } from "@/lib/queryClient";
 import type { User } from "@shared/schema";
-import { useLocation } from "react-router-dom";
+import { useLocation } from "wouter";
 
 interface AuthResponse {
   user: User;
@@ -23,6 +23,7 @@ interface SignupCredentials {
 
 export function useAuth() {
   const [, setLocation] = useLocation();
+  const queryClient = useQueryClient();
 
   const userQuery = useQuery({
     queryKey: ["/api/user"],
@@ -35,11 +36,13 @@ export function useAuth() {
 
   const loginMutation = useMutation({
     mutationFn: async (credentials: LoginCredentials) => {
+      const response = await apiRequest.post<AuthResponse>('/api/auth/login', credentials);
+      return response;
     },
     onSuccess: (data) => {
-      // This will be handled by the interceptor
-      // setToken(data.token);
-      // queryClient.setQueryData(["/api/user"], data.user);
+      localStorage.setItem('token', data.token);
+      queryClient.setQueryData(["/api/user"], data.user);
+      setLocation('/dashboard');
     },
     onError: (error: any) => {
       console.error('Login failed:', error);
@@ -48,11 +51,13 @@ export function useAuth() {
 
   const signupMutation = useMutation({
     mutationFn: async (credentials: SignupCredentials) => {
+      const response = await apiRequest.post<AuthResponse>('/api/auth/signup', credentials);
+      return response;
     },
     onSuccess: (data) => {
-      // This will be handled by the interceptor
-      // setToken(data.token);
-      // queryClient.setQueryData(["/api/user"], data.user);
+      localStorage.setItem('token', data.token);
+      queryClient.setQueryData(["/api/user"], data.user);
+      setLocation('/dashboard');
     },
     onError: (error: any) => {
       console.error('Signup failed:', error);
@@ -61,13 +66,12 @@ export function useAuth() {
 
   const logoutMutation = useMutation({
     mutationFn: async () => {
-      // await apiRequest.post('/api/auth/logout');
+      await apiRequest.post('/api/auth/logout');
     },
     onSuccess: () => {
-      // This will be handled by the interceptor
-      // removeToken();
-      // queryClient.clear();
-      // window.location.href = '/';
+      localStorage.removeItem('token');
+      queryClient.clear();
+      window.location.href = '/';
     },
   });
 

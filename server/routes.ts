@@ -14,6 +14,8 @@ import {
 } from "./auth";
 import { chatRouter } from "./routes-chat.js";
 import crypto from "crypto";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 // Admin authentication middleware
 function authenticateAdmin(req: any, res: any, next: any) {
@@ -155,6 +157,34 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/auth/logout", (req, res) => {
     // With JWT, logout is handled client-side by removing the token
     res.json({ message: "Logout successful" });
+  });
+
+  // Get current user profile
+  app.get("/api/user", async (req, res) => {
+    try {
+      const authHeader = req.headers.authorization;
+      if (!authHeader || !authHeader.startsWith('Bearer ')) {
+        return res.status(401).json({ message: "No token provided" });
+      }
+
+      const token = authHeader.substring(7);
+      const decoded = jwt.verify(token, process.env.JWT_SECRET || 'fallback-secret') as { userId: number };
+
+      const user = await db.select().from(users).where(eq(users.id, decoded.userId)).limit(1);
+      if (user.length === 0) {
+        return res.status(401).json({ message: "User not found" });
+      }
+
+      res.json({
+        id: user[0].id,
+        email: user[0].email,
+        firstName: user[0].firstName,
+        lastName: user[0].lastName
+      });
+    } catch (error) {
+      console.error('Auth verification error:', error);
+      res.status(401).json({ message: "Invalid token" });
+    }
   });
 
   // Conversations endpoints

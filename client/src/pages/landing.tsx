@@ -1,6 +1,6 @@
 /** Human-crafted Flamingo AI Landing Page - Original work by human developer. */
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/use-auth";
@@ -14,7 +14,7 @@ interface FeatureCardProps {
 }
 
 const FeatureCard = ({ icon, title, description }: FeatureCardProps) => (
-  <motion.div 
+  <motion.div
     className="bg-white dark:bg-gray-700 p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow"
     whileHover={{ y: -5, transition: { duration: 0.2 } }}
     initial={{ opacity: 0, y: 30 }}
@@ -128,7 +128,7 @@ export default function Landing() {
                 <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center border border-gray-600 shadow-lg">
                   <span className="text-white font-bold text-sm">FA</span>
                 </div>
-                <button 
+                <button
                   onClick={() => setLocation('/')}
                   className="text-xl font-bold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
                 >
@@ -168,14 +168,14 @@ export default function Landing() {
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <motion.div 
+            <motion.div
               className="space-y-8"
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, ease: "easeOut" }}
             >
               <div className="space-y-4">
-                <motion.h1 
+                <motion.h1
                   className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white leading-tight"
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -187,18 +187,18 @@ export default function Landing() {
                   </span>{' '}
                   Platform
                 </motion.h1>
-                <motion.p 
+                <motion.p
                   className="text-xl text-gray-600 dark:text-gray-300 leading-relaxed"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.8, delay: 0.4 }}
                 >
-                  Intelligent agent system combining local Hugging Face models with cloud AI. 
+                  Intelligent agent system combining local Hugging Face models with cloud AI.
                   Your conversations stay private with our advanced memory system.
                 </motion.p>
               </div>
 
-              <motion.div 
+              <motion.div
                 className="flex flex-col sm:flex-row gap-4"
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -236,7 +236,7 @@ export default function Landing() {
               </motion.div>
 
               {/* Feature Highlights */}
-              <motion.div 
+              <motion.div
                 className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-8"
                 initial={{ opacity: 0, y: 40 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -264,7 +264,7 @@ export default function Landing() {
               </motion.div>
             </motion.div>
 
-            <motion.div 
+            <motion.div
               className="relative"
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
@@ -287,7 +287,7 @@ export default function Landing() {
       {/* Features Section */}
       <section className="py-20 bg-gray-50 dark:bg-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div 
+          <motion.div
             className="text-center mb-16"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}

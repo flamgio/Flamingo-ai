@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { motion } from "framer-motion";
@@ -15,7 +14,7 @@ export default function Login() {
     email: "",
     password: ""
   });
-  const [errors, setErrors] = useState<string[]>([]);
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   const { login, isLoginLoading, loginError } = useAuth();
 
@@ -32,20 +31,28 @@ export default function Login() {
   };
 
   const validateForm = () => {
-    const newErrors: string[] = [];
+    const newErrors: Record<string, string> = {};
 
-    if (!formData.email.trim()) newErrors.push("Email is required");
-    if (!formData.email.includes('@')) newErrors.push("Please enter a valid email");
-    if (!formData.password) newErrors.push("Password is required");
+    if (!formData.email.trim()) {
+      newErrors.email = "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = "Please enter a valid email";
+    }
+
+    if (!formData.password) {
+      newErrors.password = "Password is required";
+    }
 
     setErrors(newErrors);
-    return newErrors.length === 0;
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (!validateForm()) return;
+
+    if (!validateForm()) {
+      return;
+    }
 
     try {
       const result = await login({
@@ -147,7 +154,7 @@ export default function Login() {
                   FA
                 </span>
               </motion.div>
-              
+
               <h2 className="text-3xl font-bold text-white mb-2">
                 Welcome Back
               </h2>
@@ -158,9 +165,9 @@ export default function Login() {
 
             <form onSubmit={handleLogin} className="space-y-6">
               {/* Error Messages */}
-              {errors.length > 0 && (
+              {Object.keys(errors).length > 0 && (
                 <div className="bg-red-500/20 border border-red-500/30 rounded-lg p-4">
-                  {errors.map((error, index) => (
+                  {Object.values(errors).map((error, index) => (
                     <p key={index} className="text-red-400 text-sm">{error}</p>
                   ))}
                 </div>
@@ -179,6 +186,7 @@ export default function Login() {
                   className="bg-white/10 border-white/20 text-white placeholder:text-gray-400"
                   required
                 />
+                {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
               </div>
 
               {/* Password */}
@@ -194,6 +202,7 @@ export default function Login() {
                   className="bg-white/10 border-white/20 text-white placeholder:text-gray-400"
                   required
                 />
+                {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
               </div>
 
               {/* Submit Button */}

@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { motion } from "framer-motion";
@@ -50,7 +49,7 @@ export default function Signup() {
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) return;
 
     try {
@@ -89,12 +88,12 @@ export default function Signup() {
       </div>
 
       {/* Success Popup */}
-      <SuccessPopup 
-        show={showSuccess} 
+      <SuccessPopup
+        show={showSuccess}
         onComplete={() => {
           setShowSuccess(false);
           setLocation('/dashboard');
-        }} 
+        }}
       />
 
       <div className="relative z-10">
@@ -155,7 +154,7 @@ export default function Signup() {
                   FA
                 </span>
               </motion.div>
-              
+
               <h2 className="text-3xl font-bold text-white mb-2">
                 Join Flamgio AI
               </h2>

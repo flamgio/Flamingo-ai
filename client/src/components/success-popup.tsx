@@ -1,57 +1,64 @@
-import { motion, AnimatePresence } from "framer-motion";
+
+import React, { useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface SuccessPopupProps {
-  show: boolean;
-  onComplete: () => void;
+  isVisible: boolean;
+  message: string;
+  onClose: () => void;
+  duration?: number;
 }
 
-function SuccessPopup({ show, onComplete }: SuccessPopupProps) {
+export default function SuccessPopup({ 
+  isVisible, 
+  message, 
+  onClose, 
+  duration = 3000 
+}: SuccessPopupProps) {
+  useEffect(() => {
+    if (isVisible) {
+      const timer = setTimeout(() => {
+        onClose();
+      }, duration);
+
+      return () => clearTimeout(timer);
+    }
+  }, [isVisible, onClose, duration]);
+
   return (
     <AnimatePresence>
-      {show && (
+      {isVisible && (
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+          initial={{ opacity: 0, y: -50, scale: 0.8 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: -50, scale: 0.8 }}
+          transition={{ duration: 0.3, ease: "easeOut" }}
+          className="fixed top-4 right-4 z-50 bg-green-500 text-white px-6 py-4 rounded-lg shadow-lg border border-green-400"
         >
-          <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.8, opacity: 0 }}
-            className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-2xl max-w-md w-full mx-4"
-          >
-            <div className="text-center">
-              <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ delay: 0.2 }}
-                className="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-4"
-              >
-                <i className="fas fa-check text-green-600 dark:text-green-400 text-2xl"></i>
-              </motion.div>
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                Success!
-              </h3>
-              <p className="text-gray-600 dark:text-gray-300 mb-6">
-                Redirecting you now...
-              </p>
-              <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                <motion.div
-                  className="bg-green-600 h-2 rounded-full"
-                  initial={{ width: 0 }}
-                  animate={{ width: "100%" }}
-                  transition={{ duration: 2 }}
-                  onAnimationComplete={onComplete}
-                />
-              </div>
+          <div className="flex items-center space-x-3">
+            <div className="flex-shrink-0">
+              <i className="fas fa-check-circle text-xl"></i>
             </div>
-          </motion.div>
+            <div className="flex-1">
+              <p className="font-medium">{message}</p>
+            </div>
+            <button
+              onClick={onClose}
+              className="flex-shrink-0 text-white/80 hover:text-white transition-colors"
+            >
+              <i className="fas fa-times"></i>
+            </button>
+          </div>
+          
+          {/* Progress bar */}
+          <motion.div
+            initial={{ width: "100%" }}
+            animate={{ width: "0%" }}
+            transition={{ duration: duration / 1000, ease: "linear" }}
+            className="absolute bottom-0 left-0 h-1 bg-green-300 rounded-b-lg"
+          />
         </motion.div>
       )}
     </AnimatePresence>
   );
 }
-
-export default SuccessPopup;
-export { SuccessPopup };

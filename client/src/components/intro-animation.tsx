@@ -1,139 +1,117 @@
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 
 interface IntroAnimationProps {
   onComplete: () => void;
 }
 
 export default function IntroAnimation({ onComplete }: IntroAnimationProps) {
-  const [showAnimation, setShowAnimation] = useState(() => {
-    // Check if animation has been shown in this session
-    return !sessionStorage.getItem('flamgio-intro-shown');
-  });
-  const [showLogo, setShowLogo] = useState(false);
-  const [showText, setShowText] = useState(false);
-  const [showFire, setShowFire] = useState(false);
+  const [currentStep, setCurrentStep] = useState(0);
 
   useEffect(() => {
-    // If animation shouldn't show, complete immediately
-    if (!showAnimation) {
-      onComplete();
-      return;
-    }
+    const timer = setTimeout(() => {
+      if (currentStep < 2) {
+        setCurrentStep(currentStep + 1);
+      } else {
+        onComplete();
+      }
+    }, 1500);
 
-    // Mark animation as shown for this session
-    sessionStorage.setItem('flamgio-intro-shown', 'true');
-
-    // Logo appears first
-    const logoTimer = setTimeout(() => setShowLogo(true), 500);
-
-    // Text appears after logo
-    const textTimer = setTimeout(() => setShowText(true), 1500);
-
-    // Fire animation starts
-    const fireTimer = setTimeout(() => setShowFire(true), 2500);
-
-    // Complete animation
-    const completeTimer = setTimeout(() => {
-      setShowAnimation(false);
-      onComplete();
-    }, 5000);
-
-    return () => {
-      clearTimeout(logoTimer);
-      clearTimeout(textTimer);
-      clearTimeout(fireTimer);
-      clearTimeout(completeTimer);
-    };
-  }, [onComplete, showAnimation]);
-
-  if (!showAnimation) {
-    return null;
-  }
+    return () => clearTimeout(timer);
+  }, [currentStep, onComplete]);
 
   return (
-    <motion.div
-      className="fixed inset-0 z-50 bg-gradient-to-br from-pink-200 via-red-300 to-orange-400 flex items-center justify-center overflow-hidden"
-      initial={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.8 }}
-    >
-      <div className="relative w-full h-full flex flex-col items-center justify-center">
-        {/* Logo */}
-        {showLogo && (
+    <div className="min-h-screen bg-gradient-to-br from-blue-900 via-purple-900 to-pink-900 flex items-center justify-center overflow-hidden">
+      {/* Background particles */}
+      <div className="absolute inset-0">
+        {[...Array(50)].map((_, i) => (
           <motion.div
-            className="relative z-20 mb-8"
-            initial={{ opacity: 0, scale: 0.3 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-          >
-            <div className="w-24 h-24 bg-black rounded-2xl flex items-center justify-center border-2 border-gray-600 shadow-2xl">
-              <span className="text-white font-bold text-4xl" style={{
-                textShadow: '0 0 10px rgba(255,255,255,0.8), 0 0 20px rgba(255,255,255,0.6)'
-              }}>FA</span>
-            </div>
-          </motion.div>
-        )}
-
-        {/* Logo Text */}
-        {showLogo && (
-          <motion.h1
-            className="relative z-20 text-5xl font-bold text-white text-center mb-2 drop-shadow-lg"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-          >
-            Flamingo
-          </motion.h1>
-        )}
-
-        {/* Welcome Text */}
-        {showText && (
-          <motion.p
-            className="relative z-20 text-2xl text-white text-center drop-shadow-lg"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-          >
-            Welcome to Flamgio AI
-          </motion.p>
-        )}
-
-        {/* Simple Fire Effect */}
-        {showFire && (
-          <>
-            {/* Main fire overlay */}
-            <motion.div
-              className="absolute inset-0 bg-gradient-to-t from-red-600 via-orange-500 to-red-400"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 1.5, ease: "easeOut" }}
-            />
-
-            {/* Fire particles */}
-            {[...Array(20)].map((_, i) => (
-              <motion.div
-                key={i}
-                className="absolute w-2 h-2 bg-red-500 rounded-full"
-                style={{
-                  left: `${20 + Math.random() * 60}%`,
-                  top: `${60 + Math.random() * 30}%`
-                }}
-                animate={{
-                  y: [-20, -100],
-                  opacity: [1, 0],
-                  scale: [1, 0.3]
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  delay: Math.random() * 2
-                }}
-              />
-            ))}
-          </>
-        )}
+            key={i}
+            className="absolute w-1 h-1 bg-white rounded-full opacity-20"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+            }}
+            animate={{
+              y: [0, -100, 0],
+              opacity: [0.2, 0.8, 0.2],
+            }}
+            transition={{
+              duration: 3 + Math.random() * 2,
+              repeat: Infinity,
+              delay: Math.random() * 2,
+            }}
+          />
+        ))}
       </div>
-    </motion.div>
+
+      {/* Main animation */}
+      <div className="relative z-10 text-center">
+        <motion.div
+          initial={{ scale: 0, rotate: -180, opacity: 0 }}
+          animate={{
+            scale: currentStep >= 0 ? 1 : 0,
+            rotate: currentStep >= 0 ? 0 : -180,
+            opacity: currentStep >= 0 ? 1 : 0
+          }}
+          transition={{ duration: 1, ease: "easeOut" }}
+          className="mb-8"
+        >
+          <div className="w-24 h-24 mx-auto bg-black rounded-2xl flex items-center justify-center border-4 border-white/20 shadow-2xl">
+            <motion.span
+              className="text-white font-bold text-3xl"
+              animate={{
+                textShadow: [
+                  "0 0 10px rgba(255,255,255,0.5)",
+                  "0 0 20px rgba(59,130,246,0.8)",
+                  "0 0 10px rgba(255,255,255,0.5)"
+                ]
+              }}
+              transition={{ duration: 2, repeat: Infinity }}
+            >
+              FA
+            </motion.span>
+          </div>
+        </motion.div>
+
+        <motion.h1
+          initial={{ y: 50, opacity: 0 }}
+          animate={{
+            y: currentStep >= 1 ? 0 : 50,
+            opacity: currentStep >= 1 ? 1 : 0
+          }}
+          transition={{ duration: 0.8, delay: 0.5 }}
+          className="text-5xl md:text-7xl font-bold text-white mb-4"
+        >
+          <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+            Flamgio AI
+          </span>
+        </motion.h1>
+
+        <motion.p
+          initial={{ y: 30, opacity: 0 }}
+          animate={{
+            y: currentStep >= 2 ? 0 : 30,
+            opacity: currentStep >= 2 ? 1 : 0
+          }}
+          transition={{ duration: 0.8, delay: 1 }}
+          className="text-xl text-white/80 mb-8"
+        >
+          Privacy-First AI Chat Platform
+        </motion.p>
+
+        {/* Loading indicator */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 2 }}
+          className="flex justify-center items-center space-x-2"
+        >
+          <div className="w-3 h-3 bg-blue-400 rounded-full animate-pulse"></div>
+          <div className="w-3 h-3 bg-purple-400 rounded-full animate-pulse" style={{ animationDelay: '0.2s' }}></div>
+          <div className="w-3 h-3 bg-pink-400 rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></div>
+        </motion.div>
+      </div>
+    </div>
   );
 }

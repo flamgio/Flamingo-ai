@@ -61,6 +61,10 @@ export function useChat() {
         });
       }
     },
+    onError: (error) => {
+      console.error("Error sending message:", error);
+      // Potentially set an error state here if needed for UI feedback
+    }
   });
 
   const currentConversation = conversations.find(c => c.id === currentConversationId);

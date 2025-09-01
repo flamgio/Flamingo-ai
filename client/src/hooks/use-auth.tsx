@@ -1,7 +1,7 @@
-
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getQueryFn, apiRequest } from "@/lib/queryClient";
 import type { User } from "@shared/schema";
+import { useLocation } from "react-router-dom";
 
 interface AuthResponse {
   user: User;
@@ -22,41 +22,24 @@ interface SignupCredentials {
 }
 
 export function useAuth() {
-  const queryClient = useQueryClient();
+  const [, setLocation] = useLocation();
 
-  // Get token from localStorage
-  const getToken = () => localStorage.getItem('flamgio-token');
-  
-  // Set token in localStorage and Authorization header
-  const setToken = (token: string) => {
-    localStorage.setItem('flamgio-token', token);
-    // Token will be automatically included via interceptors
-  };
-  
-  // Remove token
-  const removeToken = () => {
-    localStorage.removeItem('flamgio-token');
-    // Token removal will be handled by interceptors
-  };
-
-  // Get token from localStorage
-  const token = getToken();
-
-  const { data: user, isLoading, error } = useQuery<User | null>({
-    queryKey: ['/api/auth/user'],
+  const userQuery = useQuery({
+    queryKey: ["/api/user"],
     queryFn: getQueryFn({ on401: "returnNull" }),
     retry: false,
-    enabled: !!token, // Only fetch if token exists
+    staleTime: Infinity,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
   });
 
   const loginMutation = useMutation({
-    mutationFn: async (credentials: LoginCredentials): Promise<AuthResponse> => {
-      const response = await apiRequest.post('/api/auth/login', credentials);
-      return response.data;
+    mutationFn: async (credentials: LoginCredentials) => {
     },
     onSuccess: (data) => {
-      setToken(data.token);
-      queryClient.setQueryData(['/api/auth/user'], data.user);
+      // This will be handled by the interceptor
+      // setToken(data.token);
+      // queryClient.setQueryData(["/api/user"], data.user);
     },
     onError: (error: any) => {
       console.error('Login failed:', error);
@@ -64,13 +47,12 @@ export function useAuth() {
   });
 
   const signupMutation = useMutation({
-    mutationFn: async (credentials: SignupCredentials): Promise<AuthResponse> => {
-      const response = await apiRequest.post('/api/auth/signup', credentials);
-      return response.data;
+    mutationFn: async (credentials: SignupCredentials) => {
     },
     onSuccess: (data) => {
-      setToken(data.token);
-      queryClient.setQueryData(['/api/auth/user'], data.user);
+      // This will be handled by the interceptor
+      // setToken(data.token);
+      // queryClient.setQueryData(["/api/user"], data.user);
     },
     onError: (error: any) => {
       console.error('Signup failed:', error);
@@ -79,23 +61,24 @@ export function useAuth() {
 
   const logoutMutation = useMutation({
     mutationFn: async () => {
-      await apiRequest.post('/api/auth/logout');
+      // await apiRequest.post('/api/auth/logout');
     },
     onSuccess: () => {
-      removeToken();
-      queryClient.clear();
-      window.location.href = '/';
+      // This will be handled by the interceptor
+      // removeToken();
+      // queryClient.clear();
+      // window.location.href = '/';
     },
   });
 
   return {
-    user,
-    isLoading,
-    error,
+    user: userQuery.data as User | null | undefined,
+    isLoading: userQuery.isLoading,
+    error: userQuery.error,
     login: loginMutation.mutateAsync,
     signup: signupMutation.mutateAsync,
     logout: logoutMutation.mutateAsync,
-    isAuthenticated: !!user && !!token,
+    isAuthenticated: !!userQuery.data,
     loginError: loginMutation.error,
     signupError: signupMutation.error,
     isLoginLoading: loginMutation.isPending,

@@ -13,6 +13,7 @@ import {
   type AuthRequest
 } from "./auth";
 import { chatRouter } from "./routes-chat.js";
+import crypto from "crypto";
 
 // Admin authentication middleware
 function authenticateAdmin(req: any, res: any, next: any) {

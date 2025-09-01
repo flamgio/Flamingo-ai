@@ -1,6 +1,6 @@
 /** Human-crafted Flamingo AI Landing Page - Original work by human developer. */
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/use-auth";
@@ -88,7 +88,12 @@ export default function Landing() {
   const { user, isLoading } = useAuth();
   const [showIntro, setShowIntro] = useState(true);
 
-  
+  // Redirect logged in users using useEffect to prevent setState during render
+  useEffect(() => {
+    if (user && !showIntro) {
+      setLocation('/dashboard');
+    }
+  }, [user, showIntro, setLocation]);
 
   const handleGetStarted = async () => {
     if (user) {
@@ -105,13 +110,6 @@ export default function Landing() {
       document.documentElement.classList.contains('dark') ? 'dark' : 'light'
     );
   };
-
-  // Redirect logged in users using useEffect to prevent setState during render
-  useEffect(() => {
-    if (user && !showIntro) {
-      setLocation('/dashboard');
-    }
-  }, [user, showIntro, setLocation]);
 
   // Show intro animation first
   if (showIntro) {

@@ -90,6 +90,7 @@ export default function Signup() {
       {/* Success Popup */}
       <SuccessPopup
         show={showSuccess}
+        message="Account created successfully! Welcome to Flamgio."
         onComplete={() => {
           setShowSuccess(false);
           setLocation('/dashboard');

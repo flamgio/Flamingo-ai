@@ -90,6 +90,7 @@ export default function Login() {
       {/* Success Popup */}
       <SuccessPopup 
         show={showSuccess} 
+        message="Welcome back! Successfully logged in."
         onComplete={() => {
           setShowSuccess(false);
           setLocation('/dashboard');

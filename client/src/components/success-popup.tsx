@@ -3,31 +3,31 @@ import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface SuccessPopupProps {
-  isVisible: boolean;
-  message: string;
-  onClose: () => void;
+  show: boolean;
+  onComplete: () => void;
+  message?: string;
   duration?: number;
 }
 
 export default function SuccessPopup({ 
-  isVisible, 
-  message, 
-  onClose, 
-  duration = 3000 
+  show, 
+  onComplete, 
+  message = "Success!", 
+  duration = 2000 
 }: SuccessPopupProps) {
   useEffect(() => {
-    if (isVisible) {
+    if (show) {
       const timer = setTimeout(() => {
-        onClose();
+        onComplete();
       }, duration);
 
       return () => clearTimeout(timer);
     }
-  }, [isVisible, onClose, duration]);
+  }, [show, onComplete, duration]);
 
   return (
     <AnimatePresence>
-      {isVisible && (
+      {show && (
         <motion.div
           initial={{ opacity: 0, y: -50, scale: 0.8 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -43,7 +43,7 @@ export default function SuccessPopup({
               <p className="font-medium">{message}</p>
             </div>
             <button
-              onClick={onClose}
+              onClick={onComplete}
               className="flex-shrink-0 text-white/80 hover:text-white transition-colors"
             >
               <i className="fas fa-times"></i>

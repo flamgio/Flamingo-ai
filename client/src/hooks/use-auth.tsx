@@ -42,7 +42,7 @@ export function useAuth() {
     onSuccess: (data) => {
       localStorage.setItem('token', data.token);
       queryClient.setQueryData(["/api/user"], data.user);
-      setLocation('/dashboard');
+      // Don't auto-redirect here, let the component handle it
     },
     onError: (error: any) => {
       console.error('Login failed:', error);
@@ -57,7 +57,7 @@ export function useAuth() {
     onSuccess: (data) => {
       localStorage.setItem('token', data.token);
       queryClient.setQueryData(["/api/user"], data.user);
-      setLocation('/dashboard');
+      // Don't auto-redirect here, let the component handle it
     },
     onError: (error: any) => {
       console.error('Signup failed:', error);

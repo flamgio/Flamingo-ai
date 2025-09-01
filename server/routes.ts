@@ -1,9 +1,9 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { db } from "./db";
-import { users, conversations, messages } from "@shared/schema";
-import { eq } from "drizzle-orm";
+import { db } from './db';
+import { users } from '@shared/schema';
+import { eq } from 'drizzle-orm';
 import {
   generateToken,
   hashPassword,

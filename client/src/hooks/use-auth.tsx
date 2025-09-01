@@ -57,8 +57,6 @@ export function useAuth() {
     onSuccess: (data) => {
       setToken(data.token);
       queryClient.setQueryData(['/api/auth/user'], data.user);
-      // Redirect to dashboard
-      window.location.href = '/dashboard';
     },
     onError: (error: any) => {
       console.error('Login failed:', error);
@@ -73,8 +71,6 @@ export function useAuth() {
     onSuccess: (data) => {
       setToken(data.token);
       queryClient.setQueryData(['/api/auth/user'], data.user);
-      // Redirect to dashboard
-      window.location.href = '/dashboard';
     },
     onError: (error: any) => {
       console.error('Signup failed:', error);

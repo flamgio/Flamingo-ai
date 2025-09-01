@@ -5,7 +5,7 @@ interface SuccessPopupProps {
   onComplete: () => void;
 }
 
-export default function SuccessPopup({ show, onComplete }: SuccessPopupProps) {
+function SuccessPopup({ show, onComplete }: SuccessPopupProps) {
   return (
     <AnimatePresence>
       {show && (
@@ -52,3 +52,6 @@ export default function SuccessPopup({ show, onComplete }: SuccessPopupProps) {
     </AnimatePresence>
   );
 }
+
+export default SuccessPopup;
+export { SuccessPopup };

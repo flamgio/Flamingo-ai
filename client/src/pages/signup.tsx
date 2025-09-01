@@ -54,13 +54,19 @@ export default function Signup() {
     if (!validateForm()) return;
 
     try {
-      await signup({
+      const result = await signup({
         email: formData.email,
         firstName: formData.firstName,
         lastName: formData.lastName,
         password: formData.password
       });
-      setShowSuccess(true);
+      if (result) {
+        setShowSuccess(true);
+        // Redirect after a short delay
+        setTimeout(() => {
+          setLocation('/dashboard');
+        }, 2000);
+      }
     } catch (error) {
       console.error('Signup error:', error);
     }

@@ -85,9 +85,8 @@ const ChatPreview = () => (
 
 export default function Landing() {
   const [, setLocation] = useLocation();
-  const { user, login } = useAuth();
-  const [isLoading, setIsLoading] = useState(false);
-  const [showContent, setShowContent] = useState(false);
+  const { user, isLoading } = useAuth();
+  const [showIntro, setShowIntro] = useState(true);
 
   const handleAnimationComplete = () => {
     setShowContent(true);
@@ -95,7 +94,7 @@ export default function Landing() {
 
   const handleGetStarted = async () => {
     if (user) {
-      setLocation('/chat');
+      setLocation('/dashboard');
     } else {
       setLocation('/login');
     }
@@ -110,8 +109,13 @@ export default function Landing() {
   };
 
   // Show intro animation first
-  if (!showContent) {
-    return <IntroAnimation onComplete={handleAnimationComplete} />;
+  if (user) {
+    setLocation('/dashboard');
+    return null;
+  }
+
+  if (showIntro) {
+    return <IntroAnimation onComplete={() => setShowIntro(false)} />;
   }
 
   return (
@@ -158,7 +162,7 @@ export default function Landing() {
         </div>
       </nav>
 
-      
+
 
       {/* Hero Section */}
       <section className="relative overflow-hidden pt-16">

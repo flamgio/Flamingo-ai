@@ -48,11 +48,17 @@ export default function Login() {
     if (!validateForm()) return;
 
     try {
-      await login({
+      const result = await login({
         email: formData.email,
         password: formData.password
       });
-      setShowSuccess(true);
+      if (result) {
+        setShowSuccess(true);
+        // Redirect after a short delay
+        setTimeout(() => {
+          setLocation('/dashboard');
+        }, 2000);
+      }
     } catch (error) {
       console.error('Login error:', error);
     }

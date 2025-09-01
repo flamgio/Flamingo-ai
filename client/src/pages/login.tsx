@@ -61,10 +61,10 @@ export default function Login() {
       });
       if (result) {
         setShowSuccess(true);
-        // Redirect after a short delay
+        // Redirect immediately to dashboard
         setTimeout(() => {
           setLocation('/dashboard');
-        }, 2000);
+        }, 1500);
       }
     } catch (error) {
       console.error('Login error:', error);

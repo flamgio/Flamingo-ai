@@ -42,6 +42,7 @@ export function useAuth() {
     onSuccess: (data) => {
       localStorage.setItem('token', data.token);
       queryClient.setQueryData(["/api/user"], data.user);
+      queryClient.invalidateQueries({ queryKey: ["/api/user"] });
       // Don't auto-redirect here, let the component handle it
     },
     onError: (error: any) => {
@@ -57,6 +58,7 @@ export function useAuth() {
     onSuccess: (data) => {
       localStorage.setItem('token', data.token);
       queryClient.setQueryData(["/api/user"], data.user);
+      queryClient.invalidateQueries({ queryKey: ["/api/user"] });
       // Don't auto-redirect here, let the component handle it
     },
     onError: (error: any) => {

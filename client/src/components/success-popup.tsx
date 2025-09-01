@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -49,7 +48,7 @@ export default function SuccessPopup({
               <i className="fas fa-times"></i>
             </button>
           </div>
-          
+
           {/* Progress bar */}
           <motion.div
             initial={{ width: "100%" }}

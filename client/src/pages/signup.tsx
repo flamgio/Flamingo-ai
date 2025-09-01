@@ -1,12 +1,26 @@
+
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useAuth } from "@/hooks/use-auth";
 import SuccessPopup from "@/components/success-popup";
 
 export default function Signup() {
   const [, setLocation] = useLocation();
   const [showSuccess, setShowSuccess] = useState(false);
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    confirmPassword: ""
+  });
+  const [errors, setErrors] = useState<string[]>([]);
+
+  const { signup, isSignupLoading, signupError } = useAuth();
 
   useEffect(() => {
     const theme = localStorage.getItem('flamgio-theme') || 'light';
@@ -15,15 +29,38 @@ export default function Signup() {
     }
   }, []);
 
-  const handleSignup = async () => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const validateForm = () => {
+    const newErrors: string[] = [];
+
+    if (!formData.firstName.trim()) newErrors.push("First name is required");
+    if (!formData.lastName.trim()) newErrors.push("Last name is required");
+    if (!formData.email.trim()) newErrors.push("Email is required");
+    if (!formData.email.includes('@')) newErrors.push("Please enter a valid email");
+    if (formData.password.length < 6) newErrors.push("Password must be at least 6 characters");
+    if (formData.password !== formData.confirmPassword) newErrors.push("Passwords do not match");
+
+    setErrors(newErrors);
+    return newErrors.length === 0;
+  };
+
+  const handleSignup = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!validateForm()) return;
+
     try {
-      // Show success popup first
+      await signup({
+        email: formData.email,
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        password: formData.password
+      });
       setShowSuccess(true);
-      
-      // Redirect to login endpoint after a short delay
-      setTimeout(() => {
-        window.location.href = '/api/login';
-      }, 2000);
     } catch (error) {
       console.error('Signup error:', error);
     }
@@ -121,19 +158,123 @@ export default function Signup() {
               </p>
             </div>
 
-            <div className="space-y-6">
+            <form onSubmit={handleSignup} className="space-y-6">
+              {/* Error Messages */}
+              {errors.length > 0 && (
+                <div className="bg-red-500/20 border border-red-500/30 rounded-lg p-4">
+                  {errors.map((error, index) => (
+                    <p key={index} className="text-red-400 text-sm">{error}</p>
+                  ))}
+                </div>
+              )}
+
+              {/* First Name */}
+              <div className="space-y-2">
+                <Label htmlFor="firstName" className="text-white">First Name</Label>
+                <Input
+                  id="firstName"
+                  name="firstName"
+                  type="text"
+                  value={formData.firstName}
+                  onChange={handleInputChange}
+                  placeholder="Enter your first name"
+                  className="bg-white/10 border-white/20 text-white placeholder:text-gray-400"
+                  required
+                />
+              </div>
+
+              {/* Last Name */}
+              <div className="space-y-2">
+                <Label htmlFor="lastName" className="text-white">Last Name</Label>
+                <Input
+                  id="lastName"
+                  name="lastName"
+                  type="text"
+                  value={formData.lastName}
+                  onChange={handleInputChange}
+                  placeholder="Enter your last name"
+                  className="bg-white/10 border-white/20 text-white placeholder:text-gray-400"
+                  required
+                />
+              </div>
+
+              {/* Email */}
+              <div className="space-y-2">
+                <Label htmlFor="email" className="text-white">Email</Label>
+                <Input
+                  id="email"
+                  name="email"
+                  type="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  placeholder="Enter your email"
+                  className="bg-white/10 border-white/20 text-white placeholder:text-gray-400"
+                  required
+                />
+              </div>
+
+              {/* Password */}
+              <div className="space-y-2">
+                <Label htmlFor="password" className="text-white">Password</Label>
+                <Input
+                  id="password"
+                  name="password"
+                  type="password"
+                  value={formData.password}
+                  onChange={handleInputChange}
+                  placeholder="Enter your password"
+                  className="bg-white/10 border-white/20 text-white placeholder:text-gray-400"
+                  required
+                />
+              </div>
+
+              {/* Confirm Password */}
+              <div className="space-y-2">
+                <Label htmlFor="confirmPassword" className="text-white">Confirm Password</Label>
+                <Input
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  type="password"
+                  value={formData.confirmPassword}
+                  onChange={handleInputChange}
+                  placeholder="Confirm your password"
+                  className="bg-white/10 border-white/20 text-white placeholder:text-gray-400"
+                  required
+                />
+              </div>
+
+              {/* Submit Button */}
               <Button
-                onClick={handleSignup}
+                type="submit"
+                disabled={isSignupLoading}
                 className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white py-3 text-lg font-medium shadow-lg hover:shadow-xl transition-all duration-300"
                 data-testid="button-signup"
               >
-                Sign Up with Replit
+                {isSignupLoading ? (
+                  <>
+                    <i className="fas fa-spinner fa-spin mr-2"></i>
+                    Creating Account...
+                  </>
+                ) : (
+                  <>
+                    <i className="fas fa-user-plus mr-2"></i>
+                    Create Account
+                  </>
+                )}
               </Button>
+
+              {/* Server Error */}
+              {signupError && (
+                <div className="bg-red-500/20 border border-red-500/30 rounded-lg p-4">
+                  <p className="text-red-400 text-sm">{signupError.message}</p>
+                </div>
+              )}
 
               <div className="text-center">
                 <p className="text-gray-400">
                   Already have an account?{' '}
                   <button
+                    type="button"
                     onClick={() => setLocation('/login')}
                     className="text-purple-400 hover:text-purple-300 font-medium transition-colors"
                   >
@@ -141,7 +282,7 @@ export default function Signup() {
                   </button>
                 </p>
               </div>
-            </div>
+            </form>
           </motion.div>
         </div>
       </div>

@@ -3,7 +3,7 @@ import { useLocation } from "wouter";
 import { useAuth } from "@/hooks/use-auth";
 import SuccessPopup from "@/components/success-popup";
 import "../styles/auth.css";
-import "../styles/theme-toggle.css";
+import "../styles/new-theme-toggle.css";
 
 export default function Signup() {
   const [, setLocation] = useLocation();
@@ -113,27 +113,20 @@ export default function Signup() {
             </div>
           </div>
           <div className="flex items-center space-x-4">
-            <label className="switch">
-              <input type="checkbox" id="input" onChange={handleThemeToggle} />
-              <span className="slider round">
-                <div className="sun-moon">
-                  <div className="stars">
-                    <svg className="star" id="star-1" viewBox="0 0 24 24">
-                      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                    </svg>
-                    <svg className="star" id="star-2" viewBox="0 0 24 24">
-                      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                    </svg>
-                    <svg className="star" id="star-3" viewBox="0 0 24 24">
-                      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                    </svg>
-                  </div>
-                  <div className="moon-dot" id="moon-dot-1"></div>
-                  <div className="moon-dot" id="moon-dot-2"></div>
-                  <div className="moon-dot" id="moon-dot-3"></div>
+            <div className="toggle-cont">
+              <input type="checkbox" className="toggle-input" onChange={handleThemeToggle} />
+              <label className="toggle-label">
+                <div className="cont-icon">
+                  <div className="sparkle" style={{"--deg": "45", "--duration": "3"} as React.CSSProperties}></div>
+                  <div className="sparkle" style={{"--deg": "90", "--duration": "3"} as React.CSSProperties}></div>
+                  <div className="sparkle" style={{"--deg": "135", "--duration": "3"} as React.CSSProperties}></div>
+                  <div className="sparkle" style={{"--deg": "180", "--duration": "3"} as React.CSSProperties}></div>
+                  <svg className="icon" viewBox="0 0 24 24">
+                    <path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.166a.75.75 0 00-1.06-1.06l-1.591 1.59a.75.75 0 101.06 1.061l1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.834 18.894a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.061 1.06l1.59 1.591zM12 18a.75.75 0 01.75.75V21a.75.75 0 01-1.5 0v-2.25A.75.75 0 0112 18zM7.758 17.303a.75.75 0 00-1.061-1.06l-1.591 1.59a.75.75 0 001.06 1.061l1.591-1.59zM6 12a.75.75 0 01-.75.75H3a.75.75 0 010-1.5h2.25A.75.75 0 016 12zM6.697 7.757a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 00-1.061 1.06l1.59 1.591z"/>
+                  </svg>
                 </div>
-              </span>
-            </label>
+              </label>
+            </div>
             <button
               onClick={() => setLocation('/')}
               className="text-white/70 hover:text-white transition-colors"

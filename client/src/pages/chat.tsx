@@ -112,8 +112,8 @@ export default function Chat() {
 
   return (
     <div className="h-screen flex bg-gradient-to-br from-black via-gray-900/30 to-black">
-      {/* Chat Content First */}
-      <div className="flex-1 flex flex-col order-2">
+      {/* Chat Content First - Full Width */}
+      <div className="w-full flex flex-col order-2">
         {/* Header with Flamingo branding */}
         <header className="bg-gray-800/95 backdrop-blur-md border-b border-gray-700 p-4 shadow-sm">
           <div className="flex items-center justify-between">
@@ -208,7 +208,7 @@ export default function Chat() {
         </div>
 
         {/* Chat Input Area - Full Width */}
-        <div className="w-full" style={{
+        <div className="p-4" style={{
           background: 'linear-gradient(to bottom right, #7e7e7e, #363636, #363636, #363636, #363636)'
         }}>
           <ChatInput 
@@ -219,13 +219,15 @@ export default function Chat() {
       </div>
 
       {/* Sidebar Second - History */}
-      <ChatSidebar
-        conversations={conversations}
-        currentConversation={currentConversation}
-        isOpen={sidebarOpen}
-        onClose={() => setSidebarOpen(false)}
-        onAdminAccess={handleAdminAccess}
-      />
+      <div className="w-80 order-1">
+        <ChatSidebar
+          conversations={conversations}
+          currentConversation={currentConversation}
+          isOpen={sidebarOpen}
+          onClose={() => setSidebarOpen(false)}
+          onAdminAccess={handleAdminAccess}
+        />
+      </div>
 
       <PromptEnhancementModal
         isOpen={showEnhancementModal}

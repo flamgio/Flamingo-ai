@@ -49,7 +49,9 @@ export default function ChatInput({ onSendMessage, disabled }: ChatInputProps) {
   }, [message]);
 
   return (
-    <div className="bg-white/95 dark:bg-gray-800/95 backdrop-blur-md border-t border-gray-200 dark:border-gray-700 p-6 shadow-lg">
+    <div className="backdrop-blur-md p-6 shadow-lg" style={{
+      background: 'transparent'
+    }}>
       <div className="max-w-4xl mx-auto">
         <div className="container_chat_bot">
           <div className="container-chat-options">

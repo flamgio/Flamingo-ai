@@ -25,4 +25,5 @@ router.post("/enhance-prompt", async (req, res) => {
   }
 });
 
+export const enhancePromptRoute = router.post.bind(router);
 export default router;

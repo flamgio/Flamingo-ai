@@ -1,4 +1,6 @@
 
+const API_BASE = "";
+
 export async function apiRequest(
   method: string,
   url: string,
@@ -41,5 +43,10 @@ export const getConversation = async (id: string) => {
 
 export const deleteConversation = async (id: string) => {
   const response = await apiRequest("DELETE", `/api/conversations/${id}`);
+  return response.json();
+};
+
+export const enhancePrompt = async (data: { prompt: string }) => {
+  const response = await apiRequest("POST", "/api/enhance-prompt", data);
   return response.json();
 };

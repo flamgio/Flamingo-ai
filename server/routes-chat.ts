@@ -56,3 +56,4 @@ router.post("/chat", async (req, res) => {
 });
 
 export { router as chatRouter };
+export default router;

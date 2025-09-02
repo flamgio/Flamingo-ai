@@ -13,12 +13,12 @@ interface ChatSidebarProps {
   onAdminAccess: () => void;
 }
 
-export default function ChatSidebar({ 
-  conversations, 
-  currentConversation, 
-  isOpen, 
-  onClose, 
-  onAdminAccess 
+export default function ChatSidebar({
+  conversations,
+  currentConversation,
+  isOpen,
+  onClose,
+  onAdminAccess
 }: ChatSidebarProps) {
   const [showSettings, setShowSettings] = useState(false);
   const formatDate = (date: string | Date | null) => {
@@ -49,9 +49,11 @@ export default function ChatSidebar({
         isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
       } fixed lg:relative inset-y-0 left-0 z-30 lg:z-0`}>
         {/* Sidebar Header */}
-        <div className="p-6 border-b border-gray-200 dark:border-gray-700">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Conversations</h2>
+        <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+              Flamingo AI
+            </h2>
             <Button
               data-testid="sidebar-close"
               variant="ghost"
@@ -62,9 +64,9 @@ export default function ChatSidebar({
               <i className="fas fa-times"></i>
             </Button>
           </div>
-          <Button 
+          <Button
             data-testid="new-chat-btn"
-            className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white shadow-lg transform hover:scale-105 transition-all duration-200"
+            className="w-full bg-gradient-to-r from- flamingo-500 to-flamingo-600 hover:from-flamingo-600 hover:to-flamingo-700 text-white shadow-lg transform hover:scale-105 transition-all duration-200"
           >
             <i className="fas fa-plus mr-2"></i>
             New Conversation
@@ -110,11 +112,11 @@ export default function ChatSidebar({
         </ScrollArea>
 
         {/* Sidebar Footer */}
-        <div className="p-4 border-t border-blue-200 dark:border-gray-700">
+        <div className="p-4 border-t border-flamingo-200 dark:border-gray-700">
           <Button
             data-testid="settings-btn"
             variant="ghost"
-            className="w-full justify-start text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transform hover:scale-105 transition-all duration-200"
+            className="w-full justify-start text-flamingo-600 dark:text-flamingo-400 hover:text-flamingo-700 dark:hover:text-flamingo-300 transform hover:scale-105 transition-all duration-200"
             onClick={() => setShowSettings(true)}
           >
             <i className="fas fa-cog mr-3"></i>
@@ -123,9 +125,9 @@ export default function ChatSidebar({
         </div>
 
         {/* Settings Modal */}
-        <SettingsModal 
-          isOpen={showSettings} 
-          onClose={() => setShowSettings(false)} 
+        <SettingsModal
+          isOpen={showSettings}
+          onClose={() => setShowSettings(false)}
         />
       </div>
     </>

@@ -45,3 +45,8 @@ export const enhancePrompt = async (data: { prompt: string }) => {
   const response = await apiRequest("POST", "/api/enhance-prompt", data);
   return response.json();
 };
+
+export const enhancePrompt = async (data: { prompt: string }) => {
+  const response = await apiRequest("POST", "/api/enhance-prompt", data);
+  return response.json();
+};

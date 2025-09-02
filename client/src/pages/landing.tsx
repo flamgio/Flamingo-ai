@@ -308,17 +308,17 @@ export default function Landing() {
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {/* Smart Agent Routing Card */}
+            {/* AI Model Selection Card */}
             <div className="card w-full">
               <div className="card__border"></div>
               <div className="card_title__container">
                 <div className="flex items-center space-x-3 mb-2">
                   <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-blue-600 rounded-lg flex items-center justify-center">
-                    <i className="fas fa-route text-white text-sm"></i>
+                    <i className="fas fa-brain text-white text-sm"></i>
                   </div>
-                  <h3 className="card_title">Smart Agent Routing</h3>
+                  <h3 className="card_title">AI Model Selection</h3>
                 </div>
-                <p className="card_paragraph">Intelligent AI model selection</p>
+                <p className="card_paragraph">Multiple AI models to choose from</p>
               </div>
               <hr className="line" />
               <ul className="card__list">
@@ -328,7 +328,7 @@ export default function Landing() {
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
                     </svg>
                   </span>
-                  <span className="list_text">Local HF models</span>
+                  <span className="list_text">GPT models</span>
                 </li>
                 <li className="card__list_item">
                   <span className="check">
@@ -336,7 +336,7 @@ export default function Landing() {
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
                     </svg>
                   </span>
-                  <span className="list_text">Cloud services</span>
+                  <span className="list_text">Claude models</span>
                 </li>
                 <li className="card__list_item">
                   <span className="check">
@@ -344,7 +344,7 @@ export default function Landing() {
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
                     </svg>
                   </span>
-                  <span className="list_text">Auto fallback</span>
+                  <span className="list_text">Custom selection</span>
                 </li>
               </ul>
               <button className="button">Explore Now</button>

@@ -308,37 +308,227 @@ export default function Landing() {
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <FeatureCard
-              icon="fas fa-route"
-              title="Smart Agent Routing"
-              description="Automatically routes prompts between local Hugging Face models and cloud services for optimal performance and cost efficiency."
-            />
-            <FeatureCard
-              icon="fas fa-database"
-              title="PostgreSQL Memory"
-              description="User-specific conversation storage with PostgreSQL ensures your chat history is preserved and easily accessible."
-            />
-            {/* Admin Dashboard is now hidden from regular users */}
-            <FeatureCard
-              icon="fas fa-cog"
-              title="User Settings"
-              description="Customize your chat experience with personalized settings and model preferences."
-            />
-            <FeatureCard
-              icon="fas fa-mobile-alt"
-              title="Mobile Responsive"
-              description="Seamlessly designed for all devices with a mobile-first approach and intuitive touch interactions."
-            />
-            <FeatureCard
-              icon="fas fa-lock"
-              title="Privacy Security"
-              description="Your data stays private with secure authentication and encrypted storage for all conversations."
-            />
-            <FeatureCard
-              icon="fas fa-code"
-              title="Markdown Support"
-              description="Rich text formatting with embedded markdown rendering for code blocks, lists, and highlighted content."
-            />
+            {/* Smart Agent Routing Card */}
+            <div className="card">
+              <div className="card__border"></div>
+              <div className="card_title__container">
+                <h3 className="card_title">Smart Agent Routing</h3>
+                <p className="card_paragraph">Intelligent AI model selection</p>
+              </div>
+              <hr className="line" />
+              <ul className="card__list">
+                <li className="card__list_item">
+                  <span className="check">
+                    <svg className="check_svg" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
+                    </svg>
+                  </span>
+                  <span className="list_text">Local HF models</span>
+                </li>
+                <li className="card__list_item">
+                  <span className="check">
+                    <svg className="check_svg" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
+                    </svg>
+                  </span>
+                  <span className="list_text">Cloud services</span>
+                </li>
+                <li className="card__list_item">
+                  <span className="check">
+                    <svg className="check_svg" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
+                    </svg>
+                  </span>
+                  <span className="list_text">Auto fallback</span>
+                </li>
+              </ul>
+              <button className="button">Explore Now</button>
+            </div>
+
+            {/* PostgreSQL Memory Card */}
+            <div className="card">
+              <div className="card__border"></div>
+              <div className="card_title__container">
+                <h3 className="card_title">PostgreSQL Memory</h3>
+                <p className="card_paragraph">Persistent conversation storage</p>
+              </div>
+              <hr className="line" />
+              <ul className="card__list">
+                <li className="card__list_item">
+                  <span className="check">
+                    <svg className="check_svg" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
+                    </svg>
+                  </span>
+                  <span className="list_text">User-specific storage</span>
+                </li>
+                <li className="card__list_item">
+                  <span className="check">
+                    <svg className="check_svg" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
+                    </svg>
+                  </span>
+                  <span className="list_text">Chat history</span>
+                </li>
+                <li className="card__list_item">
+                  <span className="check">
+                    <svg className="check_svg" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
+                    </svg>
+                  </span>
+                  <span className="list_text">Easy access</span>
+                </li>
+              </ul>
+              <button className="button">Explore Now</button>
+            </div>
+
+            {/* User Settings Card */}
+            <div className="card">
+              <div className="card__border"></div>
+              <div className="card_title__container">
+                <h3 className="card_title">User Settings</h3>
+                <p className="card_paragraph">Customize your experience</p>
+              </div>
+              <hr className="line" />
+              <ul className="card__list">
+                <li className="card__list_item">
+                  <span className="check">
+                    <svg className="check_svg" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
+                    </svg>
+                  </span>
+                  <span className="list_text">Personal settings</span>
+                </li>
+                <li className="card__list_item">
+                  <span className="check">
+                    <svg className="check_svg" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
+                    </svg>
+                  </span>
+                  <span className="list_text">Model preferences</span>
+                </li>
+                <li className="card__list_item">
+                  <span className="check">
+                    <svg className="check_svg" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
+                    </svg>
+                  </span>
+                  <span className="list_text">Chat customization</span>
+                </li>
+              </ul>
+              <button className="button">Explore Now</button>
+            </div>
+
+            {/* Mobile Responsive Card */}
+            <div className="card">
+              <div className="card__border"></div>
+              <div className="card_title__container">
+                <h3 className="card_title">Mobile Responsive</h3>
+                <p className="card_paragraph">Perfect on all devices</p>
+              </div>
+              <hr className="line" />
+              <ul className="card__list">
+                <li className="card__list_item">
+                  <span className="check">
+                    <svg className="check_svg" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
+                    </svg>
+                  </span>
+                  <span className="list_text">Mobile-first design</span>
+                </li>
+                <li className="card__list_item">
+                  <span className="check">
+                    <svg className="check_svg" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
+                    </svg>
+                  </span>
+                  <span className="list_text">Touch interactions</span>
+                </li>
+                <li className="card__list_item">
+                  <span className="check">
+                    <svg className="check_svg" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
+                    </svg>
+                  </span>
+                  <span className="list_text">Responsive layout</span>
+                </li>
+              </ul>
+              <button className="button">Explore Now</button>
+            </div>
+
+            {/* Privacy Security Card */}
+            <div className="card">
+              <div className="card__border"></div>
+              <div className="card_title__container">
+                <h3 className="card_title">Privacy Security</h3>
+                <p className="card_paragraph">Your data stays private</p>
+              </div>
+              <hr className="line" />
+              <ul className="card__list">
+                <li className="card__list_item">
+                  <span className="check">
+                    <svg className="check_svg" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
+                    </svg>
+                  </span>
+                  <span className="list_text">Secure authentication</span>
+                </li>
+                <li className="card__list_item">
+                  <span className="check">
+                    <svg className="check_svg" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
+                    </svg>
+                  </span>
+                  <span className="list_text">Encrypted storage</span>
+                </li>
+                <li className="card__list_item">
+                  <span className="check">
+                    <svg className="check_svg" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
+                    </svg>
+                  </span>
+                  <span className="list_text">Private conversations</span>
+                </li>
+              </ul>
+              <button className="button">Explore Now</button>
+            </div>
+
+            {/* Markdown Support Card */}
+            <div className="card">
+              <div className="card__border"></div>
+              <div className="card_title__container">
+                <h3 className="card_title">Markdown Support</h3>
+                <p className="card_paragraph">Rich text formatting</p>
+              </div>
+              <hr className="line" />
+              <ul className="card__list">
+                <li className="card__list_item">
+                  <span className="check">
+                    <svg className="check_svg" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
+                    </svg>
+                  </span>
+                  <span className="list_text">Code blocks</span>
+                </li>
+                <li className="card__list_item">
+                  <span className="check">
+                    <svg className="check_svg" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
+                    </svg>
+                  </span>
+                  <span className="list_text">Lists & formatting</span>
+                </li>
+                <li className="card__list_item">
+                  <span className="check">
+                    <svg className="check_svg" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
+                    </svg>
+                  </span>
+                  <span className="list_text">Highlighted content</span>
+                </li>
+              </ul>
+              <button className="button">Explore Now</button>
+            </div>
           </div>
         </div>
       </section>

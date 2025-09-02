@@ -80,7 +80,7 @@ export default function ChatMessage({ message }: ChatMessageProps) {
               {formatDate(message.createdAt)}
             </span>
           </div>
-          <div className="chat-message-assistant px-4 py-3 rounded-2xl rounded-bl-md relative group">
+          <div className="bg-white text-gray-900 px-4 py-3 rounded-2xl rounded-bl-md relative group shadow-lg border border-gray-100">
             <div className="prose-flamingo">
               <ReactMarkdown
                 components={{

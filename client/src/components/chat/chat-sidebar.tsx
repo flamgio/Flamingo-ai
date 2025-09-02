@@ -45,17 +45,20 @@ export default function ChatSidebar({
 
   return (
     <>
-      <div className={`w-80 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 flex flex-col transition-transform duration-300 ${
+      <div className={`w-80 flex flex-col transition-transform duration-300 ${
         isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
       } fixed lg:relative inset-y-0 left-0 z-30 lg:z-0`}>
         {/* Sidebar Header */}
-        <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+        <div className="p-4 border-b border-gray-600" style={{
+          background: 'linear-gradient(to bottom right, #7e7e7e, #363636, #363636, #363636, #363636)'
+        }}>
           <div className="flex items-center justify-between">
             <button 
               onClick={() => window.location.href = '/'}
-              className="text-lg font-semibold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+              className="text-lg font-semibold text-white hover:text-blue-400 transition-colors"
             >
-              Flamingo AI
+              <span className="text-black">Flamingo</span>{" "}
+              <span className="text-blue-400 animate-pulse">AI</span>
             </button>
             <Button
               data-testid="sidebar-close"
@@ -77,9 +80,11 @@ export default function ChatSidebar({
         </div>
 
         {/* Chat History */}
-        <ScrollArea className="flex-1 p-4">
+        <ScrollArea className="flex-1 p-4" style={{
+          background: 'linear-gradient(to bottom right, #7e7e7e, #363636, #363636, #363636, #363636)'
+        }}>
           <div className="space-y-2">
-            <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-3">
+            <h3 className="text-sm font-medium text-white uppercase tracking-wide mb-3">
               Recent Chats
             </h3>
 
@@ -88,8 +93,8 @@ export default function ChatSidebar({
                 <div className="w-12 h-12 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-3">
                   <i className="fas fa-comments text-gray-400 dark:text-gray-500"></i>
                 </div>
-                <p className="text-sm text-gray-500 dark:text-gray-400">No conversations yet</p>
-                <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">Start a new chat to begin</p>
+                <p className="text-sm text-gray-300">No conversations yet</p>
+                <p className="text-xs text-gray-400 mt-1">Start a new chat to begin</p>
               </div>
             ) : (
               conversations.map((conversation) => (
@@ -102,10 +107,10 @@ export default function ChatSidebar({
                       : 'hover:bg-gray-100 dark:hover:bg-gray-700'
                   }`}
                 >
-                  <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
+                  <p className="text-sm font-medium text-white truncate">
                     {conversation.title}
                   </p>
-                  <span className="text-xs text-gray-500 dark:text-gray-400">
+                  <span className="text-xs text-gray-400">
                     {formatDistanceToNow(new Date(conversation.updatedAt || conversation.createdAt || Date.now()))} ago
                   </span>
                 </div>
@@ -115,11 +120,13 @@ export default function ChatSidebar({
         </ScrollArea>
 
         {/* Sidebar Footer */}
-        <div className="p-4 border-t border-flamingo-200 dark:border-gray-700">
+        <div className="p-4 border-t border-gray-600" style={{
+          background: 'linear-gradient(to bottom right, #7e7e7e, #363636, #363636, #363636, #363636)'
+        }}>
           <Button
             data-testid="settings-btn"
             variant="ghost"
-            className="w-full justify-start text-flamingo-600 dark:text-flamingo-400 hover:text-flamingo-700 dark:hover:text-flamingo-300 transform hover:scale-105 transition-all duration-200"
+            className="w-full justify-start text-white hover:text-blue-400 transform hover:scale-105 transition-all duration-200"
             onClick={() => setShowSettings(true)}
           >
             <i className="fas fa-cog mr-3"></i>

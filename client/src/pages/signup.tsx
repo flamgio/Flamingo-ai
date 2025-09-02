@@ -3,6 +3,7 @@ import { useLocation } from "wouter";
 import { useAuth } from "@/hooks/use-auth";
 import SuccessPopup from "@/components/success-popup";
 import "../styles/auth.css";
+import "../styles/theme-toggle.css";
 
 export default function Signup() {
   const [, setLocation] = useLocation();
@@ -112,12 +113,27 @@ export default function Signup() {
             </div>
           </div>
           <div className="flex items-center space-x-4">
-            <button
-              onClick={handleThemeToggle}
-              className="p-2 rounded-lg bg-white/10 text-white hover:bg-white/20 transition-colors"
-            >
-              🌙
-            </button>
+            <label className="switch">
+              <input type="checkbox" id="input" onChange={handleThemeToggle} />
+              <span className="slider round">
+                <div className="sun-moon">
+                  <div className="stars">
+                    <svg className="star" id="star-1" viewBox="0 0 24 24">
+                      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                    </svg>
+                    <svg className="star" id="star-2" viewBox="0 0 24 24">
+                      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                    </svg>
+                    <svg className="star" id="star-3" viewBox="0 0 24 24">
+                      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                    </svg>
+                  </div>
+                  <div className="moon-dot" id="moon-dot-1"></div>
+                  <div className="moon-dot" id="moon-dot-2"></div>
+                  <div className="moon-dot" id="moon-dot-3"></div>
+                </div>
+              </span>
+            </label>
             <button
               onClick={() => setLocation('/')}
               className="text-white/70 hover:text-white transition-colors"

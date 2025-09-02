@@ -112,7 +112,7 @@ export default function Pricing() {
             <div className="card">
               <div className="title">Premium Plan</div>
               <div className="pricing">
-                $19<span className="pricing-time">/month</span>
+                $5<span className="pricing-time">/month</span>
               </div>
               <div className="sub-title">For power users and professionals</div>
               <ul className="list">

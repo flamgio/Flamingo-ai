@@ -631,19 +631,49 @@
   @apply bg-blue-400 dark:bg-blue-500;
 }
 
-/* Enchanted Time Animation */
-@keyframes shimmer {
+/* Professional Animations */
+@keyframes subtle-fade {
   0% {
-    background-position: -200% center;
+    opacity: 0;
+    transform: translateY(10px);
   }
   100% {
-    background-position: 200% center;
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-.animate-shimmer {
-  background-size: 300% 300%;
-  animation: shimmer 3s ease-in-out infinite;
+@keyframes smooth-slide {
+  0% {
+    transform: translateX(-20px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes gentle-bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-2px);
+  }
+}
+
+.fade-in {
+  animation: subtle-fade 0.6s ease-out;
+}
+
+.slide-in {
+  animation: smooth-slide 0.5s ease-out;
+}
+
+.gentle-hover:hover {
+  animation: gentle-bounce 0.3s ease-in-out;
+  transition: transform 0.3s ease;
 }
 
 /* Custom Chat Box CSS */
@@ -769,8 +799,9 @@
 }
 
 .container_chat_bot .chat .options .btns-add button:hover {
-  transform: translateY(-5px);
+  transform: translateY(-2px);
   color: #ffffff;
+  transition: all 0.2s ease;
 }
 
 .container_chat_bot .chat .options .btn-submit {
@@ -806,12 +837,12 @@
 
 .container_chat_bot .chat .options .btn-submit:focus svg {
   color: #f3f6fd;
-  filter: drop-shadow(0 0 5px #ffffff);
-  transform: scale(1.2) rotate(45deg) translateX(-2px) translateY(1px);
+  filter: drop-shadow(0 0 2px #ffffff);
+  transform: scale(1.05) rotate(15deg);
 }
 
 .container_chat_bot .chat .options .btn-submit:active {
-  transform: scale(0.92);
+  transform: scale(0.98);
 }
 
 .container_chat_bot .tags {

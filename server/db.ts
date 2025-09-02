@@ -7,10 +7,10 @@ if (!process.env.DATABASE_URL) {
   throw new Error("DATABASE_URL is required. Please ensure the database is provisioned in Replit.");
 }
 
-// Create postgres connection with SSL disabled for Replit
-const connectionString = process.env.DATABASE_URL.replace('?sslmode=disable', '') + '?sslmode=disable';
+// Create postgres connection with SSL enabled for Replit
+const connectionString = process.env.DATABASE_URL;
 const client = postgres(connectionString, {
-  ssl: false,
+  ssl: 'require',
   prepare: false
 });
 

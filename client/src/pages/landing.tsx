@@ -292,51 +292,22 @@ export default function Landing() {
       {/* Features Section */}
       <section className="py-20 bg-gray-50 dark:bg-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12 items-start">
-            {/* Left Side - Content */}
-            <motion.div
-              className="space-y-8"
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-            >
-              <div>
-                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-                  Powerful Features for Modern AI
-                </h2>
-                <p className="text-xl text-gray-600 dark:text-gray-300">
-                  Experience the next generation of AI chat with intelligent routing, persistent memory, and privacy-first design.
-                </p>
-              </div>
-              
-              <div className="space-y-6">
-                <FeatureCard
-                  icon="fas fa-brain"
-                  title="Smart AI Routing"
-                  description="Intelligent model selection based on your prompt complexity for optimal responses."
-                />
-                <FeatureCard
-                  icon="fas fa-database"
-                  title="Persistent Memory"
-                  description="Your conversations are safely stored and easily accessible across sessions."
-                />
-                <FeatureCard
-                  icon="fas fa-shield-alt"
-                  title="Privacy First"
-                  description="Your data stays secure with encrypted storage and private conversations."
-                />
-              </div>
-            </motion.div>
+          <motion.div
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+              Powerful Features for Modern AI
+            </h2>
+            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+              Experience the next generation of AI chat with intelligent routing, persistent memory, and privacy-first design.
+            </p>
+          </motion.div>
 
-            {/* Right Side - Cards */}
-            <motion.div
-              className="grid md:grid-cols-2 gap-6"
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              viewport={{ once: true }}
-            >
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {/* AI Model Selection Card */}
             <div className="card w-full">
               <div className="card__border"></div>
@@ -588,7 +559,6 @@ export default function Landing() {
               </ul>
               <button className="button">Explore Now</button>
             </div>
-            </motion.div>
           </div>
         </div>
       </section>

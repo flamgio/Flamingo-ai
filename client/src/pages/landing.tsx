@@ -309,10 +309,15 @@ export default function Landing() {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {/* Smart Agent Routing Card */}
-            <div className="card">
+            <div className="card w-full">
               <div className="card__border"></div>
               <div className="card_title__container">
-                <h3 className="card_title">Smart Agent Routing</h3>
+                <div className="flex items-center space-x-3 mb-2">
+                  <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-blue-600 rounded-lg flex items-center justify-center">
+                    <i className="fas fa-route text-white text-sm"></i>
+                  </div>
+                  <h3 className="card_title">Smart Agent Routing</h3>
+                </div>
                 <p className="card_paragraph">Intelligent AI model selection</p>
               </div>
               <hr className="line" />
@@ -346,10 +351,15 @@ export default function Landing() {
             </div>
 
             {/* PostgreSQL Memory Card */}
-            <div className="card">
+            <div className="card w-full">
               <div className="card__border"></div>
               <div className="card_title__container">
-                <h3 className="card_title">PostgreSQL Memory</h3>
+                <div className="flex items-center space-x-3 mb-2">
+                  <div className="w-8 h-8 bg-gradient-to-br from-green-500 to-teal-600 rounded-lg flex items-center justify-center">
+                    <i className="fas fa-database text-white text-sm"></i>
+                  </div>
+                  <h3 className="card_title">PostgreSQL Memory</h3>
+                </div>
                 <p className="card_paragraph">Persistent conversation storage</p>
               </div>
               <hr className="line" />
@@ -383,10 +393,15 @@ export default function Landing() {
             </div>
 
             {/* User Settings Card */}
-            <div className="card">
+            <div className="card w-full">
               <div className="card__border"></div>
               <div className="card_title__container">
-                <h3 className="card_title">User Settings</h3>
+                <div className="flex items-center space-x-3 mb-2">
+                  <div className="w-8 h-8 bg-gradient-to-br from-orange-500 to-red-600 rounded-lg flex items-center justify-center">
+                    <i className="fas fa-cog text-white text-sm"></i>
+                  </div>
+                  <h3 className="card_title">User Settings</h3>
+                </div>
                 <p className="card_paragraph">Customize your experience</p>
               </div>
               <hr className="line" />
@@ -420,10 +435,15 @@ export default function Landing() {
             </div>
 
             {/* Mobile Responsive Card */}
-            <div className="card">
+            <div className="card w-full">
               <div className="card__border"></div>
               <div className="card_title__container">
-                <h3 className="card_title">Mobile Responsive</h3>
+                <div className="flex items-center space-x-3 mb-2">
+                  <div className="w-8 h-8 bg-gradient-to-br from-pink-500 to-purple-600 rounded-lg flex items-center justify-center">
+                    <i className="fas fa-mobile-alt text-white text-sm"></i>
+                  </div>
+                  <h3 className="card_title">Mobile Responsive</h3>
+                </div>
                 <p className="card_paragraph">Perfect on all devices</p>
               </div>
               <hr className="line" />
@@ -457,10 +477,15 @@ export default function Landing() {
             </div>
 
             {/* Privacy Security Card */}
-            <div className="card">
+            <div className="card w-full">
               <div className="card__border"></div>
               <div className="card_title__container">
-                <h3 className="card_title">Privacy Security</h3>
+                <div className="flex items-center space-x-3 mb-2">
+                  <div className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center">
+                    <i className="fas fa-shield-alt text-white text-sm"></i>
+                  </div>
+                  <h3 className="card_title">Privacy Security</h3>
+                </div>
                 <p className="card_paragraph">Your data stays private</p>
               </div>
               <hr className="line" />
@@ -494,10 +519,15 @@ export default function Landing() {
             </div>
 
             {/* Markdown Support Card */}
-            <div className="card">
+            <div className="card w-full">
               <div className="card__border"></div>
               <div className="card_title__container">
-                <h3 className="card_title">Markdown Support</h3>
+                <div className="flex items-center space-x-3 mb-2">
+                  <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-lg flex items-center justify-center">
+                    <i className="fas fa-code text-white text-sm"></i>
+                  </div>
+                  <h3 className="card_title">Markdown Support</h3>
+                </div>
                 <p className="card_paragraph">Rich text formatting</p>
               </div>
               <hr className="line" />

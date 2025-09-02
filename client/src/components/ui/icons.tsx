@@ -1,4 +1,4 @@
-// Uiverse.io style icons - Human curated design system
+// Custom icons - Human curated design system
 import React from 'react';
 
 interface IconProps {

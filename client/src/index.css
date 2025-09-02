@@ -99,7 +99,7 @@
 }
 
 @layer components {
-  /* Custom Start Chat Button - From Uiverse.io by marcelodolza */
+  /* Custom Start Chat Button */
   .button {
     --white: #ffe7ff;
     --bg: #080808;
@@ -201,7 +201,7 @@
       0 1rem 1rem -0.6rem rgba(0, 0, 0, 0.8);
   }
 
-  /* Custom Pricing Cards - From Uiverse.io by MuhammadHasann */
+  /* Custom Pricing Cards */
   .card {
     overflow: hidden;
     position: relative;
@@ -211,22 +211,22 @@
     padding: 1rem;
     width: 14rem;
     height: auto;
-    background-color: rgb(122, 48, 143);
+    background-color: rgb(30, 64, 175);
     background-image: radial-gradient(
         circle at 0% 0%,
-        rgb(37, 7, 44) 15%,
+        rgb(30, 58, 138) 15%,
         rgba(0, 0, 0, 0) 75%
       ),
       radial-gradient(
         circle at 100% 100%,
-        rgb(25, 2, 31, 0.9) 15%,
+        rgb(37, 99, 235, 0.9) 15%,
         rgba(0, 0, 0, 0) 150%
       ),
       linear-gradient(
         135deg,
-        rgba(24, 8, 28, 0) 0%,
-        rgb(122, 48, 143) 50%,
-        rgba(24, 8, 28, 0) 100%
+        rgba(30, 64, 175, 0) 0%,
+        rgb(59, 130, 246) 50%,
+        rgba(30, 64, 175, 0) 100%
       );
     border-radius: 0.5rem;
   }
@@ -238,14 +238,14 @@
     right: 1rem;
     width: 2rem;
     height: 2rem;
-    background-color: rgb(122, 48, 143);
+    background-color: rgb(59, 130, 246);
     background-image: linear-gradient(
       0deg,
-      rgba(118, 42, 180, 1) 0%,
-      rgb(199, 95, 228) 75%
+      rgba(37, 99, 235, 1) 0%,
+      rgb(96, 165, 250) 75%
     );
     border-radius: 9999px;
-    box-shadow: 0 1px 5px 3px rgb(199, 95, 228), 0 0 30px 5px rgb(199, 95, 228);
+    box-shadow: 0 1px 5px 3px rgb(96, 165, 250), 0 0 30px 5px rgb(96, 165, 250);
   }
 
   .card .title {
@@ -263,7 +263,7 @@
   .card .pricing .pricing-time,
   .card .sub-title {
     font-size: 0.75rem;
-    color: rgb(184, 132, 199);
+    color: rgb(147, 197, 253);
     font-weight: 500;
   }
 
@@ -280,7 +280,7 @@
   .card .list .list-item .check {
     margin-right: 0.25rem;
     font-size: 1rem;
-    color: rgb(199, 95, 228);
+    color: rgb(96, 165, 250);
     font-weight: 900;
   }
 
@@ -292,12 +292,12 @@
     padding: 0.5rem 0.75rem;
     width: 100%;
     height: fit-content;
-    background-color: rgb(122, 48, 143);
+    background-color: rgb(59, 130, 246);
     font-size: 0.75rem;
     color: white;
     border: none;
     border-radius: 0.5rem;
-    box-shadow: 0px 0px 2px 1px rgb(122, 48, 143);
+    box-shadow: 0px 0px 2px 1px rgb(59, 130, 246);
     transition: all 0.3s cubic-bezier(1, 0, 0, 1);
   }
 
@@ -454,13 +454,13 @@
 
 }
 
-/* From Uiverse.io by MuhammadHasann */
+/* Custom Card Styles */
 .card {
   --white: hsl(0, 0%, 100%);
-  --black: hsl(240, 15%, 9%);
-  --paragraph: hsl(0, 0%, 83%);
-  --line: hsl(240, 9%, 17%);
-  --primary: hsl(266, 92%, 58%);
+  --black: hsl(217, 19%, 12%);
+  --paragraph: hsl(217, 19%, 80%);
+  --line: hsl(217, 19%, 20%);
+  --primary: hsl(217, 91%, 60%);
 
   position: relative;
 
@@ -471,20 +471,20 @@
   padding: 1rem;
   width: 100%;
   max-width: 19rem;
-  background-color: hsla(240, 15%, 9%, 1);
+  background-color: hsla(217, 19%, 12%, 1);
   background-image: radial-gradient(
       at 88% 40%,
-      hsla(240, 15%, 9%, 1) 0px,
+      hsla(217, 19%, 12%, 1) 0px,
       transparent 85%
     ),
-    radial-gradient(at 49% 30%, hsla(240, 15%, 9%, 1) 0px, transparent 85%),
-    radial-gradient(at 14% 26%, hsla(240, 15%, 9%, 1) 0px, transparent 85%),
-    radial-gradient(at 0% 64%, hsla(263, 93%, 56%, 1) 0px, transparent 85%),
-    radial-gradient(at 41% 94%, hsla(284, 100%, 84%, 1) 0px, transparent 85%),
-    radial-gradient(at 100% 99%, hsla(306, 100%, 57%, 1) 0px, transparent 85%);
+    radial-gradient(at 49% 30%, hsla(217, 19%, 12%, 1) 0px, transparent 85%),
+    radial-gradient(at 14% 26%, hsla(217, 19%, 12%, 1) 0px, transparent 85%),
+    radial-gradient(at 0% 64%, hsla(217, 91%, 60%, 1) 0px, transparent 85%),
+    radial-gradient(at 41% 94%, hsla(220, 91%, 75%, 1) 0px, transparent 85%),
+    radial-gradient(at 100% 99%, hsla(217, 91%, 70%, 1) 0px, transparent 85%);
 
   border-radius: 1rem;
-  box-shadow: 0px -16px 24px 0px rgba(255, 255, 255, 0.25) inset;
+  box-shadow: 0px -16px 24px 0px rgba(59, 130, 246, 0.15) inset;
 }
 
 .card .card__border {

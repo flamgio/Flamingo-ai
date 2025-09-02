@@ -38,7 +38,7 @@ const pricingPlans: PricingPlan[] = [
   }
 ];
 
-// Uiverse.io style check icon - Human curated
+// Custom check icon - Human curated
 const CheckIcon = () => (
   <div className="w-5 h-5 rounded-full bg-gradient-to-r from-green-400 to-green-500 flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 group">
     <svg className="w-3 h-3 text-white group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">

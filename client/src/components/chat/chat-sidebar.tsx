@@ -51,9 +51,12 @@ export default function ChatSidebar({
         {/* Sidebar Header */}
         <div className="p-4 border-b border-gray-200 dark:border-gray-700">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+            <button 
+              onClick={() => window.location.href = '/'}
+              className="text-lg font-semibold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+            >
               Flamingo AI
-            </h2>
+            </button>
             <Button
               data-testid="sidebar-close"
               variant="ghost"

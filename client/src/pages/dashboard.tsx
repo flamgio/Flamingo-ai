@@ -47,14 +47,17 @@ export default function Dashboard() {
       </div>
 
       {/* Logo - Top Left */}
-      <div className="fixed top-6 left-6 z-50 flex items-center space-x-3">
+      <button 
+        onClick={() => setLocation('/')}
+        className="fixed top-6 left-6 z-50 flex items-center space-x-3 hover:opacity-80 transition-opacity"
+      >
         <img 
           src={logoImg} 
           alt="Flamingo AI" 
           className="h-12 w-12 rounded-lg shadow-lg shadow-white/20" 
         />
         <span className="text-white text-xl font-bold">Flamingo AI</span>
-      </div>
+      </button>
 
       {/* Background Effects */}
       <div className="absolute inset-0">

@@ -39,9 +39,6 @@ interface SettingsState {
     enterToSend: boolean;
   };
   ai: {
-    defaultModel: string;
-    temperature: number;
-    maxTokens: number;
     systemPrompt: string;
     enableEnhancement: boolean;
   };
@@ -117,9 +114,6 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
       enterToSend: true,
     },
     ai: {
-      defaultModel: 'gpt-4',
-      temperature: 0.7,
-      maxTokens: 2048,
       systemPrompt: '',
       enableEnhancement: true,
     },
@@ -171,9 +165,6 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
         enterToSend: true,
       },
       ai: {
-        defaultModel: 'gpt-4',
-        temperature: 0.7,
-        maxTokens: 2048,
         systemPrompt: '',
         enableEnhancement: true,
       },
@@ -188,7 +179,7 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
   const tabs = [
     { id: 'appearance', label: 'Appearance', icon: 'fas fa-palette' },
     { id: 'chat', label: 'Chat', icon: 'fas fa-comments' },
-    { id: 'ai', label: 'AI Model', icon: 'fas fa-brain' },
+    { id: 'ai', label: 'AI Assistant', icon: 'fas fa-brain' },
     { id: 'privacy', label: 'Privacy', icon: 'fas fa-shield-alt' },
   ];
 
@@ -395,43 +386,9 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                 >
                   <SettingCard
                     icon="fas fa-robot"
-                    title="AI Model Configuration"
-                    description="Configure AI behavior and parameters"
+                    title="AI Assistant Configuration"
+                    description="Configure AI assistant behavior"
                   >
-                    <SettingRow
-                      label="Default Model"
-                      description="Choose your preferred AI model"
-                    >
-                      <Select
-                        value={settings.ai.defaultModel}
-                        onValueChange={(value) => updateSettings('ai', 'defaultModel', value)}
-                      >
-                        <SelectTrigger className="w-40">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="gpt-4">GPT-4</SelectItem>
-                          <SelectItem value="gpt-3.5-turbo">GPT-3.5 Turbo</SelectItem>
-                          <SelectItem value="claude-3">Claude 3</SelectItem>
-                          <SelectItem value="mixtral">Mixtral 8x7B</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </SettingRow>
-
-                    <SettingRow
-                      label={`Temperature: ${settings.ai.temperature}`}
-                      description="Controls randomness in responses (0.0 = deterministic, 1.0 = creative)"
-                    >
-                      <div className="w-40">
-                        <Slider
-                          value={[settings.ai.temperature]}
-                          onValueChange={([value]) => updateSettings('ai', 'temperature', value)}
-                          max={1}
-                          min={0}
-                          step={0.1}
-                        />
-                      </div>
-                    </SettingRow>
 
                     <SettingRow
                       label="Enable Prompt Enhancement"

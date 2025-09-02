@@ -46,10 +46,10 @@ export default function ChatSidebar({
   return (
     <>
       <div className={`w-80 flex flex-col transition-transform duration-300 ${
-        isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
-      } fixed lg:relative inset-y-0 left-0 z-30 lg:z-0`}>
+        isOpen ? 'translate-x-0' : 'translate-x-full lg:translate-x-0'
+      } fixed lg:relative inset-y-0 right-0 z-30 lg:z-0`}>
         {/* Sidebar Header */}
-        <div className="p-4 border-b border-yellow-200 dark:border-gray-600 bg-yellow-100 dark:bg-gray-800">
+        <div className="p-4 border-b border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800">
           <div className="flex items-center justify-between">
             <button 
               onClick={() => window.location.href = '/'}
@@ -70,7 +70,7 @@ export default function ChatSidebar({
           </div>
           <Button
             data-testid="new-chat-btn"
-            className="w-full bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-gray-900 shadow-lg transform hover:scale-105 transition-all duration-200"
+            className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white shadow-lg transform hover:scale-105 transition-all duration-200"
           >
             <i className="fas fa-plus mr-2"></i>
             New Conversation
@@ -78,7 +78,7 @@ export default function ChatSidebar({
         </div>
 
         {/* Chat History */}
-        <ScrollArea className="flex-1 p-4 bg-yellow-50 dark:bg-gray-800">
+        <ScrollArea className="flex-1 p-4 bg-gray-50 dark:bg-gray-800">
           <div className="space-y-2">
             <h3 className="text-sm font-medium text-gray-800 dark:text-white uppercase tracking-wide mb-3">
               Recent Chats
@@ -99,8 +99,8 @@ export default function ChatSidebar({
                   data-testid={`conversation-${conversation.id}`}
                   className={`p-3 rounded-lg cursor-pointer transition-colors ${
                     currentConversation?.id === conversation.id
-                      ? 'bg-yellow-200 dark:bg-gray-700 border border-yellow-300 dark:border-gray-600'
-                      : 'hover:bg-yellow-150 dark:hover:bg-gray-700'
+                      ? 'bg-blue-100 dark:bg-gray-700 border border-blue-200 dark:border-gray-600'
+                      : 'hover:bg-gray-100 dark:hover:bg-gray-700'
                   }`}
                 >
                   <p className="text-sm font-medium text-gray-800 dark:text-white truncate">
@@ -116,7 +116,7 @@ export default function ChatSidebar({
         </ScrollArea>
 
         {/* Sidebar Footer */}
-        <div className="p-4 border-t border-yellow-200 dark:border-gray-600 bg-yellow-100 dark:bg-gray-800">
+        <div className="p-4 border-t border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800">
           <Button
             data-testid="settings-btn"
             variant="ghost"

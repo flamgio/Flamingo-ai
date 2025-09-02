@@ -23,6 +23,13 @@ export default function Login() {
     }
   }, []);
 
+  useEffect(() => {
+    const checkbox = document.querySelector('.toggle-input') as HTMLInputElement;
+    if (checkbox) {
+      checkbox.checked = document.documentElement.classList.contains('dark');
+    }
+  }, []);
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));

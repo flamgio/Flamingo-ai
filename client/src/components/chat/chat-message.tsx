@@ -64,23 +64,19 @@ export default function ChatMessage({ message }: ChatMessageProps) {
   return (
     <div className="flex justify-start" data-testid="assistant-message">
       <div className="flex items-start space-x-3 max-w-2xl">
-        <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-blue-600 rounded-full flex items-center justify-center flex-shrink-0 shadow-md">
-          <i className="fas fa-brain text-white text-sm"></i>
-        </div>
         <div className="space-y-2 flex-1">
           <div className="flex items-center space-x-2">
             <span 
               data-testid="model-tag"
-              className="text-xs bg-gradient-to-r from-purple-100 to-blue-100 dark:from-purple-900/30 dark:to-blue-900/30 text-purple-700 dark:text-purple-300 px-3 py-1 rounded-full font-medium shadow-sm"
+              className="text-xs bg-gradient-to-r from-gray-100 to-gray-200 dark:from-gray-800/30 dark:to-gray-700/30 text-gray-700 dark:text-gray-300 px-3 py-1 rounded-full font-medium shadow-sm"
             >
-              <i className="fas fa-microchip mr-1"></i>
               {getModelDisplayName(message.selectedModel)}
             </span>
             <span className="text-xs text-gray-500 dark:text-gray-400">
               {formatDate(message.createdAt)}
             </span>
           </div>
-          <div className="bg-white text-gray-900 px-4 py-3 rounded-2xl rounded-bl-md relative group shadow-lg border border-gray-100">
+          <div className="bg-gradient-to-r from-gray-50 to-white dark:from-gray-800 dark:to-gray-750 text-gray-900 dark:text-gray-100 px-4 py-3 rounded-2xl relative group shadow-lg border border-gray-200 dark:border-gray-600">
             <div className="prose-flamingo">
               <ReactMarkdown
                 components={{

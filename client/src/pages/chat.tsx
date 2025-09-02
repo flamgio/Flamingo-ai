@@ -152,9 +152,9 @@ export default function Chat() {
             </div>
 
             <div className="flex items-center space-x-2">
-              <span className="text-xs bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-900/30 dark:to-purple-900/30 text-blue-700 dark:text-blue-300 px-3 py-1 rounded-full font-medium">
-                <i className="fas fa-brain mr-1"></i>
-                AI Chat Active
+              <span className="text-xs bg-gradient-to-r from-gray-100 to-gray-200 dark:from-gray-800/30 dark:to-gray-700/30 text-gray-700 dark:text-gray-300 px-3 py-1 rounded-full font-medium">
+                <i className="fas fa-comment mr-1"></i>
+                Chat Active
               </span>
             </div>
           </div>
@@ -165,27 +165,27 @@ export default function Chat() {
           <div className="max-w-4xl mx-auto space-y-6">
             {messages.length === 0 ? (
               <div className="text-center py-12">
-                <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl">
-                  <i className="fas fa-robot text-white text-2xl"></i>
+                <div className="w-20 h-20 bg-gradient-to-br from-gray-700 to-gray-900 rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl">
+                  <span className="text-white text-xl font-bold">FA</span>
                 </div>
-                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-3 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-3 bg-gradient-to-r from-gray-600 to-gray-800 bg-clip-text text-transparent">
                   Welcome to Flamingo AI
                 </h3>
                 <p className="text-lg text-gray-600 dark:text-gray-300 mb-4">
-                  Start a conversation with our intelligent AI
+                  Start a professional conversation
                 </p>
                 <div className="flex justify-center space-x-4 text-sm text-gray-500 dark:text-gray-400">
                   <div className="flex items-center space-x-2">
                     <i className="fas fa-shield-alt text-blue-500"></i>
-                    <span>Privacy First</span>
+                    <span>Secure</span>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <i className="fas fa-brain text-purple-500"></i>
-                    <span>Smart Routing</span>
+                    <i className="fas fa-comment text-purple-500"></i>
+                    <span>Professional</span>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <i className="fas fa-memory text-green-500"></i>
-                    <span>Persistent Memory</span>
+                    <i className="fas fa-clock text-green-500"></i>
+                    <span>Fast Response</span>
                   </div>
                 </div>
               </div>
@@ -197,10 +197,7 @@ export default function Chat() {
             {isLoading && (
               <div className="flex justify-start">
                 <div className="flex items-start space-x-3 max-w-2xl">
-                  <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-blue-600 rounded-full flex items-center justify-center flex-shrink-0 shadow-lg">
-                    <i className="fas fa-brain text-white text-sm animate-pulse"></i>
-                  </div>
-                  <div className="bg-white dark:bg-gray-700 p-4 rounded-2xl rounded-bl-md shadow-xl border border-gray-100 dark:border-gray-600">
+                  <div className="bg-gradient-to-r from-gray-50 to-white dark:from-gray-800 dark:to-gray-750 p-4 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-600">
                     <div className="flex space-x-1">
                       <div className="w-2 h-2 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full animate-typing"></div>
                       <div className="w-2 h-2 bg-gradient-to-r from-purple-400 to-pink-500 rounded-full animate-typing" style={{ animationDelay: '0.1s' }}></div>
@@ -218,7 +215,7 @@ export default function Chat() {
         <div className="p-4 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
           <ChatInput 
             onSendMessage={handleSendWithEnhancement} 
-            isLoading={isLoading} 
+            disabled={isLoading} 
           />
         </div>
       </div>
@@ -230,7 +227,7 @@ export default function Chat() {
         onUseEnhanced={handleUseEnhanced}
         onUseOriginal={handleUseOriginal}
         onClose={handleCloseModal}
-        isEnhancing={enhanceMutation.isPending || enhanceMutation.isLoading}
+        isEnhancing={enhanceMutation.isPending}
       />
     </div>
   );

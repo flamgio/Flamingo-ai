@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
+import '../styles/chat-input.css';
 
 interface ChatInputProps {
   onSendMessage: (message: string) => Promise<void>;
@@ -50,44 +51,64 @@ export default function ChatInput({ onSendMessage, disabled }: ChatInputProps) {
   return (
     <div className="bg-white/95 dark:bg-gray-800/95 backdrop-blur-md border-t border-gray-200 dark:border-gray-700 p-6 shadow-lg">
       <div className="max-w-4xl mx-auto">
-        <form onSubmit={handleSubmit} className="relative">
-          <div className="relative">
-            <Textarea
-              ref={textareaRef}
-              data-testid="chat-input"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              onKeyDown={handleKeyDown}
-              placeholder="Ask Flamingo AI anything..."
-              className="w-full bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-600 rounded-2xl px-6 py-4 pr-16 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:border-blue-400 transition-all duration-300 min-h-[60px] max-h-[150px] shadow-xl hover:shadow-2xl text-gray-900 dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400 text-base"
-              disabled={disabled || isSubmitting}
-              style={{ height: 'auto' }}
-            />
-            <Button
-              data-testid="send-message-btn"
-              type="submit"
-              size="sm"
-              disabled={!message.trim() || disabled || isSubmitting}
-              className="absolute right-4 top-4 w-10 h-10 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 hover:from-blue-600 hover:via-purple-600 hover:to-pink-600 text-white p-0 shadow-xl transform hover:scale-110 transition-all duration-300 rounded-xl"
-            >
-              {isSubmitting ? (
-                <i className="fas fa-spinner fa-spin text-sm"></i>
-              ) : (
-                <i className="fas fa-paper-plane text-sm transform hover:translate-x-1 transition-transform duration-200"></i>
-              )}
-            </Button>
+        <div className="container_chat_bot">
+          <div className="container-chat-options">
+            <div className="chat">
+              <div className="chat-bot">
+                <form onSubmit={handleSubmit}>
+                  <textarea
+                    ref={textareaRef}
+                    data-testid="chat-input"
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    onKeyDown={handleKeyDown}
+                    placeholder="Ask anything..."
+                    disabled={disabled || isSubmitting}
+                    style={{ height: 'auto' }}
+                  />
+                </form>
+              </div>
+              <div className="options">
+                <div className="btns-add">
+                  <button type="button">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+                    </svg>
+                  </button>
+                  <button type="button">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-2V2a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v2H5a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1zM9 4h6v1H9V4zm9 16H6V6h2v1a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V6h2v14z"/>
+                    </svg>
+                  </button>
+                </div>
+                <button 
+                  className="btn-submit"
+                  type="submit"
+                  disabled={!message.trim() || disabled || isSubmitting}
+                  onClick={handleSubmit}
+                >
+                  <i>
+                    {isSubmitting ? (
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" fill="none" strokeDasharray="31.416" strokeDashoffset="31.416">
+                          <animate attributeName="stroke-dasharray" dur="2s" values="0 31.416;15.708 15.708;0 31.416" repeatCount="indefinite"/>
+                          <animate attributeName="stroke-dashoffset" dur="2s" values="0;-15.708;-31.416" repeatCount="indefinite"/>
+                        </circle>
+                      </svg>
+                    ) : (
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                      </svg>
+                    )}
+                  </i>
+                </button>
+              </div>
+            </div>
           </div>
-        </form>
-        <div className="flex items-center justify-between mt-4 text-sm text-gray-600 dark:text-gray-400">
-          <div className="flex items-center space-x-4">
-            <span className="flex items-center space-x-1">
-              <i className="fas fa-keyboard text-blue-500"></i>
-              <span>Enter to send, Shift + Enter for new line</span>
-            </span>
-          </div>
-          <div className="flex items-center space-x-1">
-            <i className="fas fa-brain text-purple-500"></i>
-            <span>Powered by Flamingo AI</span>
+          <div className="tags">
+            <span>Professional</span>
+            <span>AI Chat</span>
+            <span>Smart</span>
           </div>
         </div>
       </div>

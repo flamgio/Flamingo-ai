@@ -86,7 +86,10 @@ const ChatPreview = () => (
 export default function Landing() {
   const [, setLocation] = useLocation();
   const { user, isLoading } = useAuth();
-  const [showIntro, setShowIntro] = useState(true);
+  const [showIntro, setShowIntro] = useState(() => {
+    // Only show intro if not shown in this session
+    return !sessionStorage.getItem('intro-shown');
+  });
 
   // Redirect logged in users using useEffect to prevent setState during render
   useEffect(() => {
@@ -113,7 +116,10 @@ export default function Landing() {
 
   // Show intro animation first
   if (showIntro) {
-    return <IntroAnimation onComplete={() => setShowIntro(false)} />;
+    return <IntroAnimation onComplete={() => {
+      setShowIntro(false);
+      sessionStorage.setItem('intro-shown', 'true');
+    }} />;
   }
 
   return (
@@ -208,20 +214,16 @@ export default function Landing() {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  <button
+                  <Button
                     data-testid="get-started-btn"
-                    onClick={() => setLocation('/login')}
+                    onClick={handleGetStarted}
                     disabled={isLoading}
-                    className="button"
+                    size="lg"
+                    className="bg-gradient-to-r from-sky-400 to-blue-500 hover:from-sky-500 hover:to-blue-600 text-white px-12 py-6 text-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
                   >
-                    <div className="wrap">
-                      <p>
-                        <i className="fas fa-rocket"></i>
-                        <span>{isLoading ? 'Loading...' : 'Get Started Free'}</span>
-                        <span>{isLoading ? 'Loading...' : 'Start Your Journey'}</span>
-                      </p>
-                    </div>
-                  </button>
+                    <i className="fas fa-rocket mr-3"></i>
+                    {isLoading ? 'Loading...' : 'Get Started'}
+                  </Button>
                 </motion.div>
                 <motion.div
                   whileHover={{ scale: 1.02 }}
@@ -230,7 +232,6 @@ export default function Landing() {
                   <Button
                     data-testid="watch-demo-btn"
                     variant="outline"
-                    size="lg"
                     className="border-2 border-blue-400 text-blue-600 dark:text-blue-300 px-6 py-3 text-base font-semibold hover:bg-blue-50 dark:hover:bg-blue-900/20"
                   >
                     <i className="fas fa-play mr-2"></i>

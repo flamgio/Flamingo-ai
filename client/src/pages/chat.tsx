@@ -111,11 +111,11 @@ export default function Chat() {
   }
 
   return (
-    <div className="h-screen flex bg-gradient-to-br from-black via-gray-900/30 to-black">
+    <div className="h-screen flex bg-gradient-to-br from-yellow-50 via-yellow-100 to-yellow-200 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
       {/* Chat Content First - Full Width */}
-      <div className="w-full flex flex-col order-2">
+      <div className="flex-1 flex flex-col">
         {/* Header with Flamingo branding */}
-        <header className="bg-gray-800/95 backdrop-blur-md border-b border-gray-700 p-4 shadow-sm">
+        <header className="bg-yellow-100/95 dark:bg-gray-800/95 backdrop-blur-md border-b border-yellow-200 dark:border-gray-700 p-4 shadow-sm">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <Button
@@ -154,23 +154,21 @@ export default function Chat() {
         </header>
 
         {/* Messages Container */}
-        <div className="flex-1 overflow-y-auto p-6 bg-gradient-to-b from-gray-900/50 to-gray-800/30" style={{
-          background: 'linear-gradient(to bottom right, #7e7e7e, #363636, #363636, #363636, #363636)'
-        }}>
+        <div className="flex-1 overflow-y-auto p-6 bg-gradient-to-b from-yellow-50/50 to-yellow-100/30 dark:from-gray-900/50 dark:to-gray-800/30">
           <div className="max-w-4xl mx-auto space-y-6">
             {messages.length === 0 ? (
               <div className="text-center py-12">
                 <div className="w-20 h-20 bg-gradient-to-br from-gray-700 to-gray-900 rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl">
                   <span className="text-white text-xl font-bold">FA</span>
                 </div>
-                <h3 className="text-2xl font-bold text-white mb-3">
-                  <span className="text-black">Flamingo</span>{" "}
-                  <span className="text-blue-400 animate-pulse">AI</span>
+                <h3 className="text-2xl font-bold text-gray-800 dark:text-white mb-3">
+                  <span className="text-gray-900 dark:text-black">Flamingo</span>{" "}
+                  <span className="text-blue-600 dark:text-blue-400 animate-pulse">AI</span>
                 </h3>
-                <p className="text-lg text-gray-300 mb-4">
+                <p className="text-lg text-gray-700 dark:text-gray-300 mb-4">
                   Start a professional conversation
                 </p>
-                <div className="flex justify-center space-x-4 text-sm text-gray-400">
+                <div className="flex justify-center space-x-4 text-sm text-gray-600 dark:text-gray-400">
                   <div className="flex items-center space-x-2">
                     <i className="fas fa-shield-alt text-blue-500"></i>
                     <span>Secure</span>
@@ -208,9 +206,7 @@ export default function Chat() {
         </div>
 
         {/* Chat Input Area - Full Width */}
-        <div className="p-4" style={{
-          background: 'linear-gradient(to bottom right, #7e7e7e, #363636, #363636, #363636, #363636)'
-        }}>
+        <div className="p-4 bg-yellow-100/90 dark:bg-gray-800/90">
           <ChatInput 
             onSendMessage={handleSendWithEnhancement} 
             disabled={isLoading} 
@@ -218,16 +214,14 @@ export default function Chat() {
         </div>
       </div>
 
-      {/* Sidebar Second - History */}
-      <div className="w-80 order-1">
-        <ChatSidebar
-          conversations={conversations}
-          currentConversation={currentConversation}
-          isOpen={sidebarOpen}
-          onClose={() => setSidebarOpen(false)}
-          onAdminAccess={handleAdminAccess}
-        />
-      </div>
+      {/* Sidebar - History */}
+      <ChatSidebar
+        conversations={conversations}
+        currentConversation={currentConversation}
+        isOpen={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
+        onAdminAccess={handleAdminAccess}
+      />
 
       <PromptEnhancementModal
         isOpen={showEnhancementModal}

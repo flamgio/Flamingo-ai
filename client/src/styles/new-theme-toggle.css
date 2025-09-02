@@ -1,4 +1,45 @@
 /* From Uiverse.io by MuhammadHasann */ 
+.toggle-cont-small {
+  --primary: #54a8fc;
+  --light: #d9d9d9;
+  --dark: #121212;
+  --gray: #414344;
+
+  position: relative;
+  z-index: 10;
+
+  width: fit-content;
+  height: 35px;
+
+  border-radius: 9999px;
+}
+
+.toggle-cont-small .toggle-input {
+  display: none;
+}
+
+.toggle-cont-small .toggle-label-small {
+  --gap: 3px;
+  --width: 35px;
+
+  cursor: pointer;
+
+  position: relative;
+  display: inline-block;
+
+  padding: 0.3rem;
+  width: calc((var(--width) + var(--gap)) * 1.5);
+  height: 100%;
+  background-color: var(--dark);
+
+  border: 1px solid #777777;
+  border-bottom: 0;
+
+  border-radius: 9999px;
+  box-sizing: content-box;
+  transition: all 0.3s ease-in-out;
+}
+
 .toggle-cont {
   --primary: #54a8fc;
   --light: #d9d9d9;
@@ -146,7 +187,6 @@
 @container style(--checked: true) {
   .toggle-cont .toggle-label {
     background-color: #41434400;
-
     border: 1px solid #3d6970;
     border-bottom: 0;
   }
@@ -157,27 +197,40 @@
 
   .toggle-cont .toggle-label .cont-icon {
     overflow: visible;
-
     background-image: radial-gradient(
       circle at 50% 0%,
       #045ab1 0%,
       var(--primary) 100%
     );
-
     border: 1px solid var(--primary);
     border-bottom: 0;
-
     transform: translateX(calc((var(--gap) * 2) + 100%)) rotate(-225deg);
   }
 
   .toggle-cont .toggle-label .cont-icon .sparkle {
     z-index: -10;
-
     width: calc(var(--width) * 1.5px);
     background-color: #acacac;
-
     animation: sparkle calc(100s / var(--duration)) linear
       calc(10s / var(--duration)) infinite;
+  }
+
+  .toggle-cont-small .toggle-label-small {
+    background-color: #41434400;
+    border: 1px solid #3d6970;
+    border-bottom: 0;
+  }
+
+  .toggle-cont-small .toggle-label-small .cont-icon {
+    overflow: visible;
+    background-image: radial-gradient(
+      circle at 50% 0%,
+      #045ab1 0%,
+      var(--primary) 100%
+    );
+    border: 1px solid var(--primary);
+    border-bottom: 0;
+    transform: translateX(calc((var(--gap) * 2) + 100%)) rotate(-225deg);
   }
 
   @keyframes sparkle {

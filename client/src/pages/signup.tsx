@@ -69,11 +69,14 @@ export default function Signup() {
   };
 
   const handleThemeToggle = () => {
-    document.documentElement.classList.toggle('dark');
-    localStorage.setItem(
-      'flamgio-theme',
-      document.documentElement.classList.contains('dark') ? 'dark' : 'light'
-    );
+    const isDark = document.documentElement.classList.contains('dark');
+    if (isDark) {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('flamgio-theme', 'light');
+    } else {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('flamgio-theme', 'dark');
+    }
   };
 
   return (
@@ -113,9 +116,9 @@ export default function Signup() {
             </div>
           </div>
           <div className="flex items-center space-x-4">
-            <div className="toggle-cont">
+            <div className="toggle-cont-small">
               <input type="checkbox" className="toggle-input" onChange={handleThemeToggle} />
-              <label className="toggle-label">
+              <label className="toggle-label-small">
                 <div className="cont-icon">
                   <div className="sparkle" style={{"--deg": "45", "--duration": "3"} as React.CSSProperties}></div>
                   <div className="sparkle" style={{"--deg": "90", "--duration": "3"} as React.CSSProperties}></div>

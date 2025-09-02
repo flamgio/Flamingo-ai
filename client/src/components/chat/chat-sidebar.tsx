@@ -49,9 +49,7 @@ export default function ChatSidebar({
         isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
       } fixed lg:relative inset-y-0 left-0 z-30 lg:z-0`}>
         {/* Sidebar Header */}
-        <div className="p-4 border-b border-gray-600" style={{
-          background: 'linear-gradient(to bottom right, #7e7e7e, #363636, #363636, #363636, #363636)'
-        }}>
+        <div className="p-4 border-b border-yellow-200 dark:border-gray-600 bg-yellow-100 dark:bg-gray-800">
           <div className="flex items-center justify-between">
             <button 
               onClick={() => window.location.href = '/'}
@@ -72,7 +70,7 @@ export default function ChatSidebar({
           </div>
           <Button
             data-testid="new-chat-btn"
-            className="w-full bg-gradient-to-r from- flamingo-500 to-flamingo-600 hover:from-flamingo-600 hover:to-flamingo-700 text-white shadow-lg transform hover:scale-105 transition-all duration-200"
+            className="w-full bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-gray-900 shadow-lg transform hover:scale-105 transition-all duration-200"
           >
             <i className="fas fa-plus mr-2"></i>
             New Conversation
@@ -80,11 +78,9 @@ export default function ChatSidebar({
         </div>
 
         {/* Chat History */}
-        <ScrollArea className="flex-1 p-4" style={{
-          background: 'linear-gradient(to bottom right, #7e7e7e, #363636, #363636, #363636, #363636)'
-        }}>
+        <ScrollArea className="flex-1 p-4 bg-yellow-50 dark:bg-gray-800">
           <div className="space-y-2">
-            <h3 className="text-sm font-medium text-white uppercase tracking-wide mb-3">
+            <h3 className="text-sm font-medium text-gray-800 dark:text-white uppercase tracking-wide mb-3">
               Recent Chats
             </h3>
 
@@ -103,11 +99,11 @@ export default function ChatSidebar({
                   data-testid={`conversation-${conversation.id}`}
                   className={`p-3 rounded-lg cursor-pointer transition-colors ${
                     currentConversation?.id === conversation.id
-                      ? 'bg-flamingo-50 dark:bg-flamingo-900/20 border border-flamingo-200 dark:border-flamingo-700'
-                      : 'hover:bg-gray-100 dark:hover:bg-gray-700'
+                      ? 'bg-yellow-200 dark:bg-gray-700 border border-yellow-300 dark:border-gray-600'
+                      : 'hover:bg-yellow-150 dark:hover:bg-gray-700'
                   }`}
                 >
-                  <p className="text-sm font-medium text-white truncate">
+                  <p className="text-sm font-medium text-gray-800 dark:text-white truncate">
                     {conversation.title}
                   </p>
                   <span className="text-xs text-gray-400">
@@ -120,13 +116,11 @@ export default function ChatSidebar({
         </ScrollArea>
 
         {/* Sidebar Footer */}
-        <div className="p-4 border-t border-gray-600" style={{
-          background: 'linear-gradient(to bottom right, #7e7e7e, #363636, #363636, #363636, #363636)'
-        }}>
+        <div className="p-4 border-t border-yellow-200 dark:border-gray-600 bg-yellow-100 dark:bg-gray-800">
           <Button
             data-testid="settings-btn"
             variant="ghost"
-            className="w-full justify-start text-white hover:text-blue-400 transform hover:scale-105 transition-all duration-200"
+            className="w-full justify-start text-gray-800 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transform hover:scale-105 transition-all duration-200"
             onClick={() => setShowSettings(true)}
           >
             <i className="fas fa-cog mr-3"></i>

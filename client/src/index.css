@@ -84,17 +84,7 @@
     --input: 51 65 85; /* slate-700 */
     --ring: 96 165 250; /* blue-400 */
 
-    /* Dark theme flamingo colors */
-    --flamingo-50: 30 58 138; /* blue-900 */
-    --flamingo-100: 30 64 175; /* blue-800 */
-    --flamingo-200: 29 78 216; /* blue-700 */
-    --flamingo-300: 37 99 235; /* blue-600 */
-    --flamingo-400: 59 130 246; /* blue-500 */
-    --flamingo-500: 96 165 250; /* blue-400 */
-    --flamingo-600: 147 197 253; /* blue-300 */
-    --flamingo-700: 191 219 254; /* blue-200 */
-    --flamingo-800: 219 234 254; /* blue-100 */
-    --flamingo-900: 239 246 255; /* blue-50 */
+    
   }
 }
 
@@ -344,21 +334,21 @@
     opacity: 0;
   }
 
-  /* Chat message styles - Pure white modern design */
+  /* Chat message styles - Light yellow theme */
   .chat-message-user {
-    @apply bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg;
+    @apply bg-gradient-to-r from-yellow-400 to-yellow-500 text-gray-900 shadow-lg;
   }
 
   .chat-message-assistant {
-    @apply bg-white dark:bg-white text-gray-900 shadow-lg border border-gray-100 dark:border-gray-100;
+    @apply bg-yellow-50 dark:bg-gray-800 text-gray-900 dark:text-white shadow-lg border border-yellow-200 dark:border-gray-600;
   }
 
   .chat-input-container {
-    @apply bg-white dark:bg-white border border-gray-100 dark:border-gray-100 rounded-2xl shadow-xl;
+    @apply bg-yellow-50 dark:bg-gray-800 border border-yellow-200 dark:border-gray-600 rounded-2xl shadow-xl;
   }
 
   .chat-sidebar {
-    @apply bg-white dark:bg-white border-r border-gray-100 dark:border-gray-100;
+    @apply bg-yellow-100 dark:bg-gray-800 border-r border-yellow-200 dark:border-gray-600;
   }
 
   /* Perplexity-style animations */
@@ -676,29 +666,7 @@
   transition: transform 0.3s ease;
 }
 
-/* Custom Chat Box CSS */
-.container_chat_bot {
-  display: flex;
-  flex-direction: column;
-  max-width: 260px;
-  width: 100%;
-}
 
-.container_chat_bot .container-chat-options {
-  position: relative;
-  display: flex;
-  background: linear-gradient(
-    to bottom right,
-    #7e7e7e,
-    #363636,
-    #363636,
-    #363636,
-    #363636
-  );
-  border-radius: 16px;
-  padding: 1.5px;
-  overflow: hidden;
-}
 
 .container_chat_bot .container-chat-options::after {
   position: absolute;

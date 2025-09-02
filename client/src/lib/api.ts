@@ -21,11 +21,6 @@ export async function apiRequest(
   return res;
 }
 
-export const enhancePrompt = async (data: { prompt: string }) => {
-  const response = await apiRequest("POST", "/api/enhance-prompt", data);
-  return response.json();
-};
-
 export const sendMessage = async (data: { message: string; conversationId?: string }) => {
   const response = await apiRequest("POST", "/api/chat", data);
   return response.json();

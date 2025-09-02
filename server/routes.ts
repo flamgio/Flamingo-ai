@@ -253,8 +253,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Prompt enhancement endpoint
   app.post("/api/enhance-prompt", authenticateToken, async (req: AuthRequest, res) => {
-    const { enhancePromptRoute } = await import('./routes-enhancement');
-    await enhancePromptRoute(req, res);
+    try {
+      const { prompt } = req.body;
+      
+      if (!prompt) {
+        return res.status(400).json({ error: "Prompt is required" });
+      }
+
+      // Simple enhancement logic
+      const enhancedPrompt = `Please provide a detailed and comprehensive response to the following: ${prompt}. Include relevant examples, explanations, and context where appropriate.`;
+      
+      res.json({ 
+        enhancedPrompt,
+        enhanced: enhancedPrompt,
+        result: enhancedPrompt
+      });
+    } catch (error) {
+      console.error("Enhancement error:", error);
+      res.status(500).json({ error: "Enhancement failed" });
+    }
   });
 
   // Agent endpoint for AI responses  

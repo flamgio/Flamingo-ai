@@ -33,7 +33,7 @@ export default function Chat() {
   const enhanceMutation = useMutation({
     mutationFn: enhancePrompt,
     onSuccess: (response) => {
-      setEnhancedPrompt(response.enhanced);
+      setEnhancedPrompt(response.enhancedPrompt || response.enhanced || response.result);
     },
     onError: (error) => {
       console.error('Enhancement failed:', error);
@@ -230,7 +230,7 @@ export default function Chat() {
         onUseEnhanced={handleUseEnhanced}
         onUseOriginal={handleUseOriginal}
         onClose={handleCloseModal}
-        isEnhancing={enhanceMutation.isLoading}
+        isEnhancing={enhanceMutation.isPending || enhanceMutation.isLoading}
       />
     </div>
   );

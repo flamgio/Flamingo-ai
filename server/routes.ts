@@ -12,7 +12,8 @@ import {
   optionalAuth,
   type AuthRequest
 } from "./auth";
-import { chatRouter } from "./routes-chat.js";
+import chatRoutes from "./routes-chat";
+import enhancementRoutes from "./routes-enhancement";
 import crypto from "crypto";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
@@ -444,7 +445,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Add chat router
-  app.use("/api", chatRouter);
+  app.use("/api", chatRoutes);
+  app.use(enhancementRoutes);
 
   // Puter integration route - Human crafted
   app.post("/api/puter-chat", async (req, res) => {

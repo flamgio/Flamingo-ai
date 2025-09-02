@@ -1,3 +1,4 @@
+
 export async function apiRequest(
   method: string,
   url: string,
@@ -20,5 +21,25 @@ export async function apiRequest(
 
 export const enhancePrompt = async (data: { prompt: string }) => {
   const response = await apiRequest("POST", "/api/enhance-prompt", data);
+  return response.json();
+};
+
+export const sendMessage = async (data: { message: string; conversationId?: string }) => {
+  const response = await apiRequest("POST", "/api/chat", data);
+  return response.json();
+};
+
+export const getConversations = async () => {
+  const response = await apiRequest("GET", "/api/conversations");
+  return response.json();
+};
+
+export const getConversation = async (id: string) => {
+  const response = await apiRequest("GET", `/api/conversations/${id}`);
+  return response.json();
+};
+
+export const deleteConversation = async (id: string) => {
+  const response = await apiRequest("DELETE", `/api/conversations/${id}`);
   return response.json();
 };

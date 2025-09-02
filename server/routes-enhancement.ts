@@ -1,37 +1,28 @@
-import { Request, Response } from "express";
-import { geminiEnhancer } from "./gemini-enhancer";
-import { authenticateToken, type AuthRequest } from "./auth";
 
-/**
- * Route to enhance prompts using Gemini
- */
-export const enhancePromptRoute = async (req: AuthRequest, res: Response) => {
+import { Router } from "express";
+
+const router = Router();
+
+router.post("/enhance-prompt", async (req, res) => {
   try {
     const { prompt } = req.body;
-
+    
     if (!prompt) {
-      return res.status(400).json({ message: "Prompt is required" });
+      return res.status(400).json({ error: "Prompt is required" });
     }
 
-    // Check if enhancement is needed
-    if (!geminiEnhancer.needsEnhancement(prompt)) {
-      return res.json({
-        needsEnhancement: false,
-        original: prompt,
-        enhanced: prompt
-      });
-    }
-
-    // Enhance the prompt
-    const result = await geminiEnhancer.enhancePrompt(prompt);
-
-    res.json({
-      needsEnhancement: true,
-      original: result.original,
-      enhanced: result.enhanced
+    // Simple enhancement logic - you can replace this with actual AI enhancement
+    const enhancedPrompt = `Please provide a detailed and comprehensive response to the following: ${prompt}. Include relevant examples, explanations, and context where appropriate.`;
+    
+    res.json({ 
+      enhancedPrompt,
+      enhanced: enhancedPrompt,
+      result: enhancedPrompt
     });
   } catch (error) {
-    console.error("Prompt enhancement error:", error);
-    res.status(500).json({ message: "Enhancement failed" });
+    console.error("Enhancement error:", error);
+    res.status(500).json({ error: "Enhancement failed" });
   }
-};
+});
+
+export default router;

@@ -19,4 +19,3 @@ export function useMobile() {
 }
 
 export default useMobile;
-export { useMobile };

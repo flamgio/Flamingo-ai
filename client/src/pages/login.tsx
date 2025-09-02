@@ -1,11 +1,8 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
-import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { useAuth } from "@/hooks/use-auth";
 import SuccessPopup from "@/components/success-popup";
+import "../styles/auth.css";
 
 export default function Login() {
   const [, setLocation] = useLocation();
@@ -61,7 +58,6 @@ export default function Login() {
       });
       if (result) {
         setShowSuccess(true);
-        // Redirect immediately to dashboard
         setTimeout(() => {
           setLocation('/dashboard');
         }, 1500);
@@ -80,11 +76,11 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-purple-900/30 to-black relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900/30 to-black relative overflow-hidden flex items-center justify-center">
       {/* Background Effects */}
       <div className="absolute inset-0">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-white/5 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gray-500/10 rounded-full blur-3xl animate-pulse"></div>
       </div>
 
       {/* Success Popup */}
@@ -97,156 +93,118 @@ export default function Login() {
         }} 
       />
 
-      <div className="relative z-10">
-        {/* Navigation Header */}
-        <nav className="fixed top-0 left-0 right-0 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 z-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-between items-center h-16">
-              <div className="flex items-center space-x-4">
-                <div className="flex items-center space-x-2">
-                  <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center border border-gray-600 shadow-lg">
-                    <span className="text-white font-bold text-sm">FA</span>
-                  </div>
-                  <button
-                    onClick={() => setLocation('/')}
-                    className="text-xl font-bold text-gray-900 dark:text-white hover:text-flamingo-600 dark:hover:text-flamingo-400 transition-colors"
-                  >
-                    Flamingo AI
-                  </button>
-                </div>
-              </div>
-
-              <div className="flex items-center space-x-4">
-                <button
-                  onClick={handleThemeToggle}
-                  className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-                >
-                  🌙
-                </button>
-                <Button
-                  variant="ghost"
-                  onClick={() => setLocation('/')}
-                  className="text-gray-600 dark:text-gray-400"
-                >
-                  Back to Home
-                </Button>
-              </div>
+      {/* Header */}
+      <div className="fixed top-0 left-0 right-0 z-50 p-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center border border-gray-600 shadow-lg">
+              <span className="text-white font-bold text-sm">FA</span>
+            </div>
+            <button
+              onClick={() => setLocation('/')}
+              className="text-xl font-bold text-white hover:text-gray-300 transition-colors"
+            >
+              Flamingo AI
+            </button>
+            <div className="flex items-center space-x-1 ml-4">
+              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+              <span className="text-xs text-green-400 font-medium">Running</span>
             </div>
           </div>
-        </nav>
+          <div className="flex items-center space-x-4">
+            <button
+              onClick={handleThemeToggle}
+              className="p-2 rounded-lg bg-white/10 text-white hover:bg-white/20 transition-colors"
+            >
+              🌙
+            </button>
+            <button
+              onClick={() => setLocation('/')}
+              className="text-white/70 hover:text-white transition-colors"
+            >
+              Back to Home
+            </button>
+          </div>
+        </div>
+      </div>
 
-        {/* Main Content */}
-        <div className="flex items-center justify-center min-h-screen pt-16">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="w-full max-w-md p-8 space-y-8"
-          >
-            <div className="text-center">
-              <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ delay: 0.2 }}
-                className="mx-auto w-16 h-16 bg-black rounded-xl flex items-center justify-center mb-6 border border-white/20 shadow-2xl"
-              >
-                <span className="text-white font-bold text-xl" style={{
-                  textShadow: '0 0 10px rgba(255,255,255,0.8), 0 0 20px rgba(255,255,255,0.6)'
-                }}>
-                  FA
-                </span>
-              </motion.div>
-
-              <h2 className="text-3xl font-bold text-white mb-2">
-                Welcome Back
-              </h2>
-              <p className="text-gray-400">
-                Sign in to continue your AI journey
-              </p>
+      {/* Main Content */}
+      <div className="container">
+        <div className="login-box">
+          <div className="form">
+            {/* Logo */}
+            <div className="logo">
+              <div className="user"></div>
+            </div>
+            
+            {/* Header */}
+            <div className="header">
+              Welcome Back
+            </div>
+            <div className="subtitle">
+              Sign in to continue your AI journey
             </div>
 
-            <form onSubmit={handleLogin} className="space-y-6">
-              {/* Error Messages */}
-              {Object.keys(errors).length > 0 && (
-                <div className="bg-red-500/20 border border-red-500/30 rounded-lg p-4">
-                  {Object.values(errors).map((error, index) => (
-                    <p key={index} className="text-red-400 text-sm">{error}</p>
-                  ))}
-                </div>
+            {/* Login Form */}
+            <form onSubmit={handleLogin} className="w-full space-y-4">
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleInputChange}
+                placeholder="Email Address"
+                className="input"
+                required
+              />
+              {errors.email && (
+                <p className="text-red-400 text-xs">{errors.email}</p>
               )}
-
-              {/* Email */}
-              <div className="space-y-2">
-                <Label htmlFor="email" className="text-white">Email</Label>
-                <Input
-                  id="email"
-                  name="email"
-                  type="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  placeholder="Enter your email"
-                  className="bg-white/10 border-white/20 text-white placeholder:text-gray-400"
-                  required
-                />
-                {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
-              </div>
-
-              {/* Password */}
-              <div className="space-y-2">
-                <Label htmlFor="password" className="text-white">Password</Label>
-                <Input
-                  id="password"
-                  name="password"
-                  type="password"
-                  value={formData.password}
-                  onChange={handleInputChange}
-                  placeholder="Enter your password"
-                  className="bg-white/10 border-white/20 text-white placeholder:text-gray-400"
-                  required
-                />
-                {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
-              </div>
+              
+              <input
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleInputChange}
+                placeholder="Password"
+                className="input"
+                required
+              />
+              {errors.password && (
+                <p className="text-red-400 text-xs">{errors.password}</p>
+              )}
 
               {/* Submit Button */}
-              <Button
+              <button
                 type="submit"
                 disabled={isLoginLoading}
-                className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white py-3 text-lg font-medium shadow-lg hover:shadow-xl transition-all duration-300"
-                data-testid="button-login"
+                className="button sign-in"
               >
-                {isLoginLoading ? (
-                  <>
-                    <i className="fas fa-spinner fa-spin mr-2"></i>
-                    Signing In...
-                  </>
-                ) : (
-                  <>
-                    <i className="fas fa-sign-in-alt mr-2"></i>
-                    Sign In
-                  </>
-                )}
-              </Button>
+                {isLoginLoading ? "Signing In..." : "Sign In"}
+              </button>
 
-              {/* Server Error */}
+              {/* Error Message */}
               {loginError && (
-                <div className="bg-red-500/20 border border-red-500/30 rounded-lg p-4">
-                  <p className="text-red-400 text-sm">{loginError.message}</p>
+                <div className="text-red-400 text-xs text-center">
+                  {loginError.message || loginError}
                 </div>
               )}
-
-              <div className="text-center">
-                <p className="text-gray-400">
-                  Don't have an account?{' '}
-                  <button
-                    type="button"
-                    onClick={() => setLocation('/signup')}
-                    className="text-purple-400 hover:text-purple-300 font-medium transition-colors"
-                  >
-                    Sign up
-                  </button>
-                </p>
-              </div>
             </form>
-          </motion.div>
+
+            {/* Footer */}
+            <div className="footer">
+              Don't have an account?{" "}
+              <a
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setLocation('/signup');
+                }}
+                className="link"
+              >
+                Join Flamingo AI
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </div>

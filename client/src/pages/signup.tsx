@@ -1,11 +1,8 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
-import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { useAuth } from "@/hooks/use-auth";
 import SuccessPopup from "@/components/success-popup";
+import "../styles/auth.css";
 
 export default function Signup() {
   const [, setLocation] = useLocation();
@@ -61,7 +58,6 @@ export default function Signup() {
       });
       if (result) {
         setShowSuccess(true);
-        // Redirect immediately to dashboard
         setTimeout(() => {
           setLocation('/dashboard');
         }, 1500);
@@ -80,216 +76,169 @@ export default function Signup() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-purple-900/30 to-black relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900/30 to-black relative overflow-hidden flex items-center justify-center">
       {/* Background Effects */}
       <div className="absolute inset-0">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-white/5 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gray-500/10 rounded-full blur-3xl animate-pulse"></div>
       </div>
 
       {/* Success Popup */}
       <SuccessPopup
         show={showSuccess}
-        message="Account created successfully! Welcome to Flamingo."
+        message="Account created successfully! Welcome to Flamingo AI."
         onComplete={() => {
           setShowSuccess(false);
           setLocation('/dashboard');
         }}
       />
 
-      <div className="relative z-10">
-        {/* Navigation Header */}
-        <nav className="fixed top-0 left-0 right-0 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 z-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-between items-center h-16">
-              <div className="flex items-center space-x-4">
-                <div className="flex items-center space-x-2">
-                  <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center border border-gray-600 shadow-lg">
-                    <span className="text-white font-bold text-sm">FA</span>
-                  </div>
-                  <button
-                    onClick={() => setLocation('/')}
-                    className="text-xl font-bold text-gray-900 dark:text-white hover:text-flamingo-600 dark:hover:text-flamingo-400 transition-colors"
-                  >
-                    Flamingo AI
-                  </button>
-                </div>
-              </div>
-
-              <div className="flex items-center space-x-4">
-                <button
-                  onClick={handleThemeToggle}
-                  className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-                >
-                  🌙
-                </button>
-                <Button
-                  variant="ghost"
-                  onClick={() => setLocation('/')}
-                  className="text-gray-600 dark:text-gray-400"
-                >
-                  Back to Home
-                </Button>
-              </div>
+      {/* Header */}
+      <div className="fixed top-0 left-0 right-0 z-50 p-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center border border-gray-600 shadow-lg">
+              <span className="text-white font-bold text-sm">FA</span>
+            </div>
+            <button
+              onClick={() => setLocation('/')}
+              className="text-xl font-bold text-white hover:text-gray-300 transition-colors"
+            >
+              Flamingo AI
+            </button>
+            <div className="flex items-center space-x-1 ml-4">
+              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+              <span className="text-xs text-green-400 font-medium">Running</span>
             </div>
           </div>
-        </nav>
+          <div className="flex items-center space-x-4">
+            <button
+              onClick={handleThemeToggle}
+              className="p-2 rounded-lg bg-white/10 text-white hover:bg-white/20 transition-colors"
+            >
+              🌙
+            </button>
+            <button
+              onClick={() => setLocation('/')}
+              className="text-white/70 hover:text-white transition-colors"
+            >
+              Back to Home
+            </button>
+          </div>
+        </div>
+      </div>
 
-        {/* Main Content */}
-        <div className="flex items-center justify-center min-h-screen pt-16">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="w-full max-w-md p-8 space-y-8"
-          >
-            <div className="text-center">
-              <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ delay: 0.2 }}
-                className="mx-auto w-16 h-16 bg-black rounded-xl flex items-center justify-center mb-6 border border-white/20 shadow-2xl"
-              >
-                <span className="text-white font-bold text-xl" style={{
-                  textShadow: '0 0 10px rgba(255,255,255,0.8), 0 0 20px rgba(255,255,255,0.6)'
-                }}>
-                  FA
-                </span>
-              </motion.div>
-
-              <h2 className="text-3xl font-bold text-white mb-2">
-                Join Flamgio AI
-              </h2>
-              <p className="text-gray-400">
-                Create your account and start your AI journey
-              </p>
+      {/* Main Content */}
+      <div className="container" style={{ '--form-width': '350px', '--aspect-ratio': '1.4' } as any}>
+        <div className="login-box">
+          <div className="form">
+            {/* Logo */}
+            <div className="logo">
+              <div className="user"></div>
+            </div>
+            
+            {/* Header */}
+            <div className="header">
+              Join Flamingo AI
+            </div>
+            <div className="subtitle">
+              Create your account and start your AI journey
             </div>
 
-            <form onSubmit={handleSignup} className="space-y-6">
+            {/* Signup Form */}
+            <form onSubmit={handleSignup} className="w-full space-y-3">
+              <div className="flex space-x-2">
+                <input
+                  type="text"
+                  name="firstName"
+                  value={formData.firstName}
+                  onChange={handleInputChange}
+                  placeholder="First Name"
+                  className="input flex-1"
+                  required
+                />
+                <input
+                  type="text"
+                  name="lastName"
+                  value={formData.lastName}
+                  onChange={handleInputChange}
+                  placeholder="Last Name"
+                  className="input flex-1"
+                  required
+                />
+              </div>
+              
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleInputChange}
+                placeholder="Email Address"
+                className="input"
+                required
+              />
+              
+              <input
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleInputChange}
+                placeholder="Password (min 6 characters)"
+                className="input"
+                required
+              />
+
+              <input
+                type="password"
+                name="confirmPassword"
+                value={formData.confirmPassword}
+                onChange={handleInputChange}
+                placeholder="Confirm Password"
+                className="input"
+                required
+              />
+
               {/* Error Messages */}
               {errors.length > 0 && (
-                <div className="bg-red-500/20 border border-red-500/30 rounded-lg p-4">
+                <div className="space-y-1">
                   {errors.map((error, index) => (
-                    <p key={index} className="text-red-400 text-sm">{error}</p>
+                    <p key={index} className="text-red-400 text-xs">{error}</p>
                   ))}
                 </div>
               )}
 
-              {/* First Name */}
-              <div className="space-y-2">
-                <Label htmlFor="firstName" className="text-white">First Name</Label>
-                <Input
-                  id="firstName"
-                  name="firstName"
-                  type="text"
-                  value={formData.firstName}
-                  onChange={handleInputChange}
-                  placeholder="Enter your first name"
-                  className="bg-white/10 border-white/20 text-white placeholder:text-gray-400"
-                  required
-                />
-              </div>
-
-              {/* Last Name */}
-              <div className="space-y-2">
-                <Label htmlFor="lastName" className="text-white">Last Name</Label>
-                <Input
-                  id="lastName"
-                  name="lastName"
-                  type="text"
-                  value={formData.lastName}
-                  onChange={handleInputChange}
-                  placeholder="Enter your last name"
-                  className="bg-white/10 border-white/20 text-white placeholder:text-gray-400"
-                  required
-                />
-              </div>
-
-              {/* Email */}
-              <div className="space-y-2">
-                <Label htmlFor="email" className="text-white">Email</Label>
-                <Input
-                  id="email"
-                  name="email"
-                  type="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  placeholder="Enter your email"
-                  className="bg-white/10 border-white/20 text-white placeholder:text-gray-400"
-                  required
-                />
-              </div>
-
-              {/* Password */}
-              <div className="space-y-2">
-                <Label htmlFor="password" className="text-white">Password</Label>
-                <Input
-                  id="password"
-                  name="password"
-                  type="password"
-                  value={formData.password}
-                  onChange={handleInputChange}
-                  placeholder="Enter your password"
-                  className="bg-white/10 border-white/20 text-white placeholder:text-gray-400"
-                  required
-                />
-              </div>
-
-              {/* Confirm Password */}
-              <div className="space-y-2">
-                <Label htmlFor="confirmPassword" className="text-white">Confirm Password</Label>
-                <Input
-                  id="confirmPassword"
-                  name="confirmPassword"
-                  type="password"
-                  value={formData.confirmPassword}
-                  onChange={handleInputChange}
-                  placeholder="Confirm your password"
-                  className="bg-white/10 border-white/20 text-white placeholder:text-gray-400"
-                  required
-                />
-              </div>
-
               {/* Submit Button */}
-              <Button
+              <button
                 type="submit"
                 disabled={isSignupLoading}
-                className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white py-3 text-lg font-medium shadow-lg hover:shadow-xl transition-all duration-300"
-                data-testid="button-signup"
+                className="button sign-in"
               >
-                {isSignupLoading ? (
-                  <>
-                    <i className="fas fa-spinner fa-spin mr-2"></i>
-                    Creating Account...
-                  </>
-                ) : (
-                  <>
-                    <i className="fas fa-user-plus mr-2"></i>
-                    Create Account
-                  </>
-                )}
-              </Button>
+                {isSignupLoading ? "Creating Account..." : "Create Account"}
+              </button>
 
               {/* Server Error */}
               {signupError && (
-                <div className="bg-red-500/20 border border-red-500/30 rounded-lg p-4">
-                  <p className="text-red-400 text-sm">{signupError.message}</p>
+                <div className="text-red-400 text-xs text-center">
+                  {signupError.message || signupError}
                 </div>
               )}
-
-              <div className="text-center">
-                <p className="text-gray-400">
-                  Already have an account?{' '}
-                  <button
-                    type="button"
-                    onClick={() => setLocation('/login')}
-                    className="text-purple-400 hover:text-purple-300 font-medium transition-colors"
-                  >
-                    Sign in
-                  </button>
-                </p>
-              </div>
             </form>
-          </motion.div>
+
+            {/* Footer */}
+            <div className="footer">
+              Already have an account?{" "}
+              <a
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setLocation('/login');
+                }}
+                className="link"
+              >
+                Sign in here
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </div>

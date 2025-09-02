@@ -7,11 +7,13 @@ if (!process.env.DATABASE_URL) {
   throw new Error("DATABASE_URL is required. Please ensure the database is provisioned in Replit.");
 }
 
-// Create postgres connection with SSL enabled for Replit
+// Create postgres connection with proper SSL configuration for Replit
 const connectionString = process.env.DATABASE_URL;
 const client = postgres(connectionString, {
-  ssl: 'require',
-  prepare: false
+  ssl: false, // Replit internal database doesn't need SSL
+  prepare: false,
+  max: 10,
+  idle_timeout: 20
 });
 
 export const db = drizzle(client, {

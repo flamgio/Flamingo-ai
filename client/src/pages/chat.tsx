@@ -143,14 +143,15 @@ export default function Chat() {
         <header className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-xl border-b border-purple-200/50 dark:border-purple-500/20 p-4 shadow-lg shadow-purple-100/50 dark:shadow-purple-900/20">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
+              {/* History Toggle Button */}
               <Button
-                data-testid="sidebar-toggle"
+                data-testid="history-toggle"
                 variant="ghost"
                 size="sm"
-                className="lg:hidden"
+                className="hover:bg-purple-100 dark:hover:bg-purple-800/20 transition-colors"
                 onClick={() => setSidebarOpen(!sidebarOpen)}
               >
-                <i className="fas fa-bars"></i>
+                <i className="fas fa-history text-purple-600 dark:text-purple-400"></i>
               </Button>
 
               {/* Clickable Flamingo Logo and Name */}
@@ -240,15 +241,21 @@ export default function Chat() {
         </div>
 
         {/* Chat Input Area - Full Width */}
-        <div className="p-4 bg-white/90 dark:bg-slate-800/90 border-t border-purple-200/50 dark:border-purple-500/20 backdrop-blur-xl">
-          <ChatInput 
-            onSendMessage={handleSendWithEnhancement} 
-            disabled={isLoading} 
-          />
-        </div>
+        <ChatInput 
+          onSendMessage={handleSendWithEnhancement} 
+          disabled={isLoading} 
+        />
       </div>
 
-      {/* Sidebar - History - Right Side */}
+      {/* Backdrop for mobile sidebar */}
+      {sidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-20 lg:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
+      {/* Sidebar - History - Left Side */}
       <ChatSidebar
         conversations={conversations}
         currentConversation={currentConversation}

@@ -49,11 +49,9 @@ export default function ChatInput({ onSendMessage, disabled }: ChatInputProps) {
   }, [message]);
 
   return (
-    <div className="backdrop-blur-md p-6 shadow-lg" style={{
-      background: 'transparent'
-    }}>
+    <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-xl border-t border-purple-200/50 dark:border-purple-500/20 p-6 shadow-lg shadow-purple-100/50 dark:shadow-purple-900/20">
       <div className="max-w-4xl mx-auto">
-        <div className="container_chat_bot">
+        <div className="container_chat_bot transform transition-all duration-300 hover:scale-[1.02]">
           <div className="container-chat-options">
             <div className="chat">
               <div className="chat-bot">
@@ -67,29 +65,30 @@ export default function ChatInput({ onSendMessage, disabled }: ChatInputProps) {
                     placeholder="Ask anything..."
                     disabled={disabled || isSubmitting}
                     style={{ height: 'auto' }}
+                    className="transition-all duration-300 focus:scale-[1.01] focus:shadow-lg"
                   />
                 </form>
               </div>
               <div className="options">
                 <div className="btns-add">
-                  <button type="button">
+                  <button type="button" className="hover:scale-110 transition-transform duration-200">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                       <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
                     </svg>
                   </button>
-                  <button type="button">
+                  <button type="button" className="hover:scale-110 transition-transform duration-200">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                       <path d="M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-2V2a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v2H5a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1zM9 4h6v1H9V4zm9 16H6V6h2v1a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V6h2v14z"/>
                     </svg>
                   </button>
                 </div>
                 <button 
-                  className="btn-submit"
+                  className="btn-submit hover:scale-110 transition-all duration-200 hover:shadow-lg"
                   type="submit"
                   disabled={!message.trim() || disabled || isSubmitting}
                   onClick={handleSubmit}
                 >
-                  <i>
+                  <i className={isSubmitting ? "animate-spin" : ""}>
                     {isSubmitting ? (
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
                         <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" fill="none" strokeDasharray="31.416" strokeDashoffset="31.416">
@@ -108,9 +107,9 @@ export default function ChatInput({ onSendMessage, disabled }: ChatInputProps) {
             </div>
           </div>
           <div className="tags">
-            <span>Professional</span>
-            <span>AI Chat</span>
-            <span>Smart</span>
+            <span className="animate-pulse">Professional</span>
+            <span className="animate-pulse" style={{animationDelay: '0.1s'}}>AI Chat</span>
+            <span className="animate-pulse" style={{animationDelay: '0.2s'}}>Smart</span>
           </div>
         </div>
       </div>

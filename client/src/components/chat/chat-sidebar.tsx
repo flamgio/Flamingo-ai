@@ -46,18 +46,21 @@ export default function ChatSidebar({
   return (
     <>
       <div className={`w-80 flex flex-col transition-transform duration-300 ${
-        isOpen ? 'translate-x-0' : 'translate-x-full lg:translate-x-0'
-      } fixed lg:relative inset-y-0 right-0 z-30 lg:z-0`}>
+        isOpen ? 'translate-x-0' : '-translate-x-full lg:-translate-x-full'
+      } fixed lg:fixed inset-y-0 left-0 z-30 lg:z-30`}>
         {/* Sidebar Header */}
-        <div className="p-4 border-b border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800">
+        <div className="p-4 border-b border-purple-200/50 dark:border-purple-500/20 bg-white/90 dark:bg-slate-800/90 backdrop-blur-xl">
           <div className="flex items-center justify-between">
-            <button 
-              onClick={() => window.location.href = '/'}
-              className="text-lg font-semibold text-white hover:text-blue-400 transition-colors"
-            >
-              <span className="text-black">Flamingo</span>{" "}
-              <span className="text-blue-400 animate-pulse">AI</span>
-            </button>
+            <div className="flex items-center space-x-3 cursor-pointer" onClick={() => window.location.href = '/'}>
+              <div className="w-8 h-8 bg-gradient-to-br from-purple-600 to-pink-600 rounded-xl flex items-center justify-center shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-300">
+                <span className="text-white font-bold text-sm">FA</span>
+              </div>
+              <div className="flex flex-col">
+                <h1 className="text-lg font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent hover:from-purple-500 hover:to-pink-500 transition-all duration-300">
+                  Flamingo AI
+                </h1>
+              </div>
+            </div>
             <Button
               data-testid="sidebar-close"
               variant="ghost"
@@ -70,7 +73,7 @@ export default function ChatSidebar({
           </div>
           <Button
             data-testid="new-chat-btn"
-            className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white shadow-lg transform hover:scale-105 transition-all duration-200"
+            className="w-full mt-3 bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white shadow-lg transform hover:scale-105 transition-all duration-200"
           >
             <i className="fas fa-plus mr-2"></i>
             New Conversation
@@ -78,7 +81,7 @@ export default function ChatSidebar({
         </div>
 
         {/* Chat History */}
-        <ScrollArea className="flex-1 p-4 bg-gray-50 dark:bg-gray-800">
+        <ScrollArea className="flex-1 p-4 bg-gradient-to-b from-white to-purple-50/20 dark:from-slate-800 dark:to-purple-900/10 backdrop-blur-sm">
           <div className="space-y-2">
             <h3 className="text-sm font-medium text-gray-800 dark:text-white uppercase tracking-wide mb-3">
               Recent Chats
@@ -116,7 +119,7 @@ export default function ChatSidebar({
         </ScrollArea>
 
         {/* Sidebar Footer */}
-        <div className="p-4 border-t border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800">
+        <div className="p-4 border-t border-purple-200/50 dark:border-purple-500/20 bg-white/90 dark:bg-slate-800/90 backdrop-blur-xl">
           <Button
             data-testid="settings-btn"
             variant="ghost"

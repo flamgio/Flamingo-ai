@@ -72,7 +72,7 @@ class OpenRouterIntegration {
         processingTime,
         tokensUsed: response.data.usage?.total_tokens || 0
       };
-    } catch (error) {
+    } catch (error: any) {
       console.error('OpenRouter integration error:', error);
       
       if (error.response) {
@@ -88,17 +88,15 @@ class OpenRouterIntegration {
   /**
    * Get available models through OpenRouter
    */
-  getAvailableModels(): string[] {
+  getAvailableModels(): { id: string; name: string; purpose: string }[] {
     return [
-      'openai/gpt-4',
-      'openai/gpt-4-turbo',
-      'openai/gpt-3.5-turbo',
-      'anthropic/claude-3-opus',
-      'anthropic/claude-3-sonnet',
-      'anthropic/claude-3-haiku',
-      'google/gemini-pro',
-      'meta-llama/llama-2-70b-chat',
-      'mistralai/mixtral-8x7b-instruct'
+      { id: 'mistralai/mistral-7b-instruct', name: 'Mistral 7B', purpose: 'General Chat' },
+      { id: 'google/gemma-7b-it', name: 'Gemma 7B', purpose: 'Writing & Creativity' },
+      { id: 'tiiuae/falcon-7b-instruct', name: 'Falcon 7B', purpose: 'Summaries' },
+      { id: 'meta-llama/llama-2-7b-chat', name: 'Llama 2 7B', purpose: 'Reasoning' },
+      { id: 'nousresearch/nous-hermes-2-mistral-7b', name: 'Nous Hermes 2', purpose: 'Knowledge Q&A' },
+      { id: 'openchat/openchat-3.5', name: 'OpenChat 3.5', purpose: 'Coding & Problem Solving' },
+      { id: 'phind/phind-7b', name: 'Phind 7B', purpose: 'Advanced Search & Analysis' }
     ];
   }
 }

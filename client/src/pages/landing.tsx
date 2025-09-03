@@ -4,8 +4,10 @@ import React, { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/use-auth";
+import { useTheme } from "@/components/ui/theme-provider";
 import { motion } from "framer-motion";
 import IntroAnimation from "@/components/intro-animation";
+import "../styles/new-theme-toggle.css";
 
 interface FeatureCardProps {
   icon: string;
@@ -106,13 +108,7 @@ export default function Landing() {
     }
   };
 
-  const handleThemeToggle = () => {
-    document.documentElement.classList.toggle('dark');
-    localStorage.setItem(
-      'flamgio-theme',
-      document.documentElement.classList.contains('dark') ? 'dark' : 'light'
-    );
-  };
+  const { toggleTheme, theme } = useTheme();
 
   // Show intro animation first
   if (showIntro) {
@@ -144,14 +140,27 @@ export default function Landing() {
             </div>
 
             <div className="flex items-center space-x-4">
-              <button
-                data-testid="theme-toggle"
-                onClick={handleThemeToggle}
-                className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-              >
-                <i className="fas fa-moon dark:hidden"></i>
-                <i className="fas fa-sun hidden dark:inline"></i>
-              </button>
+              {/* Small Theme Toggle */}
+              <div className="toggle-cont-small">
+                <input 
+                  type="checkbox" 
+                  className="toggle-input" 
+                  checked={theme === 'dark'}
+                  onChange={toggleTheme}
+                  data-testid="theme-toggle"
+                />
+                <label className="toggle-label-small">
+                  <div className="cont-icon">
+                    <div className="sparkle" style={{"--deg": "45", "--duration": "3"} as React.CSSProperties}></div>
+                    <div className="sparkle" style={{"--deg": "90", "--duration": "3"} as React.CSSProperties}></div>
+                    <div className="sparkle" style={{"--deg": "135", "--duration": "3"} as React.CSSProperties}></div>
+                    <div className="sparkle" style={{"--deg": "180", "--duration": "3"} as React.CSSProperties}></div>
+                    <svg className="icon" viewBox="0 0 24 24">
+                      <path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.166a.75.75 0 00-1.06-1.06l-1.591 1.59a.75.75 0 101.06 1.061l1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.834 18.894a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.061 1.06l1.59 1.591zM12 18a.75.75 0 01.75.75V21a.75.75 0 01-1.5 0v-2.25A.75.75 0 0112 18zM7.758 17.303a.75.75 0 00-1.061-1.06l-1.591 1.59a.75.75 0 001.06 1.061l1.591-1.59zM6 12a.75.75 0 01-.75.75H3a.75.75 0 010-1.5h2.25A.75.75 0 016 12zM6.697 7.757a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 00-1.061 1.06l1.59 1.591z"/>
+                    </svg>
+                  </div>
+                </label>
+              </div>
 
               <Button
                 data-testid="nav-chat-btn"

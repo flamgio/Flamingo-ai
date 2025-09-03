@@ -11,6 +11,7 @@ import PromptEnhancementModal from "@/components/chat/prompt-enhancement-modal";
 import { useMutation } from "@tanstack/react-query";
 import { enhancePrompt } from "@/lib/api";
 import "../styles/new-theme-toggle.css";
+import { useTheme } from "@/components/ui/theme-provider";
 
 export default function Chat() {
   const [, setLocation] = useLocation();
@@ -127,16 +128,7 @@ export default function Chat() {
     setLocation('/admin');
   };
 
-  const handleThemeToggle = () => {
-    const isDark = document.documentElement.classList.contains('dark');
-    if (isDark) {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('flamgio-theme', 'light');
-    } else {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('flamgio-theme', 'dark');
-    }
-  };
+  const { toggleTheme, theme } = useTheme();
 
   if (!user) {
     setLocation('/login');
@@ -144,11 +136,11 @@ export default function Chat() {
   }
 
   return (
-    <div className="h-screen flex bg-gradient-to-br from-slate-50 via-gray-50 to-zinc-50 dark:from-gray-900 dark:via-slate-800 dark:to-gray-900">
+    <div className="h-screen flex bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 dark:from-slate-900 dark:via-purple-900/20 dark:to-indigo-900/20">
       {/* Chat Content - Takes remaining space */}
       <div className="flex-1 flex flex-col min-w-0">
         {/* Header with Flamingo branding */}
-        <header className="bg-white/95 dark:bg-gray-800/95 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 p-4 shadow-sm">
+        <header className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-xl border-b border-purple-200/50 dark:border-purple-500/20 p-4 shadow-lg shadow-purple-100/50 dark:shadow-purple-900/20">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <Button
@@ -163,14 +155,14 @@ export default function Chat() {
 
               {/* Clickable Flamingo Logo and Name */}
               <div className="flex items-center space-x-3 cursor-pointer" onClick={() => setLocation('/')}>
-                <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center border border-gray-600 shadow-lg hover:shadow-xl transition-all duration-300">
+                <div className="w-8 h-8 bg-gradient-to-br from-purple-600 to-pink-600 rounded-xl flex items-center justify-center shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-300">
                   <span className="text-white font-bold text-sm">FA</span>
                 </div>
                 <div className="flex flex-col">
-                  <h1 className="text-xl font-bold text-blue-700 dark:text-blue-300 hover:text-blue-800 dark:hover:text-blue-200 transition-colors">
+                  <h1 className="text-xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent hover:from-purple-500 hover:to-pink-500 transition-all duration-300">
                     Flamingo AI
                   </h1>
-                  <span className="text-xs text-gray-500 dark:text-gray-400">
+                  <span className="text-xs text-purple-500/70 dark:text-purple-400/70">
                     {currentConversation?.title || 'New Conversation'}
                   </span>
                 </div>
@@ -179,7 +171,7 @@ export default function Chat() {
 
             <div className="flex items-center space-x-4">
               <div className="toggle-cont-small">
-                <input type="checkbox" className="toggle-input" onChange={handleThemeToggle} />
+                <input type="checkbox" className="toggle-input" checked={theme === 'dark'} onChange={toggleTheme} />
                 <label className="toggle-label-small">
                   <div className="cont-icon">
                     <div className="sparkle" style={{"--deg": "45", "--duration": "3"} as React.CSSProperties}></div>
@@ -192,41 +184,41 @@ export default function Chat() {
                   </div>
                 </label>
               </div>
-              <span className="text-xs bg-gradient-to-r from-gray-100 to-gray-200 dark:from-gray-800/30 dark:to-gray-700/30 text-gray-700 dark:text-gray-300 px-3 py-1 rounded-full font-medium">
-                <i className="fas fa-comment mr-1"></i>
-                Chat Active
+              <span className="text-xs bg-gradient-to-r from-purple-100 to-pink-100 dark:from-purple-800/30 dark:to-pink-800/30 text-purple-700 dark:text-purple-300 px-3 py-1 rounded-full font-medium border border-purple-200/50 dark:border-purple-600/20">
+                <i className="fas fa-sparkles mr-1 text-purple-500"></i>
+                AI Active
               </span>
             </div>
           </div>
         </header>
 
         {/* Messages Container */}
-        <div className="flex-1 overflow-y-auto p-6 bg-gradient-to-b from-slate-50/50 to-gray-50/30 dark:from-gray-900/50 dark:to-gray-800/30">
+        <div className="flex-1 overflow-y-auto p-6 bg-gradient-to-b from-purple-50/30 via-indigo-50/20 to-pink-50/30 dark:from-slate-900/50 dark:via-purple-900/10 dark:to-indigo-900/10">
           <div className="max-w-4xl mx-auto space-y-6">
             {messages.length === 0 ? (
               <div className="text-center py-12">
-                <div className="w-20 h-20 bg-gradient-to-br from-gray-700 to-gray-900 rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl">
+                <div className="w-20 h-20 bg-gradient-to-br from-purple-600 via-pink-500 to-indigo-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-2xl animate-pulse">
                   <span className="text-white text-xl font-bold">FA</span>
                 </div>
-                <h3 className="text-2xl font-bold text-gray-800 dark:text-white mb-3">
-                  <span className="text-gray-900 dark:text-black">Flamingo</span>{" "}
-                  <span className="text-blue-600 dark:text-blue-400 animate-pulse">AI</span>
+                <h3 className="text-3xl font-bold mb-3">
+                  <span className="bg-gradient-to-r from-purple-600 via-pink-500 to-indigo-600 bg-clip-text text-transparent">Flamingo</span>{" "}
+                  <span className="bg-gradient-to-r from-indigo-500 to-purple-600 bg-clip-text text-transparent animate-pulse">AI</span>
                 </h3>
-                <p className="text-lg text-gray-700 dark:text-gray-300 mb-4">
-                  Start a professional conversation
+                <p className="text-lg text-purple-600/80 dark:text-purple-400/80 mb-6 font-medium">
+                  Start your intelligent conversation
                 </p>
-                <div className="flex justify-center space-x-4 text-sm text-gray-600 dark:text-gray-400">
-                  <div className="flex items-center space-x-2">
-                    <i className="fas fa-shield-alt text-blue-500"></i>
-                    <span>Secure</span>
+                <div className="flex justify-center space-x-6 text-sm">
+                  <div className="flex items-center space-x-2 bg-purple-100/50 dark:bg-purple-800/20 px-4 py-2 rounded-full border border-purple-200/50 dark:border-purple-600/20">
+                    <i className="fas fa-shield-alt text-purple-500"></i>
+                    <span className="text-purple-700 dark:text-purple-300 font-medium">Private</span>
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <i className="fas fa-comment text-purple-500"></i>
-                    <span>Professional</span>
+                  <div className="flex items-center space-x-2 bg-pink-100/50 dark:bg-pink-800/20 px-4 py-2 rounded-full border border-pink-200/50 dark:border-pink-600/20">
+                    <i className="fas fa-brain text-pink-500"></i>
+                    <span className="text-pink-700 dark:text-pink-300 font-medium">Intelligent</span>
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <i className="fas fa-clock text-green-500"></i>
-                    <span>Fast Response</span>
+                  <div className="flex items-center space-x-2 bg-indigo-100/50 dark:bg-indigo-800/20 px-4 py-2 rounded-full border border-indigo-200/50 dark:border-indigo-600/20">
+                    <i className="fas fa-bolt text-indigo-500"></i>
+                    <span className="text-indigo-700 dark:text-indigo-300 font-medium">Fast</span>
                   </div>
                 </div>
               </div>
@@ -238,11 +230,11 @@ export default function Chat() {
             {isLoading && (
               <div className="flex justify-start">
                 <div className="flex items-start space-x-3 max-w-2xl">
-                  <div className="bg-gradient-to-r from-gray-50 to-white dark:from-gray-800 dark:to-gray-750 p-4 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-600">
+                  <div className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-800/20 dark:to-pink-800/20 p-4 rounded-2xl shadow-xl border border-purple-200/50 dark:border-purple-600/20 backdrop-blur-sm">
                     <div className="flex space-x-1">
-                      <div className="w-2 h-2 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full animate-typing"></div>
-                      <div className="w-2 h-2 bg-gradient-to-r from-purple-400 to-pink-500 rounded-full animate-typing" style={{ animationDelay: '0.1s' }}></div>
-                      <div className="w-2 h-2 bg-gradient-to-r from-pink-400 to-red-500 rounded-full animate-typing" style={{ animationDelay: '0.2s' }}></div>
+                      <div className="w-2 h-2 bg-gradient-to-r from-purple-400 to-pink-500 rounded-full animate-typing"></div>
+                      <div className="w-2 h-2 bg-gradient-to-r from-pink-400 to-indigo-500 rounded-full animate-typing" style={{ animationDelay: '0.1s' }}></div>
+                      <div className="w-2 h-2 bg-gradient-to-r from-indigo-400 to-purple-500 rounded-full animate-typing" style={{ animationDelay: '0.2s' }}></div>
                     </div>
                   </div>
                 </div>
@@ -253,7 +245,7 @@ export default function Chat() {
         </div>
 
         {/* Chat Input Area - Full Width */}
-        <div className="p-4 bg-white/90 dark:bg-gray-800/90 border-t border-gray-200 dark:border-gray-700">
+        <div className="p-4 bg-white/90 dark:bg-slate-800/90 border-t border-purple-200/50 dark:border-purple-500/20 backdrop-blur-xl">
           <ChatInput 
             onSendMessage={handleSendWithEnhancement} 
             disabled={isLoading} 

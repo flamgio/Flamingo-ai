@@ -63,7 +63,7 @@ function App() {
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <QueryClientProvider client={queryClient}>
-        <ThemeProvider defaultTheme="light" storageKey="flamgio-theme">
+        <ThemeProvider defaultTheme="light" storageKey="flamingo-theme">
           <TooltipProvider>
             <Toaster />
             <Router />

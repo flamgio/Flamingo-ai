@@ -334,21 +334,21 @@
     opacity: 0;
   }
 
-  /* Chat message styles - Modern gray/blue theme */
+  /* Chat message styles - Modern purple/pink/indigo theme */
   .chat-message-user {
-    @apply bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg;
+    @apply bg-gradient-to-r from-purple-500 via-pink-500 to-indigo-500 text-white shadow-lg border border-purple-300/20;
   }
 
   .chat-message-assistant {
-    @apply bg-white dark:bg-gray-800 text-gray-900 dark:text-white shadow-lg border border-gray-200 dark:border-gray-600;
+    @apply bg-gradient-to-r from-purple-50/50 to-pink-50/30 dark:from-purple-800/10 dark:to-pink-800/10 text-purple-900 dark:text-purple-100 shadow-lg border border-purple-200/50 dark:border-purple-600/20 backdrop-blur-sm;
   }
 
   .chat-input-container {
-    @apply bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-2xl shadow-xl;
+    @apply bg-gradient-to-r from-white to-purple-50/30 dark:from-slate-800 dark:to-purple-900/20 border border-purple-200/50 dark:border-purple-600/20 rounded-2xl shadow-xl backdrop-blur-sm;
   }
 
   .chat-sidebar {
-    @apply bg-white dark:bg-gray-800 border-l border-gray-200 dark:border-gray-600;
+    @apply bg-gradient-to-b from-white to-purple-50/20 dark:from-slate-800 dark:to-purple-900/10 border-l border-purple-200/50 dark:border-purple-600/20 backdrop-blur-sm;
   }
 
   /* Perplexity-style animations */

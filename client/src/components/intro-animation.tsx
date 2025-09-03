@@ -1,242 +1,317 @@
-import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 
 interface IntroAnimationProps {
   onComplete: () => void;
 }
 
-export default function IntroAnimation({ onComplete }: IntroAnimationProps) {
-  const [animationPhase, setAnimationPhase] = useState<'flamingo-run' | 'fade-logo' | 'complete'>('flamingo-run');
+const IntroAnimation: React.FC<IntroAnimationProps> = ({ onComplete }) => {
+  const [showLogo, setShowLogo] = useState(false);
+  const [showText, setShowText] = useState(false);
 
   useEffect(() => {
-    // Phase 1: Flamingo running animation (5 seconds)
-    const flamingoTimer = setTimeout(() => {
-      setAnimationPhase('fade-logo');
+    // Show "FLAM" text effect after flamingo starts running
+    const textTimer = setTimeout(() => {
+      setShowText(true);
+    }, 1200);
+
+    // Start the logo fade-in after the flamingo runs across
+    const logoTimer = setTimeout(() => {
+      setShowLogo(true);
+    }, 2500);
+
+    // Complete the animation after total duration
+    const completeTimer = setTimeout(() => {
+      onComplete();
     }, 5000);
 
-    // Phase 2: Logo fade in (2 seconds after)
-    const logoTimer = setTimeout(() => {
-      setAnimationPhase('complete');
-      onComplete();
-    }, 7000);
-
     return () => {
-      clearTimeout(flamingoTimer);
+      clearTimeout(textTimer);
       clearTimeout(logoTimer);
+      clearTimeout(completeTimer);
     };
   }, [onComplete]);
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 flex items-center justify-center overflow-hidden relative">
-      {/* Animated background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20 animate-pulse"></div>
+  // Realistic flamingo silhouette SVG
+  const FlamingoSilhouette = () => (
+    <svg width="160" height="180" viewBox="0 0 160 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+      {/* Flamingo body */}
+      <ellipse cx="60" cy="120" rx="25" ry="35" fill="url(#flamingoBodyGradient)"/>
       
-      {/* Phase 1: Flamingo Running Animation */}
-      {animationPhase === 'flamingo-run' && (
-        <div className="absolute inset-0 flex items-center justify-center">
-          {/* "Flam" text on the left */}
-          <motion.div
-            initial={{ opacity: 0, x: -100 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="absolute left-1/4 text-6xl md:text-8xl font-bold text-white/90"
-          >
-            Flam
-          </motion.div>
-          
-          {/* Flamingo running across screen */}
-          <motion.div
-            initial={{ x: "25%", scale: 1, rotate: 0 }}
-            animate={{ 
-              x: ["25%", "45%", "65%", "85%"],
-              scale: [1, 1.1, 1, 0.9],
-              rotate: [0, -5, 5, 0]
+      {/* Flamingo neck - curved elegant line */}
+      <path d="M60 85C60 85 70 60 85 45C100 30 120 25 140 35" 
+            stroke="url(#neckGradient)" strokeWidth="8" strokeLinecap="round" fill="none"/>
+      
+      {/* Flamingo head */}
+      <ellipse cx="140" cy="35" rx="8" ry="12" fill="url(#headGradient)"/>
+      
+      {/* Beak */}
+      <path d="M148 35C148 35 155 32 160 35C155 38 148 35 148 35Z" fill="#FFB347"/>
+      
+      {/* Eye */}
+      <circle cx="142" cy="32" r="2" fill="#000"/>
+      
+      {/* Wing - elegant curve */}
+      <path d="M40 110C35 105 32 95 35 85C38 75 45 70 55 75C65 80 70 90 65 100C60 110 50 115 40 110Z" 
+            fill="url(#wingGradient)"/>
+      
+      {/* Legs - realistic proportions */}
+      <motion.line 
+        x1="50" y1="155" x2="45" y2="175" 
+        stroke="url(#legGradient)" strokeWidth="4" strokeLinecap="round"
+        animate={{ 
+          x2: [45, 40, 45],
+          y2: [175, 170, 175]
+        }}
+        transition={{ duration: 0.4, repeat: Infinity }}
+      />
+      <motion.line 
+        x1="70" y1="155" x2="75" y2="175" 
+        stroke="url(#legGradient)" strokeWidth="4" strokeLinecap="round"
+        animate={{ 
+          x2: [75, 80, 75],
+          y2: [175, 170, 175]
+        }}
+        transition={{ duration: 0.4, repeat: Infinity, delay: 0.2 }}
+      />
+      
+      {/* Feet */}
+      <motion.ellipse 
+        cx="45" cy="175" rx="8" ry="3" fill="#FFB347"
+        animate={{ 
+          cx: [45, 40, 45],
+          scaleX: [1, 1.2, 1]
+        }}
+        transition={{ duration: 0.4, repeat: Infinity }}
+      />
+      <motion.ellipse 
+        cx="75" cy="175" rx="8" ry="3" fill="#FFB347"
+        animate={{ 
+          cx: [75, 80, 75],
+          scaleX: [1, 1.2, 1]
+        }}
+        transition={{ duration: 0.4, repeat: Infinity, delay: 0.2 }}
+      />
+      
+      <defs>
+        <linearGradient id="flamingoBodyGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style={{stopColor: '#FF69B4', stopOpacity: 1}} />
+          <stop offset="50%" style={{stopColor: '#FF1493', stopOpacity: 1}} />
+          <stop offset="100%" style={{stopColor: '#DC143C', stopOpacity: 1}} />
+        </linearGradient>
+        <linearGradient id="neckGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style={{stopColor: '#FFB6C1', stopOpacity: 1}} />
+          <stop offset="100%" style={{stopColor: '#FF69B4', stopOpacity: 1}} />
+        </linearGradient>
+        <linearGradient id="headGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style={{stopColor: '#FFB6C1', stopOpacity: 1}} />
+          <stop offset="100%" style={{stopColor: '#FF69B4', stopOpacity: 1}} />
+        </linearGradient>
+        <linearGradient id="wingGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style={{stopColor: '#FF1493', stopOpacity: 0.8}} />
+          <stop offset="100%" style={{stopColor: '#DC143C', stopOpacity: 0.6}} />
+        </linearGradient>
+        <linearGradient id="legGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" style={{stopColor: '#FFB347', stopOpacity: 1}} />
+          <stop offset="100%" style={{stopColor: '#FF8C00', stopOpacity: 1}} />
+        </linearGradient>
+      </defs>
+    </svg>
+  );
+
+  return (
+    <div className="fixed inset-0 z-50 bg-gradient-to-br from-amber-100 via-orange-50 to-red-100 dark:from-slate-900 dark:via-orange-900/20 dark:to-red-900/10 flex items-center justify-center overflow-hidden">
+      {/* Realistic savanna sky background */}
+      <div className="absolute inset-0 bg-gradient-to-b from-orange-200/60 via-yellow-100/40 to-green-200/50 dark:from-slate-800/70 dark:via-orange-800/30 dark:to-green-800/20"></div>
+      
+      {/* Sun */}
+      <div className="absolute top-12 right-16 w-20 h-20 bg-yellow-300 dark:bg-yellow-200 rounded-full blur-sm opacity-80"></div>
+      
+      {/* Distant mountains */}
+      <svg className="absolute bottom-32 w-full h-32" preserveAspectRatio="none" viewBox="0 0 1200 200">
+        <path d="M0,200 L0,150 Q200,100 400,120 Q600,80 800,110 Q1000,90 1200,130 L1200,200 Z" 
+              fill="url(#mountainGradient)" opacity="0.6"/>
+        <defs>
+          <linearGradient id="mountainGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" style={{stopColor: '#8B7355', stopOpacity: 0.8}} />
+            <stop offset="100%" style={{stopColor: '#A0522D', stopOpacity: 0.4}} />
+          </linearGradient>
+        </defs>
+      </svg>
+      
+      {/* Savanna ground with grass texture */}
+      <div className="absolute bottom-0 w-full h-48 bg-gradient-to-t from-green-400/70 via-yellow-300/50 to-transparent dark:from-green-700/60 dark:via-yellow-600/30"></div>
+      <div className="absolute bottom-0 w-full h-24 bg-gradient-to-t from-green-500/60 to-transparent dark:from-green-600/40"></div>
+      
+      {/* Scattered grass blades */}
+      <motion.div
+        className="absolute bottom-8 left-1/4 w-1 h-8 bg-green-600 dark:bg-green-400"
+        animate={{ scaleY: [1, 1.1, 1], rotate: [0, 2, 0] }}
+        transition={{ duration: 2, repeat: Infinity }}
+      />
+      <motion.div
+        className="absolute bottom-12 right-1/3 w-1 h-6 bg-green-500 dark:bg-green-300"
+        animate={{ scaleY: [1, 0.9, 1], rotate: [0, -1, 0] }}
+        transition={{ duration: 1.5, repeat: Infinity, delay: 0.5 }}
+      />
+      
+      {/* Animated realistic flamingo - much bigger */}
+      <motion.div
+        className="absolute"
+        initial={{ x: '-180vw', y: 20 }}
+        animate={{ x: '120vw', y: [20, 10, 20, 15, 20] }}
+        transition={{
+          duration: 4,
+          ease: "easeInOut",
+          y: { duration: 0.8, repeat: 5, ease: "easeInOut" }
+        }}
+        style={{ 
+          filter: 'drop-shadow(6px 6px 12px rgba(0,0,0,0.4))',
+          scale: 1.2
+        }}
+      >
+        <FlamingoSilhouette />
+        
+        {/* Dust cloud behind flamingo */}
+        <motion.div
+          className="absolute -left-12 bottom-4 w-16 h-8 bg-yellow-300/30 dark:bg-yellow-600/20 rounded-full blur-md"
+          animate={{ 
+            scaleX: [1, 1.5, 1],
+            opacity: [0.3, 0.6, 0.3]
+          }}
+          transition={{ duration: 0.6, repeat: Infinity }}
+        />
+      </motion.div>
+
+      {/* "FLAM" text effect coming from behind - much larger and more dramatic */}
+      {showText && (
+        <motion.div
+          className="absolute"
+          initial={{ x: '-250vw', opacity: 0, scale: 0.3, rotateY: -90 }}
+          animate={{ 
+            x: '0vw', 
+            opacity: [0, 1, 1, 0.7, 0], 
+            scale: [0.3, 1.5, 2, 2.5, 3],
+            rotateY: [-90, 0, 0, 0, 90]
+          }}
+          transition={{
+            duration: 3,
+            ease: "easeOut",
+            opacity: { duration: 3 },
+            scale: { duration: 3 }
+          }}
+          style={{
+            perspective: '1000px',
+            transformStyle: 'preserve-3d'
+          }}
+        >
+          <h2 
+            className="text-9xl md:text-[12rem] font-black bg-gradient-to-r from-red-500 via-pink-400 to-orange-500 bg-clip-text text-transparent tracking-wider"
+            style={{ 
+              fontFamily: 'Impact, Arial Black, sans-serif',
+              textShadow: '8px 8px 16px rgba(255,69,0,0.4), 4px 4px 8px rgba(255,105,180,0.3)',
+              WebkitTextStroke: '2px rgba(255,69,0,0.3)'
             }}
-            transition={{ 
-              duration: 4.2,
-              delay: 0.8,
-              ease: "easeInOut",
-              times: [0, 0.3, 0.7, 1]
-            }}
-            className="absolute flex items-center justify-center z-20"
           >
-            {/* Animated Flamingo */}
-            <div className="relative">
-              {/* Flamingo body */}
-              <motion.div
-                animate={{ 
-                  scaleX: [1, 1.1, 1],
-                  scaleY: [1, 0.95, 1]
-                }}
-                transition={{
-                  duration: 0.4,
-                  repeat: Infinity,
-                  repeatType: "reverse"
-                }}
-                className="w-16 h-20 bg-gradient-to-b from-pink-400 to-pink-600 rounded-full relative shadow-lg"
-              >
-                {/* Flamingo neck and head */}
-                <motion.div
-                  animate={{ 
-                    rotate: [0, 10, -5, 0],
-                    y: [0, -2, 2, 0]
-                  }}
-                  transition={{
-                    duration: 0.6,
-                    repeat: Infinity,
-                    repeatType: "reverse"
-                  }}
-                  className="absolute -top-6 left-1/2 transform -translate-x-1/2"
-                >
-                  <div className="w-3 h-12 bg-gradient-to-t from-pink-500 to-pink-300 rounded-full"></div>
-                  <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 w-6 h-6 bg-pink-300 rounded-full">
-                    <div className="absolute top-1 left-1 w-1 h-1 bg-black rounded-full"></div>
-                    <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-3 h-1 bg-orange-400 rounded-full"></div>
-                  </div>
-                </motion.div>
-
-                {/* Running legs animation */}
-                <motion.div
-                  animate={{ 
-                    rotate: [0, 15, -15, 0],
-                    scaleY: [1, 1.2, 0.8, 1]
-                  }}
-                  transition={{
-                    duration: 0.3,
-                    repeat: Infinity,
-                  }}
-                  className="absolute -bottom-2 left-2 w-1 h-8 bg-pink-600 rounded-full"
-                />
-                <motion.div
-                  animate={{ 
-                    rotate: [0, -15, 15, 0],
-                    scaleY: [1, 0.8, 1.2, 1]
-                  }}
-                  transition={{
-                    duration: 0.3,
-                    repeat: Infinity,
-                    delay: 0.15
-                  }}
-                  className="absolute -bottom-2 right-2 w-1 h-8 bg-pink-600 rounded-full"
-                />
-
-                {/* Wing animation */}
-                <motion.div
-                  animate={{ 
-                    rotate: [0, -20, 20, 0],
-                    scaleX: [1, 1.3, 0.7, 1]
-                  }}
-                  transition={{
-                    duration: 0.2,
-                    repeat: Infinity,
-                  }}
-                  className="absolute top-2 -right-1 w-4 h-8 bg-gradient-to-r from-pink-400 to-pink-500 rounded-full transform origin-center"
-                />
-              </motion.div>
-
-              {/* Speed lines */}
-              <motion.div
-                initial={{ opacity: 0, x: 10 }}
-                animate={{ 
-                  opacity: [0, 0.6, 0],
-                  x: [10, -20, -40]
-                }}
-                transition={{
-                  duration: 0.5,
-                  repeat: Infinity,
-                }}
-                className="absolute top-4 -left-8 flex flex-col space-y-1"
-              >
-                <div className="w-8 h-0.5 bg-white/50 rounded-full"></div>
-                <div className="w-6 h-0.5 bg-white/40 rounded-full"></div>
-                <div className="w-4 h-0.5 bg-white/30 rounded-full"></div>
-              </motion.div>
-            </div>
-          </motion.div>
-
-          {/* Dust clouds behind flamingo */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: [0, 0.4, 0] }}
-            transition={{
-              duration: 1,
-              repeat: Infinity,
-              delay: 1
-            }}
-            className="absolute left-1/3 top-3/4"
-          >
-            <div className="w-8 h-4 bg-white/20 rounded-full blur-sm"></div>
-          </motion.div>
-        </div>
+            FLAM
+          </h2>
+        </motion.div>
       )}
 
-      {/* Phase 2: Logo Fade In */}
-      {animationPhase === 'fade-logo' && (
+      {/* Logo fade-in after flamingo passes - professional quality */}
+      {showLogo && (
         <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1.5, ease: "easeOut" }}
-          className="text-center z-30"
+          className="text-center relative z-10"
+          initial={{ opacity: 0, scale: 0.2, y: 150, rotateX: -90 }}
+          animate={{ opacity: 1, scale: 1, y: 0, rotateX: 0 }}
+          transition={{
+            duration: 2.5,
+            ease: "easeOut",
+            type: "spring",
+            stiffness: 80
+          }}
+          style={{
+            perspective: '1000px',
+            transformStyle: 'preserve-3d'
+          }}
         >
-          {/* Logo */}
-          <motion.div
-            initial={{ scale: 0, rotate: -180 }}
-            animate={{ scale: 1, rotate: 0 }}
-            transition={{ duration: 1, ease: "backOut" }}
-            className="mb-8"
-          >
-            <div className="w-20 h-20 mx-auto bg-black rounded-2xl flex items-center justify-center border-4 border-white/30 shadow-2xl">
-              <motion.span
-                className="text-white font-bold text-2xl"
-                animate={{
-                  textShadow: [
-                    "0 0 10px rgba(255,255,255,0.5)",
-                    "0 0 20px rgba(59,130,246,0.8)",
-                    "0 0 10px rgba(255,255,255,0.5)"
-                  ]
-                }}
-                transition={{ duration: 2, repeat: Infinity }}
-              >
-                FA
-              </motion.span>
-            </div>
-          </motion.div>
+          <div className="relative">
+            {/* Elegant logo with flamingo silhouette */}
+            <motion.div
+              className="w-32 h-32 mx-auto mb-8 bg-gradient-to-br from-pink-500 via-red-400 to-orange-500 rounded-full flex items-center justify-center shadow-2xl"
+              initial={{ rotate: -180, scale: 0 }}
+              animate={{ rotate: 0, scale: 1 }}
+              transition={{ duration: 1.5, ease: "backOut", delay: 0.5 }}
+            >
+              <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
+                <path d="M30 10C35 15 40 20 42 25C44 30 43 35 40 38C37 41 32 42 28 40C24 38 22 34 23 30C24 26 27 23 30 20C33 17 35 14 35 10C35 6 33 3 30 2C27 3 25 6 25 10C25 14 27 17 30 20" 
+                      fill="white" opacity="0.9"/>
+                <circle cx="42" cy="18" r="2" fill="white"/>
+                <path d="M44 18L48 16" stroke="white" strokeWidth="1" strokeLinecap="round"/>
+              </svg>
+            </motion.div>
 
-          {/* Main title */}
-          <motion.h1
-            initial={{ y: 30, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 1, delay: 0.5 }}
-            className="text-5xl md:text-7xl font-bold text-white mb-4"
-          >
-            <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-              Flamingo AI
-            </span>
-          </motion.h1>
-
-          {/* Subtitle */}
-          <motion.p
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 1, delay: 1 }}
-            className="text-xl text-white/80 mb-8"
-          >
-            Privacy-First AI Chat Platform
-          </motion.p>
-
-          {/* Loading dots */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.5 }}
-            className="flex justify-center items-center space-x-2"
-          >
-            <div className="w-3 h-3 bg-blue-400 rounded-full animate-bounce"></div>
-            <div className="w-3 h-3 bg-purple-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-            <div className="w-3 h-3 bg-pink-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
-          </motion.div>
+            <motion.h1 
+              className="text-8xl md:text-9xl font-black bg-gradient-to-r from-pink-600 via-red-500 to-orange-600 bg-clip-text text-transparent mb-6"
+              style={{ 
+                fontFamily: 'Impact, Arial Black, sans-serif',
+                textShadow: '4px 4px 8px rgba(0,0,0,0.3)',
+                WebkitTextStroke: '1px rgba(255,69,0,0.2)'
+              }}
+              initial={{ letterSpacing: '0.8em', opacity: 0 }}
+              animate={{ letterSpacing: '0.1em', opacity: 1 }}
+              transition={{ duration: 2, delay: 1 }}
+            >
+              FLAMINGO
+            </motion.h1>
+            <motion.div
+              className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent"
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1.8, duration: 1.5 }}
+            >
+              AI ASSISTANT
+            </motion.div>
+            
+            {/* Enhanced sparkle effects */}
+            <motion.div
+              className="absolute -top-8 -right-8 text-yellow-400 text-3xl"
+              animate={{ 
+                scale: [1, 1.5, 1], 
+                rotate: [0, 180, 360],
+                opacity: [0.7, 1, 0.7]
+              }}
+              transition={{ duration: 2.5, repeat: Infinity }}
+            >
+              ✨
+            </motion.div>
+            <motion.div
+              className="absolute -bottom-8 -left-8 text-pink-400 text-2xl"
+              animate={{ 
+                scale: [1, 1.3, 1], 
+                rotate: [0, -180, -360],
+                opacity: [0.6, 1, 0.6]
+              }}
+              transition={{ duration: 3, repeat: Infinity, delay: 0.7 }}
+            >
+              💫
+            </motion.div>
+            <motion.div
+              className="absolute top-4 right-4 text-orange-400 text-xl"
+              animate={{ 
+                scale: [1, 1.4, 1], 
+                rotate: [0, 90, 180],
+                opacity: [0.5, 0.9, 0.5]
+              }}
+              transition={{ duration: 2.2, repeat: Infinity, delay: 1.2 }}
+            >
+              ⭐
+            </motion.div>
+          </div>
         </motion.div>
       )}
     </div>
   );
-}
+};
+
+export default IntroAnimation;

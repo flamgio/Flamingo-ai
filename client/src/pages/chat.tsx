@@ -170,20 +170,15 @@ export default function Chat() {
             </div>
 
             <div className="flex items-center space-x-4">
-              <div className="toggle-cont-small">
-                <input type="checkbox" className="toggle-input" checked={theme === 'dark'} onChange={toggleTheme} />
-                <label className="toggle-label-small">
-                  <div className="cont-icon">
-                    <div className="sparkle" style={{"--deg": "45", "--duration": "3"} as React.CSSProperties}></div>
-                    <div className="sparkle" style={{"--deg": "90", "--duration": "3"} as React.CSSProperties}></div>
-                    <div className="sparkle" style={{"--deg": "135", "--duration": "3"} as React.CSSProperties}></div>
-                    <div className="sparkle" style={{"--deg": "180", "--duration": "3"} as React.CSSProperties}></div>
-                    <svg className="icon" viewBox="0 0 24 24">
-                      <path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.166a.75.75 0 00-1.06-1.06l-1.591 1.59a.75.75 0 101.06 1.061l1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.834 18.894a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.061 1.06l1.59 1.591zM12 18a.75.75 0 01.75.75V21a.75.75 0 01-1.5 0v-2.25A.75.75 0 0112 18zM7.758 17.303a.75.75 0 00-1.061-1.06l-1.591 1.59a.75.75 0 001.06 1.061l1.591-1.59zM6 12a.75.75 0 01-.75.75H3a.75.75 0 010-1.5h2.25A.75.75 0 016 12zM6.697 7.757a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 00-1.061 1.06l1.59 1.591z"/>
-                    </svg>
-                  </div>
-                </label>
-              </div>
+              {/* New Switch Theme Toggle */}
+              <label className="switch" data-testid="theme-toggle">
+                <input 
+                  type="checkbox" 
+                  checked={theme === 'dark'}
+                  onChange={toggleTheme}
+                />
+                <span className="slider"></span>
+              </label>
               <span className="text-xs bg-gradient-to-r from-purple-100 to-pink-100 dark:from-purple-800/30 dark:to-pink-800/30 text-purple-700 dark:text-purple-300 px-3 py-1 rounded-full font-medium border border-purple-200/50 dark:border-purple-600/20">
                 <i className="fas fa-sparkles mr-1 text-purple-500"></i>
                 AI Active

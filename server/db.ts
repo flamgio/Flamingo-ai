@@ -10,7 +10,7 @@ if (!process.env.DATABASE_URL) {
 // Create postgres connection with proper SSL configuration for Replit
 const connectionString = process.env.DATABASE_URL;
 const client = postgres(connectionString, {
-  ssl: false, // Replit internal database doesn't need SSL
+  ssl: 'require', // Replit PostgreSQL requires SSL
   prepare: false,
   max: 10,
   idle_timeout: 20

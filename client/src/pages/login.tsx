@@ -1,78 +1,44 @@
-import { useState, useEffect } from "react";
+
+import { useState } from "react";
 import { useLocation } from "wouter";
+import { useMutation } from "@tanstack/react-query";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { useAuth } from "@/hooks/use-auth";
-import SuccessPopup from "@/components/success-popup";
-import "../styles/auth.css";
+import { useToast } from "@/hooks/use-toast";
 import "../styles/new-theme-toggle.css";
 
 export default function Login() {
   const [, setLocation] = useLocation();
-  const [showSuccess, setShowSuccess] = useState(false);
   const [formData, setFormData] = useState({
-    email: "",
-    password: ""
+    username: "",
+    password: "",
   });
-  const [errors, setErrors] = useState<Record<string, string>>({});
+  const { login } = useAuth();
+  const { toast } = useToast();
 
-  const { login, isLoginLoading, loginError } = useAuth();
-
-  useEffect(() => {
-    const theme = localStorage.getItem('flamgio-theme') || 'light';
-    if (theme === 'dark') {
-      document.documentElement.classList.add('dark');
-    }
-  }, []);
-
-  useEffect(() => {
-    const checkbox = document.querySelector('.toggle-input') as HTMLInputElement;
-    if (checkbox) {
-      checkbox.checked = document.documentElement.classList.contains('dark');
-    }
-  }, []);
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
-
-  const validateForm = () => {
-    const newErrors: Record<string, string> = {};
-
-    if (!formData.email.trim()) {
-      newErrors.email = "Email is required";
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "Please enter a valid email";
-    }
-
-    if (!formData.password) {
-      newErrors.password = "Password is required";
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!validateForm()) {
-      return;
-    }
-
-    try {
-      const result = await login({
-        email: formData.email,
-        password: formData.password
+  const loginMutation = useMutation({
+    mutationFn: login,
+    onSuccess: () => {
+      toast({
+        title: "Success",
+        description: "Logged in successfully!",
       });
-      if (result) {
-        setShowSuccess(true);
-        setTimeout(() => {
-          setLocation('/dashboard');
-        }, 1500);
-      }
-    } catch (error) {
-      console.error('Login error:', error);
-    }
+      setLocation("/dashboard");
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Error",
+        description: error.message || "Login failed",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    loginMutation.mutate(formData);
   };
 
   const handleThemeToggle = () => {
@@ -87,23 +53,7 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900/30 to-black relative overflow-hidden flex items-center justify-center">
-      {/* Background Effects */}
-      <div className="absolute inset-0">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-white/5 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gray-500/10 rounded-full blur-3xl animate-pulse"></div>
-      </div>
-
-      {/* Success Popup */}
-      <SuccessPopup 
-        show={showSuccess} 
-        message="Welcome back! Successfully logged in."
-        onComplete={() => {
-          setShowSuccess(false);
-          setLocation('/dashboard');
-        }} 
-      />
-
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 flex flex-col">
       {/* Header */}
       <div className="fixed top-0 left-0 right-0 z-50 p-4">
         <div className="flex items-center justify-between">
@@ -123,105 +73,76 @@ export default function Login() {
             </div>
           </div>
           <div className="flex items-center space-x-4">
-            <div className="toggle-cont-small">
-              <input type="checkbox" className="toggle-input" onChange={handleThemeToggle} />
-              <label className="toggle-label-small">
-                <div className="cont-icon">
-                  <div className="sparkle" style={{"--deg": "45", "--duration": "3"} as React.CSSProperties}></div>
-                  <div className="sparkle" style={{"--deg": "90", "--duration": "3"} as React.CSSProperties}></div>
-                  <div className="sparkle" style={{"--deg": "135", "--duration": "3"} as React.CSSProperties}></div>
-                  <div className="sparkle" style={{"--deg": "180", "--duration": "3"} as React.CSSProperties}></div>
-                  <svg className="icon" viewBox="0 0 24 24">
-                    <path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.166a.75.75 0 00-1.06-1.06l-1.591 1.59a.75.75 0 101.06 1.061l1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.834 18.894a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.061 1.06l1.59 1.591zM12 18a.75.75 0 01.75.75V21a.75.75 0 01-1.5 0v-2.25A.75.75 0 0112 18zM7.758 17.303a.75.75 0 00-1.061-1.06l-1.591 1.59a.75.75 0 001.06 1.061l1.591-1.59zM6 12a.75.75 0 01-.75.75H3a.75.75 0 010-1.5h2.25A.75.75 0 016 12zM6.697 7.757a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 00-1.061 1.06l1.59 1.591z"/>
-                  </svg>
-                </div>
-              </label>
-            </div>
-            <button
-              onClick={() => setLocation('/')}
-              className="text-white/70 hover:text-white transition-colors"
+            <label className="switch-small">
+              <input type="checkbox" onChange={handleThemeToggle} />
+              <span className="slider"></span>
+            </label>
+            <Button
+              variant="outline"
+              onClick={() => setLocation('/signup')}
+              className="border-white text-white hover:bg-white hover:text-gray-900"
             >
-              Back to Home
-            </button>
+              Sign Up
+            </Button>
           </div>
         </div>
       </div>
 
       {/* Main Content */}
-      <div className="container">
-        <div className="login-box">
-          <div className="form">
-            {/* Logo */}
-            <div className="logo">
-              <div className="user"></div>
-            </div>
-            
-            {/* Header */}
-            <div className="header">
-              Welcome Back
-            </div>
-            <div className="subtitle">
-              Sign in to continue your AI journey
+      <div className="flex-1 flex items-center justify-center p-8 pt-24">
+        <div className="w-full max-w-md">
+          <div className="bg-white/10 backdrop-blur-md rounded-2xl p-8 shadow-2xl border border-white/20">
+            <div className="text-center mb-8">
+              <h1 className="text-3xl font-bold text-white mb-2">Welcome Back</h1>
+              <p className="text-gray-300">Sign in to your Flamingo AI account</p>
             </div>
 
-            {/* Login Form */}
-            <form onSubmit={handleLogin} className="w-full space-y-4">
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleInputChange}
-                placeholder="Email Address"
-                className="input"
-                required
-              />
-              {errors.email && (
-                <p className="text-red-400 text-xs">{errors.email}</p>
-              )}
-              
-              <input
-                type="password"
-                name="password"
-                value={formData.password}
-                onChange={handleInputChange}
-                placeholder="Password"
-                className="input"
-                required
-              />
-              {errors.password && (
-                <p className="text-red-400 text-xs">{errors.password}</p>
-              )}
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="space-y-2">
+                <Label htmlFor="username" className="text-white">Username</Label>
+                <Input
+                  id="username"
+                  type="text"
+                  placeholder="Enter your username"
+                  value={formData.username}
+                  onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+                  className="bg-white/20 border-white/30 text-white placeholder:text-gray-300"
+                  required
+                />
+              </div>
 
-              {/* Submit Button */}
-              <button
+              <div className="space-y-2">
+                <Label htmlFor="password" className="text-white">Password</Label>
+                <Input
+                  id="password"
+                  type="password"
+                  placeholder="Enter your password"
+                  value={formData.password}
+                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                  className="bg-white/20 border-white/30 text-white placeholder:text-gray-300"
+                  required
+                />
+              </div>
+
+              <Button
                 type="submit"
-                disabled={isLoginLoading}
-                className="button sign-in"
+                className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium py-3"
+                disabled={loginMutation.isPending}
               >
-                {isLoginLoading ? "Signing In..." : "Sign In"}
-              </button>
-
-              {/* Error Message */}
-              {loginError && (
-                <div className="text-red-400 text-xs text-center">
-                  {loginError.message || loginError}
-                </div>
-              )}
+                {loginMutation.isPending ? "Signing in..." : "Sign In"}
+              </Button>
             </form>
 
-            {/* Footer */}
-            <div className="footer">
-              Don't have an account?{" "}
-              <a
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  setLocation('/signup');
-                }}
-                className="link"
-              >
-                Join Flamingo AI
-              </a>
+            <div className="mt-6 text-center">
+              <p className="text-gray-300">
+                Don't have an account?{" "}
+                <button
+                  onClick={() => setLocation('/signup')}
+                  className="text-blue-400 hover:text-blue-300 font-medium"
+                >
+                  Sign up
+                </button>
+              </p>
             </div>
           </div>
         </div>

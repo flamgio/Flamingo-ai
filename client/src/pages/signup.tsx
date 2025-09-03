@@ -1,78 +1,46 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useLocation } from "wouter";
+import { useMutation } from "@tanstack/react-query";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { useAuth } from "@/hooks/use-auth";
-import SuccessPopup from "@/components/success-popup";
-import "../styles/auth.css";
+import { useToast } from "@/hooks/use-toast";
 import "../styles/new-theme-toggle.css";
 
 export default function Signup() {
   const [, setLocation] = useLocation();
-  const [showSuccess, setShowSuccess] = useState(false);
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
+    username: "",
     email: "",
     password: "",
-    confirmPassword: ""
+    firstName: "",
+    lastName: "",
   });
-  const [errors, setErrors] = useState<string[]>([]);
+  const { register } = useAuth();
+  const { toast } = useToast();
 
-  const { signup, isSignupLoading, signupError } = useAuth();
-
-  useEffect(() => {
-    const theme = localStorage.getItem('flamgio-theme') || 'light';
-    if (theme === 'dark') {
-      document.documentElement.classList.add('dark');
-    }
-  }, []);
-
-  useEffect(() => {
-    const checkbox = document.querySelector('.toggle-input') as HTMLInputElement;
-    if (checkbox) {
-      checkbox.checked = document.documentElement.classList.contains('dark');
-    }
-  }, []);
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
-
-  const validateForm = () => {
-    const newErrors: string[] = [];
-
-    if (!formData.firstName.trim()) newErrors.push("First name is required");
-    if (!formData.lastName.trim()) newErrors.push("Last name is required");
-    if (!formData.email.trim()) newErrors.push("Email is required");
-    if (!formData.email.includes('@')) newErrors.push("Please enter a valid email");
-    if (formData.password.length < 6) newErrors.push("Password must be at least 6 characters");
-    if (formData.password !== formData.confirmPassword) newErrors.push("Passwords do not match");
-
-    setErrors(newErrors);
-    return newErrors.length === 0;
-  };
-
-  const handleSignup = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!validateForm()) return;
-
-    try {
-      const result = await signup({
-        email: formData.email,
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        password: formData.password
+  const signupMutation = useMutation({
+    mutationFn: register,
+    onSuccess: () => {
+      toast({
+        title: "Success",
+        description: "Account created successfully!",
       });
-      if (result) {
-        setShowSuccess(true);
-        setTimeout(() => {
-          setLocation('/dashboard');
-        }, 1500);
-      }
-    } catch (error) {
-      console.error('Signup error:', error);
-    }
+      setLocation("/dashboard");
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Error",
+        description: error.message || "Registration failed",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    signupMutation.mutate(formData);
   };
 
   const handleThemeToggle = () => {
@@ -87,23 +55,7 @@ export default function Signup() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900/30 to-black relative overflow-hidden flex items-center justify-center">
-      {/* Background Effects */}
-      <div className="absolute inset-0">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-white/5 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gray-500/10 rounded-full blur-3xl animate-pulse"></div>
-      </div>
-
-      {/* Success Popup */}
-      <SuccessPopup
-        show={showSuccess}
-        message="Account created successfully! Welcome to Flamingo AI."
-        onComplete={() => {
-          setShowSuccess(false);
-          setLocation('/dashboard');
-        }}
-      />
-
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 flex flex-col">
       {/* Header */}
       <div className="fixed top-0 left-0 right-0 z-50 p-4">
         <div className="flex items-center justify-between">
@@ -123,139 +75,116 @@ export default function Signup() {
             </div>
           </div>
           <div className="flex items-center space-x-4">
-            <div className="toggle-cont-small">
-              <input type="checkbox" className="toggle-input" onChange={handleThemeToggle} />
-              <label className="toggle-label-small">
-                <div className="cont-icon">
-                  <div className="sparkle" style={{"--deg": "45", "--duration": "3"} as React.CSSProperties}></div>
-                  <div className="sparkle" style={{"--deg": "90", "--duration": "3"} as React.CSSProperties}></div>
-                  <div className="sparkle" style={{"--deg": "135", "--duration": "3"} as React.CSSProperties}></div>
-                  <div className="sparkle" style={{"--deg": "180", "--duration": "3"} as React.CSSProperties}></div>
-                  <svg className="icon" viewBox="0 0 24 24">
-                    <path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.166a.75.75 0 00-1.06-1.06l-1.591 1.59a.75.75 0 101.06 1.061l1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.834 18.894a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.061 1.06l1.59 1.591zM12 18a.75.75 0 01.75.75V21a.75.75 0 01-1.5 0v-2.25A.75.75 0 0112 18zM7.758 17.303a.75.75 0 00-1.061-1.06l-1.591 1.59a.75.75 0 001.06 1.061l1.591-1.59zM6 12a.75.75 0 01-.75.75H3a.75.75 0 010-1.5h2.25A.75.75 0 016 12zM6.697 7.757a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 00-1.061 1.06l1.59 1.591z"/>
-                  </svg>
-                </div>
-              </label>
-            </div>
-            <button
-              onClick={() => setLocation('/')}
-              className="text-white/70 hover:text-white transition-colors"
+            <label className="switch-small">
+              <input type="checkbox" onChange={handleThemeToggle} />
+              <span className="slider"></span>
+            </label>
+            <Button
+              variant="outline"
+              onClick={() => setLocation('/login')}
+              className="border-white text-white hover:bg-white hover:text-gray-900"
             >
-              Back to Home
-            </button>
+              Sign In
+            </Button>
           </div>
         </div>
       </div>
 
       {/* Main Content */}
-      <div className="container" style={{ '--form-width': '350px', '--aspect-ratio': '1.4' } as any}>
-        <div className="login-box">
-          <div className="form">
-            {/* Logo */}
-            <div className="logo">
-              <div className="user"></div>
-            </div>
-            
-            {/* Header */}
-            <div className="header">
-              Join Flamingo AI
-            </div>
-            <div className="subtitle">
-              Create your account and start your AI journey
+      <div className="flex-1 flex items-center justify-center p-8 pt-24">
+        <div className="w-full max-w-md">
+          <div className="bg-white/10 backdrop-blur-md rounded-2xl p-8 shadow-2xl border border-white/20">
+            <div className="text-center mb-8">
+              <h1 className="text-3xl font-bold text-white mb-2">Create Account</h1>
+              <p className="text-gray-300">Join Flamingo AI today</p>
             </div>
 
-            {/* Signup Form */}
-            <form onSubmit={handleSignup} className="w-full space-y-3">
-              <div className="flex space-x-2">
-                <input
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="firstName" className="text-white">First Name</Label>
+                  <Input
+                    id="firstName"
+                    type="text"
+                    placeholder="First name"
+                    value={formData.firstName}
+                    onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+                    className="bg-white/20 border-white/30 text-white placeholder:text-gray-300"
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="lastName" className="text-white">Last Name</Label>
+                  <Input
+                    id="lastName"
+                    type="text"
+                    placeholder="Last name"
+                    value={formData.lastName}
+                    onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+                    className="bg-white/20 border-white/30 text-white placeholder:text-gray-300"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="username" className="text-white">Username</Label>
+                <Input
+                  id="username"
                   type="text"
-                  name="firstName"
-                  value={formData.firstName}
-                  onChange={handleInputChange}
-                  placeholder="First Name"
-                  className="input flex-1"
-                  required
-                />
-                <input
-                  type="text"
-                  name="lastName"
-                  value={formData.lastName}
-                  onChange={handleInputChange}
-                  placeholder="Last Name"
-                  className="input flex-1"
+                  placeholder="Choose a username"
+                  value={formData.username}
+                  onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+                  className="bg-white/20 border-white/30 text-white placeholder:text-gray-300"
                   required
                 />
               </div>
-              
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleInputChange}
-                placeholder="Email Address"
-                className="input"
-                required
-              />
-              
-              <input
-                type="password"
-                name="password"
-                value={formData.password}
-                onChange={handleInputChange}
-                placeholder="Password (min 6 characters)"
-                className="input"
-                required
-              />
 
-              <input
-                type="password"
-                name="confirmPassword"
-                value={formData.confirmPassword}
-                onChange={handleInputChange}
-                placeholder="Confirm Password"
-                className="input"
-                required
-              />
+              <div className="space-y-2">
+                <Label htmlFor="email" className="text-white">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="Enter your email"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  className="bg-white/20 border-white/30 text-white placeholder:text-gray-300"
+                  required
+                />
+              </div>
 
-              {/* Error Messages */}
-              {errors.length > 0 && (
-                <div className="space-y-1">
-                  {errors.map((error, index) => (
-                    <p key={index} className="text-red-400 text-xs">{error}</p>
-                  ))}
-                </div>
-              )}
+              <div className="space-y-2">
+                <Label htmlFor="password" className="text-white">Password</Label>
+                <Input
+                  id="password"
+                  type="password"
+                  placeholder="Create a password"
+                  value={formData.password}
+                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                  className="bg-white/20 border-white/30 text-white placeholder:text-gray-300"
+                  required
+                />
+              </div>
 
-              {/* Submit Button */}
-              <button
+              <Button
                 type="submit"
-                disabled={isSignupLoading}
-                className="button sign-in"
+                className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium py-3"
+                disabled={signupMutation.isPending}
               >
-                {isSignupLoading ? "Creating Account..." : "Create Account"}
-              </button>
-
-              {/* Server Error */}
-              {signupError && (
-                <div className="text-red-400 text-xs text-center">
-                  {signupError.message || signupError}
-                </div>
-              )}
+                {signupMutation.isPending ? "Creating account..." : "Create Account"}
+              </Button>
             </form>
 
-            {/* Footer */}
-            <div className="footer">
-              Already have an account?{" "}
-              <a
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  setLocation('/login');
-                }}
-                className="link"
-              >
-                Sign in here
-              </a>
+            <div className="mt-6 text-center">
+              <p className="text-gray-300">
+                Already have an account?{" "}
+                <button
+                  onClick={() => setLocation('/login')}
+                  className="text-blue-400 hover:text-blue-300 font-medium"
+                >
+                  Sign in
+                </button>
+              </p>
             </div>
           </div>
         </div>

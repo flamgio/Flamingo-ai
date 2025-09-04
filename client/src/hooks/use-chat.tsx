@@ -20,7 +20,6 @@ export function useChat() {
     enabled: !!user,
   });
 
-  // Sync fetched conversations with local state
   useEffect(() => {
     if (fetchedConversations) {
       setConversations(fetchedConversations);
@@ -34,7 +33,6 @@ export function useChat() {
     enabled: !!user && !!currentConversationId,
   });
 
-  // Function to refresh conversations
   const refreshConversations = useCallback(async () => {
     try {
       // Assuming getConversations fetches conversations, this might need adjustment
@@ -61,15 +59,15 @@ export function useChat() {
         const newConversation = await conversationResponse.json();
         conversationId = newConversation.id;
         setCurrentConversationId(conversationId);
-        refreshConversations(); // Refresh conversations after creating a new one
+        refreshConversations();
       }
 
-      // Send message using agent endpoint
+      // Send message to chat API
       const response = await apiRequest('POST', '/api/agent', {
         prompt: content,
         conversationId: conversationId,
         selectedModel: 'gpt-3.5-turbo',
-        useEnhancement: true // Changed from false to true based on typical usage, adjust if needed
+        useEnhancement: true
       });
 
       const result = await response.json();

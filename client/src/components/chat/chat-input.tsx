@@ -1,7 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
-import '../styles/chat-input.css';
 
 interface ChatInputProps {
   onSendMessage: (message: string) => Promise<void>;
@@ -49,67 +47,56 @@ export default function ChatInput({ onSendMessage, disabled }: ChatInputProps) {
   }, [message]);
 
   return (
-    <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-xl border-t border-purple-200/50 dark:border-purple-500/20 p-6 shadow-lg shadow-purple-100/50 dark:shadow-purple-900/20">
+    <div className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border-t border-purple-200/30 dark:border-purple-600/30 p-4 sm:p-6">
       <div className="max-w-4xl mx-auto">
-        <div className="container_chat_bot transform transition-all duration-300 hover:scale-[1.02]">
-          <div className="container-chat-options">
-            <div className="chat">
-              <div className="chat-bot">
-                <form onSubmit={handleSubmit}>
-                  <textarea
-                    ref={textareaRef}
-                    data-testid="chat-input"
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                    onKeyDown={handleKeyDown}
-                    placeholder="Ask anything..."
-                    disabled={disabled || isSubmitting}
-                    style={{ height: 'auto' }}
-                    className="transition-all duration-300 focus:scale-[1.01] focus:shadow-lg"
-                  />
-                </form>
-              </div>
-              <div className="options">
-                <div className="btns-add">
-                  <button type="button" className="hover:scale-110 transition-transform duration-200">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
-                    </svg>
-                  </button>
-                  <button type="button" className="hover:scale-110 transition-transform duration-200">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-2V2a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v2H5a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1zM9 4h6v1H9V4zm9 16H6V6h2v1a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V6h2v14z"/>
-                    </svg>
-                  </button>
-                </div>
-                <button 
-                  className="btn-submit hover:scale-110 transition-all duration-200 hover:shadow-lg"
-                  type="submit"
-                  disabled={!message.trim() || disabled || isSubmitting}
-                  onClick={handleSubmit}
-                >
-                  <i className={isSubmitting ? "animate-spin" : ""}>
-                    {isSubmitting ? (
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                        <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" fill="none" strokeDasharray="31.416" strokeDashoffset="31.416">
-                          <animate attributeName="stroke-dasharray" dur="2s" values="0 31.416;15.708 15.708;0 31.416" repeatCount="indefinite"/>
-                          <animate attributeName="stroke-dashoffset" dur="2s" values="0;-15.708;-31.416" repeatCount="indefinite"/>
-                        </circle>
-                      </svg>
-                    ) : (
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
-                      </svg>
-                    )}
-                  </i>
-                </button>
-              </div>
+        <div className="bg-gradient-to-r from-white to-purple-50/30 dark:from-slate-800 dark:to-purple-900/20 rounded-2xl border border-purple-200/50 dark:border-purple-600/30 shadow-xl backdrop-blur-sm p-4">
+          <form onSubmit={handleSubmit} className="flex gap-3 items-end">
+            <div className="flex-1">
+              <textarea
+                ref={textareaRef}
+                data-testid="chat-input"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                onKeyDown={handleKeyDown}
+                placeholder="Ask anything..."
+                disabled={disabled || isSubmitting}
+                rows={1}
+                className="w-full resize-none border-0 bg-transparent text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-0 text-base leading-6 max-h-32 overflow-y-auto"
+                style={{ height: 'auto' }}
+              />
             </div>
-          </div>
-          <div className="tags">
-            <span className="animate-pulse">Professional</span>
-            <span className="animate-pulse" style={{animationDelay: '0.1s'}}>AI Chat</span>
-            <span className="animate-pulse" style={{animationDelay: '0.2s'}}>Smart</span>
+            <Button
+              type="submit"
+              disabled={!message.trim() || disabled || isSubmitting}
+              className="bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white border-0 rounded-xl px-4 py-2 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+              data-testid="send-button"
+            >
+              {isSubmitting ? (
+                <svg className="w-5 h-5 animate-spin" viewBox="0 0 24 24" fill="none">
+                  <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" fill="none" strokeDasharray="31.416" strokeDashoffset="31.416">
+                    <animate attributeName="stroke-dasharray" dur="2s" values="0 31.416;15.708 15.708;0 31.416" repeatCount="indefinite"/>
+                    <animate attributeName="stroke-dashoffset" dur="2s" values="0;-15.708;-31.416" repeatCount="indefinite"/>
+                  </circle>
+                </svg>
+              ) : (
+                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                </svg>
+              )}
+            </Button>
+          </form>
+          
+          {/* Suggestion Tags */}
+          <div className="flex gap-2 mt-3 flex-wrap">
+            <span className="px-3 py-1 bg-purple-100/50 dark:bg-purple-800/30 text-purple-700 dark:text-purple-300 rounded-full text-xs font-medium">
+              AI Assistant
+            </span>
+            <span className="px-3 py-1 bg-pink-100/50 dark:bg-pink-800/30 text-pink-700 dark:text-pink-300 rounded-full text-xs font-medium">
+              Smart Chat
+            </span>
+            <span className="px-3 py-1 bg-indigo-100/50 dark:bg-indigo-800/30 text-indigo-700 dark:text-indigo-300 rounded-full text-xs font-medium">
+              Intelligent
+            </span>
           </div>
         </div>
       </div>

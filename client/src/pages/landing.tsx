@@ -1,4 +1,3 @@
-/** Human-crafted Flamingo AI Landing Page - Original work by human developer. */
 
 import React, { useState, useEffect } from "react";
 import { useLocation } from "wouter";

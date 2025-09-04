@@ -97,16 +97,41 @@
   align-items: center;
   gap: 0.5rem;
   flex-wrap: wrap;
+  max-width: 90vw;
+}
+
+.text-loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.2rem;
+  flex-wrap: wrap;
 }
 
 .letter-svg {
-  width: 80px;
-  height: 80px;
+  width: 60px;
+  height: 60px;
+  margin: 0.1rem;
 }
 
 @media (max-width: 768px) {
   .letter-svg {
-    width: 60px;
-    height: 60px;
+    width: 40px;
+    height: 40px;
+  }
+  
+  .text-loader {
+    gap: 0.1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .letter-svg {
+    width: 30px;
+    height: 30px;
+  }
+  
+  .flamingo-text-loader {
+    gap: 0.2rem;
   }
 }

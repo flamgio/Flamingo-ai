@@ -8,8 +8,14 @@ interface IntroAnimationProps {
 const IntroAnimation: React.FC<IntroAnimationProps> = ({ onComplete }) => {
   const [showLogo, setShowLogo] = useState(false);
   const [showText, setShowText] = useState(false);
+  const [showFlamingoText, setShowFlamingoText] = useState(false);
 
   useEffect(() => {
+    // Show FLAMINGO text animation immediately
+    const flamingoTextTimer = setTimeout(() => {
+      setShowFlamingoText(true);
+    }, 500);
+
     // Show "FLAM" text effect after flamingo starts running
     const textTimer = setTimeout(() => {
       setShowText(true);
@@ -26,11 +32,181 @@ const IntroAnimation: React.FC<IntroAnimationProps> = ({ onComplete }) => {
     }, 8000);
 
     return () => {
+      clearTimeout(flamingoTextTimer);
       clearTimeout(textTimer);
       clearTimeout(logoTimer);
       clearTimeout(completeTimer);
     };
   }, [onComplete]);
+
+  // Updated animation styles using CSS classes
+  const flamingoDashStyle = 'flamingo-dash';
+  const flamingoSpinStyle = 'flamingo-spin';
+
+  // Animated FLAMINGO Text Component
+  const FlamingoTextAnimation = () => (
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+      {/* F */}
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 100 100" width="80" height="80">
+        <defs>
+          <linearGradient id="gradientF" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#FF69B4" />
+            <stop offset="50%" stopColor="#FF1493" />
+            <stop offset="100%" stopColor="#DC143C" />
+          </linearGradient>
+        </defs>
+        <path
+          strokeLinejoin="round"
+          strokeLinecap="round"
+          strokeWidth="8"
+          stroke="url(#gradientF)"
+          d="M 25,20 L 75,20 L 75,30 L 35,30 L 35,45 L 65,45 L 65,55 L 35,55 L 35,80"
+          className={flamingoDashStyle}
+          pathLength="360"
+        />
+      </svg>
+      
+      {/* L */}
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 100 100" width="80" height="80">
+        <defs>
+          <linearGradient id="gradientL" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#FF1493" />
+            <stop offset="50%" stopColor="#DC143C" />
+            <stop offset="100%" stopColor="#B22222" />
+          </linearGradient>
+        </defs>
+        <path
+          strokeLinejoin="round"
+          strokeLinecap="round"
+          strokeWidth="8"
+          stroke="url(#gradientL)"
+          d="M 30,20 L 30,70 L 70,70"
+          className={flamingoDashStyle}
+          pathLength="360"
+        />
+      </svg>
+      
+      {/* A */}
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 100 100" width="80" height="80">
+        <defs>
+          <linearGradient id="gradientA" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#DC143C" />
+            <stop offset="50%" stopColor="#B22222" />
+            <stop offset="100%" stopColor="#8B0000" />
+          </linearGradient>
+        </defs>
+        <path
+          strokeLinejoin="round"
+          strokeLinecap="round"
+          strokeWidth="8"
+          stroke="url(#gradientA)"
+          d="M 25,75 L 50,25 L 75,75 M 35,55 L 65,55"
+          className={flamingoDashStyle}
+          pathLength="360"
+        />
+      </svg>
+      
+      {/* M */}
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 100 100" width="80" height="80">
+        <defs>
+          <linearGradient id="gradientM" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#FF4500" />
+            <stop offset="50%" stopColor="#FF6347" />
+            <stop offset="100%" stopColor="#FFA07A" />
+          </linearGradient>
+        </defs>
+        <path
+          strokeLinejoin="round"
+          strokeLinecap="round"
+          strokeWidth="8"
+          stroke="url(#gradientM)"
+          d="M 20,75 L 20,25 L 50,55 L 80,25 L 80,75"
+          className={flamingoSpinStyle}
+          pathLength="360"
+        />
+      </svg>
+      
+      {/* I */}
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 100 100" width="80" height="80">
+        <defs>
+          <linearGradient id="gradientI" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#FFA07A" />
+            <stop offset="50%" stopColor="#FFB347" />
+            <stop offset="100%" stopColor="#FFCCCB" />
+          </linearGradient>
+        </defs>
+        <path
+          strokeLinejoin="round"
+          strokeLinecap="round"
+          strokeWidth="8"
+          stroke="url(#gradientI)"
+          d="M 30,25 L 70,25 M 50,25 L 50,75 M 30,75 L 70,75"
+          className={flamingoDashStyle}
+          pathLength="360"
+        />
+      </svg>
+      
+      {/* N */}
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 100 100" width="80" height="80">
+        <defs>
+          <linearGradient id="gradientN" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#FFB347" />
+            <stop offset="50%" stopColor="#FFCCCB" />
+            <stop offset="100%" stopColor="#FFC0CB" />
+          </linearGradient>
+        </defs>
+        <path
+          strokeLinejoin="round"
+          strokeLinecap="round"
+          strokeWidth="8"
+          stroke="url(#gradientN)"
+          d="M 25,75 L 25,25 L 75,75 L 75,25"
+          className={flamingoSpinStyle}
+          pathLength="360"
+        />
+      </svg>
+      
+      {/* G */}
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 100 100" width="80" height="80">
+        <defs>
+          <linearGradient id="gradientG" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#FFC0CB" />
+            <stop offset="50%" stopColor="#FFB6C1" />
+            <stop offset="100%" stopColor="#FF69B4" />
+          </linearGradient>
+        </defs>
+        <path
+          strokeLinejoin="round"
+          strokeLinecap="round"
+          strokeWidth="8"
+          stroke="url(#gradientG)"
+          d="M 70,35 L 70,25 L 30,25 A 25,25 0 0 0 30,75 L 70,75 L 70,55 L 55,55"
+          className={flamingoDashStyle}
+          pathLength="360"
+        />
+      </svg>
+      
+      {/* O */}
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 100 100" width="80" height="80">
+        <defs>
+          <linearGradient id="gradientO" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#FF69B4" />
+            <stop offset="50%" stopColor="#FF1493" />
+            <stop offset="100%" stopColor="#DC143C" />
+          </linearGradient>
+        </defs>
+        <path
+          strokeLinejoin="round"
+          strokeLinecap="round"
+          strokeWidth="11"
+          stroke="url(#gradientO)"
+          d="M 50,15 A 35,35 0 0 1 85,50 A 35,35 0 0 1 50,85 A 35,35 0 0 1 15,50 A 35,35 0 0 1 50,15 Z"
+          className={flamingoSpinStyle}
+          pathLength="360"
+        />
+      </svg>
+    </div>
+  );
 
   // Realistic flamingo silhouette SVG
   const FlamingoSilhouette = () => (

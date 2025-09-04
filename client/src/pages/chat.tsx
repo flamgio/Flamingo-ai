@@ -25,7 +25,7 @@ export default function Chat() {
     refreshConversations
   } = useChat();
   const isMobile = useMobile();
-  const [sidebarOpen, setSidebarOpen] = useState(!isMobile);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [showEnhancementModal, setShowEnhancementModal] = useState(false);
   const [pendingMessage, setPendingMessage] = useState("");
   const [originalPrompt, setOriginalPrompt] = useState("");

@@ -33,13 +33,13 @@ args = "Start application"
 name = "Start application"
 author = "agent"
 
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "NODE_ENV=development HF_MODEL=microsoft/DialoGPT-medium OR_MODEL_FALLBACKS=gpt-4o-mini,claude-3-haiku,llama-3.1-8b FLAMINGO_SIGNATURE=\"Built by Flamingo (human curated)\" ADMIN_KEY=flamingo_admin_2024 OPENROUTER_API_KEY=placeholder-openrouter-key HF_API_KEY=placeholder-huggingface-key PUTER_API_KEY=placeholder-puter-key PUTER_SCRIPT_URL=https://api.puter.com/v1/scripts JWT_SECRET=super-secret-jwt-key-for-development npm run dev"
-waitForPort = 5000
-
 [workflows.workflow.metadata]
 outputType = "webview"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "npm run dev"
+waitForPort = 5000
 
 [agent]
 expertMode = true

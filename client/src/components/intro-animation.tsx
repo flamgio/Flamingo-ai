@@ -13,17 +13,17 @@ const IntroAnimation: React.FC<IntroAnimationProps> = ({ onComplete }) => {
     // Show "FLAM" text effect after flamingo starts running
     const textTimer = setTimeout(() => {
       setShowText(true);
-    }, 1200);
+    }, 3000);
 
-    // Start the logo fade-in after the flamingo runs across
+    // Start the logo fade-in after 5 seconds of flamingo running
     const logoTimer = setTimeout(() => {
       setShowLogo(true);
-    }, 2500);
+    }, 5000);
 
     // Complete the animation after total duration
     const completeTimer = setTimeout(() => {
       onComplete();
-    }, 5000);
+    }, 8000);
 
     return () => {
       clearTimeout(textTimer);
@@ -155,32 +155,114 @@ const IntroAnimation: React.FC<IntroAnimationProps> = ({ onComplete }) => {
         transition={{ duration: 1.5, repeat: Infinity, delay: 0.5 }}
       />
       
-      {/* Animated realistic flamingo - much bigger */}
+      {/* Fire approaching from behind - starts after 1 second */}
+      <motion.div
+        className="absolute left-0 bottom-16"
+        initial={{ x: '-50vw', opacity: 0 }}
+        animate={{ 
+          x: '40vw', 
+          opacity: [0, 1, 1, 0.8],
+          scale: [0.5, 1, 1.2, 1.5]
+        }}
+        transition={{
+          duration: 5,
+          delay: 1,
+          ease: "easeInOut"
+        }}
+      >
+        {/* Fire effects */}
+        <div className="relative">
+          {[...Array(8)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute w-8 h-12 bg-gradient-to-t from-red-600 via-orange-500 to-yellow-400 rounded-full"
+              style={{ 
+                left: `${i * 8}px`,
+                filter: 'blur(2px)',
+                zIndex: 10 - i
+              }}
+              animate={{
+                height: [48, 32, 56, 40],
+                scaleY: [1, 1.2, 0.8, 1],
+                opacity: [1, 0.8, 1, 0.9],
+                y: [0, -4, 2, 0]
+              }}
+              transition={{
+                duration: 0.8,
+                repeat: Infinity,
+                delay: i * 0.1,
+                ease: "easeInOut"
+              }}
+            />
+          ))}
+          {/* Smoke effects */}
+          <motion.div
+            className="absolute -top-8 left-0 w-20 h-16 bg-gray-600/40 dark:bg-gray-400/30 rounded-full blur-lg"
+            animate={{
+              scale: [1, 1.3, 1.1],
+              opacity: [0.4, 0.2, 0.4],
+              y: [-10, -20, -15]
+            }}
+            transition={{ duration: 2, repeat: Infinity }}
+          />
+        </div>
+      </motion.div>
+
+      {/* Animated realistic flamingo running from fire */}
       <motion.div
         className="absolute"
-        initial={{ x: '-180vw', y: 20 }}
-        animate={{ x: '120vw', y: [20, 10, 20, 15, 20] }}
+        initial={{ x: '-20vw', y: 20 }}
+        animate={{ 
+          x: '120vw', 
+          y: [20, 10, 20, 15, 20, 10, 25, 15],
+          rotateZ: [0, -5, 2, -3, 0, -4, 1, 0]
+        }}
         transition={{
-          duration: 4,
-          ease: "easeInOut",
-          y: { duration: 0.8, repeat: 5, ease: "easeInOut" }
+          duration: 5,
+          delay: 0.5,
+          ease: "easeOut",
+          y: { duration: 0.4, repeat: 12, ease: "easeInOut" },
+          rotateZ: { duration: 0.6, repeat: 8, ease: "easeInOut" }
         }}
         style={{ 
-          filter: 'drop-shadow(6px 6px 12px rgba(0,0,0,0.4))',
-          scale: 1.2
+          filter: 'drop-shadow(8px 8px 16px rgba(0,0,0,0.5))',
+          scale: 1.4,
+          transformStyle: 'preserve-3d'
         }}
       >
         <FlamingoSilhouette />
         
-        {/* Dust cloud behind flamingo */}
+        {/* Enhanced dust cloud behind running flamingo */}
         <motion.div
-          className="absolute -left-12 bottom-4 w-16 h-8 bg-yellow-300/30 dark:bg-yellow-600/20 rounded-full blur-md"
+          className="absolute -left-16 bottom-2 w-20 h-10 bg-yellow-400/40 dark:bg-yellow-600/30 rounded-full blur-lg"
           animate={{ 
-            scaleX: [1, 1.5, 1],
-            opacity: [0.3, 0.6, 0.3]
+            scaleX: [1, 2, 1.5, 2.2, 1],
+            scaleY: [1, 0.6, 1.2, 0.8, 1],
+            opacity: [0.4, 0.8, 0.6, 0.9, 0.4],
+            x: [-5, -10, -8, -12, -5]
           }}
-          transition={{ duration: 0.6, repeat: Infinity }}
+          transition={{ duration: 0.3, repeat: Infinity }}
         />
+        
+        {/* Additional dirt particles */}
+        {[...Array(5)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-2 h-2 bg-yellow-600/60 rounded-full"
+            style={{ left: `-${(i + 1) * 6}px`, bottom: `${8 + i * 2}px` }}
+            animate={{
+              x: [-20, -40, -30],
+              y: [0, -10, 5],
+              opacity: [0.8, 0.3, 0],
+              scale: [1, 0.5, 0]
+            }}
+            transition={{ 
+              duration: 0.8, 
+              repeat: Infinity, 
+              delay: i * 0.1 
+            }}
+          />
+        ))}
       </motion.div>
 
       {/* "FLAM" text effect coming from behind - much larger and more dramatic */}

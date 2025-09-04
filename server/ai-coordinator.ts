@@ -137,7 +137,7 @@ class AICoordinator {
         try {
           const puterResponse = await puterIntegration.processComplexPrompt(prompt, model.replace('openai/', '').replace('anthropic/', '').replace('google/', ''));
           return puterResponse.content;
-        } catch (puterError) {
+        } catch (puterError: any) {
           console.log('Puter.js failed, trying OpenRouter...', puterError.message);
         }
       }
@@ -150,7 +150,7 @@ class AICoordinator {
           const openRouterResponse = await openRouterIntegration.processPrompt(prompt, model);
           return openRouterResponse.content;
         }
-      } catch (openRouterError) {
+      } catch (openRouterError: any) {
         console.log('OpenRouter failed, using enhanced contextual response...', openRouterError.message);
       }
       
@@ -164,7 +164,7 @@ class AICoordinator {
         'google/gemini-pro': `**Gemini Pro Enhanced Response**: ${contextualResponse}`
       };
       
-      return modelResponses[model] || contextualResponse;
+      return modelResponses[model as keyof typeof modelResponses] || contextualResponse;
     } catch (error) {
       console.error('Cloud model error:', error);
       return this.generateFallbackResponse(prompt);

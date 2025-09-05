@@ -127,42 +127,47 @@ export default function Landing() {
     <ParallaxPageWrapper>
       <div className="landing-3d-container min-h-screen bg-gradient-to-br from-orange-50 via-pink-50 to-purple-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 transition-colors duration-300 relative overflow-hidden">
         
-        {/* 3D Background Elements */}
-        <div className="bg-3d-element bg-sphere-1 gradient-bg-primary"></div>
-        <div className="bg-3d-element bg-sphere-2 gradient-bg-secondary"></div>
-        <div className="bg-3d-element bg-sphere-3"></div>
-        <div className="bg-3d-element bg-cube"></div>
-        <div className="bg-3d-element bg-triangle"></div>
+        {/* Enhanced 3D Background Elements */}
+        <div className="bg-gradient-layer bg-gradient-layer-1"></div>
+        <div className="bg-gradient-layer bg-gradient-layer-2"></div>
         
-        {/* Floating Particles */}
-        <div className="particles-container">
-          <div className="particle"></div>
-          <div className="particle"></div>
-          <div className="particle"></div>
-          <div className="particle"></div>
-          <div className="particle"></div>
-          <div className="particle"></div>
-        </div>
+        {/* Floating orbs with enhanced depth */}
+        <div className="bg-3d-element floating-orb floating-orb-1"></div>
+        <div className="bg-3d-element floating-orb floating-orb-2"></div>
+        <div className="bg-3d-element floating-orb floating-orb-3"></div>
+        <div className="bg-3d-element floating-orb floating-orb-4"></div>
+        
+        {/* Original spheres */}
+        <div className="bg-3d-element bg-sphere-1"></div>
+        <div className="bg-3d-element bg-sphere-2"></div>
+        <div className="bg-3d-element bg-sphere-3"></div>
+        
+        {/* Enhanced geometric shapes */}
+        <div className="floating-shape bg-3d-element bg-cube"></div>
+        <div className="floating-shape bg-3d-element bg-diamond"></div>
+        <div className="floating-shape bg-3d-element bg-hexagon"></div>
+        <div className="bg-3d-element bg-triangle"></div>
       {/* Navigation Header */}
       <nav className="fixed top-0 left-0 right-0 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-4">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-14 sm:h-16">
+            <div className="flex items-center space-x-2 sm:space-x-4">
               <div className="flex items-center space-x-2">
                 {/* Updated Logo matching chat page */}
-                <div className="w-8 h-8 bg-gradient-to-br from-purple-600 to-pink-600 rounded-xl flex items-center justify-center shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-300">
-                  <span className="text-white font-bold text-sm">FA</span>
+                <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-purple-600 to-pink-600 rounded-xl flex items-center justify-center shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-300 touch-manipulation">
+                  <span className="text-white font-bold text-sm sm:text-base">FA</span>
                 </div>
                 <button
                   onClick={() => setLocation('/')}
-                  className="text-xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent hover:from-purple-500 hover:to-pink-500 transition-all duration-300"
+                  className="text-lg sm:text-xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent hover:from-purple-500 hover:to-pink-500 transition-all duration-300 touch-manipulation"
                 >
-                  Flamingo AI
+                  <span className="hidden sm:inline">Flamingo AI</span>
+                  <span className="sm:hidden">Flamingo</span>
                 </button>
               </div>
             </div>
 
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2 sm:space-x-4">
               {/* New Switch Theme Toggle */}
               <label className="switch" data-testid="theme-toggle">
                 <input 
@@ -177,9 +182,15 @@ export default function Landing() {
                 data-testid="nav-chat-btn"
                 onClick={handleGetStarted}
                 disabled={isLoading}
-                className="bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white"
+                size="sm"
+                className="bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white text-sm sm:text-base px-3 sm:px-4 py-2 sm:py-2.5 min-h-[44px] touch-manipulation"
               >
-                {isLoading ? 'Loading...' : 'Start Chatting'}
+                {isLoading ? 'Loading...' : (
+                  <>
+                    <span className="hidden sm:inline">Start Chatting</span>
+                    <span className="sm:hidden">Chat</span>
+                  </>
+                )}
               </Button>
             </div>
           </div>
@@ -192,8 +203,8 @@ export default function Landing() {
       <section className="parallax-section relative overflow-hidden pt-16">
         <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-sky-50 to-cyan-50 dark:from-gray-900 dark:via-blue-900/20 dark:to-gray-900 gradient-bg-primary"></div>
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32 z-10">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="relative max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-32 z-10">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             <motion.div
               className="space-y-8 scroll-element-left"
               initial={{ opacity: 0, x: -50 }}
@@ -202,7 +213,7 @@ export default function Landing() {
             >
               <div className="space-y-4">
                 <motion.h1
-                  className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white leading-tight text-glow load-3d"
+                  className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white leading-tight text-glow load-3d"
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.8, delay: 0.2 }}
@@ -214,7 +225,7 @@ export default function Landing() {
                   Platform
                 </motion.h1>
                 <motion.p
-                  className="text-xl text-gray-600 dark:text-gray-300 leading-relaxed"
+                  className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 leading-relaxed"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.8, delay: 0.4 }}
@@ -239,9 +250,9 @@ export default function Landing() {
                     onClick={handleGetStarted}
                     disabled={isLoading}
                     size="lg"
-                    className="bg-gradient-to-r from-sky-400 to-blue-500 hover:from-sky-500 hover:to-blue-600 text-white px-12 py-6 text-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 button-glow"
+                    className="bg-gradient-to-r from-sky-400 to-blue-500 hover:from-sky-500 hover:to-blue-600 text-white px-6 sm:px-12 py-4 sm:py-6 text-lg sm:text-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 button-glow min-h-[56px] touch-manipulation w-full sm:w-auto"
                   >
-                    <i className="fas fa-rocket mr-3"></i>
+                    <i className="fas fa-rocket mr-2 sm:mr-3"></i>
                     {isLoading ? 'Loading...' : 'Get Started'}
                   </Button>
                 </motion.div>
@@ -252,7 +263,7 @@ export default function Landing() {
                   <Button
                     data-testid="watch-demo-btn"
                     variant="outline"
-                    className="border-2 border-blue-400 text-blue-600 dark:text-blue-300 px-6 py-3 text-base font-semibold hover:bg-blue-50 dark:hover:bg-blue-900/20"
+                    className="border-2 border-blue-400 text-blue-600 dark:text-blue-300 px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-base font-semibold hover:bg-blue-50 dark:hover:bg-blue-900/20 min-h-[56px] touch-manipulation w-full sm:w-auto"
                   >
                     <i className="fas fa-play mr-2"></i>
                     Watch Demo

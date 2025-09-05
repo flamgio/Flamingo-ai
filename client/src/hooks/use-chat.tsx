@@ -66,11 +66,20 @@ export function useChat() {
       const response = await apiRequest('POST', '/api/agent', {
         prompt: content,
         conversationId: conversationId,
-        selectedModel: 'gpt-3.5-turbo',
-        useEnhancement: true
+        selectedModel: 'auto',
+        useEnhancement: false
       });
 
+      if (!response.ok) {
+        throw new Error('Failed to send message');
+      }
+
       const result = await response.json();
+      
+      // Invalidate and refetch messages
+      queryClient.invalidateQueries({ 
+        queryKey: ['/api/conversations', conversationId, 'messages'] 
+      });
 
       return result;
     },

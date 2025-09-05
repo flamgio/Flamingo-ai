@@ -69,6 +69,14 @@ export default function Dashboard() {
 
   return (
     <div className="flex min-h-screen bg-black overflow-hidden relative">
+      {/* Mobile Sidebar Overlay */}
+      {sidebarCollapsed && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden" 
+          onClick={() => setSidebarCollapsed(false)}
+        />
+      )}
+      
       {/* Sidebar */}
       <DashboardSidebar 
         isCollapsed={sidebarCollapsed} 
@@ -85,15 +93,26 @@ export default function Dashboard() {
         </div>
 
         {/* Header with Screen Time */}
-        <div className="relative z-10 p-6 border-b border-purple-500/20">
-          <div className="flex justify-between items-center">
-            <div>
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-white via-purple-100 to-purple-200 bg-clip-text text-transparent">
+        <div className="relative z-10 p-3 sm:p-6 border-b border-purple-500/20">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div className="flex-1">
+              <div className="flex items-center gap-3 lg:hidden">
+                <button
+                  onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+                  className="text-white hover:text-purple-300 transition-colors p-2 rounded-lg hover:bg-purple-600/20 touch-manipulation"
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                  </svg>
+                </button>
+                <img src={logoImg} alt="Flamingo AI" className="h-8 w-8 rounded-lg" />
+              </div>
+              <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-white via-purple-100 to-purple-200 bg-clip-text text-transparent mt-2 lg:mt-0">
                 Welcome back, {user?.username || 'User'}!
               </h1>
-              <p className="text-purple-100/70 mt-1">Explore your AI-powered workspace</p>
+              <p className="text-purple-100/70 mt-1 text-sm sm:text-base">Explore your AI-powered workspace</p>
             </div>
-            <div className="bg-gradient-to-r from-purple-600/20 to-pink-600/20 backdrop-blur-md border border-purple-400/30 rounded-lg px-6 py-3">
+            <div className="bg-gradient-to-r from-purple-600/20 to-pink-600/20 backdrop-blur-md border border-purple-400/30 rounded-lg px-4 sm:px-6 py-3 w-full sm:w-auto">
               <div className="text-center space-y-2">
                 <div>
                   <p className="text-xs text-purple-200/70 uppercase tracking-wide">Current Time</p>

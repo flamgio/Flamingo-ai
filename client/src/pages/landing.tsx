@@ -151,6 +151,23 @@ export default function Landing() {
         <div className="floating-shape bg-3d-element bg-hexagon"></div>
         <div className="bg-3d-element bg-triangle"></div>
         <div className="floating-shape bg-3d-element bg-rectangle"></div>
+
+        {/* Water Elements - Waterfalls */}
+        <div className="waterfall-element waterfall-1"></div>
+        <div className="waterfall-element waterfall-2"></div>
+        <div className="waterfall-element waterfall-3"></div>
+        <div className="waterfall-element waterfall-4"></div>
+
+        {/* Mountain Silhouette */}
+        <div className="mountain-silhouette"></div>
+
+        {/* Flying Birds */}
+        <div className="bird-element bird-1"></div>
+        <div className="bird-element bird-2"></div>
+        <div className="bird-element bird-3"></div>
+
+        {/* Water Ripple Effect */}
+        <div className="water-ripple"></div>
       {/* Navigation Header */}
       <nav className="fixed top-0 left-0 right-0 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 z-50">
         <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
@@ -222,11 +239,11 @@ export default function Landing() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.8, delay: 0.2 }}
                 >
-                  <span className="text-3d-gradient">Modern</span>{' '}
-                  <span className="text-water-flow">
+                  <span className="text-white-glow">Modern</span>{' '}
+                  <span className="text-elegant-white">
                     Web Platform
                   </span>{' '}
-                  <span className="text-glow-purple">Experience</span>
+                  <span className="text-bright-white">Experience</span>
                 </motion.h1>
                 <motion.div
                   className="text-bg-glass"
@@ -234,9 +251,9 @@ export default function Landing() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.8, delay: 0.4 }}
                 >
-                  <p className="text-lg sm:text-xl text-gray-900 dark:text-white leading-relaxed text-glow-blue">
-                    Experience seamless interactions with our <span className="text-ocean-blue">intelligent platform</span>.
-                    Built with <span className="text-wave-blue">privacy-first design</span> and <span className="text-aqua-flow">cutting-edge technology</span>.
+                  <p className="text-lg sm:text-xl leading-relaxed text-pure-white">
+                    Experience seamless interactions with our <span className="text-white-glow">intelligent platform</span>.
+                    Built with <span className="text-crystal-white">privacy-first design</span> and <span className="text-snow-white">cutting-edge technology</span>.
                   </p>
                 </motion.div>
               </div>
@@ -285,9 +302,9 @@ export default function Landing() {
                 transition={{ duration: 0.8, delay: 0.8 }}
               >
                 {[
-                  { icon: 'fas fa-shield-alt', text: 'Secure & Private', style: 'text-ocean-deep' },
-                  { icon: 'fas fa-bolt', text: 'Fast & Reliable', style: 'text-wave-flow' },
-                  { icon: 'fas fa-cogs', text: 'Smart Features', style: 'text-aqua-shine' }
+                  { icon: 'fas fa-shield-alt', text: 'Secure & Private', style: 'text-white-glow' },
+                  { icon: 'fas fa-bolt', text: 'Fast & Reliable', style: 'text-pure-white' },
+                  { icon: 'fas fa-cogs', text: 'Smart Features', style: 'text-crystal-white' }
                 ].map((feature, index) => (
                   <motion.div
                     key={index}
@@ -339,13 +356,13 @@ export default function Landing() {
           >
             <div className="text-bg-floating">
               <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                <span className="text-holographic">Powerful Features</span> for{' '}
-                <span className="text-3d-gradient">Modern Web</span>
+                <span className="text-white-glow">Powerful Features</span> for{' '}
+                <span className="text-elegant-white">Modern Web</span>
               </h2>
-              <p className="text-xl max-w-3xl mx-auto">
-                Discover <span className="text-neon-cyan">innovative features</span> designed for{' '}
-                <span className="text-fire">seamless user experience</span>, <span className="text-chrome">performance</span>, and{' '}
-                <span className="text-glow-purple">reliability</span>.
+              <p className="text-xl max-w-3xl mx-auto text-pure-white">
+                Discover <span className="text-bright-white">innovative features</span> designed for{' '}
+                <span className="text-crystal-white">seamless user experience</span>, <span className="text-snow-white">performance</span>, and{' '}
+                <span className="text-white-glow">reliability</span>.
               </p>
             </div>
           </motion.div>

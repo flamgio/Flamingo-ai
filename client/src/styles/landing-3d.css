@@ -225,19 +225,207 @@ html {
   z-index: 0;
 }
 
+/* Enhanced Water Elements - Waterfalls, Mountains, Birds */
+.waterfall-element {
+  position: fixed;
+  width: 3px;
+  height: 100vh;
+  background: linear-gradient(to bottom, 
+    rgba(59, 130, 246, 0.6) 0%,
+    rgba(147, 197, 253, 0.4) 50%,
+    rgba(255, 255, 255, 0.3) 100%);
+  z-index: -1;
+  animation: waterfallFlow 3s linear infinite;
+}
+
+.waterfall-1 {
+  left: 15%;
+  animation-delay: 0s;
+}
+
+.waterfall-2 {
+  left: 35%;
+  animation-delay: -1s;
+}
+
+.waterfall-3 {
+  right: 25%;
+  animation-delay: -2s;
+}
+
+.waterfall-4 {
+  right: 45%;
+  animation-delay: -0.5s;
+}
+
+.mountain-silhouette {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 200px;
+  background: linear-gradient(to top, 
+    rgba(30, 64, 175, 0.3) 0%,
+    rgba(59, 130, 246, 0.2) 50%,
+    transparent 100%);
+  clip-path: polygon(0% 100%, 15% 60%, 25% 80%, 35% 40%, 50% 70%, 65% 30%, 75% 65%, 85% 45%, 100% 75%, 100% 100%);
+  z-index: -1;
+  animation: mountainGlow 8s ease-in-out infinite;
+}
+
+.bird-element {
+  position: fixed;
+  width: 20px;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  z-index: 1;
+  animation: birdFlight 12s ease-in-out infinite;
+}
+
+.bird-1 {
+  top: 20%;
+  left: -50px;
+  animation-delay: 0s;
+}
+
+.bird-2 {
+  top: 35%;
+  left: -80px;
+  animation-delay: -4s;
+}
+
+.bird-3 {
+  top: 50%;
+  left: -60px;
+  animation-delay: -8s;
+}
+
+/* Water ripple effects */
+.water-ripple {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100px;
+  background: linear-gradient(to top,
+    rgba(59, 130, 246, 0.2) 0%,
+    rgba(147, 197, 253, 0.1) 50%,
+    transparent 100%);
+  animation: waterRippleFlow 4s ease-in-out infinite;
+  z-index: -1;
+}
+
+/* Enhanced text styles for white colors */
+.text-white-glow {
+  color: #ffffff;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5),
+               0 0 20px rgba(255, 255, 255, 0.3),
+               0 0 30px rgba(255, 255, 255, 0.2);
+}
+
+.text-pure-white {
+  color: #ffffff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.text-snow-white {
+  color: #fffafa;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.text-crystal-white {
+  color: #f8fafc;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+}
+
+.text-bright-white {
+  color: #ffffff;
+  font-weight: 600;
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
+}
+
+.text-elegant-white {
+  background: linear-gradient(135deg, 
+    #ffffff 0%, 
+    #f8fafc 50%, 
+    #e2e8f0 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: whiteShimmer 4s ease-in-out infinite;
+}
+
 /* Water and bird-inspired animations */
-@keyframes birdFlight {
-  0%, 100% {
-    transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+@keyframes waterfallFlow {
+  0% {
+    transform: translateY(-100vh);
+    opacity: 0;
   }
-  25% {
-    transform: translate3d(30px, -15px, 0) rotate(5deg) scale(1.1);
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh);
+    opacity: 0;
+  }
+}
+
+@keyframes mountainGlow {
+  0%, 100% {
+    filter: brightness(1) hue-rotate(0deg);
   }
   50% {
-    transform: translate3d(0, -30px, 0) rotate(0deg) scale(1.05);
+    filter: brightness(1.2) hue-rotate(10deg);
+  }
+}
+
+@keyframes birdFlight {
+  0% {
+    transform: translateX(-50px) translateY(0px) scale(1);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  25% {
+    transform: translateX(25vw) translateY(-20px) scale(1.1);
+  }
+  50% {
+    transform: translateX(50vw) translateY(-40px) scale(1);
   }
   75% {
-    transform: translate3d(-30px, -15px, 0) rotate(-5deg) scale(1.1);
+    transform: translateX(75vw) translateY(-20px) scale(1.1);
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100vw) translateY(0px) scale(1);
+    opacity: 0;
+  }
+}
+
+@keyframes waterRippleFlow {
+  0%, 100% {
+    transform: scaleX(1) scaleY(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scaleX(1.1) scaleY(1.2);
+    opacity: 0.8;
+  }
+}
+
+@keyframes whiteShimmer {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
   }
 }
 

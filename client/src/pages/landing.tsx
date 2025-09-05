@@ -213,26 +213,28 @@ export default function Landing() {
             >
               <div className="space-y-4">
                 <motion.h1
-                  className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white leading-tight text-glow load-3d"
+                  className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-glow load-3d"
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.8, delay: 0.2 }}
                 >
-                  Modern{' '}
-                  <span className="bg-gradient-to-r from-blue-500 to-sky-600 bg-clip-text text-transparent">
+                  <span className="text-3d-gradient">Modern</span>{' '}
+                  <span className="text-holographic">
                     Web Platform
                   </span>{' '}
-                  Experience
+                  <span className="text-glow-purple">Experience</span>
                 </motion.h1>
-                <motion.p
-                  className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 leading-relaxed"
+                <motion.div
+                  className="text-bg-glass"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.8, delay: 0.4 }}
                 >
-                  Experience seamless interactions with our intelligent platform.
-                  Built with privacy-first design and cutting-edge technology.
-                </motion.p>
+                  <p className="text-lg sm:text-xl text-gray-900 dark:text-white leading-relaxed text-glow-blue">
+                    Experience seamless interactions with our <span className="text-neon-cyan">intelligent platform</span>.
+                    Built with <span className="text-fire">privacy-first design</span> and <span className="text-chrome">cutting-edge technology</span>.
+                  </p>
+                </motion.div>
               </div>
 
               <motion.div
@@ -279,22 +281,22 @@ export default function Landing() {
                 transition={{ duration: 0.8, delay: 0.8 }}
               >
                 {[
-                  { icon: 'fas fa-shield-alt', text: 'Secure & Private' },
-                  { icon: 'fas fa-bolt', text: 'Fast & Reliable' },
-                  { icon: 'fas fa-cogs', text: 'Smart Features' }
+                  { icon: 'fas fa-shield-alt', text: 'Secure & Private', style: 'text-glow-purple' },
+                  { icon: 'fas fa-bolt', text: 'Fast & Reliable', style: 'text-neon-cyan' },
+                  { icon: 'fas fa-cogs', text: 'Smart Features', style: 'text-fire' }
                 ].map((feature, index) => (
                   <motion.div
                     key={index}
-                    className="flex items-center space-x-3 p-4 rounded-lg bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-gray-200 dark:border-gray-700"
+                    className="flex items-center space-x-3 p-4 rounded-lg text-bg-gradient backdrop-blur-sm border border-white/20"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: 1.0 + index * 0.1 }}
-                    whileHover={{ y: -5, transition: { duration: 0.2 } }}
+                    whileHover={{ y: -5, scale: 1.05, transition: { duration: 0.2 } }}
                   >
-                    <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
-                      <i className={`${feature.icon} text-blue-600 dark:text-blue-400`}></i>
+                    <div className="w-10 h-10 bg-gradient-to-br from-purple-500/30 to-blue-500/30 rounded-lg flex items-center justify-center glow-effect">
+                      <i className={`${feature.icon} text-white text-glow-blue`}></i>
                     </div>
-                    <span className="text-gray-700 dark:text-gray-300 font-medium">{feature.text}</span>
+                    <span className={`font-bold ${feature.style}`}>{feature.text}</span>
                   </motion.div>
                 ))}
               </motion.div>
@@ -331,12 +333,17 @@ export default function Landing() {
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-              Powerful Features for Modern Web
-            </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-              Discover innovative features designed for seamless user experience, performance, and reliability.
-            </p>
+            <div className="text-bg-floating">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                <span className="text-holographic">Powerful Features</span> for{' '}
+                <span className="text-3d-gradient">Modern Web</span>
+              </h2>
+              <p className="text-xl max-w-3xl mx-auto">
+                Discover <span className="text-neon-cyan">innovative features</span> designed for{' '}
+                <span className="text-fire">seamless user experience</span>, <span className="text-chrome">performance</span>, and{' '}
+                <span className="text-glow-purple">reliability</span>.
+              </p>
+            </div>
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -348,7 +355,26 @@ export default function Landing() {
                   <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-blue-600 rounded-lg flex items-center justify-center">
                     <i className="fas fa-brain text-white text-sm"></i>
                   </div>
-                  <h3 className="card_title">AI Model Selection</h3>
+                  <h3 className="card_title">
+                    <span className="letter-animation">A</span>
+                    <span className="letter-animation">I</span>
+                    <span className="letter-animation"> </span>
+                    <span className="letter-animation">M</span>
+                    <span className="letter-animation">o</span>
+                    <span className="letter-animation">d</span>
+                    <span className="letter-animation">e</span>
+                    <span className="letter-animation">l</span>
+                    <span className="letter-animation"> </span>
+                    <span className="letter-animation text-neon-cyan">S</span>
+                    <span className="letter-animation text-neon-cyan">e</span>
+                    <span className="letter-animation text-neon-cyan">l</span>
+                    <span className="letter-animation text-neon-cyan">e</span>
+                    <span className="letter-animation text-neon-cyan">c</span>
+                    <span className="letter-animation text-neon-cyan">t</span>
+                    <span className="letter-animation text-neon-cyan">i</span>
+                    <span className="letter-animation text-neon-cyan">o</span>
+                    <span className="letter-animation text-neon-cyan">n</span>
+                  </h3>
                 </div>
                 <p className="card_paragraph">Multiple AI models to choose from</p>
               </div>
@@ -390,7 +416,7 @@ export default function Landing() {
                   <div className="w-8 h-8 bg-gradient-to-br from-green-500 to-teal-600 rounded-lg flex items-center justify-center">
                     <i className="fas fa-database text-white text-sm"></i>
                   </div>
-                  <h3 className="card_title">PostgreSQL Memory</h3>
+                  <h3 className="card_title text-3d-gradient">PostgreSQL Memory</h3>
                 </div>
                 <p className="card_paragraph">Persistent conversation storage</p>
               </div>
@@ -432,7 +458,7 @@ export default function Landing() {
                   <div className="w-8 h-8 bg-gradient-to-br from-orange-500 to-red-600 rounded-lg flex items-center justify-center">
                     <i className="fas fa-cog text-white text-sm"></i>
                   </div>
-                  <h3 className="card_title">User Settings</h3>
+                  <h3 className="card_title text-holographic">User Settings</h3>
                 </div>
                 <p className="card_paragraph">Customize your experience</p>
               </div>
@@ -474,7 +500,7 @@ export default function Landing() {
                   <div className="w-8 h-8 bg-gradient-to-br from-pink-500 to-purple-600 rounded-lg flex items-center justify-center">
                     <i className="fas fa-mobile-alt text-white text-sm"></i>
                   </div>
-                  <h3 className="card_title">Mobile Responsive</h3>
+                  <h3 className="card_title text-fire">Mobile Responsive</h3>
                 </div>
                 <p className="card_paragraph">Perfect on all devices</p>
               </div>
@@ -516,7 +542,7 @@ export default function Landing() {
                   <div className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center">
                     <i className="fas fa-shield-alt text-white text-sm"></i>
                   </div>
-                  <h3 className="card_title">Privacy Security</h3>
+                  <h3 className="card_title text-glow-purple">Privacy Security</h3>
                 </div>
                 <p className="card_paragraph">Your data stays private</p>
               </div>
@@ -558,7 +584,7 @@ export default function Landing() {
                   <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-lg flex items-center justify-center">
                     <i className="fas fa-code text-white text-sm"></i>
                   </div>
-                  <h3 className="card_title">Markdown Support</h3>
+                  <h3 className="card_title text-chrome">Markdown Support</h3>
                 </div>
                 <p className="card_paragraph">Rich text formatting</p>
               </div>

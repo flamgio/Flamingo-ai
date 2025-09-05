@@ -362,6 +362,266 @@ html {
   }
 }
 
+/* Advanced Text Styles */
+.text-3d-gradient {
+  background: linear-gradient(135deg, 
+    #667eea 0%, 
+    #764ba2 25%, 
+    #f093fb 50%, 
+    #f5576c 75%, 
+    #4facfe 100%);
+  background-size: 400% 400%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradientFlow 4s ease-in-out infinite;
+  text-shadow: 0 0 30px rgba(102, 126, 234, 0.5);
+}
+
+.text-glow-purple {
+  color: #8b5cf6;
+  text-shadow: 
+    0 0 10px rgba(139, 92, 246, 0.8),
+    0 0 20px rgba(139, 92, 246, 0.6),
+    0 0 30px rgba(139, 92, 246, 0.4),
+    0 0 40px rgba(139, 92, 246, 0.2);
+  animation: textGlowPulse 2s ease-in-out infinite alternate;
+}
+
+.text-glow-blue {
+  color: #3b82f6;
+  text-shadow: 
+    0 0 10px rgba(59, 130, 246, 0.8),
+    0 0 20px rgba(59, 130, 246, 0.6),
+    0 0 30px rgba(59, 130, 246, 0.4),
+    0 0 40px rgba(59, 130, 246, 0.2);
+  animation: textGlowPulse 2.5s ease-in-out infinite alternate;
+}
+
+.text-glow-pink {
+  color: #ec4899;
+  text-shadow: 
+    0 0 10px rgba(236, 72, 153, 0.8),
+    0 0 20px rgba(236, 72, 153, 0.6),
+    0 0 30px rgba(236, 72, 153, 0.4),
+    0 0 40px rgba(236, 72, 153, 0.2);
+  animation: textGlowPulse 3s ease-in-out infinite alternate;
+}
+
+.text-holographic {
+  background: linear-gradient(45deg, 
+    #ff006e, #8338ec, #3a86ff, #06ffa5, #ffbe0b, #fb5607);
+  background-size: 600% 600%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: holographicShift 3s ease-in-out infinite;
+  filter: drop-shadow(0 0 10px rgba(255, 0, 110, 0.5));
+}
+
+.text-neon-cyan {
+  color: #00f5ff;
+  text-shadow: 
+    0 0 5px #00f5ff,
+    0 0 10px #00f5ff,
+    0 0 15px #00f5ff,
+    0 0 20px #00bcd4,
+    0 0 35px #00bcd4,
+    0 0 40px #00bcd4;
+  animation: neonFlicker 1.5s ease-in-out infinite alternate;
+}
+
+.text-chrome {
+  background: linear-gradient(90deg, 
+    #eee 0%, 
+    #999 50%, 
+    #eee 100%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: chromeShine 2s ease-in-out infinite;
+}
+
+.text-fire {
+  background: linear-gradient(45deg, 
+    #ff4500, #ff6347, #ffa500, #ffd700, #ffff00);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: fireFlicker 1s ease-in-out infinite alternate;
+  filter: drop-shadow(0 0 15px rgba(255, 69, 0, 0.7));
+}
+
+/* Text Background Effects */
+.text-bg-glass {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 15px;
+  padding: 1rem 2rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.text-bg-gradient {
+  background: linear-gradient(135deg, 
+    rgba(139, 92, 246, 0.2) 0%,
+    rgba(59, 130, 246, 0.2) 50%,
+    rgba(236, 72, 153, 0.2) 100%);
+  border-radius: 20px;
+  padding: 1.5rem 3rem;
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.text-bg-floating {
+  position: relative;
+  background: linear-gradient(45deg, 
+    rgba(168, 85, 247, 0.15),
+    rgba(236, 72, 153, 0.15),
+    rgba(59, 130, 246, 0.15));
+  border-radius: 25px;
+  padding: 2rem 4rem;
+  transform-style: preserve-3d;
+  animation: floatingText 4s ease-in-out infinite;
+}
+
+.text-bg-floating::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, 
+    rgba(255, 255, 255, 0.1),
+    transparent,
+    rgba(255, 255, 255, 0.1));
+  border-radius: 25px;
+  animation: shimmer 2s ease-in-out infinite;
+}
+
+/* Enhanced Text Animations */
+@keyframes gradientFlow {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes textGlowPulse {
+  0% {
+    text-shadow: 
+      0 0 10px currentColor,
+      0 0 20px currentColor,
+      0 0 30px currentColor;
+  }
+  100% {
+    text-shadow: 
+      0 0 15px currentColor,
+      0 0 30px currentColor,
+      0 0 45px currentColor,
+      0 0 60px currentColor;
+  }
+}
+
+@keyframes holographicShift {
+  0%, 100% {
+    background-position: 0% 50%;
+    filter: hue-rotate(0deg) drop-shadow(0 0 10px rgba(255, 0, 110, 0.5));
+  }
+  50% {
+    background-position: 100% 50%;
+    filter: hue-rotate(180deg) drop-shadow(0 0 20px rgba(58, 134, 255, 0.5));
+  }
+}
+
+@keyframes neonFlicker {
+  0%, 100% {
+    text-shadow: 
+      0 0 5px #00f5ff,
+      0 0 10px #00f5ff,
+      0 0 15px #00f5ff,
+      0 0 20px #00bcd4;
+  }
+  50% {
+    text-shadow: 
+      0 0 2px #00f5ff,
+      0 0 5px #00f5ff,
+      0 0 8px #00f5ff,
+      0 0 12px #00bcd4,
+      0 0 25px #00bcd4;
+  }
+}
+
+@keyframes chromeShine {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes fireFlicker {
+  0%, 100% {
+    background-position: 0% 50%;
+    filter: drop-shadow(0 0 15px rgba(255, 69, 0, 0.7));
+  }
+  50% {
+    background-position: 100% 50%;
+    filter: drop-shadow(0 0 25px rgba(255, 215, 0, 0.9));
+  }
+}
+
+@keyframes floatingText {
+  0%, 100% {
+    transform: translateY(0px) rotateX(0deg) rotateY(0deg);
+  }
+  50% {
+    transform: translateY(-10px) rotateX(2deg) rotateY(1deg);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%) skewX(-15deg);
+  }
+  100% {
+    transform: translateX(200%) skewX(-15deg);
+  }
+}
+
+/* Letter Animation Effects */
+.letter-animation {
+  display: inline-block;
+  animation: letterBounce 2s ease-in-out infinite;
+}
+
+.letter-animation:nth-child(1) { animation-delay: 0.1s; }
+.letter-animation:nth-child(2) { animation-delay: 0.2s; }
+.letter-animation:nth-child(3) { animation-delay: 0.3s; }
+.letter-animation:nth-child(4) { animation-delay: 0.4s; }
+.letter-animation:nth-child(5) { animation-delay: 0.5s; }
+.letter-animation:nth-child(6) { animation-delay: 0.6s; }
+.letter-animation:nth-child(7) { animation-delay: 0.7s; }
+.letter-animation:nth-child(8) { animation-delay: 0.8s; }
+
+@keyframes letterBounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0) rotateZ(0deg);
+  }
+  40% {
+    transform: translateY(-10px) rotateZ(5deg);
+  }
+  60% {
+    transform: translateY(-5px) rotateZ(-2deg);
+  }
+}
+
 /* Responsive 3D effects */
 @media (max-width: 768px) {
   .landing-3d-container {

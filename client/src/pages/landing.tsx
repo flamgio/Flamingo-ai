@@ -218,11 +218,11 @@ export default function Landing() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.8, delay: 0.2 }}
                 >
-                  Privacy-First{' '}
+                  Modern{' '}
                   <span className="bg-gradient-to-r from-blue-500 to-sky-600 bg-clip-text text-transparent">
-                    AI Chat
+                    Web Platform
                   </span>{' '}
-                  Platform
+                  Experience
                 </motion.h1>
                 <motion.p
                   className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 leading-relaxed"
@@ -230,8 +230,8 @@ export default function Landing() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.8, delay: 0.4 }}
                 >
-                  Intelligent agent system combining local Hugging Face models with cloud AI.
-                  Your conversations stay private with our advanced memory system.
+                  Experience seamless interactions with our intelligent platform.
+                  Built with privacy-first design and cutting-edge technology.
                 </motion.p>
               </div>
 
@@ -279,9 +279,9 @@ export default function Landing() {
                 transition={{ duration: 0.8, delay: 0.8 }}
               >
                 {[
-                  { icon: 'fas fa-shield-alt', text: 'Privacy First' },
-                  { icon: 'fas fa-brain', text: 'Smart Routing' },
-                  { icon: 'fas fa-memory', text: 'Persistent Memory' }
+                  { icon: 'fas fa-shield-alt', text: 'Secure & Private' },
+                  { icon: 'fas fa-bolt', text: 'Fast & Reliable' },
+                  { icon: 'fas fa-cogs', text: 'Smart Features' }
                 ].map((feature, index) => (
                   <motion.div
                     key={index}
@@ -332,10 +332,10 @@ export default function Landing() {
             viewport={{ once: true }}
           >
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-              Powerful Features for Modern AI
+              Powerful Features for Modern Web
             </h2>
             <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-              Experience the next generation of AI chat with intelligent routing, persistent memory, and privacy-first design.
+              Discover innovative features designed for seamless user experience, performance, and reliability.
             </p>
           </motion.div>
 

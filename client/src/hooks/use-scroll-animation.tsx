@@ -25,23 +25,38 @@ export function useScrollAnimation() {
       observer.current?.observe(element);
     });
 
-    // Parallax effect on scroll
+    // Enhanced parallax effect on scroll with smoother animations
     const handleScroll = () => {
       const scrolled = window.pageYOffset;
-      const rate = scrolled * -0.5;
+      const rate = scrolled * -0.3;
 
-      // Apply parallax to background elements
+      // Apply smoother parallax to background elements
       const bgElements = document.querySelectorAll('.bg-3d-element');
       bgElements.forEach((element, index) => {
-        const speed = (index + 1) * 0.2;
-        (element as HTMLElement).style.transform = `translateY(${rate * speed}px)`;
+        const speed = (index + 1) * 0.15;
+        const rotation = scrolled * 0.05;
+        (element as HTMLElement).style.transform = `translateY(${rate * speed}px) rotate(${rotation}deg) scale(${1 + scrolled * 0.0001})`;
       });
 
-      // Parallax for sections
+      // Smoother parallax for sections
       const parallaxSections = document.querySelectorAll('.parallax-section');
       parallaxSections.forEach((section, index) => {
-        const speed = 0.1 + (index * 0.05);
+        const speed = 0.08 + (index * 0.03);
+        const opacity = Math.max(0.5, 1 - scrolled * 0.001);
         (section as HTMLElement).style.transform = `translateY(${scrolled * speed}px)`;
+        (section as HTMLElement).style.opacity = `${opacity}`;
+      });
+
+      // Add smooth fade effects for content
+      const contentElements = document.querySelectorAll('.scroll-element, .scroll-element-left, .scroll-element-right');
+      contentElements.forEach((element) => {
+        const rect = element.getBoundingClientRect();
+        const visible = rect.top < window.innerHeight && rect.bottom > 0;
+        if (visible) {
+          const progress = (window.innerHeight - rect.top) / window.innerHeight;
+          (element as HTMLElement).style.opacity = `${Math.min(1, progress * 1.5)}`;
+          (element as HTMLElement).style.transform = `translateY(${(1 - progress) * 50}px)`;
+        }
       });
     };
 

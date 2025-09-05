@@ -130,23 +130,27 @@ export default function Landing() {
         {/* Enhanced 3D Background Elements */}
         <div className="bg-gradient-layer bg-gradient-layer-1"></div>
         <div className="bg-gradient-layer bg-gradient-layer-2"></div>
+        <div className="bg-gradient-layer bg-gradient-layer-3"></div>
         
         {/* Floating orbs with enhanced depth */}
         <div className="bg-3d-element floating-orb floating-orb-1"></div>
         <div className="bg-3d-element floating-orb floating-orb-2"></div>
         <div className="bg-3d-element floating-orb floating-orb-3"></div>
         <div className="bg-3d-element floating-orb floating-orb-4"></div>
+        <div className="bg-3d-element floating-orb floating-orb-5"></div>
         
-        {/* Original spheres */}
+        {/* Enhanced background spheres */}
         <div className="bg-3d-element bg-sphere-1"></div>
         <div className="bg-3d-element bg-sphere-2"></div>
         <div className="bg-3d-element bg-sphere-3"></div>
+        <div className="bg-3d-element bg-sphere-4"></div>
         
         {/* Enhanced geometric shapes */}
         <div className="floating-shape bg-3d-element bg-cube"></div>
         <div className="floating-shape bg-3d-element bg-diamond"></div>
         <div className="floating-shape bg-3d-element bg-hexagon"></div>
         <div className="bg-3d-element bg-triangle"></div>
+        <div className="floating-shape bg-3d-element bg-rectangle"></div>
       {/* Navigation Header */}
       <nav className="fixed top-0 left-0 right-0 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 z-50">
         <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">

@@ -223,7 +223,7 @@ export default function Landing() {
                   transition={{ duration: 0.8, delay: 0.2 }}
                 >
                   <span className="text-3d-gradient">Modern</span>{' '}
-                  <span className="text-holographic">
+                  <span className="text-water-flow">
                     Web Platform
                   </span>{' '}
                   <span className="text-glow-purple">Experience</span>
@@ -235,8 +235,8 @@ export default function Landing() {
                   transition={{ duration: 0.8, delay: 0.4 }}
                 >
                   <p className="text-lg sm:text-xl text-gray-900 dark:text-white leading-relaxed text-glow-blue">
-                    Experience seamless interactions with our <span className="text-neon-cyan">intelligent platform</span>.
-                    Built with <span className="text-fire">privacy-first design</span> and <span className="text-chrome">cutting-edge technology</span>.
+                    Experience seamless interactions with our <span className="text-ocean-blue">intelligent platform</span>.
+                    Built with <span className="text-wave-blue">privacy-first design</span> and <span className="text-aqua-flow">cutting-edge technology</span>.
                   </p>
                 </motion.div>
               </div>
@@ -285,9 +285,9 @@ export default function Landing() {
                 transition={{ duration: 0.8, delay: 0.8 }}
               >
                 {[
-                  { icon: 'fas fa-shield-alt', text: 'Secure & Private', style: 'text-glow-purple' },
-                  { icon: 'fas fa-bolt', text: 'Fast & Reliable', style: 'text-neon-cyan' },
-                  { icon: 'fas fa-cogs', text: 'Smart Features', style: 'text-fire' }
+                  { icon: 'fas fa-shield-alt', text: 'Secure & Private', style: 'text-ocean-deep' },
+                  { icon: 'fas fa-bolt', text: 'Fast & Reliable', style: 'text-wave-flow' },
+                  { icon: 'fas fa-cogs', text: 'Smart Features', style: 'text-aqua-shine' }
                 ].map((feature, index) => (
                   <motion.div
                     key={index}

@@ -2,7 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { db } from './db';
-import { users, conversations, messages } from '@shared/schema';
+import { users, conversations, messages, payments } from '@shared/schema';
 import { eq } from 'drizzle-orm';
 import {
   generateToken,
@@ -18,28 +18,45 @@ import crypto from "crypto";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
-// Admin authentication middleware
+// Role-based authentication middleware
+function authenticateRole(requiredRole: 'admin' | 'manager' | 'user') {
+  return async (req: any, res: any, next: any) => {
+    try {
+      const authHeader = req.headers.authorization;
+      if (!authHeader || !authHeader.startsWith('Bearer ')) {
+        return res.status(401).json({ message: "No token provided" });
+      }
+
+      const token = authHeader.substring(7);
+      const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-super-secret-jwt-key-change-this-in-production') as { userId: string };
+
+      const user = await db.select().from(users).where(eq(users.id, decoded.userId)).limit(1);
+      if (user.length === 0) {
+        return res.status(401).json({ message: "User not found" });
+      }
+
+      // Check role hierarchy: admin > manager > user
+      const userRole = user[0].role || 'user';
+      const roleHierarchy = { 'admin': 3, 'manager': 2, 'user': 1 };
+      const requiredLevel = roleHierarchy[requiredRole];
+      const userLevel = roleHierarchy[userRole as keyof typeof roleHierarchy];
+
+      if (userLevel < requiredLevel) {
+        return res.status(403).json({ message: `Access denied. ${requiredRole} role required.` });
+      }
+
+      req.user = user[0];
+      next();
+    } catch (error) {
+      console.error('Role authentication error:', error);
+      res.status(401).json({ message: "Invalid token" });
+    }
+  };
+}
+
+// Legacy admin authentication for backward compatibility
 function authenticateAdmin(req: any, res: any, next: any) {
-  const adminSession = req.headers.authorization;
-  const xAdminSession = req.headers['x-admin-session'];
-  const correctAdminKey = process.env.ADMIN_KEY || "FLAMINGO2024";
-
-  // Check for session-based auth first
-  if (xAdminSession === 'authenticated') {
-    return next();
-  }
-
-  // Check for direct admin key in headers or query
-  if (adminSession === correctAdminKey || req.query.adminKey === correctAdminKey) {
-    return next();
-  }
-
-  // Check body for admin key
-  if (req.body && req.body.adminKey === correctAdminKey) {
-    return next();
-  }
-
-  return res.status(401).json({ message: "Unauthorized - Admin access required" });
+  return authenticateRole('admin')(req, res, next);
 }
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -64,6 +81,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ message: "Please enter a valid email address" });
       }
 
+      // Check for restricted admin/manager emails
+      if (email === 'admin@admin.com' || email === 'manager@manager.com') {
+        return res.status(403).json({ message: "This email is reserved for system administrators" });
+      }
+
       // Check if user already exists
       const existingUser = await db
         .select()
@@ -78,6 +100,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Hash password and create user
       const hashedPassword = await hashPassword(password);
 
+      // Determine user role
+      let userRole = 'user';
+      if (email === 'admin@admin.com') {
+        userRole = 'admin';
+      } else if (email === 'manager@manager.com') {
+        userRole = 'manager';
+      }
+
       const newUser = await db
         .insert(users)
         .values({
@@ -86,6 +116,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           firstName,
           lastName,
           password: hashedPassword,
+          role: userRole,
         })
         .returning();
 
@@ -199,7 +230,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
         id: user[0].id,
         email: user[0].email,
         firstName: user[0].firstName,
-        lastName: user[0].lastName
+        lastName: user[0].lastName,
+        role: user[0].role || 'user',
+        screenTime: user[0].screenTime || 0,
+        lastActive: user[0].lastActive
       });
     } catch (error) {
       console.error('Auth verification error:', error);
@@ -408,8 +442,110 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Payment endpoints
+  app.post("/api/payments", authenticateToken, async (req: AuthRequest, res) => {
+    try {
+      const { amount, currency, method, walletAddress, metadata } = req.body;
+      
+      const payment = await db
+        .insert(payments)
+        .values({
+          userId: req.user.id,
+          amount,
+          currency,
+          method,
+          walletAddress,
+          metadata,
+          status: 'pending'
+        })
+        .returning();
+
+      res.json(payment[0]);
+    } catch (error) {
+      console.error("Error creating payment:", error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  });
+
+  app.get("/api/payments", authenticateToken, async (req: AuthRequest, res) => {
+    try {
+      const userPayments = await db
+        .select()
+        .from(payments)
+        .where(eq(payments.userId, req.user.id))
+        .orderBy(payments.createdAt);
+
+      res.json(userPayments);
+    } catch (error) {
+      console.error("Error fetching payments:", error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  });
+
+  // Admin analytics endpoints
+  app.get("/api/admin/analytics", authenticateRole('admin'), async (req, res) => {
+    try {
+      const allUsers = await db.select().from(users);
+      const allConversations = await db.select().from(conversations);
+      const allMessages = await db.select().from(messages);
+      const allPayments = await db.select().from(payments);
+
+      // Calculate analytics
+      const totalScreenTime = allUsers.reduce((sum, user) => sum + (user.screenTime || 0), 0);
+      const activeUsers = allUsers.filter(user => {
+        const lastActive = user.lastActive ? new Date(user.lastActive) : new Date(user.createdAt);
+        const now = new Date();
+        const daysDiff = (now.getTime() - lastActive.getTime()) / (1000 * 3600 * 24);
+        return daysDiff <= 7; // Active in last 7 days
+      }).length;
+
+      const analytics = {
+        overview: {
+          totalUsers: allUsers.length,
+          activeUsers,
+          totalConversations: allConversations.length,
+          totalMessages: allMessages.length,
+          totalScreenTime,
+          avgScreenTimePerUser: Math.round(totalScreenTime / Math.max(allUsers.length, 1))
+        },
+        userGrowth: {
+          thisMonth: allUsers.filter(user => {
+            const created = new Date(user.createdAt);
+            const now = new Date();
+            return created.getMonth() === now.getMonth() && created.getFullYear() === now.getFullYear();
+          }).length,
+          lastMonth: allUsers.filter(user => {
+            const created = new Date(user.createdAt);
+            const lastMonth = new Date();
+            lastMonth.setMonth(lastMonth.getMonth() - 1);
+            return created.getMonth() === lastMonth.getMonth() && created.getFullYear() === lastMonth.getFullYear();
+          }).length
+        },
+        engagement: {
+          dailyActiveUsers: allUsers.filter(user => {
+            const lastActive = user.lastActive ? new Date(user.lastActive) : new Date(user.createdAt);
+            const now = new Date();
+            const daysDiff = (now.getTime() - lastActive.getTime()) / (1000 * 3600 * 24);
+            return daysDiff <= 1; // Active in last 24 hours
+          }).length,
+          avgMessagesPerConversation: Math.round(allMessages.length / Math.max(allConversations.length, 1))
+        },
+        revenue: {
+          totalPayments: allPayments.length,
+          completedPayments: allPayments.filter(p => p.status === 'completed').length,
+          pendingPayments: allPayments.filter(p => p.status === 'pending').length
+        }
+      };
+
+      res.json(analytics);
+    } catch (error) {
+      console.error("Error fetching analytics:", error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  });
+
   // Admin stats endpoint
-  app.get("/api/admin/stats", authenticateAdmin, async (req, res) => {
+  app.get("/api/admin/stats", authenticateRole('admin'), async (req, res) => {
     try {
       const totalUsers = await db.select().from(users);
       const totalConversations = await db.select().from(conversations);

@@ -10,6 +10,9 @@ export const users = pgTable("users", {
   email: text("email"),
   firstName: text("first_name"),
   lastName: text("last_name"),
+  role: text("role").notNull().default("user"), // 'user', 'admin', 'manager'
+  screenTime: integer("screen_time").default(0), // For analytics
+  lastActive: timestamp("last_active").defaultNow(),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
@@ -50,6 +53,20 @@ export const modelUsage = pgTable("model_usage", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
+// Payment transactions
+export const payments = pgTable("payments", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").references(() => users.id),
+  amount: text("amount").notNull(), // Store as string to avoid precision issues
+  currency: text("currency").notNull(), // 'LTC', 'ETH', 'BTC', 'USD'
+  method: text("method").notNull(), // 'crypto', 'nowpayments', 'buymeacoffee'
+  status: text("status").notNull().default("pending"), // 'pending', 'completed', 'failed'
+  transactionId: text("transaction_id"),
+  walletAddress: text("wallet_address"),
+  metadata: jsonb("metadata"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
 // Insert schemas
 export const insertUserSchema = createInsertSchema(users).pick({
   username: true,
@@ -79,6 +96,17 @@ export const insertModelUsageSchema = createInsertSchema(modelUsage).pick({
   requestCount: true,
 });
 
+export const insertPaymentSchema = createInsertSchema(payments).pick({
+  userId: true,
+  amount: true,
+  currency: true,
+  method: true,
+  status: true,
+  transactionId: true,
+  walletAddress: true,
+  metadata: true,
+});
+
 // Types
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
@@ -91,3 +119,6 @@ export type Message = typeof messages.$inferSelect;
 
 export type InsertModelUsage = z.infer<typeof insertModelUsageSchema>;
 export type ModelUsage = typeof modelUsage.$inferSelect;
+
+export type InsertPayment = z.infer<typeof insertPaymentSchema>;
+export type Payment = typeof payments.$inferSelect;

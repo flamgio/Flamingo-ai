@@ -66,9 +66,10 @@ export default function Signup() {
       });
       if (result) {
         setShowSuccess(true);
+        // Shorter delay for faster redirect
         setTimeout(() => {
           setLocation('/dashboard');
-        }, 1500);
+        }, 800);
       }
     } catch (error) {
       console.error('Signup error:', error);

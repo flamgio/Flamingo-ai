@@ -1,1 +1,340 @@
+/* Flamingo AI Modern Animation Styles */
 
+/* Main Container Animations */
+.flamingo-container {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Enhanced Flamingo Particle System */
+.flamingo-particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.particle {
+  position: absolute;
+  background: linear-gradient(45deg, #ff69b4, #ff1493, #8a2be2);
+  border-radius: 50%;
+  animation: flamingoParticleFloat 6s ease-in-out infinite;
+  opacity: 0.6;
+}
+
+.particle-1 {
+  width: 8px;
+  height: 8px;
+  top: 10%;
+  left: 10%;
+  animation-delay: 0s;
+}
+
+.particle-2 {
+  width: 12px;
+  height: 12px;
+  top: 20%;
+  right: 15%;
+  animation-delay: 1s;
+}
+
+.particle-3 {
+  width: 6px;
+  height: 6px;
+  bottom: 30%;
+  left: 20%;
+  animation-delay: 2s;
+}
+
+.particle-4 {
+  width: 10px;
+  height: 10px;
+  top: 60%;
+  right: 25%;
+  animation-delay: 3s;
+}
+
+.particle-5 {
+  width: 14px;
+  height: 14px;
+  bottom: 15%;
+  right: 10%;
+  animation-delay: 4s;
+}
+
+.particle-6 {
+  width: 8px;
+  height: 8px;
+  top: 40%;
+  left: 5%;
+  animation-delay: 0.5s;
+}
+
+.particle-7 {
+  width: 16px;
+  height: 16px;
+  top: 80%;
+  left: 30%;
+  animation-delay: 2.5s;
+}
+
+.particle-8 {
+  width: 6px;
+  height: 6px;
+  bottom: 50%;
+  right: 40%;
+  animation-delay: 1.5s;
+}
+
+/* Enhanced Character Animation */
+.character-background {
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  width: 400px;
+  height: 400px;
+}
+
+.character-silhouette {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.character-body-bg {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  filter: blur(2px);
+  opacity: 0.3;
+}
+
+/* Text Animation Improvements */
+.intro-text-container {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.flamingo-main-title {
+  font-size: 4rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  font-family: 'Arial Black', sans-serif;
+}
+
+.title-word {
+  display: inline-block;
+  margin: 0 0.5rem;
+}
+
+.flamingo-word {
+  background: linear-gradient(45deg, #ff69b4, #ff1493, #8a2be2);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: flamingoGradientShift 3s ease-in-out infinite;
+}
+
+.ai-word {
+  color: white;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+  animation: flamingoTextPulse 2s ease-in-out infinite;
+}
+
+.intro-text-subtitle {
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 300;
+  letter-spacing: 0.05em;
+}
+
+.text-stream {
+  animation: flamingoTypewriter 3s ease-in-out;
+}
+
+/* Enhanced Loader Animations */
+.loader {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.loader svg {
+  filter: drop-shadow(0 0 10px rgba(255, 105, 180, 0.6));
+}
+
+/* Keyframe Animations */
+@keyframes flamingoParticleFloat {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px) scale(1) rotate(0deg);
+    opacity: 0.4;
+  }
+  25% {
+    transform: translateY(-20px) translateX(10px) scale(1.2) rotate(90deg);
+    opacity: 0.8;
+  }
+  50% {
+    transform: translateY(-40px) translateX(-5px) scale(0.8) rotate(180deg);
+    opacity: 1;
+  }
+  75% {
+    transform: translateY(-15px) translateX(-15px) scale(1.1) rotate(270deg);
+    opacity: 0.6;
+  }
+}
+
+@keyframes flamingoGradientShift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes flamingoTextPulse {
+  0%, 100% {
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+    transform: scale(1);
+  }
+  50% {
+    text-shadow: 0 0 30px rgba(255, 255, 255, 1),
+                 0 0 40px rgba(255, 105, 180, 0.6);
+    transform: scale(1.05);
+  }
+}
+
+@keyframes flamingoTypewriter {
+  0% {
+    width: 0;
+    border-right: 2px solid white;
+  }
+  50% {
+    border-right: 2px solid white;
+  }
+  100% {
+    width: 100%;
+    border-right: none;
+  }
+}
+
+@keyframes animate-character-float {
+  0%, 100% {
+    transform: translateY(0px) rotateX(0deg);
+  }
+  50% {
+    transform: translateY(-20px) rotateX(5deg);
+  }
+}
+
+@keyframes animate-character-sway {
+  0%, 100% {
+    transform: translateX(0px) rotateY(0deg);
+  }
+  50% {
+    transform: translateX(10px) rotateY(3deg);
+  }
+}
+
+@keyframes animate-title-entrance {
+  0% {
+    opacity: 0;
+    transform: translateY(50px) scale(0.8);
+  }
+  60% {
+    opacity: 0.8;
+    transform: translateY(-10px) scale(1.05);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0px) scale(1);
+  }
+}
+
+@keyframes animate-subtitle-fade {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+
+/* Apply animations */
+.animate-character-float {
+  animation: animate-character-float 4s ease-in-out infinite;
+}
+
+.animate-character-sway {
+  animation: animate-character-sway 6s ease-in-out infinite;
+}
+
+.animate-title-entrance {
+  animation: animate-title-entrance 2s ease-out forwards;
+}
+
+.animate-subtitle-fade {
+  animation: animate-subtitle-fade 2s ease-out 1s forwards;
+  opacity: 0;
+}
+
+/* Parallax Scroll Base */
+.parallax-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.parallax-element {
+  transition: transform 0.1s ease-out;
+}
+
+/* Enhanced 3D Effects */
+.flamingo-3d-container {
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+.flamingo-3d-element {
+  animation: flamingo3DFloat 8s ease-in-out infinite;
+}
+
+@keyframes flamingo3DFloat {
+  0%, 100% {
+    transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg) translateZ(0px);
+  }
+  25% {
+    transform: rotateX(5deg) rotateY(90deg) rotateZ(2deg) translateZ(20px);
+  }
+  50% {
+    transform: rotateX(-3deg) rotateY(180deg) rotateZ(-2deg) translateZ(40px);
+  }
+  75% {
+    transform: rotateX(7deg) rotateY(270deg) rotateZ(3deg) translateZ(20px);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .flamingo-main-title {
+    font-size: 2.5rem;
+  }
+  
+  .character-background {
+    width: 300px;
+    height: 300px;
+  }
+  
+  .particle {
+    transform: scale(0.8);
+  }
+  
+  .intro-text-subtitle {
+    font-size: 1rem;
+  }
+}

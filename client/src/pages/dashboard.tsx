@@ -21,7 +21,8 @@ export default function Dashboard() {
   const usageData = analytics.usageData;
 
   useEffect(() => {
-    if (!user) {
+    // Only redirect if user is explicitly null (not loading/undefined)
+    if (user === null) {
       setLocation('/login');
     }
   }, [user, setLocation]);
@@ -47,7 +48,20 @@ export default function Dashboard() {
     setLocation('/chat');
   };
 
-  if (!user) {
+  // Show loading state while user data is being fetched
+  if (user === undefined) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className="text-white text-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-purple-500 mx-auto mb-4"></div>
+          <p>Loading dashboard...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // User is explicitly null (not authenticated)
+  if (user === null) {
     return null;
   }
 

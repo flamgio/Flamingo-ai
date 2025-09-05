@@ -39,11 +39,15 @@ export function useAuth() {
       const response = await apiRequest.post<AuthResponse>('/api/auth/login', credentials);
       return response.data;
     },
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       localStorage.setItem('flamgio-token', data.token);
+      // Force update the authorization header
+      apiRequest.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
+      // Set user data immediately
       queryClient.setQueryData(["/api/user"], data.user);
+      // Wait a moment before invalidating to ensure the token is properly set
+      await new Promise(resolve => setTimeout(resolve, 100));
       queryClient.invalidateQueries({ queryKey: ["/api/user"] });
-      // Don't auto-redirect here, let the component handle it
     },
     onError: (error: any) => {
       console.error('Login failed:', error);
@@ -55,11 +59,15 @@ export function useAuth() {
       const response = await apiRequest.post<AuthResponse>('/api/auth/signup', credentials);
       return response.data;
     },
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       localStorage.setItem('flamgio-token', data.token);
+      // Force update the authorization header
+      apiRequest.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
+      // Set user data immediately
       queryClient.setQueryData(["/api/user"], data.user);
+      // Wait a moment before invalidating to ensure the token is properly set
+      await new Promise(resolve => setTimeout(resolve, 100));
       queryClient.invalidateQueries({ queryKey: ["/api/user"] });
-      // Don't auto-redirect here, let the component handle it
     },
     onError: (error: any) => {
       console.error('Signup failed:', error);

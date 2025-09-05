@@ -3,6 +3,8 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import logoImg from "@/assets/logo.png";
+import { ParallaxPageWrapper, ParallaxAnimation } from "@/components/parallax-animation";
+import { CryptoPayment } from "@/components/crypto-payment";
 
 export default function Pricing() {
   const [, setLocation] = useLocation();
@@ -23,7 +25,8 @@ export default function Pricing() {
   };
 
   return (
-    <div className="min-h-screen bg-black overflow-hidden relative">
+    <ParallaxPageWrapper>
+      <div className="min-h-screen bg-black overflow-hidden relative">
       {/* Back Button - Top Right */}
       <div className="fixed top-6 right-6 z-50">
         <Button
@@ -298,6 +301,7 @@ export default function Pricing() {
           </div>
         )}
       </div>
-    </div>
+      </div>
+    </ParallaxPageWrapper>
   );
 }

@@ -23,28 +23,16 @@ export function DashboardSidebar({ isCollapsed, onToggle, className }: Dashboard
 
   const navigation = [
     {
-      name: 'Chat',
-      icon: 'fas fa-comments',
-      path: '/chat',
-      active: location.startsWith('/chat')
-    },
-    {
-      name: 'Premium',
-      icon: 'fas fa-crown',
-      path: '/pricing',
-      active: location === '/pricing'
-    },
-    {
       name: 'Dashboard',
       icon: 'fas fa-home',
       path: '/dashboard',
       active: location === '/dashboard'
     },
     {
-      name: 'Screen Time Analysis',
-      icon: 'fas fa-chart-line',
-      path: '/screen-time',
-      active: location === '/screen-time'
+      name: 'Chat Premium',
+      icon: 'fas fa-comments',
+      path: '/chat',
+      active: location.startsWith('/chat')
     },
     {
       name: 'Settings',

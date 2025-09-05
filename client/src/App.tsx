@@ -11,6 +11,8 @@ import SignUp from "./pages/signup";
 import Dashboard from "./pages/dashboard";
 import Chat from "./pages/chat";
 import Pricing from "./pages/pricing";
+import Settings from "./pages/settings";
+import Help from "./pages/help";
 import NotFound from "./pages/not-found";
 import { ErrorBoundary } from "react-error-boundary";
 
@@ -49,6 +51,8 @@ function Router() {
       <Route path="/pricing" component={Pricing} />
       <Route path="/chat" component={Chat} />
       <Route path="/chat/:conversationId" component={Chat} />
+      <Route path="/settings" component={Settings} />
+      <Route path="/help" component={Help} />
       <Route path="/admin" component={() => {
         const AdminComponent = lazy(() => import("./pages/admin"));
         return <Suspense fallback={<div>Loading...</div>}><AdminComponent /></Suspense>;

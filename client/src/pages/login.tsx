@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { useAuth } from "@/hooks/use-auth";
+import { useTheme } from "@/components/ui/theme-provider";
 import SuccessPopup from "@/components/success-popup";
 import { motion } from "framer-motion";
 import { ParallaxPageWrapper, ParallaxAnimation } from "@/components/parallax-animation";
@@ -17,6 +18,7 @@ export default function Login() {
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const { login, isLoginLoading, loginError } = useAuth();
+  const { toggleTheme, theme } = useTheme();
 
   useEffect(() => {
     const theme = localStorage.getItem('flamgio-theme') || 'light';

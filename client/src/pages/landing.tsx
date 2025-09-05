@@ -8,6 +8,8 @@ import { motion } from "framer-motion";
 import IntroAnimation from "@/components/intro-animation";
 import { ParallaxPageWrapper, ParallaxAnimation } from "@/components/parallax-animation";
 import "../styles/new-theme-toggle.css";
+import "../styles/landing-3d.css";
+import { useScrollAnimation } from "@/hooks/use-scroll-animation";
 
 interface FeatureCardProps {
   icon: string;
@@ -92,6 +94,9 @@ export default function Landing() {
     // Only show intro if not shown in this session
     return !sessionStorage.getItem('intro-shown');
   });
+  
+  // Initialize scroll animations
+  useScrollAnimation();
 
   // Redirect logged in users using useEffect to prevent setState during render
   useEffect(() => {
@@ -120,7 +125,24 @@ export default function Landing() {
 
   return (
     <ParallaxPageWrapper>
-      <div className="min-h-screen bg-gradient-to-br from-orange-50 via-pink-50 to-purple-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 transition-colors duration-300 relative overflow-hidden">
+      <div className="landing-3d-container min-h-screen bg-gradient-to-br from-orange-50 via-pink-50 to-purple-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 transition-colors duration-300 relative overflow-hidden">
+        
+        {/* 3D Background Elements */}
+        <div className="bg-3d-element bg-sphere-1 gradient-bg-primary"></div>
+        <div className="bg-3d-element bg-sphere-2 gradient-bg-secondary"></div>
+        <div className="bg-3d-element bg-sphere-3"></div>
+        <div className="bg-3d-element bg-cube"></div>
+        <div className="bg-3d-element bg-triangle"></div>
+        
+        {/* Floating Particles */}
+        <div className="particles-container">
+          <div className="particle"></div>
+          <div className="particle"></div>
+          <div className="particle"></div>
+          <div className="particle"></div>
+          <div className="particle"></div>
+          <div className="particle"></div>
+        </div>
       {/* Navigation Header */}
       <nav className="fixed top-0 left-0 right-0 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -167,20 +189,20 @@ export default function Landing() {
 
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden pt-16">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-sky-50 to-cyan-50 dark:from-gray-900 dark:via-blue-900/20 dark:to-gray-900"></div>
+      <section className="parallax-section relative overflow-hidden pt-16">
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-sky-50 to-cyan-50 dark:from-gray-900 dark:via-blue-900/20 dark:to-gray-900 gradient-bg-primary"></div>
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32 z-10">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <motion.div
-              className="space-y-8"
+              className="space-y-8 scroll-element-left"
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, ease: "easeOut" }}
             >
               <div className="space-y-4">
                 <motion.h1
-                  className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white leading-tight"
+                  className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white leading-tight text-glow load-3d"
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.8, delay: 0.2 }}
@@ -217,7 +239,7 @@ export default function Landing() {
                     onClick={handleGetStarted}
                     disabled={isLoading}
                     size="lg"
-                    className="bg-gradient-to-r from-sky-400 to-blue-500 hover:from-sky-500 hover:to-blue-600 text-white px-12 py-6 text-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
+                    className="bg-gradient-to-r from-sky-400 to-blue-500 hover:from-sky-500 hover:to-blue-600 text-white px-12 py-6 text-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 button-glow"
                   >
                     <i className="fas fa-rocket mr-3"></i>
                     {isLoading ? 'Loading...' : 'Get Started'}
@@ -268,12 +290,13 @@ export default function Landing() {
             </motion.div>
 
             <motion.div
-              className="relative"
+              className="relative scroll-element-right"
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.3 }}
             >
               <motion.div
+                className="card-3d"
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.8, delay: 0.5 }}
@@ -288,10 +311,10 @@ export default function Landing() {
       </section>
 
       {/* Features Section */}
-      <section className="py-20 bg-gray-50 dark:bg-gray-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="parallax-section py-20 bg-gray-50 dark:bg-gray-800 gradient-bg-secondary relative">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <motion.div
-            className="text-center mb-16"
+            className="text-center mb-16 scroll-element"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}

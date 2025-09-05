@@ -7,6 +7,7 @@ import { DashboardSidebar } from "@/components/dashboard-sidebar";
 import { AnalyticsChart } from "@/components/analytics-chart";
 import { useScreenTime } from "@/hooks/use-screen-time";
 import { useUserAnalytics } from "@/hooks/use-user-analytics";
+import { useRealTimeClock } from "@/hooks/use-real-time-clock";
 import logoImg from "@/assets/logo.png";
 
 export default function Dashboard() {
@@ -15,6 +16,7 @@ export default function Dashboard() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const { formattedTime, sessionTime } = useScreenTime();
   const { analytics, trackPageVisit, trackScreenTime } = useUserAnalytics();
+  const { formattedTime: clockTime, formattedDate } = useRealTimeClock();
 
   // Real user analytics data
   const activityData = analytics.activityData;
@@ -91,10 +93,17 @@ export default function Dashboard() {
               </h1>
               <p className="text-purple-100/70 mt-1">Explore your AI-powered workspace</p>
             </div>
-            <div className="bg-gradient-to-r from-purple-600/20 to-pink-600/20 backdrop-blur-md border border-purple-400/30 rounded-lg px-4 py-2">
-              <div className="text-center">
-                <p className="text-xs text-purple-200/70 uppercase tracking-wide">Session Time</p>
-                <p className="text-lg font-bold text-white" data-testid="session-time">{formattedTime}</p>
+            <div className="bg-gradient-to-r from-purple-600/20 to-pink-600/20 backdrop-blur-md border border-purple-400/30 rounded-lg px-6 py-3">
+              <div className="text-center space-y-2">
+                <div>
+                  <p className="text-xs text-purple-200/70 uppercase tracking-wide">Current Time</p>
+                  <p className="text-sm font-bold text-white" data-testid="current-time">{clockTime}</p>
+                  <p className="text-xs text-purple-200/50">{formattedDate}</p>
+                </div>
+                <div className="border-t border-purple-400/20 pt-2">
+                  <p className="text-xs text-purple-200/70 uppercase tracking-wide">Session Time</p>
+                  <p className="text-lg font-bold text-white" data-testid="session-time">{formattedTime}</p>
+                </div>
               </div>
             </div>
           </div>

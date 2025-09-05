@@ -58,6 +58,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ message: "Password must be at least 6 characters" });
       }
 
+      // Email validation
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        return res.status(400).json({ message: "Please enter a valid email address" });
+      }
+
       // Check if user already exists
       const existingUser = await db
         .select()
@@ -97,7 +103,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
     } catch (error) {
       console.error("Signup error:", error);
-      res.status(500).json({ message: "Internal server error" });
+      if (error instanceof Error) {
+        if (error.message.includes('duplicate key') || error.message.includes('unique constraint')) {
+          return res.status(409).json({ message: "User already exists with this email" });
+        }
+        if (error.message.includes('connection') || error.message.includes('ECONNRESET')) {
+          return res.status(503).json({ message: "Database connection error. Please try again." });
+        }
+      }
+      res.status(500).json({ message: "Internal server error. Please try again later." });
     }
   });
 
@@ -140,7 +154,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
     } catch (error) {
       console.error("Login error:", error);
-      res.status(500).json({ message: "Internal server error" });
+      if (error instanceof Error) {
+        if (error.message.includes('connection') || error.message.includes('ECONNRESET')) {
+          return res.status(503).json({ message: "Database connection error. Please try again." });
+        }
+      }
+      res.status(500).json({ message: "Internal server error. Please try again later." });
     }
   });
 

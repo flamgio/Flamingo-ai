@@ -23,22 +23,28 @@ export function DashboardSidebar({ isCollapsed, onToggle, className }: Dashboard
 
   const navigation = [
     {
-      name: 'Dashboard',
-      icon: 'fas fa-home',
-      path: '/dashboard',
-      active: location === '/dashboard'
-    },
-    {
       name: 'Chat',
       icon: 'fas fa-comments',
       path: '/chat',
       active: location.startsWith('/chat')
     },
     {
-      name: 'Pricing',
-      icon: 'fas fa-credit-card',
+      name: 'Premium',
+      icon: 'fas fa-crown',
       path: '/pricing',
       active: location === '/pricing'
+    },
+    {
+      name: 'Screen Time Analysis',
+      icon: 'fas fa-chart-line',
+      path: '/screen-time',
+      active: location === '/screen-time'
+    },
+    {
+      name: 'Dashboard',
+      icon: 'fas fa-home',
+      path: '/dashboard',
+      active: location === '/dashboard'
     },
     {
       name: 'Settings',
@@ -123,6 +129,37 @@ export function DashboardSidebar({ isCollapsed, onToggle, className }: Dashboard
             </button>
           ))}
         </nav>
+
+        {/* Social Media Links */}
+        <div className="px-4 py-3 border-t border-purple-500/20">
+          {!isCollapsed && (
+            <div className="text-white/50 text-xs font-medium mb-3 uppercase tracking-wider">
+              Connect With Us
+            </div>
+          )}
+          <div className={cn("flex gap-3", isCollapsed ? "justify-center" : "justify-start")}>
+            <a
+              href="https://instagram.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-8 h-8 rounded-lg bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center text-white hover:scale-110 transition-all duration-200 shadow-lg hover:shadow-pink-500/30"
+              data-testid="instagram-link"
+              title="Follow us on Instagram"
+            >
+              <i className="fab fa-instagram text-sm"></i>
+            </a>
+            <a
+              href="https://github.com/flamgio/Flamingo-ai.git"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-8 h-8 rounded-lg bg-gradient-to-br from-gray-700 to-gray-900 flex items-center justify-center text-white hover:scale-110 transition-all duration-200 shadow-lg hover:shadow-gray-500/30"
+              data-testid="github-link"
+              title="View source on GitHub"
+            >
+              <i className="fab fa-github text-sm"></i>
+            </a>
+          </div>
+        </div>
 
         {/* Logout Button */}
         <div className="p-4 border-t border-purple-500/20">

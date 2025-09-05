@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { DashboardSidebar } from "@/components/dashboard-sidebar";
 import { AnalyticsChart } from "@/components/analytics-chart";
 import { useScreenTime } from "@/hooks/use-screen-time";
+import { useUserAnalytics } from "@/hooks/use-user-analytics";
 import logoImg from "@/assets/logo.png";
 
 export default function Dashboard() {
@@ -13,30 +14,34 @@ export default function Dashboard() {
   const { user, logout } = useAuth();
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const { formattedTime, sessionTime } = useScreenTime();
+  const { analytics, trackPageVisit, trackScreenTime } = useUserAnalytics();
 
-  // Sample analytics data
-  const activityData = [
-    { name: 'Mon', value: 12, messages: 8 },
-    { name: 'Tue', value: 19, messages: 15 },
-    { name: 'Wed', value: 8, messages: 5 },
-    { name: 'Thu', value: 25, messages: 20 },
-    { name: 'Fri', value: 15, messages: 12 },
-    { name: 'Sat', value: 30, messages: 25 },
-    { name: 'Sun', value: 22, messages: 18 }
-  ];
-
-  const usageData = [
-    { name: 'Chat', value: 45 },
-    { name: 'Settings', value: 12 },
-    { name: 'Dashboard', value: 28 },
-    { name: 'Help', value: 15 }
-  ];
+  // Real user analytics data
+  const activityData = analytics.activityData;
+  const usageData = analytics.usageData;
 
   useEffect(() => {
     if (!user) {
       setLocation('/login');
     }
   }, [user, setLocation]);
+
+  // Track page visit and screen time
+  useEffect(() => {
+    if (user) {
+      trackPageVisit('Dashboard', 1);
+    }
+  }, [user, trackPageVisit]);
+
+  // Track screen time every minute
+  useEffect(() => {
+    if (user && sessionTime > 0) {
+      const minutes = Math.floor(sessionTime / 60);
+      if (minutes > 0) {
+        trackScreenTime(minutes);
+      }
+    }
+  }, [sessionTime, trackScreenTime, user]);
 
   const handleStartChat = () => {
     setLocation('/chat');

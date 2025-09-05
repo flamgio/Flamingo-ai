@@ -727,6 +727,65 @@
     }
   }
 
+  /* Character Animations */
+  .animate-character-float {
+    animation: characterFloat 4s ease-in-out infinite;
+  }
+
+  .animate-character-sway {
+    animation: characterSway 6s ease-in-out infinite;
+  }
+
+  @keyframes characterFloat {
+    0%, 100% {
+      transform: translateY(0px) scale(1);
+    }
+    50% {
+      transform: translateY(-15px) scale(1.02);
+    }
+  }
+
+  @keyframes characterSway {
+    0%, 100% {
+      transform: translateX(0px) rotate(0deg);
+    }
+    25% {
+      transform: translateX(8px) rotate(2deg);
+    }
+    75% {
+      transform: translateX(-8px) rotate(-2deg);
+    }
+  }
+
+  /* Character visual styles */
+  .character-silhouette {
+    transform: scale(1.5);
+    filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.3));
+  }
+
+  .text-in-hand {
+    transform: scale(0.8);
+    background: linear-gradient(45deg, #ffffff, #f0f0f0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: bold;
+    font-size: 0.9rem;
+  }
+
+  .animate-text-glow {
+    animation: textGlow 3s ease-in-out infinite;
+  }
+
+  @keyframes textGlow {
+    0%, 100% {
+      filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.8));
+    }
+    50% {
+      filter: drop-shadow(0 0 15px rgba(255, 255, 255, 1));
+    }
+  }
+
   @keyframes gradientShift {
     0%, 100% {
       background-position: 0% 50%;

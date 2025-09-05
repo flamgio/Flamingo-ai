@@ -29,9 +29,9 @@ const IntroAnimation: React.FC<IntroAnimationProps> = ({ onComplete }) => {
       {/* Main Animation Container */}
       <div className="relative flex flex-col items-center justify-center space-y-8">
         
-        {/* Character in Background with Text in Hand */}
-        <div className="absolute inset-0 flex items-center justify-center opacity-20">
-          <div className="character-background animate-character-float">
+        {/* Large Character with Text in Hand */}
+        <div className="absolute inset-0 flex items-center justify-center opacity-60">
+          <div className="character-background animate-character-float animate-character-sway">
             <div className="character-silhouette">
               {/* Character Body */}
               <div className="character-body-bg">
@@ -45,10 +45,6 @@ const IntroAnimation: React.FC<IntroAnimationProps> = ({ onComplete }) => {
                 <div className="character-arms-bg">
                   <div className="arm-bg left-arm-bg"></div>
                   <div className="arm-bg right-arm-bg">
-                    {/* Text in Hand */}
-                    <div className="text-in-hand animate-text-glow">
-                      <span className="hand-text">AI</span>
-                    </div>
                   </div>
                 </div>
                 <div className="character-legs-bg">
@@ -186,7 +182,7 @@ const IntroAnimation: React.FC<IntroAnimationProps> = ({ onComplete }) => {
             <span className="title-word ai-word">AI</span>
           </h1>
           <div className="intro-text-subtitle animate-subtitle-fade">
-            <span className="text-stream">Welcome to the Future</span>
+            <span className="text-stream">Get Start With FLAMINGO AI</span>
           </div>
         </div>
       </div>

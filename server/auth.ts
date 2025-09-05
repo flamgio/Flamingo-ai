@@ -5,7 +5,7 @@ import { db } from './db';
 import { users } from '@shared/schema';
 import { eq } from 'drizzle-orm';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your-super-secret-jwt-key-change-this-in-production';
+const JWT_SECRET = process.env.JWT_SECRET || 'flamingo-ai-development-secret-key-2024-please-change-in-production';
 const JWT_EXPIRES_IN = '7d';
 
 export interface AuthRequest extends Request {

@@ -10,10 +10,13 @@ if (!process.env.DATABASE_URL) {
 // Create postgres connection with proper SSL configuration for Replit
 const connectionString = process.env.DATABASE_URL;
 const client = postgres(connectionString, {
-  ssl: 'require', // Replit PostgreSQL requires SSL
+  ssl: connectionString.includes('sslmode=disable') ? false : 'require',
   prepare: false,
   max: 10,
-  idle_timeout: 20
+  idle_timeout: 20,
+  transform: {
+    undefined: null
+  }
 });
 
 export const db = drizzle(client, {

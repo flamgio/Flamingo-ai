@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { useAuth } from "@/hooks/use-auth";
 import SuccessPopup from "@/components/success-popup";
+import { motion } from "framer-motion";
+import { ParallaxPageWrapper, ParallaxAnimation } from "@/components/parallax-animation";
 import "../styles/auth.css";
 import "../styles/new-theme-toggle.css";
 
@@ -88,7 +90,8 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900/30 to-black relative overflow-hidden flex items-center justify-center">
+    <ParallaxPageWrapper>
+      <div className="min-h-screen bg-gradient-to-br from-black via-gray-900/30 to-black relative overflow-hidden flex items-center justify-center">
       {/* Background Effects */}
       <div className="absolute inset-0">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-white/5 rounded-full blur-3xl animate-pulse"></div>
@@ -150,8 +153,18 @@ export default function Login() {
 
       {/* Main Content */}
       <div className="container">
-        <div className="login-box">
-          <div className="form">
+        <motion.div 
+          className="login-box"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+        >
+          <motion.div 
+            className="form"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+          >
             {/* Logo */}
             <div className="logo">
               <div className="user"></div>
@@ -224,9 +237,10 @@ export default function Login() {
                 Join Flamingo AI
               </a>
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </div>
-    </div>
+      </div>
+    </ParallaxPageWrapper>
   );
 }

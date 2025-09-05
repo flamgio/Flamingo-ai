@@ -182,7 +182,7 @@ const IntroAnimation: React.FC<IntroAnimationProps> = ({ onComplete }) => {
             <span className="title-word ai-word">AI</span>
           </h1>
           <div className="intro-text-subtitle animate-subtitle-fade">
-            <span className="text-stream">Get Start With FLAMINGO AI</span>
+            <span className="text-stream">The Evo<span className="evolution-text">lution</span> of AI Assistance</span>
           </div>
         </div>
       </div>

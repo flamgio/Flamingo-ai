@@ -35,16 +35,16 @@ export function DashboardSidebar({ isCollapsed, onToggle, className }: Dashboard
       active: location === '/pricing'
     },
     {
-      name: 'Screen Time Analysis',
-      icon: 'fas fa-chart-line',
-      path: '/screen-time',
-      active: location === '/screen-time'
-    },
-    {
       name: 'Dashboard',
       icon: 'fas fa-home',
       path: '/dashboard',
       active: location === '/dashboard'
+    },
+    {
+      name: 'Screen Time Analysis',
+      icon: 'fas fa-chart-line',
+      path: '/screen-time',
+      active: location === '/screen-time'
     },
     {
       name: 'Settings',

@@ -1,5 +1,33 @@
 /* Flamingo AI Modern Animation Styles */
 
+/* Evolution Text Animation */
+.evolution-text {
+  color: #ff69b4;
+  font-weight: bold;
+  background: linear-gradient(45deg, #ff69b4, #ff1493, #8a2be2, #ff69b4);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: evolutionGlow 2s ease-in-out infinite alternate;
+  text-shadow: 0 0 10px rgba(255, 105, 180, 0.5);
+}
+
+@keyframes evolutionGlow {
+  0% {
+    background-position: 0% 50%;
+    filter: brightness(1);
+  }
+  50% {
+    background-position: 50% 100%;
+    filter: brightness(1.2);
+  }
+  100% {
+    background-position: 100% 50%;
+    filter: brightness(1.3);
+  }
+}
+
 /* Main Container Animations */
 .flamingo-container {
   position: relative;

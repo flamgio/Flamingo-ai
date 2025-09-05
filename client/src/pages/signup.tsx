@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { useAuth } from "@/hooks/use-auth";
 import SuccessPopup from "@/components/success-popup";
+import { motion } from "framer-motion";
+import { ParallaxPageWrapper, ParallaxAnimation } from "@/components/parallax-animation";
 import "../styles/auth.css";
 import "../styles/new-theme-toggle.css";
 
@@ -88,7 +90,8 @@ export default function Signup() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900/30 to-black relative overflow-hidden flex items-center justify-center">
+    <ParallaxPageWrapper>
+      <div className="min-h-screen bg-gradient-to-br from-black via-gray-900/30 to-black relative overflow-hidden flex items-center justify-center">
       {/* Background Effects */}
       <div className="absolute inset-0">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-white/5 rounded-full blur-3xl animate-pulse"></div>
@@ -261,6 +264,7 @@ export default function Signup() {
           </div>
         </div>
       </div>
-    </div>
+      </div>
+    </ParallaxPageWrapper>
   );
 }

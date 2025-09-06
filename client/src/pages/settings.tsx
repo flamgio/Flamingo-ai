@@ -172,7 +172,7 @@ export default function Settings() {
               </div>
             </motion.div>
 
-            {/* AI Model Preferences */}
+            {/* AI Assistant Configuration */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -181,24 +181,14 @@ export default function Settings() {
             >
               <h2 className="text-2xl font-bold text-white mb-6 flex items-center">
                 <i className="fas fa-brain mr-3 text-purple-300"></i>
-                AI Model Preferences
+                AI Assistant Configuration
               </h2>
               
               <div className="space-y-4">
                 <div>
-                  <label className="block text-purple-200/70 text-sm font-medium mb-2">Preferred Model</label>
-                  <select className="w-full px-4 py-2 bg-purple-900/30 border border-purple-400/30 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500">
-                    <option value="auto">Auto-select (Recommended)</option>
-                    <option value="gpt-4">GPT-4</option>
-                    <option value="claude">Claude</option>
-                    <option value="mixtral">Mixtral</option>
-                  </select>
-                </div>
-                
-                <div>
                   <label className="block text-purple-200/70 text-sm font-medium mb-2">Response Style</label>
                   <select className="w-full px-4 py-2 bg-purple-900/30 border border-purple-400/30 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500">
-                    <option value="balanced">Balanced</option>
+                    <option value="balanced">Balanced (Recommended)</option>
                     <option value="creative">Creative</option>
                     <option value="precise">Precise</option>
                   </select>
@@ -207,10 +197,17 @@ export default function Settings() {
                 <div>
                   <label className="block text-purple-200/70 text-sm font-medium mb-2">Max Response Length</label>
                   <select className="w-full px-4 py-2 bg-purple-900/30 border border-purple-400/30 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    <option value="medium">Medium (Recommended)</option>
                     <option value="short">Short (up to 150 words)</option>
-                    <option value="medium">Medium (up to 300 words)</option>
                     <option value="long">Long (up to 500 words)</option>
                   </select>
+                </div>
+                
+                <div className="bg-purple-900/20 border border-purple-400/20 rounded-lg p-4">
+                  <p className="text-purple-200/80 text-sm">
+                    <i className="fas fa-magic mr-2 text-purple-300"></i>
+                    Flamingo AI automatically selects the best model for your conversations using our intelligent routing system.
+                  </p>
                 </div>
               </div>
             </motion.div>

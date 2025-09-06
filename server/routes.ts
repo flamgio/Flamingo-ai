@@ -86,6 +86,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(403).json({ message: "This email is reserved for system administrators" });
       }
 
+      // Extract username from email for validation
+      const username = email.split('@')[0].toLowerCase();
+      const restrictedUsernames = ['admin', 'manager', 'owner', 'root', 'system', 'flamingo'];
+      
+      if (restrictedUsernames.includes(username)) {
+        return res.status(403).json({ message: "This username is reserved. Please choose a different email address." });
+      }
+
       // Check if user already exists
       const existingUser = await db
         .select()

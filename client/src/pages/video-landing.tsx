@@ -234,6 +234,301 @@ export default function VideoLanding() {
         </div>
         <span>Scroll to explore</span>
       </div>
+
+      {/* Features Section with Cards */}
+      <motion.section 
+        className="features-section"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ duration: 1.2 }}
+        viewport={{ once: true, margin: "-100px" }}
+      >
+        <div className="features-container">
+          <motion.div 
+            className="features-header"
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.2 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="features-title">
+              <span className="gradient-text">Powerful Features</span> for
+              <br />
+              <span className="gradient-text-alt">Modern AI Experience</span>
+            </h2>
+            <p className="features-description">
+              Discover innovative AI features designed for seamless user experience,
+              performance, and reliability in every conversation.
+            </p>
+          </motion.div>
+
+          <div className="features-grid">
+            {/* AI Model Selection Card */}
+            <motion.div 
+              className="feature-card card-3d"
+              initial={{ opacity: 0, y: 60, rotateY: -15 }}
+              whileInView={{ opacity: 1, y: 0, rotateY: 0 }}
+              transition={{ duration: 0.8, delay: 0.1 }}
+              viewport={{ once: true }}
+              whileHover={{ 
+                y: -10, 
+                rotateY: 5,
+                transition: { duration: 0.3 } 
+              }}
+            >
+              <div className="card-glow"></div>
+              <div className="card-content">
+                <div className="card-header">
+                  <div className="card-icon brain-icon">
+                    <i className="fas fa-brain"></i>
+                  </div>
+                  <h3 className="card-title">AI Model Selection</h3>
+                </div>
+                <p className="card-description">Multiple AI models to choose from</p>
+                <div className="card-divider"></div>
+                <ul className="card-features">
+                  <li>
+                    <span className="feature-check">✓</span>
+                    <span>GPT models</span>
+                  </li>
+                  <li>
+                    <span className="feature-check">✓</span>
+                    <span>Claude models</span>
+                  </li>
+                  <li>
+                    <span className="feature-check">✓</span>
+                    <span>Custom selection</span>
+                  </li>
+                </ul>
+                <button className="card-button">
+                  <span>Explore Now</span>
+                  <i className="fas fa-arrow-right"></i>
+                </button>
+              </div>
+            </motion.div>
+
+            {/* PostgreSQL Memory Card */}
+            <motion.div 
+              className="feature-card card-3d"
+              initial={{ opacity: 0, y: 60, rotateY: 15 }}
+              whileInView={{ opacity: 1, y: 0, rotateY: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              viewport={{ once: true }}
+              whileHover={{ 
+                y: -10, 
+                rotateY: -5,
+                transition: { duration: 0.3 } 
+              }}
+            >
+              <div className="card-glow"></div>
+              <div className="card-content">
+                <div className="card-header">
+                  <div className="card-icon database-icon">
+                    <i className="fas fa-database"></i>
+                  </div>
+                  <h3 className="card-title">PostgreSQL Memory</h3>
+                </div>
+                <p className="card-description">Persistent conversation storage</p>
+                <div className="card-divider"></div>
+                <ul className="card-features">
+                  <li>
+                    <span className="feature-check">✓</span>
+                    <span>User-specific storage</span>
+                  </li>
+                  <li>
+                    <span className="feature-check">✓</span>
+                    <span>Chat history</span>
+                  </li>
+                  <li>
+                    <span className="feature-check">✓</span>
+                    <span>Easy access</span>
+                  </li>
+                </ul>
+                <button className="card-button">
+                  <span>Explore Now</span>
+                  <i className="fas fa-arrow-right"></i>
+                </button>
+              </div>
+            </motion.div>
+
+            {/* User Settings Card */}
+            <motion.div 
+              className="feature-card card-3d"
+              initial={{ opacity: 0, y: 60, rotateY: -10 }}
+              whileInView={{ opacity: 1, y: 0, rotateY: 0 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              viewport={{ once: true }}
+              whileHover={{ 
+                y: -10, 
+                rotateY: 8,
+                transition: { duration: 0.3 } 
+              }}
+            >
+              <div className="card-glow"></div>
+              <div className="card-content">
+                <div className="card-header">
+                  <div className="card-icon settings-icon">
+                    <i className="fas fa-cog"></i>
+                  </div>
+                  <h3 className="card-title">User Settings</h3>
+                </div>
+                <p className="card-description">Customize your experience</p>
+                <div className="card-divider"></div>
+                <ul className="card-features">
+                  <li>
+                    <span className="feature-check">✓</span>
+                    <span>Personal preferences</span>
+                  </li>
+                  <li>
+                    <span className="feature-check">✓</span>
+                    <span>Theme options</span>
+                  </li>
+                  <li>
+                    <span className="feature-check">✓</span>
+                    <span>Privacy controls</span>
+                  </li>
+                </ul>
+                <button className="card-button">
+                  <span>Explore Now</span>
+                  <i className="fas fa-arrow-right"></i>
+                </button>
+              </div>
+            </motion.div>
+
+            {/* Real-time Chat Card */}
+            <motion.div 
+              className="feature-card card-3d"
+              initial={{ opacity: 0, y: 60, rotateY: 12 }}
+              whileInView={{ opacity: 1, y: 0, rotateY: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              viewport={{ once: true }}
+              whileHover={{ 
+                y: -10, 
+                rotateY: -6,
+                transition: { duration: 0.3 } 
+              }}
+            >
+              <div className="card-glow"></div>
+              <div className="card-content">
+                <div className="card-header">
+                  <div className="card-icon chat-icon">
+                    <i className="fas fa-comments"></i>
+                  </div>
+                  <h3 className="card-title">Real-time Chat</h3>
+                </div>
+                <p className="card-description">Instant AI conversations</p>
+                <div className="card-divider"></div>
+                <ul className="card-features">
+                  <li>
+                    <span className="feature-check">✓</span>
+                    <span>Lightning fast responses</span>
+                  </li>
+                  <li>
+                    <span className="feature-check">✓</span>
+                    <span>Multi-turn conversations</span>
+                  </li>
+                  <li>
+                    <span className="feature-check">✓</span>
+                    <span>Smart context awareness</span>
+                  </li>
+                </ul>
+                <button className="card-button">
+                  <span>Explore Now</span>
+                  <i className="fas fa-arrow-right"></i>
+                </button>
+              </div>
+            </motion.div>
+
+            {/* Security & Privacy Card */}
+            <motion.div 
+              className="feature-card card-3d"
+              initial={{ opacity: 0, y: 60, rotateY: -8 }}
+              whileInView={{ opacity: 1, y: 0, rotateY: 0 }}
+              transition={{ duration: 0.8, delay: 0.5 }}
+              viewport={{ once: true }}
+              whileHover={{ 
+                y: -10, 
+                rotateY: 10,
+                transition: { duration: 0.3 } 
+              }}
+            >
+              <div className="card-glow"></div>
+              <div className="card-content">
+                <div className="card-header">
+                  <div className="card-icon security-icon">
+                    <i className="fas fa-shield-alt"></i>
+                  </div>
+                  <h3 className="card-title">Security & Privacy</h3>
+                </div>
+                <p className="card-description">Your data, protected always</p>
+                <div className="card-divider"></div>
+                <ul className="card-features">
+                  <li>
+                    <span className="feature-check">✓</span>
+                    <span>End-to-end encryption</span>
+                  </li>
+                  <li>
+                    <span className="feature-check">✓</span>
+                    <span>Privacy-first design</span>
+                  </li>
+                  <li>
+                    <span className="feature-check">✓</span>
+                    <span>Secure authentication</span>
+                  </li>
+                </ul>
+                <button className="card-button">
+                  <span>Explore Now</span>
+                  <i className="fas fa-arrow-right"></i>
+                </button>
+              </div>
+            </motion.div>
+
+            {/* Analytics & Insights Card */}
+            <motion.div 
+              className="feature-card card-3d"
+              initial={{ opacity: 0, y: 60, rotateY: 15 }}
+              whileInView={{ opacity: 1, y: 0, rotateY: 0 }}
+              transition={{ duration: 0.8, delay: 0.6 }}
+              viewport={{ once: true }}
+              whileHover={{ 
+                y: -10, 
+                rotateY: -4,
+                transition: { duration: 0.3 } 
+              }}
+            >
+              <div className="card-glow"></div>
+              <div className="card-content">
+                <div className="card-header">
+                  <div className="card-icon analytics-icon">
+                    <i className="fas fa-chart-line"></i>
+                  </div>
+                  <h3 className="card-title">Analytics & Insights</h3>
+                </div>
+                <p className="card-description">Track your AI interactions</p>
+                <div className="card-divider"></div>
+                <ul className="card-features">
+                  <li>
+                    <span className="feature-check">✓</span>
+                    <span>Usage statistics</span>
+                  </li>
+                  <li>
+                    <span className="feature-check">✓</span>
+                    <span>Performance metrics</span>
+                  </li>
+                  <li>
+                    <span className="feature-check">✓</span>
+                    <span>Detailed reports</span>
+                  </li>
+                </ul>
+                <button className="card-button">
+                  <span>Explore Now</span>
+                  <i className="fas fa-arrow-right"></i>
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </motion.section>
     </div>
   );
 }

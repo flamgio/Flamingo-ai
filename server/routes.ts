@@ -88,7 +88,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       // Extract username from email for validation
       const username = email.split('@')[0].toLowerCase();
-      const restrictedUsernames = ['admin', 'manager', 'owner', 'root', 'system', 'flamingo'];
+      const restrictedUsernames = ['admin', 'manager', 'owner', 'root', 'system'];
       
       if (restrictedUsernames.includes(username)) {
         return res.status(403).json({ message: "This username is reserved. Please choose a different email address." });

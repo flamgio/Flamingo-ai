@@ -103,12 +103,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Hash password and create user
       const hashedPassword = await hashPassword(password);
 
-      // Determine user role
+      // Determine user role - Only allow admin access for specific email
       let userRole = 'user';
       if (email === 'admin@admin.com') {
         userRole = 'admin';
-      } else if (email === 'manager@manager.com') {
-        userRole = 'manager';
+      } else {
+        // Block all other signups except admin
+        return res.status(403).json({ message: "Access restricted. Only admin can create accounts at this time." });
       }
 
       const newUser = await db

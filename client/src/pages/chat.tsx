@@ -146,7 +146,7 @@ export default function Chat() {
   }
 
   return (
-    <div className="h-screen flex bg-gradient-to-br from-blue-50 via-indigo-100 to-purple-100 dark:from-slate-900 dark:via-blue-900/20 dark:to-purple-900/20">
+    <div className="h-screen flex bg-gradient-to-br from-sky-100 via-blue-200 to-indigo-300 dark:from-indigo-900 dark:via-purple-800 dark:to-blue-900">
       {/* Chat Content - Takes remaining space */}
       <div className="flex-1 flex flex-col min-w-0">
         {/* Minimal Header */}
@@ -163,12 +163,18 @@ export default function Chat() {
         </div>
 
         {/* Messages Container */}
-        <div className="flex-1 overflow-y-auto p-6 bg-gradient-to-b from-blue-50/30 via-indigo-50/20 to-purple-50/30 dark:from-slate-900/50 dark:via-blue-900/10 dark:to-purple-900/10">
+        <div className="flex-1 overflow-y-auto p-6 bg-gradient-to-b from-white/30 via-blue-50/20 to-indigo-50/30 dark:from-indigo-900/50 dark:via-purple-800/10 dark:to-blue-900/10">
           <div className="max-w-4xl mx-auto space-y-6">
             {messages.length === 0 ? (
               <div className="text-center py-12">
-                <div className="text-lg text-gray-600 dark:text-gray-400 mb-4">
-                  Start a new conversation
+                <div className="w-16 h-16 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl">
+                  <span className="text-white font-bold text-lg">FA</span>
+                </div>
+                <div className="text-xl font-semibold text-gray-700 dark:text-gray-200 mb-4">
+                  Ready to explore the future of AI?
+                </div>
+                <div className="text-base text-gray-600 dark:text-gray-300">
+                  Ask anything, discover everything
                 </div>
               </div>
             ) : (

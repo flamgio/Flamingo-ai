@@ -158,8 +158,12 @@ export default function Landing() {
         <div className="waterfall-element waterfall-3"></div>
         <div className="waterfall-element waterfall-4"></div>
 
-        {/* Mountain Silhouette */}
-        <div className="mountain-silhouette"></div>
+        {/* Enhanced Mountain Silhouettes - Multiple Layers */}
+        <div className="mountain-silhouette">
+          <div className="mountain-layer-1"></div>
+          <div className="mountain-layer-2"></div>
+          <div className="mountain-layer-3"></div>
+        </div>
 
         {/* Flying Birds */}
         <div className="bird-element bird-1"></div>

@@ -5,7 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import { queryClient } from "./lib/queryClient";
-import Landing from "./pages/landing";
+import VideoLanding from "./pages/video-landing";
 import Login from "./pages/login";
 import SignUp from "./pages/signup";
 import Dashboard from "./pages/dashboard";
@@ -44,7 +44,7 @@ function ErrorFallback({ error }: { error: Error }) {
 function Router() {
   return (
     <Switch>
-      <Route path="/" component={Landing} />
+      <Route path="/" component={VideoLanding} />
       <Route path="/login" component={Login} />
       <Route path="/signup" component={SignUp} />
       <Route path="/dashboard" component={Dashboard} />

@@ -27,10 +27,12 @@ export function useChat() {
   }, [fetchedConversations]);
 
   // Fetch messages for current conversation
-  const { data: messages = [], isLoading: isMessagesLoading } = useQuery<Message[]>({
+  const { data: messages = [], isLoading: isMessagesLoading, refetch: refetchMessages } = useQuery<Message[]>({
     queryKey: ['/api/conversations', currentConversationId, 'messages'],
     queryFn: getQueryFn({ on401: "throw" }),
     enabled: !!user && !!currentConversationId,
+    refetchOnWindowFocus: false,
+    staleTime: 0, // Always fetch fresh data
   });
 
   const refreshConversations = useCallback(async () => {
@@ -56,10 +58,13 @@ export function useChat() {
           title: content.substring(0, 50) + (content.length > 50 ? '...' : '')
         });
 
+        if (!conversationResponse.ok) {
+          throw new Error('Failed to create conversation');
+        }
+
         const newConversation = await conversationResponse.json();
         conversationId = newConversation.id;
         setCurrentConversationId(conversationId);
-        refreshConversations();
       }
 
       // Send message to chat API
@@ -71,30 +76,32 @@ export function useChat() {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to send message');
+        const errorData = await response.text();
+        throw new Error(`Failed to send message: ${errorData}`);
       }
 
       const result = await response.json();
-      
-      // Invalidate and refetch messages
-      queryClient.invalidateQueries({ 
-        queryKey: ['/api/conversations', conversationId, 'messages'] 
-      });
-
-      return result;
+      return { result, conversationId };
     },
-    onSuccess: () => {
-      // Invalidate relevant queries to refresh data
+    onSuccess: (data) => {
+      const { conversationId } = data;
+      
+      // Immediately invalidate and refetch
       queryClient.invalidateQueries({ queryKey: ['/api/conversations'] });
-      if (currentConversationId) {
-        queryClient.invalidateQueries({
-          queryKey: ['/api/conversations', currentConversationId, 'messages']
-        });
+      queryClient.invalidateQueries({
+        queryKey: ['/api/conversations', conversationId, 'messages']
+      });
+      
+      // Force refetch messages if we have the refetch function
+      if (conversationId === currentConversationId && refetchMessages) {
+        refetchMessages();
       }
+      
+      // Refresh conversations list
+      refreshConversations();
     },
     onError: (error) => {
       console.error("Error sending message:", error);
-      // Potentially set an error state here if needed for UI feedback
     }
   });
 

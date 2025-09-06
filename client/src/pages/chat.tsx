@@ -149,7 +149,7 @@ export default function Chat() {
     <div className="h-screen flex bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 dark:from-slate-900 dark:via-purple-900/20 dark:to-indigo-900/20">
       {/* Chat Content - Takes remaining space */}
       <div className="flex-1 flex flex-col min-w-0">
-        {/* Clean Header - Minimal */}
+        {/* Minimal Header */}
         <div className="p-2 bg-transparent">
           <Button
             data-testid="history-toggle"

@@ -239,11 +239,11 @@ export default function Landing() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.8, delay: 0.2 }}
                 >
-                  <span className="text-white-glow">Modern</span>{' '}
-                  <span className="text-elegant-white">
-                    Web Platform
+                  <span className="text-sky-400">Modern</span>{' '}
+                  <span className="text-blue-400">
+                    AI Platform
                   </span>{' '}
-                  <span className="text-bright-white">Experience</span>
+                  <span className="text-cyan-400">Experience</span>
                 </motion.h1>
                 <motion.div
                   className="text-bg-glass"
@@ -251,9 +251,9 @@ export default function Landing() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.8, delay: 0.4 }}
                 >
-                  <p className="text-lg sm:text-xl leading-relaxed text-pure-white">
-                    Experience seamless interactions with our <span className="text-white-glow">intelligent platform</span>.
-                    Built with <span className="text-crystal-white">privacy-first design</span> and <span className="text-snow-white">cutting-edge technology</span>.
+                  <p className="text-lg sm:text-xl leading-relaxed text-white">
+                    Experience seamless interactions with our <span className="text-white font-semibold">intelligent AI platform</span>.
+                    Built with <span className="text-white font-semibold">privacy-first design</span> and <span className="text-white font-semibold">cutting-edge technology</span>.
                   </p>
                 </motion.div>
               </div>
@@ -302,9 +302,9 @@ export default function Landing() {
                 transition={{ duration: 0.8, delay: 0.8 }}
               >
                 {[
-                  { icon: 'fas fa-shield-alt', text: 'Secure & Private', style: 'text-white-glow' },
-                  { icon: 'fas fa-bolt', text: 'Fast & Reliable', style: 'text-pure-white' },
-                  { icon: 'fas fa-cogs', text: 'Smart Features', style: 'text-crystal-white' }
+                  { icon: 'fas fa-shield-alt', text: 'Secure & Private', style: 'text-white font-semibold' },
+                  { icon: 'fas fa-bolt', text: 'Fast & Reliable', style: 'text-white font-semibold' },
+                  { icon: 'fas fa-cogs', text: 'Smart AI Features', style: 'text-white font-semibold' }
                 ].map((feature, index) => (
                   <motion.div
                     key={index}
@@ -356,13 +356,13 @@ export default function Landing() {
           >
             <div className="text-bg-floating">
               <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                <span className="text-white-glow">Powerful Features</span> for{' '}
-                <span className="text-elegant-white">Modern Web</span>
+                <span className="text-sky-400">Powerful Features</span> for{' '}
+                <span className="text-blue-400">Modern AI</span>
               </h2>
-              <p className="text-xl max-w-3xl mx-auto text-pure-white">
-                Discover <span className="text-bright-white">innovative features</span> designed for{' '}
-                <span className="text-crystal-white">seamless user experience</span>, <span className="text-snow-white">performance</span>, and{' '}
-                <span className="text-white-glow">reliability</span>.
+              <p className="text-xl max-w-3xl mx-auto text-white">
+                Discover <span className="text-white font-semibold">innovative AI features</span> designed for{' '}
+                <span className="text-white font-semibold">seamless user experience</span>, <span className="text-white font-semibold">performance</span>, and{' '}
+                <span className="text-white font-semibold">reliability</span>.
               </p>
             </div>
           </motion.div>

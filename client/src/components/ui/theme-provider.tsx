@@ -36,8 +36,12 @@ export function ThemeProvider({
   useEffect(() => {
     const root = window.document.documentElement
     root.classList.remove("light", "dark")
-    root.classList.add(theme)
-  }, [theme])
+    if (theme === "dark") {
+      root.classList.add("dark")
+    }
+    // Store theme in localStorage
+    localStorage.setItem(storageKey, theme)
+  }, [theme, storageKey])
 
   const handleSetTheme = (newTheme: Theme) => {
     localStorage.setItem(storageKey, newTheme)

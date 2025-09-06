@@ -146,7 +146,7 @@ export default function Chat() {
   }
 
   return (
-    <div className="h-screen flex bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 dark:from-slate-900 dark:via-purple-900/20 dark:to-indigo-900/20">
+    <div className="h-screen flex bg-gradient-to-br from-blue-50 via-indigo-100 to-purple-100 dark:from-slate-900 dark:via-blue-900/20 dark:to-purple-900/20">
       {/* Chat Content - Takes remaining space */}
       <div className="flex-1 flex flex-col min-w-0">
         {/* Minimal Header */}
@@ -163,7 +163,7 @@ export default function Chat() {
         </div>
 
         {/* Messages Container */}
-        <div className="flex-1 overflow-y-auto p-6 bg-gradient-to-b from-purple-50/30 via-indigo-50/20 to-pink-50/30 dark:from-slate-900/50 dark:via-purple-900/10 dark:to-indigo-900/10">
+        <div className="flex-1 overflow-y-auto p-6 bg-gradient-to-b from-blue-50/30 via-indigo-50/20 to-purple-50/30 dark:from-slate-900/50 dark:via-blue-900/10 dark:to-purple-900/10">
           <div className="max-w-4xl mx-auto space-y-6">
             {messages.length === 0 ? (
               <div className="text-center py-12">

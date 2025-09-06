@@ -1022,7 +1022,31 @@
     }
   }
 
-  
+  /* Enhanced Pulse Animation */
+  .pulse-enhanced {
+    animation: pulseEnhanced 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  @keyframes pulseEnhanced {
+    0%, 100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.7;
+      transform: scale(1.05);
+    }
+  }
+
+  /* Improved Gradient Text Animation */
+  .gradient-text-animated {
+    background: linear-gradient(-45deg, #667eea, #764ba2, #6b73ff, #9bafd9);
+    background-size: 400% 400%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradientShift 4s ease infinite;
+  }
 
   /* Ensure input text is black */
   input, textarea {

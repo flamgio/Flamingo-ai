@@ -491,57 +491,92 @@ export default function Landing() {
               </button>
             </motion.div>
 
-            {/* Premium Plan Card */}
+            {/* Premium Plan Card - Glass Effect */}
             <motion.div
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
               viewport={{ once: true }}
-              className="card"
+              className="relative bg-gradient-to-br from-white/20 to-white/10 dark:from-purple-900/30 dark:to-pink-900/20 backdrop-blur-xl border border-white/30 dark:border-purple-400/30 rounded-2xl p-6 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:bg-white/25 dark:hover:bg-purple-900/40 hover:scale-105 max-w-80 cursor-pointer group"
             >
-              <div className="card__border"></div>
-              <div className="card_title__container">
-                <div className="flex items-center space-x-3 mb-2">
-                  <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-600 rounded-lg flex items-center justify-center">
-                    <i className="fas fa-crown text-white text-sm"></i>
-                  </div>
-                  <h3 className="card_title text-premium">Premium Access</h3>
-                </div>
-                <p className="card_paragraph">Unlock advanced AI capabilities</p>
+              {/* Premium Badge */}
+              <div className="absolute -top-3 -right-3 bg-gradient-to-r from-purple-500 to-pink-600 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg animate-pulse">
+                PREMIUM
               </div>
-              <hr className="line" />
-              <ul className="card__list">
-                <li className="card__list_item">
-                  <span className="check">
-                    <svg className="check_svg" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
-                    </svg>
+              
+              {/* Glass Border Effect */}
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-purple-400/20 via-pink-400/20 to-indigo-400/20 p-0.5 -z-10">
+                <div className="w-full h-full bg-white/10 dark:bg-black/20 rounded-2xl"></div>
+              </div>
+
+              <div className="relative z-10">
+                {/* Title Section */}
+                <div className="flex items-center space-x-3 mb-4">
+                  <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center shadow-lg">
+                    <i className="fas fa-crown text-white text-lg animate-bounce"></i>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold bg-gradient-to-r from-purple-600 to-pink-600 dark:from-purple-300 dark:to-pink-300 bg-clip-text text-transparent">
+                      Premium Access
+                    </h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-300">
+                      Unlock advanced AI capabilities
+                    </p>
+                  </div>
+                </div>
+
+                {/* Divider */}
+                <div className="w-full h-px bg-gradient-to-r from-transparent via-purple-400/50 to-transparent mb-4"></div>
+
+                {/* Features List */}
+                <ul className="space-y-3 mb-6">
+                  <li className="flex items-center space-x-3 group/item">
+                    <div className="w-5 h-5 bg-gradient-to-r from-purple-500 to-pink-600 rounded-full flex items-center justify-center flex-shrink-0 shadow-sm">
+                      <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
+                      </svg>
+                    </div>
+                    <span className="text-sm font-medium text-gray-700 dark:text-gray-200 group-hover/item:text-purple-600 dark:group-hover/item:text-purple-300 transition-colors">
+                      Unlimited conversations
+                    </span>
+                  </li>
+                  <li className="flex items-center space-x-3 group/item">
+                    <div className="w-5 h-5 bg-gradient-to-r from-purple-500 to-pink-600 rounded-full flex items-center justify-center flex-shrink-0 shadow-sm">
+                      <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
+                      </svg>
+                    </div>
+                    <span className="text-sm font-medium text-gray-700 dark:text-gray-200 group-hover/item:text-purple-600 dark:group-hover/item:text-purple-300 transition-colors">
+                      Priority response speed
+                    </span>
+                  </li>
+                  <li className="flex items-center space-x-3 group/item">
+                    <div className="w-5 h-5 bg-gradient-to-r from-purple-500 to-pink-600 rounded-full flex items-center justify-center flex-shrink-0 shadow-sm">
+                      <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
+                      </svg>
+                    </div>
+                    <span className="text-sm font-medium text-gray-700 dark:text-gray-200 group-hover/item:text-purple-600 dark:group-hover/item:text-purple-300 transition-colors">
+                      Advanced AI models
+                    </span>
+                  </li>
+                </ul>
+
+                {/* Premium Button */}
+                <button 
+                  className="w-full bg-gradient-to-r from-purple-500 via-pink-500 to-indigo-500 hover:from-purple-600 hover:via-pink-600 hover:to-indigo-600 text-white font-semibold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 active:scale-95"
+                  onClick={() => setLocation('/pricing')}
+                >
+                  <span className="flex items-center justify-center space-x-2">
+                    <i className="fas fa-star text-yellow-300"></i>
+                    <span>Get Premium</span>
+                    <i className="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
                   </span>
-                  <span className="list_text">Unlimited conversations</span>
-                </li>
-                <li className="card__list_item">
-                  <span className="check">
-                    <svg className="check_svg" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
-                    </svg>
-                  </span>
-                  <span className="list_text">Priority response speed</span>
-                </li>
-                <li className="card__list_item">
-                  <span className="check">
-                    <svg className="check_svg" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
-                    </svg>
-                  </span>
-                  <span className="list_text">Advanced AI models</span>
-                </li>
-              </ul>
-              <button 
-                className="button"
-                onClick={() => setLocation('/pricing')}
-              >
-                Get Premium
-              </button>
+                </button>
+              </div>
+
+              {/* Ambient Glow Effect */}
+              <div className="absolute -inset-1 bg-gradient-to-r from-purple-600 via-pink-600 to-indigo-600 rounded-2xl opacity-20 blur-sm group-hover:opacity-30 transition-opacity -z-20"></div>
             </motion.div>
           </div>
         </div>

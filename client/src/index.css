@@ -1263,7 +1263,25 @@
 
 .card .card__list .card__list_item .list_text {
   font-size: 0.75rem;
-  color: var(--white);
+  color: var(--black);
+}
+
+.card_title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--black);
+}
+
+.card_paragraph {
+  font-size: 0.875rem;
+  color: var(--paragraph);
+}
+
+.text-premium {
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .card .button {

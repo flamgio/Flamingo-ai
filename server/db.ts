@@ -42,7 +42,7 @@ export async function provisionAdminAccounts() {
         firstName: 'Admin',
         lastName: 'Flamingo',
         role: 'admin',
-        password: 'FlamingoAdmin2024!'
+        password: 'AdminFlamingo69'
       },
       {
         email: 'Flamingo@manager.flam',
@@ -50,7 +50,7 @@ export async function provisionAdminAccounts() {
         firstName: 'Manager',
         lastName: 'Flamingo',
         role: 'manager',
-        password: 'FlamingoManager2024!'
+        password: 'managerFlamingo69'
       }
     ];
 

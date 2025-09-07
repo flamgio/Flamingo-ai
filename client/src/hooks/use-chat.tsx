@@ -65,6 +65,9 @@ export function useChat() {
         const newConversation = await conversationResponse.json();
         conversationId = newConversation.id;
         setCurrentConversationId(conversationId);
+        
+        // Update conversations immediately
+        setConversations(prev => [newConversation, ...prev]);
       }
 
       // Send message to chat API
@@ -83,25 +86,62 @@ export function useChat() {
       const result = await response.json();
       return { result, conversationId };
     },
-    onSuccess: (data) => {
+    onMutate: async (content: string) => {
+      // Cancel any outgoing refetches so they don't overwrite our optimistic update
+      const conversationId = currentConversationId;
+      if (conversationId) {
+        await queryClient.cancelQueries({
+          queryKey: ['/api/conversations', conversationId, 'messages']
+        });
+        
+        // Snapshot the previous value
+        const previousMessages = queryClient.getQueryData(['/api/conversations', conversationId, 'messages']);
+        
+        // Optimistically update to the new value with user message
+        const optimisticUserMessage = {
+          id: `temp-${Date.now()}`,
+          content: content,
+          role: 'user',
+          conversationId: conversationId,
+          createdAt: new Date(),
+          selectedModel: null
+        };
+        
+        queryClient.setQueryData(
+          ['/api/conversations', conversationId, 'messages'],
+          (old: any[] = []) => [...old, optimisticUserMessage]
+        );
+        
+        return { previousMessages, conversationId };
+      }
+    },
+    onSuccess: async (data) => {
       const { conversationId } = data;
       
-      // Immediately invalidate and refetch
+      // Invalidate queries to trigger fresh data fetch
       queryClient.invalidateQueries({ queryKey: ['/api/conversations'] });
       queryClient.invalidateQueries({
         queryKey: ['/api/conversations', conversationId, 'messages']
       });
       
-      // Force refetch messages if we have the refetch function
+      // Force immediate refetch of messages for current conversation
       if (conversationId === currentConversationId && refetchMessages) {
-        refetchMessages();
+        await refetchMessages();
       }
       
       // Refresh conversations list
-      refreshConversations();
+      await refreshConversations();
     },
-    onError: (error) => {
+    onError: (error, variables, context: any) => {
       console.error("Error sending message:", error);
+      
+      // If we have context and conversationId, restore previous messages
+      if (context?.conversationId && context?.previousMessages) {
+        queryClient.setQueryData(
+          ['/api/conversations', context.conversationId, 'messages'],
+          context.previousMessages
+        );
+      }
     }
   });
 

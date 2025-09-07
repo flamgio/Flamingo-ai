@@ -47,12 +47,20 @@ export default function Chat() {
   });
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    setTimeout(() => {
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, 100);
   };
 
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  useEffect(() => {
+    if (isLoading) {
+      scrollToBottom();
+    }
+  }, [isLoading]);
 
   useEffect(() => {
     refreshConversations();
@@ -163,7 +171,7 @@ export default function Chat() {
         </div>
 
         {/* Messages Container */}
-        <div className="flex-1 overflow-y-auto p-6 bg-gradient-to-b from-white/30 via-blue-50/20 to-indigo-50/30 dark:from-indigo-900/50 dark:via-purple-800/10 dark:to-blue-900/10">
+        <div className="flex-1 overflow-y-auto p-6 bg-gradient-to-b from-white/30 via-blue-50/20 to-indigo-50/30 dark:from-indigo-900/50 dark:via-purple-800/10 dark:to-blue-900/10 relative">
           <div className="max-w-4xl mx-auto space-y-6">
             {messages.length === 0 ? (
               <div className="text-center py-12">

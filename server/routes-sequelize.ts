@@ -269,6 +269,32 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Admin environment endpoint (secure - no exposed secrets)
+  app.get("/api/admin/env", authenticateToken, authenticateRole('admin'), async (req, res) => {
+    try {
+      const envData = {
+        environment: process.env.NODE_ENV || 'development',
+        variables: [
+          { name: 'NODE_ENV', value: process.env.NODE_ENV || 'development', type: 'public', description: 'Application environment' },
+          { name: 'DATABASE_URL', value: '••••••••', type: 'secret', description: 'Database connection string (PostgreSQL)' },
+          { name: 'ADMIN_PASSWORD', value: '••••••••', type: 'secret', description: 'Admin account password' },
+          { name: 'MANAGER_PASSWORD', value: '••••••••', type: 'secret', description: 'Manager account password' }
+        ],
+        database: {
+          status: 'connected',
+          type: 'PostgreSQL (External)',
+          ssl: 'enabled',
+          poolSize: '10 connections'
+        }
+      };
+
+      res.json(envData);
+    } catch (error) {
+      console.error('Get admin env error:', error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  });
+
   // Manager routes  
   app.get("/api/manager/stats", authenticateToken, authenticateRole('manager'), async (req, res) => {
     try {

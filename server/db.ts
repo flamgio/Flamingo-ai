@@ -49,8 +49,12 @@ class ConversationModel extends Model<ConversationAttributes> implements Convers
   public readonly updatedAt!: Date;
 }
 
-// Use external database URL
-const DATABASE_URL = "postgresql://brgso3:xau_8TMjqY92xwBSomHzYxVkJlmulDioLMEN0@us-east-1.sql.xata.sh/Flamingoai:main?sslmode=require";
+// Get database URL from environment variable for security
+const DATABASE_URL = process.env.DATABASE_URL;
+
+if (!DATABASE_URL) {
+  throw new Error("DATABASE_URL environment variable is required");
+}
 
 // Create Sequelize instance with SSL support
 const sequelize = new Sequelize(DATABASE_URL, {

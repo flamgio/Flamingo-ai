@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/use-auth";
 import { useTheme } from "@/components/ui/theme-provider";
 import { motion } from "framer-motion";
+import { Moon, Sun } from "lucide-react";
 
 export default function Landing() {
   const [, setLocation] = useLocation();
@@ -250,6 +251,14 @@ export default function Landing() {
               className="flex items-center space-x-4"
             >
               <Button
+                onClick={toggleTheme}
+                variant="ghost"
+                size="icon"
+                className="text-white hover:bg-white/20 rounded-full"
+              >
+                {theme === "light" ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
+              </Button>
+              <Button
                 onClick={handleGetStarted}
                 disabled={isLoading}
                 className="bg-white/90 text-blue-600 hover:bg-white px-6 py-2 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl font-semibold"
@@ -322,7 +331,7 @@ export default function Landing() {
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {/* AI Model Selection Card */}
             <motion.div
               initial={{ opacity: 0, y: 50 }}
@@ -368,7 +377,12 @@ export default function Landing() {
                   <span className="list_text">Custom selection</span>
                 </li>
               </ul>
-              <button className="button">Explore Now</button>
+              <button 
+                className="button"
+                onClick={() => setLocation('/signup')}
+              >
+                Explore Now
+              </button>
             </motion.div>
 
             {/* PostgreSQL Memory Card */}
@@ -416,7 +430,12 @@ export default function Landing() {
                   <span className="list_text">Easy access</span>
                 </li>
               </ul>
-              <button className="button">Explore Now</button>
+              <button 
+                className="button"
+                onClick={() => setLocation('/signup')}
+              >
+                Explore Now
+              </button>
             </motion.div>
 
             {/* User Settings Card */}
@@ -464,7 +483,65 @@ export default function Landing() {
                   <span className="list_text">Chat customization</span>
                 </li>
               </ul>
-              <button className="button">Explore Now</button>
+              <button 
+                className="button"
+                onClick={() => setLocation('/signup')}
+              >
+                Explore Now
+              </button>
+            </motion.div>
+
+            {/* Premium Plan Card */}
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              viewport={{ once: true }}
+              className="card"
+            >
+              <div className="card__border"></div>
+              <div className="card_title__container">
+                <div className="flex items-center space-x-3 mb-2">
+                  <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-600 rounded-lg flex items-center justify-center">
+                    <i className="fas fa-crown text-white text-sm"></i>
+                  </div>
+                  <h3 className="card_title text-premium">Premium Access</h3>
+                </div>
+                <p className="card_paragraph">Unlock advanced AI capabilities</p>
+              </div>
+              <hr className="line" />
+              <ul className="card__list">
+                <li className="card__list_item">
+                  <span className="check">
+                    <svg className="check_svg" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
+                    </svg>
+                  </span>
+                  <span className="list_text">Unlimited conversations</span>
+                </li>
+                <li className="card__list_item">
+                  <span className="check">
+                    <svg className="check_svg" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
+                    </svg>
+                  </span>
+                  <span className="list_text">Priority response speed</span>
+                </li>
+                <li className="card__list_item">
+                  <span className="check">
+                    <svg className="check_svg" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
+                    </svg>
+                  </span>
+                  <span className="list_text">Advanced AI models</span>
+                </li>
+              </ul>
+              <button 
+                className="button"
+                onClick={() => setLocation('/pricing')}
+              >
+                Get Premium
+              </button>
             </motion.div>
           </div>
         </div>

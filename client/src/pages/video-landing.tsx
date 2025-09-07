@@ -31,7 +31,7 @@ export default function VideoLanding() {
       <nav className="landing-nav">
         <div className="nav-content">
           <div className="nav-left">
-            <div className="logo-container">
+            <div className="logo-container" onClick={() => setLocation('/')} style={{cursor: 'pointer'}}>
               <div className="logo-icon">
                 <span>FA</span>
               </div>
@@ -523,6 +523,50 @@ export default function VideoLanding() {
                 <button className="card-button">
                   <span>Explore Now</span>
                   <i className="fas fa-arrow-right"></i>
+                </button>
+              </div>
+            </motion.div>
+
+            {/* Glassmorphism Highlight Card */}
+            <motion.div 
+              className="feature-card glassmorphism-card"
+              initial={{ opacity: 0, y: 60, scale: 0.8 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 1, delay: 0.7 }}
+              viewport={{ once: true }}
+              whileHover={{ 
+                y: -15, 
+                scale: 1.05,
+                transition: { duration: 0.3 } 
+              }}
+            >
+              <div className="glass-backdrop"></div>
+              <div className="card-content">
+                <div className="card-header">
+                  <div className="card-icon premium-icon">
+                    <i className="fas fa-crown"></i>
+                  </div>
+                  <h3 className="card-title premium-title">Premium Experience</h3>
+                </div>
+                <p className="card-description">Unlock the full potential of AI</p>
+                <div className="card-divider glass-divider"></div>
+                <ul className="card-features">
+                  <li>
+                    <span className="feature-check premium-check">✨</span>
+                    <span>Advanced AI models</span>
+                  </li>
+                  <li>
+                    <span className="feature-check premium-check">✨</span>
+                    <span>Priority processing</span>
+                  </li>
+                  <li>
+                    <span className="feature-check premium-check">✨</span>
+                    <span>Unlimited conversations</span>
+                  </li>
+                </ul>
+                <button className="card-button premium-button">
+                  <span>Get Premium</span>
+                  <i className="fas fa-sparkles"></i>
                 </button>
               </div>
             </motion.div>

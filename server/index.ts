@@ -54,6 +54,10 @@ app.use((req, res, next) => {
   // Validate environment variables at startup
   validateEnvironment();
   
+  // Import and provision admin accounts after database connection is established
+  const { provisionAdminAccounts } = await import("./db");
+  await provisionAdminAccounts();
+  
   const server = await registerRoutes(app);
 
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {

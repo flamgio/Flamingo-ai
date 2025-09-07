@@ -81,13 +81,29 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ message: "Please enter a valid email address" });
       }
 
-      // Check for restricted admin/manager emails
-      if (email === 'admin@admin.com' || email === 'manager@manager.com') {
-        return res.status(403).json({ message: "This email is reserved for system administrators" });
+      // Block reserved names/emails (case-insensitive)
+      const reservedEmails = [
+        'admin@admin.com', 'manager@manager.com', 'owner@owner.com',
+        'flamingo@admin.flam', 'flamingo@manager.flam', 'flamingo@owner.flam'
+      ];
+      const reservedUsernames = ['admin', 'manager', 'owner', 'flamingo', 'root', 'administrator', 'support'];
+      
+      const emailLower = email.toLowerCase();
+      const firstNameLower = firstName.toLowerCase();
+      const lastNameLower = lastName.toLowerCase();
+      
+      // Check reserved emails
+      if (reservedEmails.some(reserved => reserved.toLowerCase() === emailLower)) {
+        return res.status(403).json({ message: "This email address is reserved for system use" });
       }
-
-      // Only restrict specific admin emails, allow all other usernames
-      // Remove general username restrictions to allow normal user registration
+      
+      // Check reserved usernames in first/last name
+      if (reservedUsernames.some(reserved => 
+        firstNameLower === reserved || lastNameLower === reserved || 
+        firstNameLower.includes(reserved) || lastNameLower.includes(reserved)
+      )) {
+        return res.status(403).json({ message: "This name contains reserved terms. Please choose a different name." });
+      }
 
       // Check if user already exists
       const existingUser = await db
@@ -103,14 +119,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Hash password and create user
       const hashedPassword = await hashPassword(password);
 
-      // Determine user role - Only allow admin access for specific email
-      let userRole = 'user';
-      if (email === 'admin@admin.com') {
-        userRole = 'admin';
-      } else {
-        // Block all other signups except admin
-        return res.status(403).json({ message: "Access restricted. Only admin can create accounts at this time." });
-      }
+      // All users get 'user' role by default
+      // Admin and manager accounts are pre-provisioned separately
+      const userRole = 'user';
 
       const newUser = await db
         .insert(users)

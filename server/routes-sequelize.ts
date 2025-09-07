@@ -123,30 +123,91 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Chat routes
   app.post("/api/conversations", authenticateToken, async (req: AuthRequest, res) => {
     try {
-      const { prompt, response } = req.body;
-
-      if (!prompt || !response) {
-        return res.status(400).json({ message: "Prompt and response are required" });
-      }
+      const { title } = req.body;
 
       const conversation = await Conversation.create({
         userId: req.user.id,
-        prompt,
-        response
+        prompt: title || "New conversation",
+        response: "Hello! How can I help you today?"
       });
 
       res.json({
-        message: "Conversation saved",
-        conversation: {
-          id: conversation.id,
-          userId: conversation.userId,
-          prompt: conversation.prompt,
-          response: conversation.response,
-          createdAt: conversation.createdAt
-        }
+        id: conversation.id,
+        title: conversation.prompt,
+        createdAt: conversation.createdAt
       });
     } catch (error) {
-      console.error('Save conversation error:', error);
+      console.error('Create conversation error:', error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  });
+
+  // Send message to AI agent
+  app.post("/api/agent", authenticateToken, async (req: AuthRequest, res) => {
+    try {
+      const { prompt, conversationId } = req.body;
+
+      if (!prompt) {
+        return res.status(400).json({ message: "Prompt is required" });
+      }
+
+      // For now, simulate AI response (you can integrate with actual AI service later)
+      const aiResponse = `Thank you for your message: "${prompt}". This is a simulated AI response. The system is working correctly with the new Sequelize database!`;
+
+      // Save the conversation
+      const conversation = await Conversation.create({
+        userId: req.user.id,
+        prompt,
+        response: aiResponse
+      });
+
+      res.json({
+        message: "Message processed successfully",
+        response: aiResponse,
+        conversationId: conversation.id
+      });
+    } catch (error) {
+      console.error('AI agent error:', error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  });
+
+  // Get conversation messages (for compatibility)
+  app.get("/api/conversations/:id/messages", authenticateToken, async (req: AuthRequest, res) => {
+    try {
+      const conversationId = req.params.id;
+      
+      const conversations = await Conversation.findAll({
+        where: { 
+          userId: req.user.id,
+          id: conversationId
+        },
+        order: [['createdAt', 'ASC']]
+      });
+
+      // Convert to message format expected by frontend
+      const messages = conversations.flatMap(conv => [
+        {
+          id: `user-${conv.id}`,
+          content: conv.prompt,
+          role: 'user',
+          conversationId: conv.id,
+          createdAt: conv.createdAt,
+          selectedModel: null
+        },
+        {
+          id: `assistant-${conv.id}`,
+          content: conv.response,
+          role: 'assistant',
+          conversationId: conv.id,
+          createdAt: conv.createdAt,
+          selectedModel: 'flamingo-ai'
+        }
+      ]);
+
+      res.json(messages);
+    } catch (error) {
+      console.error('Get messages error:', error);
       res.status(500).json({ message: "Internal server error" });
     }
   });
@@ -160,7 +221,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
         limit: 50
       });
 
-      res.json({ conversations });
+      // Convert to expected format
+      const formattedConversations = conversations.map(conv => ({
+        id: conv.id,
+        title: conv.prompt.substring(0, 50) + (conv.prompt.length > 50 ? '...' : ''),
+        createdAt: conv.createdAt,
+        updatedAt: conv.updatedAt
+      }));
+
+      res.json(formattedConversations);
     } catch (error) {
       console.error('Get conversations error:', error);
       res.status(500).json({ message: "Internal server error" });

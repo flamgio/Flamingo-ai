@@ -1,9 +1,7 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import { Request, Response, NextFunction } from 'express';
-import { db } from './db';
-import { users } from '@shared/schema';
-import { eq } from 'drizzle-orm';
+import { User } from './db';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'flamingo-ai-development-secret-key-2024-please-change-in-production';
 const JWT_EXPIRES_IN = '7d';
@@ -12,7 +10,7 @@ export interface AuthRequest extends Request {
   user?: any;
 }
 
-export const generateToken = (userId: string): string => {
+export const generateToken = (userId: number): string => {
   return jwt.sign({ userId }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
 };
 
@@ -37,7 +35,7 @@ export const authenticateToken = async (req: AuthRequest, res: Response, next: N
   const token = authHeader && authHeader.split(' ')[1]; // Bearer TOKEN
 
   if (!token) {
-    return res.status(401).json({ message: 'Access token required' });
+    return res.status(401).json({ message: 'No token provided' });
   }
 
   const decoded = verifyToken(token);
@@ -46,20 +44,16 @@ export const authenticateToken = async (req: AuthRequest, res: Response, next: N
   }
 
   try {
-    const user = await db
-      .select()
-      .from(users)
-      .where(eq(users.id, decoded.userId))
-      .limit(1);
+    const user = await User.findByPk(decoded.userId);
 
-    if (user.length === 0) {
+    if (!user) {
       return res.status(403).json({ message: 'User not found' });
     }
 
     // Add session tracking for concurrent users
     req.user = {
-      ...user[0],
-      sessionId: `${user[0].id}-${Date.now()}`,
+      ...user.toJSON(),
+      sessionId: `${user.id}-${Date.now()}`,
       lastActive: new Date()
     };
 
@@ -79,14 +73,9 @@ export const optionalAuth = async (req: AuthRequest, res: Response, next: NextFu
     const decoded = verifyToken(token);
     if (decoded) {
       try {
-        const user = await db
-          .select()
-          .from(users)
-          .where(eq(users.id, decoded.userId))
-          .limit(1);
-
-        if (user.length > 0) {
-          req.user = user[0];
+        const user = await User.findByPk(decoded.userId);
+        if (user) {
+          req.user = user.toJSON();
         }
       } catch (error) {
         console.error('Optional auth error:', error);
@@ -96,3 +85,31 @@ export const optionalAuth = async (req: AuthRequest, res: Response, next: NextFu
 
   next();
 };
+
+// Role-based authentication middleware
+export function authenticateRole(requiredRole: 'admin' | 'manager' | 'user') {
+  return (req: AuthRequest, res: Response, next: NextFunction) => {
+    if (!req.user) {
+      return res.status(401).json({ message: 'Authentication required' });
+    }
+
+    const userRole = req.user.role;
+    
+    // Admin has access to everything
+    if (userRole === 'admin') {
+      return next();
+    }
+    
+    // Manager has access to manager and user content
+    if (userRole === 'manager' && (requiredRole === 'manager' || requiredRole === 'user')) {
+      return next();
+    }
+    
+    // User only has access to user content
+    if (userRole === 'user' && requiredRole === 'user') {
+      return next();
+    }
+    
+    return res.status(403).json({ message: 'Insufficient permissions' });
+  };
+}

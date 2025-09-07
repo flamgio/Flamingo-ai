@@ -1,15 +1,14 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { db } from './db';
-import { users, conversations, messages, payments } from '@shared/schema';
-import { eq } from 'drizzle-orm';
+import { User, Conversation } from './db';
 import {
   generateToken,
   hashPassword,
   comparePassword,
   authenticateToken,
   optionalAuth,
+  authenticateRole,
   type AuthRequest
 } from "./auth";
 import { chatRouter } from "./routes-chat";

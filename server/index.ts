@@ -1,5 +1,5 @@
 import express, { type Request, Response, NextFunction } from "express";
-import { registerRoutes } from "./routes";
+import { registerRoutes } from "./routes-sequelize";
 import { setupVite, serveStatic, log } from "./vite";
 import { validateEnvironment } from "./env-validation.js";
 
@@ -54,9 +54,9 @@ app.use((req, res, next) => {
   // Validate environment variables at startup
   validateEnvironment();
   
-  // Import and provision admin accounts after database connection is established
-  const { provisionAdminAccounts } = await import("./db");
-  await provisionAdminAccounts();
+  // Initialize database with Sequelize
+  const { initializeDatabase } = await import("./db");
+  await initializeDatabase();
   
   const server = await registerRoutes(app);
 

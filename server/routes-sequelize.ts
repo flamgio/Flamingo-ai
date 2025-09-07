@@ -1,0 +1,225 @@
+import type { Express } from "express";
+import { createServer, type Server } from "http";
+import { User, Conversation } from './db';
+import {
+  generateToken,
+  authenticateToken,
+  optionalAuth,
+  authenticateRole,
+  type AuthRequest
+} from "./auth";
+import bcrypt from "bcryptjs";
+
+export async function registerRoutes(app: Express): Promise<Server> {
+
+  // Authentication routes
+  app.post("/api/auth/signup", async (req, res) => {
+    try {
+      const { email, firstName, lastName, password } = req.body;
+
+      // Validation
+      if (!email || !firstName || !lastName || !password) {
+        return res.status(400).json({ message: "All fields are required" });
+      }
+
+      if (password.length < 6) {
+        return res.status(400).json({ message: "Password must be at least 6 characters" });
+      }
+
+      // Check for reserved emails
+      const reservedEmails = ['Flamingo@admin.flam', 'Flamingo@manager.flam'];
+      if (reservedEmails.includes(email)) {
+        return res.status(400).json({ message: "This email is reserved" });
+      }
+
+      // Check if user already exists
+      const existingUser = await User.findOne({ where: { email } });
+      if (existingUser) {
+        return res.status(400).json({ message: "User already exists" });
+      }
+
+      // Create user (password will be hashed automatically)
+      const user = await User.create({
+        email,
+        firstName,
+        lastName,
+        password,
+        role: 'user',
+        isPremium: false
+      });
+
+      const token = generateToken(user.id);
+      res.json({
+        message: "User created successfully",
+        token,
+        user: {
+          id: user.id,
+          email: user.email,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          role: user.role,
+          isPremium: user.isPremium
+        }
+      });
+    } catch (error) {
+      console.error('Signup error:', error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  });
+
+  app.post("/api/auth/login", async (req, res) => {
+    try {
+      const { email, password } = req.body;
+
+      if (!email || !password) {
+        return res.status(400).json({ message: "Email and password are required" });
+      }
+
+      // Find user
+      const user = await User.findOne({ where: { email } });
+      if (!user) {
+        return res.status(401).json({ message: "Invalid credentials" });
+      }
+
+      // Verify password
+      const isValid = await user.validatePassword(password);
+      if (!isValid) {
+        return res.status(401).json({ message: "Invalid credentials" });
+      }
+
+      const token = generateToken(user.id);
+      res.json({
+        message: "Login successful",
+        token,
+        user: {
+          id: user.id,
+          email: user.email,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          role: user.role,
+          isPremium: user.isPremium
+        }
+      });
+    } catch (error) {
+      console.error('Login error:', error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  });
+
+  // Get current user
+  app.get("/api/user", authenticateToken, async (req: AuthRequest, res) => {
+    res.json({
+      user: {
+        id: req.user.id,
+        email: req.user.email,
+        firstName: req.user.firstName,
+        lastName: req.user.lastName,
+        role: req.user.role,
+        isPremium: req.user.isPremium
+      }
+    });
+  });
+
+  // Chat routes
+  app.post("/api/conversations", authenticateToken, async (req: AuthRequest, res) => {
+    try {
+      const { prompt, response } = req.body;
+
+      if (!prompt || !response) {
+        return res.status(400).json({ message: "Prompt and response are required" });
+      }
+
+      const conversation = await Conversation.create({
+        userId: req.user.id,
+        prompt,
+        response
+      });
+
+      res.json({
+        message: "Conversation saved",
+        conversation: {
+          id: conversation.id,
+          userId: conversation.userId,
+          prompt: conversation.prompt,
+          response: conversation.response,
+          createdAt: conversation.createdAt
+        }
+      });
+    } catch (error) {
+      console.error('Save conversation error:', error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  });
+
+  // Get user conversations
+  app.get("/api/conversations", authenticateToken, async (req: AuthRequest, res) => {
+    try {
+      const conversations = await Conversation.findAll({
+        where: { userId: req.user.id },
+        order: [['createdAt', 'DESC']],
+        limit: 50
+      });
+
+      res.json({ conversations });
+    } catch (error) {
+      console.error('Get conversations error:', error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  });
+
+  // Admin routes
+  app.get("/api/admin/users", authenticateToken, authenticateRole('admin'), async (req, res) => {
+    try {
+      const users = await User.findAll({
+        attributes: ['id', 'firstName', 'lastName', 'email', 'role', 'isPremium', 'createdAt'],
+        order: [['createdAt', 'DESC']]
+      });
+
+      res.json({ users });
+    } catch (error) {
+      console.error('Get users error:', error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  });
+
+  app.get("/api/admin/conversations", authenticateToken, authenticateRole('admin'), async (req, res) => {
+    try {
+      const conversations = await Conversation.findAll({
+        include: [{
+          model: User,
+          attributes: ['firstName', 'lastName', 'email']
+        }],
+        order: [['createdAt', 'DESC']],
+        limit: 100
+      });
+
+      res.json({ conversations });
+    } catch (error) {
+      console.error('Get all conversations error:', error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  });
+
+  // Manager routes  
+  app.get("/api/manager/stats", authenticateToken, authenticateRole('manager'), async (req, res) => {
+    try {
+      const userCount = await User.count();
+      const conversationCount = await Conversation.count();
+      const premiumCount = await User.count({ where: { isPremium: true } });
+
+      res.json({
+        stats: {
+          totalUsers: userCount,
+          totalConversations: conversationCount,
+          premiumUsers: premiumCount
+        }
+      });
+    } catch (error) {
+      console.error('Get stats error:', error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  });
+
+  const server = createServer(app);
+  return server;
+}

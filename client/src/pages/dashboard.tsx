@@ -109,7 +109,7 @@ export default function Dashboard() {
               <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-white via-purple-100 to-purple-200 bg-clip-text text-transparent mt-2 lg:mt-0">
                 Welcome back, {user?.username || 'User'}!
               </h1>
-              <p className="text-purple-100/70 mt-1 text-sm sm:text-base">Explore your AI-powered workspace</p>
+              <p className="text-purple-100/70 mt-1 text-sm sm:text-base">Explore your intelligent workspace</p>
             </div>
             <div className="bg-gradient-to-r from-purple-600/20 to-pink-600/20 backdrop-blur-md border border-purple-400/30 rounded-lg px-4 sm:px-6 py-3 w-full sm:w-auto">
               <div className="text-center space-y-2">
@@ -216,7 +216,7 @@ export default function Dashboard() {
                   Chat
                 </h1>
                 <p className="text-[0.9em] text-purple-100/90 leading-relaxed font-light">
-                  Experience intelligent conversations with our advanced AI. Start your journey into seamless communication and discover the power of smart responses.
+                  Experience intelligent conversations with advanced technology. Start your journey into seamless communication and discover powerful response capabilities.
                 </p>
               </div>
 
@@ -267,7 +267,7 @@ export default function Dashboard() {
                   Premium
                 </h1>
                 <p className="text-[0.9em] text-purple-100/90 leading-relaxed font-light">
-                  Unlock unlimited potential with premium features. Enhanced models, priority support, and exclusive capabilities await your exploration.
+                  Unlock unlimited potential with premium features. Enhanced capabilities, priority support, and exclusive tools await your exploration.
                 </p>
               </div>
 

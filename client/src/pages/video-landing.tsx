@@ -35,7 +35,7 @@ export default function VideoLanding() {
               <div className="logo-icon">
                 <span>FA</span>
               </div>
-              <span className="brand-text">Flamingo AI</span>
+              <span className="brand-text">Flamingo</span>
             </div>
           </div>
           
@@ -282,18 +282,18 @@ export default function VideoLanding() {
                   <div className="card-icon brain-icon">
                     <i className="fas fa-brain"></i>
                   </div>
-                  <h3 className="card-title">AI Model Selection</h3>
+                  <h3 className="card-title">Model Selection</h3>
                 </div>
-                <p className="card-description">Multiple AI models to choose from</p>
+                <p className="card-description">Multiple intelligent models to choose from</p>
                 <div className="card-divider"></div>
                 <ul className="card-features">
                   <li>
                     <span className="feature-check">✓</span>
-                    <span>GPT models</span>
+                    <span>Advanced models</span>
                   </li>
                   <li>
                     <span className="feature-check">✓</span>
-                    <span>Claude models</span>
+                    <span>Premium models</span>
                   </li>
                   <li>
                     <span className="feature-check">✓</span>
@@ -416,7 +416,7 @@ export default function VideoLanding() {
                   </div>
                   <h3 className="card-title">Real-time Chat</h3>
                 </div>
-                <p className="card-description">Instant AI conversations</p>
+                <p className="card-description">Instant intelligent conversations</p>
                 <div className="card-divider"></div>
                 <ul className="card-features">
                   <li>

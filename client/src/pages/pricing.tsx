@@ -71,10 +71,10 @@ export default function Pricing() {
       >
         <img 
           src={logoImg} 
-          alt="Flamingo AI" 
+          alt="Flamingo" 
           className="h-12 w-12 rounded-lg shadow-lg shadow-white/20" 
         />
-        <span className="text-white text-xl font-bold">Flamingo AI</span>
+        <span className="text-white text-xl font-bold">Flamingo</span>
       </button>
 
       {/* Background Effects */}
@@ -94,10 +94,10 @@ export default function Pricing() {
           className="text-center mb-16"
         >
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            Choose Your AI Plan
+            Choose Your Plan
           </h1>
           <p className="text-white/70 text-lg">
-            Unlock the power of artificial intelligence
+            Unlock the power of intelligent technology
           </p>
         </motion.div>
 
@@ -118,7 +118,7 @@ export default function Pricing() {
               <ul className="list">
                 <li className="list-item">
                   <span className="check">✓</span>
-                  Basic AI chat conversations
+                  Basic intelligent conversations
                 </li>
                 <li className="list-item">
                   <span className="check">✓</span>

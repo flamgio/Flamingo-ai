@@ -48,8 +48,8 @@ export default function AdminPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white dark:from-blue-950 dark:to-gray-900">
-      <nav className="bg-white/95 dark:bg-blue-900/95 backdrop-blur-md border-b border-blue-200 dark:border-blue-700 shadow-sm">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-blue-950 dark:to-indigo-950">
+      <nav className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-700 shadow-lg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-4">
@@ -61,7 +61,7 @@ export default function AdminPage() {
                   onClick={() => setLocation('/dashboard')}
                   className="text-xl font-bold text-blue-700 dark:text-blue-300 hover:text-blue-800 dark:hover:text-blue-200 transition-colors"
                 >
-                  Flamingo AI - Admin
+                  Flamingo - Admin Panel
                 </button>
               </div>
             </div>
@@ -102,43 +102,223 @@ export default function AdminPage() {
       </nav>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-blue-800 dark:text-blue-200 mb-4">
-            Admin Dashboard
-          </h1>
-          <p className="text-xl text-blue-600 dark:text-blue-300">
-            Manage your Flamingo AI platform
-          </p>
+        {/* Admin Header */}
+        <div className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-lg rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 p-8 mb-8">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-4xl font-bold bg-gradient-to-r from-slate-800 via-blue-600 to-indigo-600 dark:from-slate-200 dark:via-blue-400 dark:to-indigo-400 bg-clip-text text-transparent mb-3">
+                Admin Control Center
+              </h1>
+              <p className="text-slate-600 dark:text-slate-300 text-lg">
+                Comprehensive platform management and analytics
+              </p>
+            </div>
+            <div className="hidden md:flex items-center space-x-3 bg-gradient-to-r from-blue-500 to-indigo-600 p-4 rounded-xl text-white shadow-lg">
+              <i className="fas fa-shield-alt text-2xl"></i>
+              <div>
+                <div className="text-sm opacity-80">Admin Level</div>
+                <div className="font-bold">Full Access</div>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-blue-800 dark:text-blue-200">User Management</CardTitle>
-              <CardDescription>View and manage user accounts</CardDescription>
+        {/* Quick Stats Overview */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+          <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-6 text-white shadow-lg">
+            <div className="flex items-center justify-between">
+              <div>
+                <div className="text-blue-100 text-sm">Total Users</div>
+                <div className="text-3xl font-bold">1,247</div>
+                <div className="text-blue-200 text-sm">+12% this month</div>
+              </div>
+              <i className="fas fa-users text-3xl text-blue-200"></i>
+            </div>
+          </div>
+          
+          <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-xl p-6 text-white shadow-lg">
+            <div className="flex items-center justify-between">
+              <div>
+                <div className="text-green-100 text-sm">Active Sessions</div>
+                <div className="text-3xl font-bold">389</div>
+                <div className="text-green-200 text-sm">Live now</div>
+              </div>
+              <i className="fas fa-chart-line text-3xl text-green-200"></i>
+            </div>
+          </div>
+
+          <div className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl p-6 text-white shadow-lg">
+            <div className="flex items-center justify-between">
+              <div>
+                <div className="text-purple-100 text-sm">Messages Today</div>
+                <div className="text-3xl font-bold">15.2K</div>
+                <div className="text-purple-200 text-sm">+8% vs yesterday</div>
+              </div>
+              <i className="fas fa-comments text-3xl text-purple-200"></i>
+            </div>
+          </div>
+
+          <div className="bg-gradient-to-br from-orange-500 to-red-500 rounded-xl p-6 text-white shadow-lg">
+            <div className="flex items-center justify-between">
+              <div>
+                <div className="text-orange-100 text-sm">System Health</div>
+                <div className="text-3xl font-bold">98.7%</div>
+                <div className="text-orange-200 text-sm">Excellent</div>
+              </div>
+              <i className="fas fa-heartbeat text-3xl text-orange-200"></i>
+            </div>
+          </div>
+        </div>
+
+        {/* Main Admin Panels */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+          {/* User Management Panel */}
+          <Card className="shadow-xl border-slate-200 dark:border-slate-700">
+            <CardHeader className="pb-4">
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center">
+                  <i className="fas fa-users-cog text-blue-600 dark:text-blue-400"></i>
+                </div>
+                <div>
+                  <CardTitle className="text-slate-800 dark:text-slate-200 text-xl">User Management</CardTitle>
+                  <CardDescription>Manage user accounts, roles, and permissions</CardDescription>
+                </div>
+              </div>
             </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-blue-600">Coming Soon</div>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <Button className="bg-blue-600 hover:bg-blue-700 text-white">
+                  <i className="fas fa-user-plus mr-2"></i>
+                  Add User
+                </Button>
+                <Button variant="outline" className="border-slate-300 dark:border-slate-600">
+                  <i className="fas fa-list mr-2"></i>
+                  View All
+                </Button>
+              </div>
+              <div className="bg-slate-50 dark:bg-slate-800 rounded-lg p-4">
+                <div className="text-sm text-slate-600 dark:text-slate-400">Recent Activity</div>
+                <div className="space-y-2 mt-2">
+                  <div className="flex justify-between text-sm">
+                    <span>New registrations</span>
+                    <span className="font-semibold">23 today</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span>Premium upgrades</span>
+                    <span className="font-semibold">5 today</span>
+                  </div>
+                </div>
+              </div>
             </CardContent>
           </Card>
 
-          <Card>
+          {/* System Configuration Panel */}
+          <Card className="shadow-xl border-slate-200 dark:border-slate-700">
+            <CardHeader className="pb-4">
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center">
+                  <i className="fas fa-cogs text-green-600 dark:text-green-400"></i>
+                </div>
+                <div>
+                  <CardTitle className="text-slate-800 dark:text-slate-200 text-xl">System Configuration</CardTitle>
+                  <CardDescription>Configure platform settings and features</CardDescription>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <Button className="bg-green-600 hover:bg-green-700 text-white">
+                  <i className="fas fa-database mr-2"></i>
+                  Database
+                </Button>
+                <Button variant="outline" className="border-slate-300 dark:border-slate-600">
+                  <i className="fas fa-server mr-2"></i>
+                  Servers
+                </Button>
+              </div>
+              <div className="bg-slate-50 dark:bg-slate-800 rounded-lg p-4">
+                <div className="text-sm text-slate-600 dark:text-slate-400">System Status</div>
+                <div className="space-y-2 mt-2">
+                  <div className="flex justify-between text-sm">
+                    <span>API Response Time</span>
+                    <span className="font-semibold text-green-600">123ms</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span>Database Load</span>
+                    <span className="font-semibold text-blue-600">45%</span>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Analytics and Reports Section */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Analytics Panel */}
+          <Card className="lg:col-span-2 shadow-xl border-slate-200 dark:border-slate-700">
             <CardHeader>
-              <CardTitle className="text-blue-800 dark:text-blue-200">System Stats</CardTitle>
-              <CardDescription>Monitor platform performance</CardDescription>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-3">
+                  <div className="w-10 h-10 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center">
+                    <i className="fas fa-chart-bar text-purple-600 dark:text-purple-400"></i>
+                  </div>
+                  <div>
+                    <CardTitle className="text-slate-800 dark:text-slate-200 text-xl">Platform Analytics</CardTitle>
+                    <CardDescription>Real-time usage metrics and insights</CardDescription>
+                  </div>
+                </div>
+                <Button variant="outline" size="sm">
+                  <i className="fas fa-download mr-2"></i>
+                  Export
+                </Button>
+              </div>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-blue-600">Coming Soon</div>
+              <div className="h-64 bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-900 rounded-lg flex items-center justify-center">
+                <div className="text-center">
+                  <i className="fas fa-chart-area text-4xl text-slate-400 mb-4"></i>
+                  <div className="text-slate-600 dark:text-slate-400">Advanced Analytics Dashboard</div>
+                  <div className="text-sm text-slate-500 dark:text-slate-500 mt-2">Real-time metrics and reporting</div>
+                </div>
+              </div>
             </CardContent>
           </Card>
 
-          <Card>
+          {/* Quick Actions Panel */}
+          <Card className="shadow-xl border-slate-200 dark:border-slate-700">
             <CardHeader>
-              <CardTitle className="text-blue-800 dark:text-blue-200">Model Configuration</CardTitle>
-              <CardDescription>Configure AI models and settings</CardDescription>
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 bg-red-100 dark:bg-red-900 rounded-lg flex items-center justify-center">
+                  <i className="fas fa-bolt text-red-600 dark:text-red-400"></i>
+                </div>
+                <div>
+                  <CardTitle className="text-slate-800 dark:text-slate-200 text-xl">Quick Actions</CardTitle>
+                  <CardDescription>Administrative shortcuts</CardDescription>
+                </div>
+              </div>
             </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-blue-600">Coming Soon</div>
+            <CardContent className="space-y-3">
+              <Button className="w-full bg-slate-600 hover:bg-slate-700 text-white justify-start">
+                <i className="fas fa-broadcast-tower mr-3"></i>
+                Send Announcement
+              </Button>
+              <Button className="w-full bg-yellow-600 hover:bg-yellow-700 text-white justify-start">
+                <i className="fas fa-exclamation-triangle mr-3"></i>
+                System Maintenance
+              </Button>
+              <Button className="w-full bg-indigo-600 hover:bg-indigo-700 text-white justify-start">
+                <i className="fas fa-backup mr-3"></i>
+                Create Backup
+              </Button>
+              <Button className="w-full bg-teal-600 hover:bg-teal-700 text-white justify-start">
+                <i className="fas fa-file-export mr-3"></i>
+                Export Data
+              </Button>
+              <Button className="w-full bg-red-600 hover:bg-red-700 text-white justify-start">
+                <i className="fas fa-power-off mr-3"></i>
+                Emergency Stop
+              </Button>
             </CardContent>
           </Card>
         </div>

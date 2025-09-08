@@ -105,7 +105,6 @@ export default function Dashboard() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
                   </svg>
                 </button>
-                <img src={logoImg} alt="Flamingo AI" className="h-8 w-8 rounded-lg" />
               </div>
               <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-white via-purple-100 to-purple-200 bg-clip-text text-transparent mt-2 lg:mt-0">
                 Welcome back, {user?.username || 'User'}!
@@ -129,14 +128,14 @@ export default function Dashboard() {
         </div>
 
         {/* Dashboard Content */}
-        <div className="relative z-10 p-6 overflow-y-auto" style={{ height: 'calc(100vh - 120px)' }}>
+        <div className="relative z-10 p-3 sm:p-6 overflow-y-auto" style={{ height: 'calc(100vh - 120px)' }}>
           {/* Stats Cards Row */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6 mb-6 sm:mb-8">
             {/* Quick Stats */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-gradient-to-br from-purple-600/20 to-pink-600/20 backdrop-blur-md border border-purple-400/30 rounded-lg p-4"
+              className="bg-gradient-to-br from-purple-600/20 to-pink-600/20 backdrop-blur-md border border-purple-400/30 rounded-lg p-3 sm:p-4"
             >
               <div className="flex items-center justify-between">
                 <div>
@@ -151,7 +150,7 @@ export default function Dashboard() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="bg-gradient-to-br from-purple-600/20 to-pink-600/20 backdrop-blur-md border border-purple-400/30 rounded-lg p-4"
+              className="bg-gradient-to-br from-purple-600/20 to-pink-600/20 backdrop-blur-md border border-purple-400/30 rounded-lg p-3 sm:p-4"
             >
               <div className="flex items-center justify-between">
                 <div>
@@ -166,7 +165,7 @@ export default function Dashboard() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="bg-gradient-to-br from-purple-600/20 to-pink-600/20 backdrop-blur-md border border-purple-400/30 rounded-lg p-4"
+              className="bg-gradient-to-br from-purple-600/20 to-pink-600/20 backdrop-blur-md border border-purple-400/30 rounded-lg p-3 sm:p-4"
             >
               <div className="flex items-center justify-between">
                 <div>
@@ -179,7 +178,7 @@ export default function Dashboard() {
           </div>
 
           {/* Analytics Charts Row */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-8 mb-6 sm:mb-8">
             <AnalyticsChart 
               data={activityData} 
               type="line" 
@@ -195,13 +194,13 @@ export default function Dashboard() {
           </div>
 
           {/* Action Cards Row */}
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-8">
             {/* Chat Card */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5, ease: "easeOut" }}
-              className="relative h-[18em] w-full border-2 border-[rgba(75,30,133,0.5)] rounded-[1.5em] bg-gradient-to-br from-[rgba(75,30,133,1)] via-purple-700/80 to-[rgba(75,30,133,0.2)] text-white p-[1.5em] flex justify-center items-left flex-col gap-[1em] backdrop-blur-[12px] hover:shadow-xl hover:shadow-purple-500/20 transition-all duration-300 group/card hover:-translate-y-1"
+              className="relative h-[16em] sm:h-[18em] w-full border-2 border-[rgba(75,30,133,0.5)] rounded-[1.5em] bg-gradient-to-br from-[rgba(75,30,133,1)] via-purple-700/80 to-[rgba(75,30,133,0.2)] text-white p-[1em] sm:p-[1.5em] flex justify-center items-left flex-col gap-[0.8em] sm:gap-[1em] backdrop-blur-[12px] hover:shadow-xl hover:shadow-purple-500/20 transition-all duration-300 group/card hover:-translate-y-1"
             >
               <div className="absolute inset-0 bg-gradient-to-br from-purple-600/30 via-fuchsia-500/20 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-500 rounded-[1.5em]"></div>
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(120,50,190,0.1),transparent_60%)] group-hover/card:animate-pulse"></div>
@@ -213,7 +212,7 @@ export default function Dashboard() {
               </div>
 
               <div className="relative z-10 transition-transform duration-300 group-hover/card:translate-y-[-2px] space-y-3">
-                <h1 className="text-[2.2em] font-bold bg-gradient-to-r from-white via-purple-100 to-purple-200 bg-clip-text text-transparent">
+                <h1 className="text-[1.8em] sm:text-[2.2em] font-bold bg-gradient-to-r from-white via-purple-100 to-purple-200 bg-clip-text text-transparent">
                   Chat
                 </h1>
                 <p className="text-[0.9em] text-purple-100/90 leading-relaxed font-light">
@@ -264,7 +263,7 @@ export default function Dashboard() {
               </div>
 
               <div className="relative z-10 transition-transform duration-300 group-hover/card:translate-y-[-2px] space-y-3">
-                <h1 className="text-[2.2em] font-bold bg-gradient-to-r from-white via-purple-100 to-purple-200 bg-clip-text text-transparent">
+                <h1 className="text-[1.8em] sm:text-[2.2em] font-bold bg-gradient-to-r from-white via-purple-100 to-purple-200 bg-clip-text text-transparent">
                   Premium
                 </h1>
                 <p className="text-[0.9em] text-purple-100/90 leading-relaxed font-light">

@@ -48,6 +48,16 @@ export function useAuth() {
       // Wait a moment before invalidating to ensure the token is properly set
       await new Promise(resolve => setTimeout(resolve, 100));
       queryClient.invalidateQueries({ queryKey: ["/api/user"] });
+      
+      // Role-based redirection
+      const userRole = data.user.role;
+      if (userRole === 'admin') {
+        setLocation('/admin');
+      } else if (userRole === 'manager') {
+        setLocation('/manager');
+      } else {
+        setLocation('/dashboard');
+      }
     },
     onError: (error: any) => {
       console.error('Login failed:', error);
@@ -68,6 +78,9 @@ export function useAuth() {
       // Wait a moment before invalidating to ensure the token is properly set
       await new Promise(resolve => setTimeout(resolve, 100));
       queryClient.invalidateQueries({ queryKey: ["/api/user"] });
+      
+      // Automatically redirect to dashboard after signup (regular users only)
+      setLocation('/dashboard');
     },
     onError: (error: any) => {
       console.error('Signup failed:', error);

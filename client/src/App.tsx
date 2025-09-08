@@ -57,6 +57,10 @@ function Router() {
         const AdminComponent = lazy(() => import("./pages/admin"));
         return <Suspense fallback={<div>Loading...</div>}><AdminComponent /></Suspense>;
       }} />
+      <Route path="/manager" component={() => {
+        const ManagerComponent = lazy(() => import("./pages/manager"));
+        return <Suspense fallback={<div>Loading...</div>}><ManagerComponent /></Suspense>;
+      }} />
       <Route path="/not-found" component={NotFound} />
       <Route component={NotFound} />
     </Switch>

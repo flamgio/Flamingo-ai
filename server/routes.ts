@@ -1,14 +1,16 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { User, Conversation } from './db';
+import { neon } from "@neondatabase/serverless";
+import { drizzle } from "drizzle-orm/neon-http";
+import { eq } from "drizzle-orm";
+import { users, conversations, messages, payments } from "../shared/schema";
 import {
   generateToken,
   hashPassword,
   comparePassword,
   authenticateToken,
   optionalAuth,
-  authenticateRole,
   type AuthRequest
 } from "./auth";
 import { chatRouter } from "./routes-chat";
@@ -16,6 +18,10 @@ import enhancementRoutes from "./routes-enhancement";
 import crypto from "crypto";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+
+// Initialize Drizzle with Neon
+const sql = neon(process.env.DATABASE_URL!);
+const db = drizzle(sql);
 
 // Role-based authentication middleware
 function authenticateRole(requiredRole: 'admin' | 'manager' | 'user') {

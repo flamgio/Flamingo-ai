@@ -1,5 +1,5 @@
 import express, { type Request, Response, NextFunction } from "express";
-import { registerRoutes } from "./routes-sequelize";
+import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 import { validateEnvironment } from "./env-validation.js";
 
@@ -54,9 +54,7 @@ app.use((req, res, next) => {
   // Validate environment variables at startup
   validateEnvironment();
   
-  // Initialize database with Sequelize
-  const { initializeDatabase } = await import("./db");
-  await initializeDatabase();
+  // Skip Sequelize initialization - using Drizzle now
   
   const server = await registerRoutes(app);
 

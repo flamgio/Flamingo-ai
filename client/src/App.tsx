@@ -9,7 +9,7 @@ import VideoLanding from "./pages/video-landing";
 import Login from "./pages/login";
 import SignUp from "./pages/signup";
 import Dashboard from "./pages/dashboard";
-import Chat from "./pages/chat";
+import Chat from "./pages/modern-chat";
 import Pricing from "./pages/pricing";
 import Settings from "./pages/settings";
 import Help from "./pages/help";

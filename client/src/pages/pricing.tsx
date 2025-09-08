@@ -2,12 +2,16 @@ import { useLocation } from "wouter";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { useTheme } from "@/components/ui/theme-provider";
 import logoImg from "@/assets/logo.png";
 import { ParallaxPageWrapper, ParallaxAnimation } from "@/components/parallax-animation";
 import { CryptoPayment } from "@/components/crypto-payment";
+import { Moon, Sun } from "lucide-react";
+import "../styles/new-theme-toggle.css";
 
 export default function Pricing() {
   const [, setLocation] = useLocation();
+  const { theme, toggleTheme } = useTheme();
   const [showCryptoModal, setShowCryptoModal] = useState(false);
   const [showPaymentOptions, setShowPaymentOptions] = useState(false);
 
@@ -26,13 +30,34 @@ export default function Pricing() {
 
   return (
     <ParallaxPageWrapper>
-      <div className="min-h-screen bg-black overflow-hidden relative">
-      {/* Back Button - Top Right */}
-      <div className="fixed top-6 right-6 z-50">
+      <div className="min-h-screen bg-gray-50 dark:bg-black overflow-hidden relative">
+      {/* Header Controls - Top Right */}
+      <div className="fixed top-6 right-6 z-50 flex items-center space-x-3">
+        <div className="toggle-cont-small">
+          <input 
+            type="checkbox" 
+            className="toggle-input" 
+            checked={theme === 'dark'}
+            onChange={toggleTheme}
+            data-testid="theme-toggle"
+          />
+          <label className="toggle-label-small">
+            <div className="cont-icon">
+              <div className="sparkle" style={{"--deg": "45", "--duration": "3"} as React.CSSProperties}></div>
+              <div className="sparkle" style={{"--deg": "90", "--duration": "3"} as React.CSSProperties}></div>
+              <div className="sparkle" style={{"--deg": "135", "--duration": "3"} as React.CSSProperties}></div>
+              <div className="sparkle" style={{"--deg": "180", "--duration": "3"} as React.CSSProperties}></div>
+              <svg className="icon" viewBox="0 0 24 24">
+                <path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.166a.75.75 0 00-1.06-1.06l-1.591 1.59a.75.75 0 101.06 1.061l1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.834 18.894a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.061 1.06l1.59 1.591zM12 18a.75.75 0 01.75.75V21a.75.75 0 01-1.5 0v-2.25A.75.75 0 0112 18zM7.758 17.303a.75.75 0 00-1.061-1.06l-1.591 1.59a.75.75 0 001.06 1.061l1.591-1.59zM6 12a.75.75 0 01-.75.75H3a.75.75 0 010-1.5h2.25A.75.75 0 016 12zM6.697 7.757a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 00-1.061 1.06l1.59 1.591z"/>
+              </svg>
+            </div>
+          </label>
+        </div>
         <Button
           variant="ghost"
           onClick={handleBackToDashboard}
           className="text-white/70 hover:text-white bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20"
+          data-testid="button-back"
         >
           <i className="fas fa-arrow-left mr-2"></i>
           Back to Dashboard

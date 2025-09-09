@@ -176,7 +176,7 @@ export default function ModernChatInterface({ conversationId, initialMessages = 
       gsap.to(`[data-testid="button-copy-message"]`, {
         scale: 1.2,
         duration: 0.2,
-        ease: "back.out(1.7)",
+        ease: "backOut",
         yoyo: true,
         repeat: 1
       });

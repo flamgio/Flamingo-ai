@@ -164,10 +164,10 @@ export default function Dashboard() {
   return (
     <div ref={containerRef} className="flex min-h-screen bg-black overflow-hidden relative">
       {/* Mobile Sidebar Overlay */}
-      {sidebarCollapsed && (
+      {!sidebarCollapsed && (
         <div 
           className="fixed inset-0 bg-black/50 z-40 lg:hidden" 
-          onClick={() => setSidebarCollapsed(false)}
+          onClick={() => setSidebarCollapsed(true)}
         />
       )}
       

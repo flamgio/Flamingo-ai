@@ -69,6 +69,23 @@ export default function Pricing() {
       buttonAction: () => setLocation('/dashboard')
     },
     {
+      name: "Flamingo Basic",
+      price: "$2",
+      period: "/month",
+      description: "Essential features for regular users",
+      badge: "Great Value",
+      features: [
+        "50 messages per day",
+        "Standard AI models",
+        "Email support",
+        "Basic integrations",
+        "File uploads (5MB)",
+        "Chat history (30 days)"
+      ],
+      buttonText: "Choose Basic",
+      buttonAction: () => setShowPaymentOptions(true)
+    },
+    {
       name: "Flamingo Premium",
       price: "$5",
       period: "/month",
@@ -83,7 +100,6 @@ export default function Pricing() {
         "Enhanced creativity tools",
         "Complex problem solving",
         "24/7 premium support",
-        "API access",
         "Custom integrations"
       ],
       buttonText: "Upgrade Now",
@@ -100,7 +116,7 @@ export default function Pricing() {
     // Header entrance
     tl.fromTo(headerRef.current,
       { opacity: 0, y: -50, scale: 0.9 },
-      { opacity: 1, y: 0, scale: 1, duration: 1, ease: "back.out(1.7)" }
+      { opacity: 1, y: 0, scale: 1, duration: 1, ease: "backOut" }
     )
     
     // Cards staggered entrance with 3D effect
@@ -118,7 +134,7 @@ export default function Pricing() {
         scale: 1,
         duration: 0.8,
         stagger: 0.2,
-        ease: "back.out(1.7)"
+        ease: "backOut"
       },
       "-=0.5"
     );

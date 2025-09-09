@@ -65,7 +65,7 @@ export default function WelcomePopup({ show, user, onClose }: WelcomePopupProps)
             opacity: 1,
             duration: 0.5,
             delay: 1.5 + index * 0.1,
-            ease: "back.out(1.7)"
+            ease: "backOut"
           });
           
           gsap.to(sparkle, {

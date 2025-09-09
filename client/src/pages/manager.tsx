@@ -116,7 +116,7 @@ export default function Manager() {
         rotationY: 0,
         duration: 0.8,
         stagger: 0.1,
-        ease: "back.out(1.7)"
+        ease: "backOut"
       },
       "-=0.4"
     )

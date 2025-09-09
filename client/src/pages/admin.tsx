@@ -116,7 +116,7 @@ export default function AdminPage() {
         scale: 1,
         duration: 0.8,
         stagger: 0.1,
-        ease: "back.out(1.7)"
+        ease: "backOut"
       },
       "-=0.4"
     )

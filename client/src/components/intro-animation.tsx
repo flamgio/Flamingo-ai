@@ -31,7 +31,7 @@ const IntroAnimation: React.FC<IntroAnimationProps> = ({ onComplete }) => {
     // Enhanced entrance animations with GSAP
     tl.fromTo(".flamingo-main-title", 
       { opacity: 0, y: 100, scale: 0.5 },
-      { opacity: 1, y: 0, scale: 1, duration: 1.5, ease: "back.out(1.7)" }
+      { opacity: 1, y: 0, scale: 1, duration: 1.5, ease: "backOut" }
     )
     .fromTo(".intro-text-subtitle", 
       { opacity: 0, y: 50 },
@@ -45,7 +45,7 @@ const IntroAnimation: React.FC<IntroAnimationProps> = ({ onComplete }) => {
         scale: 1, 
         duration: 0.5,
         stagger: 0.1,
-        ease: "back.out(1.7)" 
+        ease: "backOut" 
       },
       "-=1"
     );

@@ -2,15 +2,19 @@ import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { useAuth } from "@/hooks/use-auth";
 import { useTheme } from "@/components/ui/theme-provider";
-import SuccessPopup from "@/components/success-popup";
+import { gsap } from "gsap";
+import { useGSAP } from "@gsap/react";
+import WelcomePopup from "@/components/welcome-popup";
 import { motion } from "framer-motion";
 import { ParallaxPageWrapper, ParallaxAnimation } from "@/components/parallax-animation";
+import { animations, gsapUtils } from "@/lib/animations";
 import "../styles/auth.css";
 import "../styles/new-theme-toggle.css";
 
 export default function Login() {
   const [, setLocation] = useLocation();
-  const [showSuccess, setShowSuccess] = useState(false);
+  const [showWelcome, setShowWelcome] = useState(false);
+  const [welcomeUser, setWelcomeUser] = useState<any>(null);
   const [formData, setFormData] = useState({
     email: "",
     password: ""
@@ -69,26 +73,37 @@ export default function Login() {
         password: formData.password
       });
       if (result) {
-        setShowSuccess(true);
-        // Shorter delay for faster redirect
-        setTimeout(() => {
-          setLocation('/dashboard');
-        }, 800);
+        setWelcomeUser(result.user);
+        setShowWelcome(true);
       }
     } catch (error) {
       console.error('Login error:', error);
     }
   };
 
+  const handleWelcomeClose = () => {
+    setShowWelcome(false);
+    // Navigate based on user role
+    if (welcomeUser?.role === 'admin') {
+      setLocation('/admin');
+    } else if (welcomeUser?.role === 'manager') {
+      setLocation('/manager');
+    } else {
+      setLocation('/dashboard');
+    }
+  };
+
   const handleThemeToggle = () => {
     const isDark = document.documentElement.classList.contains('dark');
-    if (isDark) {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('flamgio-theme', 'light');
-    } else {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('flamgio-theme', 'dark');
-    }
+    gsapUtils.themeTransition(!isDark).then(() => {
+      if (isDark) {
+        document.documentElement.classList.remove('dark');
+        localStorage.setItem('flamgio-theme', 'light');
+      } else {
+        document.documentElement.classList.add('dark');
+        localStorage.setItem('flamgio-theme', 'dark');
+      }
+    });
   };
 
   return (
@@ -100,14 +115,11 @@ export default function Login() {
         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gray-500/10 rounded-full blur-3xl animate-pulse"></div>
       </div>
 
-      {/* Success Popup */}
-      <SuccessPopup 
-        show={showSuccess} 
-        message="Welcome back! Successfully logged in."
-        onComplete={() => {
-          setShowSuccess(false);
-          setLocation('/dashboard');
-        }} 
+      {/* Welcome Popup with Animation */}
+      <WelcomePopup 
+        show={showWelcome}
+        user={welcomeUser}
+        onClose={handleWelcomeClose}
       />
 
       {/* Header */}

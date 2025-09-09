@@ -11,7 +11,7 @@ export const apiRequest = axios.create({
 
 // Add request interceptor to include JWT token
 apiRequest.interceptors.request.use((config) => {
-  const token = localStorage.getItem('flamgio-token');
+  const token = localStorage.getItem('flamingo-token');
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
@@ -24,7 +24,7 @@ apiRequest.interceptors.response.use(
   (error) => {
     if (error.response?.status === 401) {
       // Clear invalid token
-      localStorage.removeItem('flamgio-token');
+      localStorage.removeItem('flamingo-token');
       delete apiRequest.defaults.headers.common['Authorization'];
       // Redirect to login if not already there
       if (!window.location.pathname.includes('/login') && !window.location.pathname.includes('/signup')) {
@@ -48,7 +48,7 @@ export const getQueryFn: <T>(options: {
 }) => QueryFunction<T> =
   ({ on401: unauthorizedBehavior }) =>
   async ({ queryKey }) => {
-    const token = localStorage.getItem('flamgio-token');
+    const token = localStorage.getItem('flamingo-token');
     const headers: HeadersInit = {
       'Content-Type': 'application/json',
     };

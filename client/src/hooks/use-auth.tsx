@@ -40,7 +40,7 @@ export function useAuth() {
       return response.data;
     },
     onSuccess: async (data) => {
-      localStorage.setItem('flamgio-token', data.token);
+      localStorage.setItem('flamingo-token', data.token);
       // Force update the authorization header
       apiRequest.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
       // Set user data immediately
@@ -70,7 +70,7 @@ export function useAuth() {
       return response.data;
     },
     onSuccess: async (data) => {
-      localStorage.setItem('flamgio-token', data.token);
+      localStorage.setItem('flamingo-token', data.token);
       // Force update the authorization header
       apiRequest.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
       // Set user data immediately
@@ -92,7 +92,7 @@ export function useAuth() {
       await apiRequest.post('/api/auth/logout');
     },
     onSuccess: () => {
-      localStorage.removeItem('flamgio-token');
+      localStorage.removeItem('flamingo-token');
       queryClient.clear();
       window.location.href = '/';
     },

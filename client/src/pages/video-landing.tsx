@@ -20,7 +20,7 @@ export default function VideoLanding() {
   // GSAP refs for premium animations
   const containerRef = useRef<HTMLDivElement>(null);
   const heroRef = useRef<HTMLDivElement>(null);
-  const navRef = useRef<HTMLNavElement>(null);
+  const navRef = useRef<HTMLElement>(null);
   const featuresRef = useRef<HTMLElement>(null);
   const chatPreviewRef = useRef<HTMLDivElement>(null);
 
@@ -250,24 +250,24 @@ export default function VideoLanding() {
       {/* Main Content */}
       <div className="main-content">
         <div className="hero-section">
-          <h1 className="hero-title">
-            <span className="title-line-1">Experience the</span>
-            <span className="title-line-2">Future of AI</span>
-            <span className="title-line-3">Chat Platform</span>
+          <h1 className="hero-title typography-display-lg animate-premium-fade-in text-balance">
+            <span className="title-line-1 flamingo-gradient-text">Experience the</span>
+            <span className="title-line-2 flamingo-gradient-text">Future of AI</span>
+            <span className="title-line-3 flamingo-gradient-text">Chat Platform</span>
           </h1>
 
-          <p className="hero-description">
+          <p className="hero-description typography-body-lg animate-premium-slide-up text-balance max-w-2xl mx-auto">
             Discover seamless conversations with our intelligent AI platform. 
             Built with privacy-first design and cutting-edge technology for 
             the ultimate chat experience.
           </p>
 
-          <div className="hero-actions">
+          <div className="hero-actions flex gap-6 justify-center items-center animate-premium-scale-in">
             <Button
               onClick={handleGetStarted}
               disabled={isLoading}
               size="lg"
-              className="primary-cta"
+              className="primary-cta interactive-scale interactive-glow flamingo-gradient shadow-premium-lg px-8 py-4 typography-body font-semibold"
             >
               <span>🚀</span>
               {isLoading ? 'Loading...' : 'Get Started'}
@@ -276,7 +276,7 @@ export default function VideoLanding() {
             <Button
               variant="outline"
               size="lg"
-              className="secondary-cta"
+              className="secondary-cta interactive-lift border-premium backdrop-blur-premium px-8 py-4 typography-body font-semibold"
             >
               <span>▶️</span>
               Watch Demo
@@ -284,10 +284,16 @@ export default function VideoLanding() {
           </div>
 
           {/* Feature Pills */}
-          <div className="feature-pills">
-            <div className="pill">🛡️ Secure & Private</div>
-            <div className="pill">⚡ Lightning Fast</div>
-            <div className="pill">🧠 AI-Powered</div>
+          <div className="feature-pills flex gap-4 justify-center flex-wrap animate-premium-fade-in">
+            <div className="pill card-premium interactive-scale px-6 py-3 typography-body-sm font-medium">
+              🛡️ Secure & Private
+            </div>
+            <div className="pill card-premium interactive-scale px-6 py-3 typography-body-sm font-medium">
+              ⚡ Lightning Fast
+            </div>
+            <div className="pill card-premium interactive-scale px-6 py-3 typography-body-sm font-medium">
+              🧠 AI-Powered
+            </div>
           </div>
         </div>
 

@@ -187,34 +187,34 @@ export default function Dashboard() {
         </div>
 
         {/* Header with Screen Time */}
-        <div ref={headerRef} className="relative z-10 p-3 sm:p-6 border-b border-purple-500/20">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div ref={headerRef} className="relative z-10 p-3 sm:p-6 lg:p-8 border-b border-premium animate-premium-fade-in">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 lg:gap-6">
             <div className="flex-1">
               <div className="flex items-center gap-3 lg:hidden">
                 <button
                   onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-                  className="text-white hover:text-purple-300 transition-colors p-2 rounded-lg hover:bg-purple-600/20 touch-manipulation"
+                  className="text-white hover:text-purple-300 transition-colors p-2 rounded-lg hover:bg-purple-600/20 touch-manipulation interactive-scale"
                 >
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
                   </svg>
                 </button>
               </div>
-              <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-white via-purple-100 to-purple-200 bg-clip-text text-transparent mt-2 lg:mt-0">
+              <h1 className="typography-h1 lg:typography-display flamingo-gradient-text mt-2 lg:mt-0">
                 Welcome back, {user?.username || 'User'}!
               </h1>
-              <p className="text-purple-100/70 mt-1 text-sm sm:text-base">Explore your intelligent workspace</p>
+              <p className="typography-body text-purple-100/70 mt-2">Explore your intelligent workspace</p>
             </div>
-            <div className="bg-gradient-to-r from-purple-600/20 to-pink-600/20 backdrop-blur-md border border-purple-400/30 rounded-lg px-4 sm:px-6 py-3 w-full sm:w-auto">
-              <div className="text-center space-y-2">
+            <div className="card-premium-gradient interactive-lift px-4 sm:px-6 py-4 w-full sm:w-auto lg:min-w-[280px]">
+              <div className="text-center space-y-3">
                 <div>
-                  <p className="text-xs text-purple-200/70 uppercase tracking-wide">Current Time</p>
-                  <p className="text-sm font-bold text-white" data-testid="current-time">{clockTime}</p>
-                  <p className="text-xs text-purple-200/50">{formattedDate}</p>
+                  <p className="typography-caption text-purple-200/70">Current Time</p>
+                  <p className="typography-body font-bold text-white" data-testid="current-time">{clockTime}</p>
+                  <p className="typography-body-sm text-purple-200/50">{formattedDate}</p>
                 </div>
-                <div className="border-t border-purple-400/20 pt-2">
-                  <p className="text-xs text-purple-200/70 uppercase tracking-wide">Session Time</p>
-                  <p className="text-lg font-bold text-white" data-testid="session-time">{formattedTime}</p>
+                <div className="border-t border-purple-400/20 pt-3">
+                  <p className="typography-caption text-purple-200/70">Session Time</p>
+                  <p className="typography-h3 font-bold text-white" data-testid="session-time">{formattedTime}</p>
                 </div>
               </div>
             </div>
@@ -222,54 +222,54 @@ export default function Dashboard() {
         </div>
 
         {/* Dashboard Content */}
-        <div className="relative z-10 p-3 sm:p-6 overflow-y-auto" style={{ height: 'calc(100vh - 120px)' }}>
+        <div className="relative z-10 p-3 sm:p-6 lg:p-8 overflow-y-auto custom-scrollbar" style={{ height: 'calc(100vh - 120px)' }}>
           {/* Stats Cards Row */}
-          <div ref={statsCardsRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6 mb-6 sm:mb-8">
+          <div ref={statsCardsRef} className="grid-premium gap-4 sm:gap-6 lg:gap-8 mb-8 lg:mb-12">
             {/* Quick Stats */}
-            <div className="bg-gradient-to-br from-purple-600/20 to-pink-600/20 backdrop-blur-md border border-purple-400/30 rounded-xl p-4 sm:p-6 hover:border-purple-400/50 transition-all duration-300 cursor-pointer stats-card">
+            <div className="card-premium-gradient interactive-lift shadow-premium p-5 sm:p-6 lg:p-8 stats-card">
               <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-purple-200/70 text-sm font-medium">Total Messages</p>
-                  <p className="text-3xl font-bold text-white mt-1 stats-number">247</p>
-                  <div className="flex items-center mt-2">
-                    <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse mr-2"></div>
-                    <span className="text-xs text-green-400">+12 today</span>
+                <div className="space-y-2">
+                  <p className="typography-caption text-purple-200/70">Total Messages</p>
+                  <p className="typography-h2 lg:typography-h1 font-bold text-white stats-number">247</p>
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-green-500 rounded-full animate-premium-pulse"></div>
+                    <span className="typography-body-sm text-green-400">+12 today</span>
                   </div>
                 </div>
-                <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center">
-                  <i className="fas fa-comment text-white text-xl"></i>
+                <div className="w-14 h-14 lg:w-16 lg:h-16 flamingo-gradient rounded-xl flex items-center justify-center shadow-glow">
+                  <i className="fas fa-comment text-white text-xl lg:text-2xl"></i>
                 </div>
               </div>
             </div>
 
-            <div className="bg-gradient-to-br from-blue-600/20 to-cyan-600/20 backdrop-blur-md border border-blue-400/30 rounded-xl p-4 sm:p-6 hover:border-blue-400/50 transition-all duration-300 cursor-pointer stats-card">
+            <div className="card-premium-gradient interactive-lift shadow-premium p-5 sm:p-6 lg:p-8 stats-card">
               <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-blue-200/70 text-sm font-medium">Conversations</p>
-                  <p className="text-3xl font-bold text-white mt-1 stats-number">18</p>
-                  <div className="flex items-center mt-2">
-                    <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse mr-2"></div>
-                    <span className="text-xs text-blue-400">3 active</span>
+                <div className="space-y-2">
+                  <p className="typography-caption text-blue-200/70">Conversations</p>
+                  <p className="typography-h2 lg:typography-h1 font-bold text-white stats-number">18</p>
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-blue-500 rounded-full animate-premium-pulse"></div>
+                    <span className="typography-body-sm text-blue-400">3 active</span>
                   </div>
                 </div>
-                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center">
-                  <i className="fas fa-comments text-white text-xl"></i>
+                <div className="w-14 h-14 lg:w-16 lg:h-16 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center shadow-glow">
+                  <i className="fas fa-comments text-white text-xl lg:text-2xl"></i>
                 </div>
               </div>
             </div>
 
-            <div className="bg-gradient-to-br from-orange-600/20 to-red-600/20 backdrop-blur-md border border-orange-400/30 rounded-xl p-4 sm:p-6 hover:border-orange-400/50 transition-all duration-300 cursor-pointer stats-card">
+            <div className="card-premium-gradient interactive-lift shadow-premium p-5 sm:p-6 lg:p-8 stats-card">
               <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-orange-200/70 text-sm font-medium">Active Time</p>
-                  <p className="text-3xl font-bold text-white mt-1 stats-number">4h 32m</p>
-                  <div className="flex items-center mt-2">
-                    <div className="w-2 h-2 bg-orange-500 rounded-full animate-pulse mr-2"></div>
-                    <span className="text-xs text-orange-400">This session</span>
+                <div className="space-y-2">
+                  <p className="typography-caption text-orange-200/70">Active Time</p>
+                  <p className="typography-h2 lg:typography-h1 font-bold text-white stats-number">4h 32m</p>
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-orange-500 rounded-full animate-premium-pulse"></div>
+                    <span className="typography-body-sm text-orange-400">This session</span>
                   </div>
                 </div>
-                <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-500 rounded-xl flex items-center justify-center">
-                  <i className="fas fa-clock text-white text-xl"></i>
+                <div className="w-14 h-14 lg:w-16 lg:h-16 bg-gradient-to-br from-orange-500 to-red-500 rounded-xl flex items-center justify-center shadow-glow">
+                  <i className="fas fa-clock text-white text-xl lg:text-2xl"></i>
                 </div>
               </div>
             </div>

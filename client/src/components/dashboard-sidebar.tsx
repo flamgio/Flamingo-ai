@@ -50,8 +50,10 @@ export function DashboardSidebar({ isCollapsed, onToggle, className }: Dashboard
 
   return (
     <div className={cn(
-      "h-screen bg-gradient-to-b from-black via-purple-900/20 to-black border-r border-purple-500/20 backdrop-blur-xl transition-all duration-300 relative",
-      isCollapsed ? "w-16" : "w-64",
+      "h-screen bg-gradient-to-b from-black via-purple-900/20 to-black border-r border-premium backdrop-blur-premium transition-all duration-300 relative lg:static fixed inset-y-0 left-0 z-50",
+      isCollapsed ? "w-16 lg:w-16" : "w-64 lg:w-72",
+      "lg:translate-x-0",
+      isCollapsed ? "-translate-x-full lg:translate-x-0" : "translate-x-0",
       className
     )}>
       {/* Background Effects */}

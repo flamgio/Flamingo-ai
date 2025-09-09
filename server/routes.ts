@@ -18,10 +18,20 @@ import enhancementRoutes from "./routes-enhancement";
 import crypto from "crypto";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { authFallback } from "./auth-fallback";
 
-// Initialize Drizzle with Neon
-const sql = neon(process.env.DATABASE_URL!);
-const db = drizzle(sql);
+// Initialize Drizzle with Neon (with fallback)
+let db: any = null;
+let useFallback = false;
+
+try {
+  const sql = neon(process.env.DATABASE_URL!);
+  db = drizzle(sql);
+  console.log('✅ Database initialized with Drizzle/Neon');
+} catch (error) {
+  console.log('⚠️  Database connection failed, using in-memory fallback');
+  useFallback = true;
+}
 
 // Role-based authentication middleware
 function authenticateRole(requiredRole: 'admin' | 'manager' | 'user') {
@@ -174,28 +184,47 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ message: "Email and password are required" });
       }
 
-      // Find user by email
-      const user = await db
-        .select()
-        .from(users)
-        .where(eq(users.email, email))
-        .limit(1);
+      let user = null;
+      let isPasswordValid = false;
 
-      if (user.length === 0) {
-        return res.status(401).json({ message: "Invalid email or password" });
+      if (useFallback) {
+        // Use fallback auth system
+        user = await authFallback.findUserByEmail(email);
+        if (user) {
+          isPasswordValid = await authFallback.validatePassword(password, user.password);
+        }
+      } else {
+        // Use database
+        try {
+          const dbUsers = await db
+            .select()
+            .from(users)
+            .where(eq(users.email, email))
+            .limit(1);
+
+          if (dbUsers.length > 0) {
+            user = dbUsers[0];
+            isPasswordValid = await comparePassword(password, user.password);
+          }
+        } catch (dbError) {
+          console.log('Database error, falling back to memory auth:', dbError);
+          useFallback = true;
+          user = await authFallback.findUserByEmail(email);
+          if (user) {
+            isPasswordValid = await authFallback.validatePassword(password, user.password);
+          }
+        }
       }
 
-      // Check password
-      const isPasswordValid = await comparePassword(password, user[0].password);
-      if (!isPasswordValid) {
+      if (!user || !isPasswordValid) {
         return res.status(401).json({ message: "Invalid email or password" });
       }
 
       // Generate JWT token
-      const token = generateToken(user[0].id);
+      const token = useFallback ? authFallback.generateToken(user.id) : generateToken(user.id);
 
       // Return user without password
-      const { password: _, ...userWithoutPassword } = user[0];
+      const { password: _, ...userWithoutPassword } = user;
 
       res.json({
         user: userWithoutPassword,
@@ -205,11 +234,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
     } catch (error) {
       console.error("Login error:", error);
-      if (error instanceof Error) {
-        if (error.message.includes('connection') || error.message.includes('ECONNRESET')) {
-          return res.status(503).json({ message: "Database connection error. Please try again." });
-        }
-      }
       res.status(500).json({ message: "Internal server error. Please try again later." });
     }
   });
@@ -239,21 +263,51 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       const token = authHeader.substring(7);
-      const decoded = jwt.verify(token, process.env.JWT_SECRET || 'flamingo-ai-development-secret-key-2024-please-change-in-production') as { userId: string };
+      let decoded: { userId: string } | null = null;
 
-      const user = await db.select().from(users).where(eq(users.id, decoded.userId)).limit(1);
-      if (user.length === 0) {
+      if (useFallback) {
+        decoded = authFallback.verifyToken(token);
+      } else {
+        try {
+          decoded = jwt.verify(token, process.env.JWT_SECRET || 'flamingo-ai-development-secret-key-2024-please-change-in-production') as { userId: string };
+        } catch {
+          decoded = authFallback.verifyToken(token);
+          useFallback = true;
+        }
+      }
+
+      if (!decoded) {
+        return res.status(401).json({ message: "Invalid token" });
+      }
+
+      let user = null;
+      if (useFallback) {
+        user = await authFallback.findUserById(decoded.userId);
+      } else {
+        try {
+          const dbUsers = await db.select().from(users).where(eq(users.id, decoded.userId)).limit(1);
+          if (dbUsers.length > 0) {
+            user = dbUsers[0];
+          }
+        } catch (dbError) {
+          console.log('Database error, falling back to memory auth');
+          useFallback = true;
+          user = await authFallback.findUserById(decoded.userId);
+        }
+      }
+
+      if (!user) {
         return res.status(401).json({ message: "User not found" });
       }
 
       res.json({
-        id: user[0].id,
-        email: user[0].email,
-        firstName: user[0].firstName,
-        lastName: user[0].lastName,
-        role: user[0].role || 'user',
-        screenTime: user[0].screenTime || 0,
-        lastActive: user[0].lastActive
+        id: user.id,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        role: user.role || 'user',
+        screenTime: user.screenTime || 0,
+        lastActive: user.lastActive
       });
     } catch (error) {
       console.error('Auth verification error:', error);

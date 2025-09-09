@@ -1,18 +1,56 @@
-
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useLocation } from "wouter";
 import { useAuth } from "@/hooks/use-auth";
 import { useTheme } from "@/components/ui/theme-provider";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Moon, Sun } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { gsap } from "gsap";
+import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { apiRequest } from "@/lib/queryClient";
+import { Moon, Sun, Database, Users, Settings, Shield, BarChart, Globe, Menu, X } from "lucide-react";
 import "../styles/new-theme-toggle.css";
+
+// Register GSAP plugins
+gsap.registerPlugin(ScrollTrigger);
+
+// Types for admin data
+interface AdminStats {
+  totalUsers: number;
+  activeSessions: number;
+  totalMessages: number;
+  systemHealth: number;
+  premiumUsers: number;
+  dailyActiveUsers: number;
+}
+
+interface EnvVariable {
+  key: string;
+  value: string;
+  isSecret: boolean;
+}
 
 export default function AdminPage() {
   const [, setLocation] = useLocation();
   const { user } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const [isAuthorized, setIsAuthorized] = useState(false);
+  const [adminStats, setAdminStats] = useState<AdminStats | null>(null);
+  const [envVars, setEnvVars] = useState<EnvVariable[]>([]);
+  const [users, setUsers] = useState([]);
+  const [conversations, setConversations] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState('overview');
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  
+  // GSAP refs
+  const containerRef = useRef<HTMLDivElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
+  const statsRef = useRef<HTMLDivElement>(null);
+  const panelsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!user) {
@@ -20,18 +58,115 @@ export default function AdminPage() {
       return;
     }
 
-    // Check if user is admin (updated to use the correct admin email)
     if (user.role !== 'admin') {
       setLocation('/dashboard');
       return;
     }
 
     setIsAuthorized(true);
+    fetchAdminData();
   }, [user, setLocation]);
+
+  const fetchAdminData = async () => {
+    try {
+      setLoading(true);
+      
+      // Mock data for now - replace with real API calls
+      setAdminStats({
+        totalUsers: 1247,
+        activeSessions: 389,
+        totalMessages: 15200,
+        systemHealth: 98.7,
+        premiumUsers: 156,
+        dailyActiveUsers: 234
+      });
+      
+      setEnvVars([
+        { key: 'NODE_ENV', value: 'development', isSecret: false },
+        { key: 'DATABASE_URL', value: '***hidden***', isSecret: true },
+        { key: 'OPENROUTER_API_KEY', value: '***hidden***', isSecret: true },
+        { key: 'PORT', value: '5000', isSecret: false }
+      ]);
+
+    } catch (error) {
+      console.error('Failed to fetch admin data:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Premium GSAP animations
+  useGSAP(() => {
+    if (!isAuthorized || !containerRef.current || loading) return;
+
+    const tl = gsap.timeline({ delay: 0.1 });
+
+    // Header slide down
+    tl.fromTo(headerRef.current,
+      { y: -100, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.8, ease: "power3.out" }
+    )
+    
+    // Stats cards staggered entrance
+    .fromTo(statsRef.current?.children || [],
+      { opacity: 0, y: 60, scale: 0.8 },
+      { 
+        opacity: 1, 
+        y: 0, 
+        scale: 1,
+        duration: 0.8,
+        stagger: 0.1,
+        ease: "back.out(1.7)"
+      },
+      "-=0.4"
+    )
+    
+    // Panels slide in
+    .fromTo(panelsRef.current?.children || [],
+      { opacity: 0, x: -80, rotationY: -10 },
+      { 
+        opacity: 1, 
+        x: 0, 
+        rotationY: 0,
+        duration: 1,
+        stagger: 0.15,
+        ease: "power2.out"
+      },
+      "-=0.6"
+    );
+
+    // Add hover animations to stats cards
+    const statsCards = statsRef.current?.children;
+    if (statsCards) {
+      Array.from(statsCards).forEach((card) => {
+        const element = card as HTMLElement;
+        
+        element.addEventListener('mouseenter', () => {
+          gsap.to(element, {
+            y: -8,
+            scale: 1.05,
+            boxShadow: "0 25px 50px rgba(0, 0, 0, 0.2)",
+            duration: 0.3,
+            ease: "power2.out"
+          });
+        });
+        
+        element.addEventListener('mouseleave', () => {
+          gsap.to(element, {
+            y: 0,
+            scale: 1,
+            boxShadow: "0 0 0 rgba(0, 0, 0, 0)",
+            duration: 0.3,
+            ease: "power2.out"
+          });
+        });
+      });
+    }
+  }, [isAuthorized, loading]);
 
   if (!isAuthorized) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-red-50 to-white dark:from-red-950 dark:to-gray-900 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-red-50 to-white dark:from-red-950 dark:to-gray-900 flex items-center justify-center p-4">
         <Card className="w-full max-w-md">
           <CardHeader>
             <CardTitle className="text-red-600">Access Denied</CardTitle>
@@ -47,27 +182,50 @@ export default function AdminPage() {
     );
   }
 
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-indigo-900 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-white text-lg">Loading Admin Panel...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-blue-950 dark:to-indigo-950">
-      <nav className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-700 shadow-lg">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div ref={containerRef} className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-indigo-900 text-white">
+      <nav ref={headerRef} className="bg-black/40 backdrop-blur-xl border-b border-purple-500/20 shadow-2xl sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-3 flex-1">
               <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center border border-gray-600 shadow-lg">
+                <div className="w-8 h-8 bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg flex items-center justify-center shadow-lg">
                   <span className="text-white font-bold text-sm">FA</span>
                 </div>
                 <button
                   onClick={() => setLocation('/dashboard')}
-                  className="text-xl font-bold text-blue-700 dark:text-blue-300 hover:text-blue-800 dark:hover:text-blue-200 transition-colors"
+                  className="text-lg sm:text-xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent hover:from-purple-300 hover:to-pink-300 transition-all duration-300"
                 >
-                  Flamingo - Admin Panel
+                  <span className="hidden sm:inline">Flamingo - Admin Panel</span>
+                  <span className="sm:hidden">Admin</span>
                 </button>
               </div>
             </div>
 
-            <div className="flex items-center space-x-3">
-              <div className="toggle-cont-small">
+            <div className="flex items-center space-x-2 sm:space-x-3">
+              {/* Mobile Menu Button */}
+              <Button
+                variant="ghost"
+                size="icon"
+                className="sm:hidden text-white hover:bg-purple-600/20"
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              >
+                {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              </Button>
+              
+              {/* Desktop Theme Toggle */}
+              <div className="hidden sm:block toggle-cont-small">
                 <input 
                   type="checkbox" 
                   className="toggle-input" 
@@ -87,240 +245,230 @@ export default function AdminPage() {
                   </div>
                 </label>
               </div>
+              
+              {/* Desktop Back Button */}
               <Button
                 variant="ghost"
                 onClick={() => setLocation('/dashboard')}
-                className="text-blue-600 dark:text-blue-300 hover:bg-blue-50 dark:hover:bg-blue-800/30"
+                className="hidden sm:flex text-purple-200 hover:bg-purple-600/20 hover:text-white"
                 data-testid="button-back"
               >
-                <i className="fas fa-arrow-left mr-2"></i>
-                Back to Dashboard
+                <span className="mr-2">←</span>
+                <span className="hidden lg:inline">Back to Dashboard</span>
+                <span className="lg:hidden">Back</span>
               </Button>
             </div>
           </div>
+
+          {/* Mobile Menu */}
+          {mobileMenuOpen && (
+            <div className="sm:hidden border-t border-purple-500/20 py-3">
+              <div className="flex flex-col space-y-2">
+                <Button
+                  variant="ghost"
+                  onClick={toggleTheme}
+                  className="text-purple-200 hover:bg-purple-600/20 justify-start"
+                >
+                  {theme === 'dark' ? <Sun className="w-4 h-4 mr-2" /> : <Moon className="w-4 h-4 mr-2" />}
+                  Toggle Theme
+                </Button>
+                <Button
+                  variant="ghost"
+                  onClick={() => setLocation('/dashboard')}
+                  className="text-purple-200 hover:bg-purple-600/20 justify-start"
+                >
+                  <span className="mr-2">←</span>
+                  Back to Dashboard
+                </Button>
+              </div>
+            </div>
+          )}
         </div>
       </nav>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-12">
         {/* Admin Header */}
-        <div className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-lg rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 p-8 mb-8">
-          <div className="flex items-center justify-between">
+        <div className="bg-black/60 backdrop-blur-xl rounded-2xl shadow-2xl border border-purple-500/30 p-4 sm:p-8 mb-6 sm:mb-8">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
             <div>
-              <h1 className="text-4xl font-bold bg-gradient-to-r from-slate-800 via-blue-600 to-indigo-600 dark:from-slate-200 dark:via-blue-400 dark:to-indigo-400 bg-clip-text text-transparent mb-3">
+              <h1 className="text-3xl sm:text-5xl font-bold bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400 bg-clip-text text-transparent mb-2 sm:mb-3">
                 Admin Control Center
               </h1>
-              <p className="text-slate-600 dark:text-slate-300 text-lg">
+              <p className="text-gray-300 text-base sm:text-lg">
                 Comprehensive platform management and analytics
               </p>
             </div>
-            <div className="hidden md:flex items-center space-x-3 bg-gradient-to-r from-blue-500 to-indigo-600 p-4 rounded-xl text-white shadow-lg">
-              <i className="fas fa-shield-alt text-2xl"></i>
+            <div className="flex items-center justify-center sm:justify-start space-x-3 bg-gradient-to-r from-purple-600 to-pink-600 p-3 sm:p-4 rounded-xl text-white shadow-lg">
+              <Shield className="w-6 h-6 sm:w-8 sm:h-8" />
               <div>
-                <div className="text-sm opacity-80">Admin Level</div>
-                <div className="font-bold">Full Access</div>
+                <div className="text-xs sm:text-sm opacity-80">Admin Level</div>
+                <div className="font-bold text-sm sm:text-base">Full Access</div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Quick Stats Overview */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-6 text-white shadow-lg">
+        {/* Quick Stats Overview - Responsive Grid */}
+        <div ref={statsRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-6 sm:mb-8">
+          <div className="bg-gradient-to-br from-blue-600/80 to-cyan-600/80 backdrop-blur-xl rounded-2xl p-4 sm:p-6 border border-blue-400/20 shadow-2xl hover:shadow-blue-500/25 transition-all duration-300">
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-blue-100 text-sm">Total Users</div>
-                <div className="text-3xl font-bold">1,247</div>
-                <div className="text-blue-200 text-sm">+12% this month</div>
+                <div className="text-blue-200 text-xs sm:text-sm font-medium">Total Users</div>
+                <div className="text-2xl sm:text-4xl font-bold text-white">{adminStats?.totalUsers || 0}</div>
+                <div className="text-blue-300 text-xs sm:text-sm flex items-center mt-1">
+                  <div className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></div>
+                  Active Platform
+                </div>
               </div>
-              <i className="fas fa-users text-3xl text-blue-200"></i>
+              <Users className="w-8 h-8 sm:w-12 sm:h-12 text-blue-300" />
             </div>
           </div>
           
-          <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-xl p-6 text-white shadow-lg">
+          <div className="bg-gradient-to-br from-green-600/80 to-emerald-600/80 backdrop-blur-xl rounded-2xl p-4 sm:p-6 border border-green-400/20 shadow-2xl hover:shadow-green-500/25 transition-all duration-300">
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-green-100 text-sm">Active Sessions</div>
-                <div className="text-3xl font-bold">389</div>
-                <div className="text-green-200 text-sm">Live now</div>
+                <div className="text-green-200 text-xs sm:text-sm font-medium">Premium Users</div>
+                <div className="text-2xl sm:text-4xl font-bold text-white">{adminStats?.premiumUsers || 0}</div>
+                <div className="text-green-300 text-xs sm:text-sm flex items-center mt-1">
+                  <div className="w-2 h-2 bg-yellow-400 rounded-full mr-2 animate-pulse"></div>
+                  Subscribed
+                </div>
               </div>
-              <i className="fas fa-chart-line text-3xl text-green-200"></i>
+              <BarChart className="w-8 h-8 sm:w-12 sm:h-12 text-green-300" />
             </div>
           </div>
 
-          <div className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl p-6 text-white shadow-lg">
+          <div className="bg-gradient-to-br from-purple-600/80 to-pink-600/80 backdrop-blur-xl rounded-2xl p-4 sm:p-6 border border-purple-400/20 shadow-2xl hover:shadow-purple-500/25 transition-all duration-300">
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-purple-100 text-sm">Messages Today</div>
-                <div className="text-3xl font-bold">15.2K</div>
-                <div className="text-purple-200 text-sm">+8% vs yesterday</div>
+                <div className="text-purple-200 text-xs sm:text-sm font-medium">Total Messages</div>
+                <div className="text-2xl sm:text-4xl font-bold text-white">{adminStats?.totalMessages || 0}</div>
+                <div className="text-purple-300 text-xs sm:text-sm flex items-center mt-1">
+                  <div className="w-2 h-2 bg-purple-400 rounded-full mr-2 animate-pulse"></div>
+                  All Conversations
+                </div>
               </div>
-              <i className="fas fa-comments text-3xl text-purple-200"></i>
+              <Globe className="w-8 h-8 sm:w-12 sm:h-12 text-purple-300" />
             </div>
           </div>
 
-          <div className="bg-gradient-to-br from-orange-500 to-red-500 rounded-xl p-6 text-white shadow-lg">
+          <div className="bg-gradient-to-br from-orange-600/80 to-red-600/80 backdrop-blur-xl rounded-2xl p-4 sm:p-6 border border-orange-400/20 shadow-2xl hover:shadow-orange-500/25 transition-all duration-300">
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-orange-100 text-sm">System Health</div>
-                <div className="text-3xl font-bold">98.7%</div>
-                <div className="text-orange-200 text-sm">Excellent</div>
+                <div className="text-orange-200 text-xs sm:text-sm font-medium">System Health</div>
+                <div className="text-2xl sm:text-4xl font-bold text-white">{adminStats?.systemHealth || 98.7}%</div>
+                <div className="text-orange-300 text-xs sm:text-sm flex items-center mt-1">
+                  <div className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></div>
+                  Excellent
+                </div>
               </div>
-              <i className="fas fa-heartbeat text-3xl text-orange-200"></i>
+              <Database className="w-8 h-8 sm:w-12 sm:h-12 text-orange-300" />
             </div>
           </div>
         </div>
 
-        {/* Main Admin Panels */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-          {/* User Management Panel */}
-          <Card className="shadow-xl border-slate-200 dark:border-slate-700">
-            <CardHeader className="pb-4">
-              <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center">
-                  <i className="fas fa-users-cog text-blue-600 dark:text-blue-400"></i>
-                </div>
-                <div>
-                  <CardTitle className="text-slate-800 dark:text-slate-200 text-xl">User Management</CardTitle>
-                  <CardDescription>Manage user accounts, roles, and permissions</CardDescription>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <Button className="bg-blue-600 hover:bg-blue-700 text-white">
-                  <i className="fas fa-user-plus mr-2"></i>
-                  Add User
-                </Button>
-                <Button variant="outline" className="border-slate-300 dark:border-slate-600">
-                  <i className="fas fa-list mr-2"></i>
-                  View All
-                </Button>
-              </div>
-              <div className="bg-slate-50 dark:bg-slate-800 rounded-lg p-4">
-                <div className="text-sm text-slate-600 dark:text-slate-400">Recent Activity</div>
-                <div className="space-y-2 mt-2">
-                  <div className="flex justify-between text-sm">
-                    <span>New registrations</span>
-                    <span className="font-semibold">23 today</span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span>Premium upgrades</span>
-                    <span className="font-semibold">5 today</span>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* System Configuration Panel */}
-          <Card className="shadow-xl border-slate-200 dark:border-slate-700">
-            <CardHeader className="pb-4">
-              <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center">
-                  <i className="fas fa-cogs text-green-600 dark:text-green-400"></i>
-                </div>
-                <div>
-                  <CardTitle className="text-slate-800 dark:text-slate-200 text-xl">System Configuration</CardTitle>
-                  <CardDescription>Configure platform settings and features</CardDescription>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <Button className="bg-green-600 hover:bg-green-700 text-white">
-                  <i className="fas fa-database mr-2"></i>
-                  Database
-                </Button>
-                <Button variant="outline" className="border-slate-300 dark:border-slate-600">
-                  <i className="fas fa-server mr-2"></i>
-                  Servers
-                </Button>
-              </div>
-              <div className="bg-slate-50 dark:bg-slate-800 rounded-lg p-4">
-                <div className="text-sm text-slate-600 dark:text-slate-400">System Status</div>
-                <div className="space-y-2 mt-2">
-                  <div className="flex justify-between text-sm">
-                    <span>API Response Time</span>
-                    <span className="font-semibold text-green-600">123ms</span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span>Database Load</span>
-                    <span className="font-semibold text-blue-600">45%</span>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+        {/* Admin Navigation Tabs - Mobile Responsive */}
+        <div className="mb-6 sm:mb-8">
+          <div className="flex overflow-x-auto gap-2 bg-black/40 backdrop-blur-xl rounded-2xl p-2 border border-purple-500/20">
+            {[
+              { id: 'overview', label: 'Overview', icon: BarChart },
+              { id: 'users', label: 'Users', icon: Users },
+              { id: 'env', label: 'Environment', icon: Settings },
+              { id: 'database', label: 'Database', icon: Database }
+            ].map((tab) => {
+              const Icon = tab.icon;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`flex items-center space-x-2 px-4 sm:px-6 py-3 rounded-xl font-medium transition-all duration-300 whitespace-nowrap ${
+                    activeTab === tab.id
+                      ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg'
+                      : 'text-gray-400 hover:text-white hover:bg-white/10'
+                  }`}
+                >
+                  <Icon className="w-4 h-4 sm:w-5 sm:h-5" />
+                  <span className="text-sm sm:text-base">{tab.label}</span>
+                </button>
+              );
+            })}
+          </div>
         </div>
 
-        {/* Analytics and Reports Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Analytics Panel */}
-          <Card className="lg:col-span-2 shadow-xl border-slate-200 dark:border-slate-700">
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center">
-                    <i className="fas fa-chart-bar text-purple-600 dark:text-purple-400"></i>
+        {/* Tab Content - Responsive */}
+        <div ref={panelsRef}>
+          {activeTab === 'overview' && (
+            <div className="space-y-6 sm:space-y-8">
+              <div className="bg-black/60 backdrop-blur-xl rounded-2xl p-4 sm:p-8 border border-purple-500/30">
+                <h2 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6">Platform Overview</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                  <div className="bg-purple-600/20 rounded-xl p-4 sm:p-6">
+                    <h3 className="text-base sm:text-lg font-semibold text-purple-300 mb-2">Daily Active Users</h3>
+                    <p className="text-2xl sm:text-3xl font-bold text-white">{adminStats?.dailyActiveUsers || 234}</p>
                   </div>
-                  <div>
-                    <CardTitle className="text-slate-800 dark:text-slate-200 text-xl">Platform Analytics</CardTitle>
-                    <CardDescription>Real-time usage metrics and insights</CardDescription>
+                  <div className="bg-pink-600/20 rounded-xl p-4 sm:p-6">
+                    <h3 className="text-base sm:text-lg font-semibold text-pink-300 mb-2">Active Sessions</h3>
+                    <p className="text-2xl sm:text-3xl font-bold text-white">{adminStats?.activeSessions || 389}</p>
+                  </div>
+                  <div className="bg-cyan-600/20 rounded-xl p-4 sm:p-6 md:col-span-2 lg:col-span-1">
+                    <h3 className="text-base sm:text-lg font-semibold text-cyan-300 mb-2">Server Uptime</h3>
+                    <p className="text-2xl sm:text-3xl font-bold text-white">99.9%</p>
                   </div>
                 </div>
-                <Button variant="outline" size="sm">
-                  <i className="fas fa-download mr-2"></i>
-                  Export
-                </Button>
               </div>
-            </CardHeader>
-            <CardContent>
-              <div className="h-64 bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-900 rounded-lg flex items-center justify-center">
-                <div className="text-center">
-                  <i className="fas fa-chart-area text-4xl text-slate-400 mb-4"></i>
-                  <div className="text-slate-600 dark:text-slate-400">Advanced Analytics Dashboard</div>
-                  <div className="text-sm text-slate-500 dark:text-slate-500 mt-2">Real-time metrics and reporting</div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+            </div>
+          )}
 
-          {/* Quick Actions Panel */}
-          <Card className="shadow-xl border-slate-200 dark:border-slate-700">
-            <CardHeader>
-              <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-red-100 dark:bg-red-900 rounded-lg flex items-center justify-center">
-                  <i className="fas fa-bolt text-red-600 dark:text-red-400"></i>
-                </div>
-                <div>
-                  <CardTitle className="text-slate-800 dark:text-slate-200 text-xl">Quick Actions</CardTitle>
-                  <CardDescription>Administrative shortcuts</CardDescription>
-                </div>
+          {activeTab === 'env' && (
+            <div className="bg-black/60 backdrop-blur-xl rounded-2xl p-4 sm:p-8 border border-purple-500/30">
+              <h2 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6">Environment Variables</h2>
+              <div className="space-y-3 sm:space-y-4">
+                {envVars.map((env, index) => (
+                  <div key={index} className="bg-gray-800/50 rounded-lg p-3 sm:p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4">
+                    <div className="flex-1">
+                      <code className="text-purple-400 font-mono text-sm sm:text-base">{env.key}</code>
+                    </div>
+                    <div className="flex-1">
+                      <code className="text-gray-300 font-mono text-sm sm:text-base break-all">
+                        {env.isSecret ? '***hidden***' : env.value}
+                      </code>
+                    </div>
+                    <div className="flex space-x-2">
+                      <Button size="sm" variant="outline" className="text-xs">Edit</Button>
+                      {env.isSecret && (
+                        <Button size="sm" variant="outline" className="text-xs">Show</Button>
+                      )}
+                    </div>
+                  </div>
+                ))}
               </div>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <Button className="w-full bg-slate-600 hover:bg-slate-700 text-white justify-start">
-                <i className="fas fa-broadcast-tower mr-3"></i>
-                Send Announcement
-              </Button>
-              <Button className="w-full bg-yellow-600 hover:bg-yellow-700 text-white justify-start">
-                <i className="fas fa-exclamation-triangle mr-3"></i>
-                System Maintenance
-              </Button>
-              <Button className="w-full bg-indigo-600 hover:bg-indigo-700 text-white justify-start">
-                <i className="fas fa-backup mr-3"></i>
-                Create Backup
-              </Button>
-              <Button className="w-full bg-teal-600 hover:bg-teal-700 text-white justify-start">
-                <i className="fas fa-file-export mr-3"></i>
-                Export Data
-              </Button>
-              <Button className="w-full bg-red-600 hover:bg-red-700 text-white justify-start">
-                <i className="fas fa-power-off mr-3"></i>
-                Emergency Stop
-              </Button>
-            </CardContent>
-          </Card>
+            </div>
+          )}
+
+          {activeTab === 'users' && (
+            <div className="bg-black/60 backdrop-blur-xl rounded-2xl p-4 sm:p-8 border border-purple-500/30">
+              <h2 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6">User Management</h2>
+              <p className="text-gray-300 mb-4">Comprehensive user administration and analytics.</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <Button className="bg-blue-600 hover:bg-blue-700 text-white">View All Users</Button>
+                <Button className="bg-green-600 hover:bg-green-700 text-white">Add New User</Button>
+                <Button className="bg-purple-600 hover:bg-purple-700 text-white">Export Data</Button>
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'database' && (
+            <div className="bg-black/60 backdrop-blur-xl rounded-2xl p-4 sm:p-8 border border-purple-500/30">
+              <h2 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6">Database Management</h2>
+              <p className="text-gray-300 mb-4">Monitor and manage database operations.</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <Button className="bg-red-600 hover:bg-red-700 text-white">Backup DB</Button>
+                <Button className="bg-yellow-600 hover:bg-yellow-700 text-white">View Logs</Button>
+                <Button className="bg-green-600 hover:bg-green-700 text-white">Optimize</Button>
+                <Button className="bg-purple-600 hover:bg-purple-700 text-white">Analytics</Button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

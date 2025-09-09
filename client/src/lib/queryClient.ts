@@ -1,4 +1,3 @@
-
 import { QueryClient } from "@tanstack/react-query";
 import axios from "axios";
 
@@ -11,14 +10,30 @@ export const apiRequest = axios.create({
   },
 });
 
-// Add auth token to requests
-apiRequest.interceptors.request.use((config) => {
+// Set up axios request interceptor for auth
+const initializeAuth = () => {
   const token = localStorage.getItem('flamingo-token');
   if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+    apiRequest.defaults.headers.common['Authorization'] = `Bearer ${token}`;
   }
-  return config;
-});
+};
+
+// Initialize auth on app start
+initializeAuth();
+
+// Add request interceptor to ensure token is always included
+apiRequest.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('flamingo-token');
+    if (token && !config.headers.Authorization) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
 // Handle auth errors
 apiRequest.interceptors.response.use(
@@ -36,18 +51,18 @@ apiRequest.interceptors.response.use(
 export const getQueryFn = async ({ queryKey }: { queryKey: any }) => {
   const url = queryKey[0];
   const token = localStorage.getItem('flamingo-token');
-  
+
   if (!token && url === '/api/user') {
     throw new Error('No auth token');
   }
-  
+
   const response = await fetch(url, {
     headers: {
       'Authorization': token ? `Bearer ${token}` : '',
       'Content-Type': 'application/json',
     },
   });
-  
+
   if (!response.ok) {
     if (response.status === 401) {
       localStorage.removeItem('flamingo-token');
@@ -55,7 +70,7 @@ export const getQueryFn = async ({ queryKey }: { queryKey: any }) => {
     }
     throw new Error(`HTTP ${response.status}`);
   }
-  
+
   return response.json();
 };
 

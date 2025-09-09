@@ -40,24 +40,20 @@ export function useAuth() {
       return response.data;
     },
     onSuccess: async (data) => {
+      // Store token
       localStorage.setItem('flamingo-token', data.token);
-      // Force update the authorization header
+      
+      // Update authorization header immediately
       apiRequest.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
-      // Set user data immediately
+      
+      // Set user data in cache
       queryClient.setQueryData(["/api/user"], data.user);
-      // Wait a moment before invalidating to ensure the token is properly set
-      await new Promise(resolve => setTimeout(resolve, 100));
-      queryClient.invalidateQueries({ queryKey: ["/api/user"] });
-
-      // Role-based redirection
-      const userRole = data.user.role;
-      if (userRole === 'admin') {
-        setLocation('/admin');
-      } else if (userRole === 'manager') {
-        setLocation('/manager');
-      } else {
-        setLocation('/dashboard');
-      }
+      
+      // Small delay to ensure token is set
+      await new Promise(resolve => setTimeout(resolve, 50));
+      
+      // Invalidate and refetch user data
+      await queryClient.invalidateQueries({ queryKey: ["/api/user"] });
     },
     onError: (error: any) => {
       console.error('Login failed:', error);
@@ -98,31 +94,15 @@ export function useAuth() {
     },
   });
 
-  const login = useCallback(async (email: string, password: string): Promise<{ success: boolean; message: string }> => {
+  const login = useCallback(async (credentials: LoginCredentials) => {
     try {
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok && data.token) {
-        localStorage.setItem('flamingo-token', data.token);
-        queryClient.setQueryData(["/api/user"], data.user);
-        queryClient.invalidateQueries({ queryKey: ["/api/user"] });
-        return { success: true, message: 'Login successful' };
-      } else {
-        return { success: false, message: data.message || 'Login failed' };
-      }
-    } catch (error) {
+      const result = await loginMutation.mutateAsync(credentials);
+      return result;
+    } catch (error: any) {
       console.error('Login error:', error);
-      return { success: false, message: 'Network error. Please try again.' };
+      throw error;
     }
-  }, [queryClient]);
+  }, [loginMutation]);
 
   return {
     user: user || null,

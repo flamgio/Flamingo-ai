@@ -72,25 +72,30 @@ export default function Login() {
         email: formData.email,
         password: formData.password
       });
+      
       if (result) {
         setWelcomeUser(result.user);
         setShowWelcome(true);
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Login error:', error);
+      setErrors({ general: error?.response?.data?.message || 'Login failed' });
     }
   };
 
   const handleWelcomeClose = () => {
     setShowWelcome(false);
-    // Navigate based on user role
-    if (welcomeUser?.role === 'admin') {
-      setLocation('/admin');
-    } else if (welcomeUser?.role === 'manager') {
-      setLocation('/manager');
-    } else {
-      setLocation('/dashboard');
-    }
+    
+    // Small delay to ensure state update, then navigate
+    setTimeout(() => {
+      if (welcomeUser?.role === 'admin') {
+        setLocation('/admin');
+      } else if (welcomeUser?.role === 'manager') {
+        setLocation('/manager');
+      } else {
+        setLocation('/dashboard');
+      }
+    }, 100);
   };
 
   const handleThemeToggle = () => {

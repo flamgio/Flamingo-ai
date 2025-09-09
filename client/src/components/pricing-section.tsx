@@ -12,27 +12,28 @@ interface PricingPlan {
 
 const pricingPlans: PricingPlan[] = [
   {
-    name: 'Flamingo Free',
+    name: 'Free Plan',
     price: '$0',
-    description: 'Perfect for getting started with AI assistance',
+    description: 'Perfect for getting started',
     features: [
-      'Basic AI routing',
-      'Limited daily queries',
-      'Standard models',
-      'Community support'
+      'Basic AI chat conversations',
+      'Quick response for simple questions',
+      'Limited daily conversations',
+      'Standard response quality',
+      'Basic text generation'
     ]
   },
   {
-    name: 'Flamingo+',
+    name: 'Premium Plan',
     price: '$19',
-    description: 'Advanced features for power users',
+    description: 'For power users and professionals',
     features: [
-      'Advanced AI routing',
-      'Unlimited queries',
-      'Premium models',
-      'Priority support',
-      'Enhanced prompts',
-      'Custom integrations'
+      'Unlimited AI conversations',
+      'Advanced AI reasoning and analysis',
+      'Priority response speed',
+      'Enhanced creativity and writing',
+      'Complex problem solving',
+      'Premium support'
     ],
     popular: true
   }

@@ -53,54 +53,35 @@ export default function Pricing() {
   // Premium pricing plans
   const pricingPlans: PricingPlan[] = [
     {
-      name: "Flamingo Free",
+      name: "Free Plan",
       price: "$0",
-      period: "/forever",
-      description: "Perfect for getting started with AI assistance",
-      badge: "Free Forever",
+      period: "/month",
+      description: "Perfect for getting started",
+      badge: "",
       features: [
-        "Basic AI conversations",
-        "5 messages per day",
-        "Standard response speed",
-        "Community support",
+        "Basic AI chat conversations",
+        "Quick response for simple questions",
+        "Limited daily conversations",
+        "Standard response quality",
         "Basic text generation"
       ],
       buttonText: "Current Plan",
       buttonAction: () => setLocation('/dashboard')
     },
     {
-      name: "Flamingo Basic",
-      price: "$2",
-      period: "/month",
-      description: "Essential features for regular users",
-      badge: "Great Value",
-      features: [
-        "50 messages per day",
-        "Standard AI models",
-        "Email support",
-        "Basic integrations",
-        "File uploads (5MB)",
-        "Chat history (30 days)"
-      ],
-      buttonText: "Choose Basic",
-      buttonAction: () => setShowPaymentOptions(true)
-    },
-    {
-      name: "Flamingo Premium",
-      price: "$5",
+      name: "Premium Plan",
+      price: "$19",
       period: "/month",
       description: "For power users and professionals",
-      badge: "Most Popular",
+      badge: "",
       popular: true,
       features: [
         "Unlimited AI conversations",
-        "Advanced AI reasoning",
+        "Advanced AI reasoning and analysis",
         "Priority response speed",
-        "Premium models access",
-        "Enhanced creativity tools",
+        "Enhanced creativity and writing",
         "Complex problem solving",
-        "24/7 premium support",
-        "Custom integrations"
+        "Premium support"
       ],
       buttonText: "Upgrade Now",
       buttonAction: () => setShowPaymentOptions(true)
@@ -244,77 +225,49 @@ export default function Pricing() {
         </motion.div>
 
         {/* Premium Pricing Cards */}
-        <div ref={cardsRef} className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+        <div ref={cardsRef} className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
           {pricingPlans.map((plan, index) => (
             <Card 
               key={plan.name}
-              className={`relative overflow-hidden backdrop-blur-xl transition-all duration-300 ${
+              className={`relative overflow-hidden backdrop-blur-xl transition-all duration-300 rounded-2xl ${
                 plan.popular 
-                  ? 'border-2 border-gradient-to-r from-purple-500 to-pink-500 bg-gradient-to-br from-purple-900/40 via-black/60 to-pink-900/40 shadow-2xl shadow-purple-500/20' 
-                  : 'border border-white/20 bg-gradient-to-br from-white/10 to-white/5 hover:border-purple-500/50'
+                  ? 'bg-gradient-to-br from-purple-600/80 via-purple-700/70 to-purple-800/80 border border-purple-400/30 shadow-2xl shadow-purple-500/20' 
+                  : 'bg-gradient-to-br from-purple-600/80 via-purple-700/70 to-purple-800/80 border border-purple-400/30 shadow-xl'
               }`}
               data-testid={`pricing-card-${index}`}
             >
-              {/* Glow effect for premium plan */}
-              {plan.popular && (
-                <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-pink-500/20 animate-pulse pointer-events-none" />
-              )}
-              
-              {/* Popular badge */}
-              {plan.popular && (
-                <div className="absolute -top-1 -right-1 z-10">
-                  <Badge className="bg-gradient-to-r from-purple-500 to-pink-500 text-white border-0 px-3 py-1 font-semibold flex items-center gap-1">
-                    <Crown className="w-3 h-3" />
-                    {plan.badge}
-                  </Badge>
+              {/* Card icon */}
+              <div className="absolute top-4 right-4 z-10">
+                <div className="w-8 h-8 bg-purple-400/30 rounded-full flex items-center justify-center">
+                  <div className="w-4 h-4 bg-purple-400 rounded-full"></div>
                 </div>
-              )}
+              </div>
               
-              <CardHeader className="text-center pb-6 relative z-10">
-                <div className="flex items-center justify-center mb-4">
-                  {plan.popular ? (
-                    <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center shadow-lg animate-pulse">
-                      <Sparkles className="w-8 h-8 text-white" />
-                    </div>
-                  ) : (
-                    <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full flex items-center justify-center shadow-lg">
-                      <Zap className="w-8 h-8 text-white" />
-                    </div>
-                  )}
-                </div>
-                
-                <CardTitle className="text-2xl font-bold text-white mb-2">
+              <CardHeader className="text-left pb-6 relative z-10 pt-8">
+                <CardTitle className="text-xl font-semibold text-white mb-4">
                   {plan.name}
                 </CardTitle>
                 
-                <div className="flex items-baseline justify-center mb-4">
-                  <span className={`text-5xl font-bold ${
-                    plan.popular 
-                      ? 'bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent' 
-                      : 'text-blue-400'
-                  }`}>
+                <div className="flex items-baseline mb-4">
+                  <span className="text-3xl font-bold text-white">
                     {plan.price}
                   </span>
-                  <span className="text-white/60 ml-1">{plan.period}</span>
+                  <span className="text-white/70 ml-1 text-sm">{plan.period}</span>
                 </div>
                 
-                <p className="text-white/80 text-sm leading-relaxed">
+                <p className="text-white/80 text-sm leading-relaxed mb-6">
                   {plan.description}
                 </p>
               </CardHeader>
 
-              <CardContent className="pt-0 relative z-10">
-                <ul className="space-y-4 mb-8">
+              <CardContent className="pt-0 relative z-10 px-6">
+                <ul className="space-y-3 mb-8">
                   {plan.features.map((feature, featureIndex) => (
-                    <li key={featureIndex} className="flex items-start space-x-3 group">
-                      <div className={`w-5 h-5 rounded-full flex items-center justify-center mt-0.5 transition-all duration-300 group-hover:scale-110 ${
-                        plan.popular 
-                          ? 'bg-gradient-to-r from-purple-500 to-pink-500 shadow-lg shadow-purple-500/30' 
-                          : 'bg-gradient-to-r from-green-500 to-emerald-500 shadow-lg shadow-green-500/30'
-                      }`}>
+                    <li key={featureIndex} className="flex items-start space-x-3">
+                      <div className="w-4 h-4 rounded-sm bg-green-500 flex items-center justify-center mt-0.5 flex-shrink-0">
                         <Check className="w-3 h-3 text-white" />
                       </div>
-                      <span className="text-white/90 text-sm leading-relaxed flex-1">
+                      <span className="text-white/90 text-sm leading-relaxed">
                         {feature}
                       </span>
                     </li>
@@ -323,10 +276,10 @@ export default function Pricing() {
 
                 <Button 
                   onClick={plan.buttonAction}
-                  className={`w-full py-3 font-semibold transition-all duration-300 ${
+                  className={`w-full py-3 font-medium transition-all duration-300 rounded-lg ${
                     plan.popular
-                      ? 'bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white shadow-lg shadow-purple-500/30 hover:shadow-purple-500/50 hover:scale-105'
-                      : 'bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:scale-105'
+                      ? 'bg-white text-purple-700 hover:bg-gray-100 shadow-lg hover:scale-105'
+                      : 'bg-purple-500/30 text-white hover:bg-purple-500/50 border border-purple-400/50'
                   }`}
                   data-testid={`button-${plan.name.toLowerCase().replace(' ', '-')}`}
                 >

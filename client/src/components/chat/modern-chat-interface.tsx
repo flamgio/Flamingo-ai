@@ -1,5 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { gsap } from "gsap";
+import { useGSAP } from "@gsap/react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
@@ -7,6 +9,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { useTheme } from "@/components/ui/theme-provider";
 import { apiRequest } from "@/lib/queryClient";
 import ReactMarkdown from "react-markdown";
+import { animations, gsapUtils } from "@/lib/animations";
 import { 
   Send, 
   Loader2, 
@@ -18,7 +21,8 @@ import {
   Sun,
   MessageSquare,
   Trash2,
-  Plus
+  Plus,
+  Sparkles
 } from "lucide-react";
 import type { Message } from "@shared/schema";
 
@@ -35,23 +39,61 @@ export default function ModernChatInterface({ conversationId, initialMessages = 
   const [isLoading, setIsLoading] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [copiedMessageId, setCopiedMessageId] = useState<string | null>(null);
+  const [isTyping, setIsTyping] = useState(false);
   
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const chatContainerRef = useRef<HTMLDivElement>(null);
+  const typingIndicatorRef = useRef<HTMLDivElement>(null);
+  const sendButtonRef = useRef<HTMLButtonElement>(null);
+
+  // GSAP animations setup
+  useGSAP(() => {
+    // Initialize send button glow effect
+    if (sendButtonRef.current) {
+      gsap.set(sendButtonRef.current, {
+        boxShadow: "0 0 0px rgba(249, 115, 22, 0.4)"
+      });
+    }
+  }, []);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (messagesEndRef.current) {
+      gsap.to(messagesEndRef.current, {
+        scrollTop: messagesEndRef.current.scrollHeight,
+        duration: 0.5,
+        ease: "power2.out"
+      });
+    }
   };
 
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
 
+  // Typing indicator animation
+  useEffect(() => {
+    if (isTyping && typingIndicatorRef.current) {
+      gsapUtils.typingIndicator(typingIndicatorRef.current);
+    }
+  }, [isTyping]);
+
   const handleSendMessage = async () => {
     if (!inputValue.trim() || isLoading) return;
 
     const messageContent = inputValue.trim();
     setInputValue("");
+    
+    // Animate send button
+    if (sendButtonRef.current) {
+      gsap.to(sendButtonRef.current, {
+        scale: 0.9,
+        duration: 0.1,
+        ease: "power2.out",
+        yoyo: true,
+        repeat: 1
+      });
+    }
     
     const userMessage: Message = {
       id: Date.now().toString(),
@@ -65,6 +107,7 @@ export default function ModernChatInterface({ conversationId, initialMessages = 
 
     setMessages(prev => [...prev, userMessage]);
     setIsLoading(true);
+    setIsTyping(true);
 
     try {
       const token = localStorage.getItem('flamgio-token');
@@ -113,6 +156,7 @@ export default function ModernChatInterface({ conversationId, initialMessages = 
       setMessages(prev => [...prev, errorMessage]);
     } finally {
       setIsLoading(false);
+      setIsTyping(false);
     }
   };
 
@@ -127,6 +171,16 @@ export default function ModernChatInterface({ conversationId, initialMessages = 
     try {
       await navigator.clipboard.writeText(content);
       setCopiedMessageId(messageId);
+      
+      // Animate the copy success
+      gsap.to(`[data-testid="button-copy-message"]`, {
+        scale: 1.2,
+        duration: 0.2,
+        ease: "back.out(1.7)",
+        yoyo: true,
+        repeat: 1
+      });
+      
       setTimeout(() => setCopiedMessageId(null), 2000);
     } catch (error) {
       console.error('Failed to copy:', error);
@@ -285,138 +339,170 @@ export default function ModernChatInterface({ conversationId, initialMessages = 
         </div>
 
         {/* Messages Area */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gradient-to-b from-transparent via-orange-50/20 to-pink-50/20 dark:via-purple-900/10 dark:to-pink-900/10">
+        <div ref={chatContainerRef} className="flex-1 overflow-y-auto p-4 space-y-6 bg-gradient-to-b from-white/50 via-orange-50/30 to-pink-50/40 dark:from-gray-900/50 dark:via-purple-900/20 dark:to-pink-900/20 backdrop-blur-sm">
           {messages.length === 0 ? (
-            <div className="flex-1 flex items-center justify-center">
+            <div className="flex-1 flex items-center justify-center min-h-[400px]">
               <motion.div 
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.6, type: "spring" }}
-                className="text-center max-w-md"
+                {...animations.scaleIn}
+                className="text-center max-w-lg px-6"
               >
                 <motion.div 
-                  className="w-20 h-20 bg-gradient-to-r from-orange-500 via-pink-500 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-2xl relative"
+                  className="w-24 h-24 bg-gradient-to-r from-orange-500 via-pink-500 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-8 shadow-2xl relative overflow-hidden"
                   animate={{ 
-                    boxShadow: [
-                      "0 0 20px rgba(255, 154, 0, 0.3)",
-                      "0 0 40px rgba(236, 72, 153, 0.4)",
-                      "0 0 20px rgba(255, 154, 0, 0.3)"
-                    ]
+                    rotate: [0, 5, -5, 0],
+                    scale: [1, 1.05, 1]
                   }}
-                  transition={{ duration: 3, repeat: Infinity }}
+                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
                 >
-                  <span className="text-white font-bold text-2xl">FA</span>
-                  <div className="absolute inset-0 rounded-full bg-gradient-to-r from-orange-400 to-pink-400 opacity-20 animate-ping"></div>
+                  <span className="text-white font-bold text-3xl z-10">FA</span>
+                  <div className="absolute inset-0 rounded-full bg-gradient-to-r from-orange-300 to-pink-300 opacity-30 animate-pulse"></div>
+                  <div className="absolute -inset-2 rounded-full bg-gradient-to-r from-orange-400 to-pink-400 opacity-20 animate-ping"></div>
                 </motion.div>
-                <motion.h3 
-                  className="text-2xl font-bold bg-gradient-to-r from-orange-600 via-pink-600 to-purple-600 bg-clip-text text-transparent mb-3"
-                  initial={{ y: 20, opacity: 0 }}
+                <motion.div
+                  initial={{ y: 30, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 0.3 }}
+                  transition={{ delay: 0.4, duration: 0.8 }}
                 >
-                  Welcome to Flamingo AI
-                </motion.h3>
-                <motion.p 
-                  className="text-gray-600 dark:text-gray-400 text-lg"
-                  initial={{ y: 20, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 0.5 }}
-                >
-                  Start a conversation by typing your message below. I'm here to help with anything you need!
-                </motion.p>
+                  <h3 className="text-3xl font-bold bg-gradient-to-r from-orange-600 via-pink-600 to-purple-600 bg-clip-text text-transparent mb-4">
+                    Welcome to Flamingo AI
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-400 text-lg leading-relaxed mb-6">
+                    Experience the future of AI conversation. I'm here to assist you with intelligent responses, creative solutions, and engaging discussions.
+                  </p>
+                  <div className="flex items-center justify-center space-x-2 text-sm text-gray-500 dark:text-gray-400">
+                    <Sparkles className="w-4 h-4 text-orange-500" />
+                    <span>Powered by advanced AI models</span>
+                  </div>
+                </motion.div>
               </motion.div>
             </div>
           ) : (
-            <div className="space-y-4 max-w-4xl mx-auto">
-              {messages.map((message) => (
+            <div className="space-y-6 max-w-4xl mx-auto">
+              {messages.map((message, index) => (
                 <motion.div
                   key={message.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
+                  {...animations.messageSlideIn}
+                  transition={{ delay: index * 0.05, duration: 0.5 }}
                   className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
                   data-testid={`message-${message.role}`}
                 >
-                  <div className={`flex items-start space-x-3 max-w-2xl ${message.role === 'user' ? 'flex-row-reverse space-x-reverse' : ''}`}>
+                  <div className={`flex items-end space-x-3 max-w-[85%] ${message.role === 'user' ? 'flex-row-reverse space-x-reverse' : ''}`}>
+                    {/* Avatar */}
                     <motion.div 
-                      className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 shadow-lg ${
+                      className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 shadow-xl border-2 border-white/20 ${
                         message.role === 'user' 
-                          ? 'bg-gradient-to-r from-blue-500 to-purple-500' 
-                          : 'bg-gradient-to-r from-orange-500 to-pink-500'
+                          ? 'bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-600' 
+                          : 'bg-gradient-to-br from-orange-500 via-pink-500 to-red-500'
                       }`}
-                      whileHover={{ scale: 1.1 }}
+                      whileHover={{ scale: 1.1, rotate: 5 }}
                       transition={{ type: "spring", stiffness: 400, damping: 10 }}
                     >
-                      <span className="text-white text-sm font-bold">
-                        {message.role === 'user' ? 'U' : 'FA'}
+                      <span className="text-white text-sm font-bold drop-shadow-sm">
+                        {message.role === 'user' ? user?.firstName?.charAt(0) || 'U' : 'FA'}
                       </span>
                     </motion.div>
-                    <div className={`flex-1 ${message.role === 'user' ? 'text-right' : ''}`}>
+                    
+                    {/* Message Bubble */}
+                    <div className={`flex-1 ${message.role === 'user' ? 'text-right' : 'text-left'}`}>
                       <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.3 }}
-                        whileHover={{ scale: 1.02 }}
+                        whileHover={{ scale: 1.01, y: -2 }}
+                        transition={{ duration: 0.2, ease: "easeOut" }}
+                        className="relative"
                       >
-                        <Card className={`p-4 shadow-lg border-0 ${
+                        {/* Message bubble with tail */}
+                        <div className={`relative rounded-2xl p-4 shadow-xl backdrop-blur-sm ${
                           message.role === 'user'
-                            ? 'bg-gradient-to-r from-blue-500 via-purple-500 to-indigo-500 text-white shadow-blue-500/25'
-                            : 'bg-gradient-to-br from-white via-orange-50/30 to-pink-50/30 dark:from-gray-800 dark:via-purple-900/30 dark:to-pink-900/30 border border-orange-200/50 dark:border-purple-700/50 shadow-orange-500/10'
+                            ? 'bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-600 text-white ml-4'
+                            : 'bg-white/90 dark:bg-gray-800/90 border border-gray-200/50 dark:border-gray-700/50 mr-4 text-gray-900 dark:text-white'
                         }`}>
-                        <div className="prose prose-sm max-w-none dark:prose-invert">
-                          {message.role === 'assistant' ? (
-                            <ReactMarkdown>{message.content}</ReactMarkdown>
-                          ) : (
-                            <p className="whitespace-pre-wrap">{message.content}</p>
+                          {/* Message tail */}
+                          <div className={`absolute w-3 h-3 rotate-45 ${
+                            message.role === 'user'
+                              ? 'bg-gradient-to-br from-blue-500 to-purple-600 -left-1 bottom-4'
+                              : 'bg-white/90 dark:bg-gray-800/90 border-l border-b border-gray-200/50 dark:border-gray-700/50 -right-1 bottom-4'
+                          }`}></div>
+                          
+                          {/* Message content */}
+                          <div className={`prose prose-sm max-w-none ${
+                            message.role === 'user' 
+                              ? 'prose-invert prose-p:text-white prose-strong:text-white prose-em:text-white'
+                              : 'dark:prose-invert'
+                          }`}>
+                            {message.role === 'assistant' ? (
+                              <ReactMarkdown>{message.content}</ReactMarkdown>
+                            ) : (
+                              <p className="whitespace-pre-wrap m-0 text-sm font-medium leading-relaxed">{message.content}</p>
+                            )}
+                          </div>
+                          
+                          {/* Assistant message footer */}
+                          {message.role === 'assistant' && (
+                            <div className="flex items-center justify-between mt-4 pt-3 border-t border-gray-200/50 dark:border-gray-600/50">
+                              <div className="flex items-center space-x-2">
+                                <div className="flex items-center space-x-1">
+                                  <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                                  <span className="text-xs font-medium text-gray-600 dark:text-gray-400">
+                                    {message.selectedModel || 'Flamingo AI'}
+                                  </span>
+                                </div>
+                                <div className="w-1 h-1 bg-gray-400 rounded-full"></div>
+                                <span className="text-xs text-gray-500 dark:text-gray-400">
+                                  {message.createdAt ? new Date(message.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ''}
+                                </span>
+                              </div>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => copyToClipboard(message.content, message.id)}
+                                className="h-7 w-7 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors"
+                                data-testid="button-copy-message"
+                              >
+                                {copiedMessageId === message.id ? (
+                                  <Check className="h-3 w-3 text-green-500" />
+                                ) : (
+                                  <Copy className="h-3 w-3 text-gray-500" />
+                                )}
+                              </Button>
+                            </div>
                           )}
                         </div>
-                        {message.role === 'assistant' && (
-                          <div className="flex items-center justify-between mt-3 pt-3 border-t border-gray-200 dark:border-gray-600">
-                            <div className="flex items-center space-x-2">
-                              <span className="text-xs text-gray-500 dark:text-gray-400">
-                                {message.selectedModel || 'Flamingo AI'}
-                              </span>
-                              <div className="w-1 h-1 bg-gray-400 rounded-full"></div>
-                              <span className="text-xs text-gray-500 dark:text-gray-400">
-                                {message.createdAt ? new Date(message.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ''}
-                              </span>
-                            </div>
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              onClick={() => copyToClipboard(message.content, message.id)}
-                              className="h-6 w-6"
-                              data-testid="button-copy-message"
-                            >
-                              {copiedMessageId === message.id ? (
-                                <Check className="h-3 w-3" />
-                              ) : (
-                                <Copy className="h-3 w-3" />
-                              )}
-                            </Button>
-                          </div>
-                        )}
-                        </Card>
                       </motion.div>
+                      
+                      {/* Message timestamp for user messages */}
+                      {message.role === 'user' && (
+                        <div className="text-xs text-gray-500 dark:text-gray-400 mt-1 mr-6">
+                          {message.createdAt ? new Date(message.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ''}
+                        </div>
+                      )}
                     </div>
                   </div>
                 </motion.div>
               ))}
+              {/* Typing Indicator */}
               {isLoading && (
                 <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
+                  initial={{ opacity: 0, y: 20, scale: 0.9 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: 20, scale: 0.9 }}
                   className="flex justify-start"
                 >
-                  <div className="flex items-start space-x-3 max-w-2xl">
-                    <div className="w-8 h-8 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full flex items-center justify-center">
-                      <span className="text-white text-sm font-bold">FA</span>
+                  <div className="flex items-end space-x-3 max-w-[85%]">
+                    <div className="w-10 h-10 bg-gradient-to-br from-orange-500 via-pink-500 to-red-500 rounded-full flex items-center justify-center shadow-xl border-2 border-white/20">
+                      <span className="text-white text-sm font-bold drop-shadow-sm">FA</span>
                     </div>
-                    <Card className="p-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
-                      <div className="flex items-center space-x-2">
-                        <Loader2 className="h-4 w-4 animate-spin" />
-                        <span className="text-sm text-gray-600 dark:text-gray-400">Thinking...</span>
+                    <div className="relative rounded-2xl p-4 bg-white/90 dark:bg-gray-800/90 border border-gray-200/50 dark:border-gray-700/50 shadow-xl backdrop-blur-sm mr-4">
+                      {/* Typing tail */}
+                      <div className="absolute w-3 h-3 rotate-45 bg-white/90 dark:bg-gray-800/90 border-l border-b border-gray-200/50 dark:border-gray-700/50 -right-1 bottom-4"></div>
+                      
+                      <div ref={typingIndicatorRef} className="flex items-center space-x-2">
+                        <div className="flex space-x-1">
+                          <div className="typing-dot w-2 h-2 bg-orange-500 rounded-full"></div>
+                          <div className="typing-dot w-2 h-2 bg-pink-500 rounded-full"></div>
+                          <div className="typing-dot w-2 h-2 bg-purple-500 rounded-full"></div>
+                        </div>
+                        <span className="text-sm text-gray-600 dark:text-gray-400 font-medium">Flamingo is thinking...</span>
                       </div>
-                    </Card>
+                    </div>
                   </div>
                 </motion.div>
               )}
@@ -425,18 +511,18 @@ export default function ModernChatInterface({ conversationId, initialMessages = 
           <div ref={messagesEndRef} />
         </div>
 
-        {/* Input Area */}
-        <div className="border-t border-orange-200/50 dark:border-purple-700/50 bg-gradient-to-r from-white via-orange-50/30 to-pink-50/30 dark:from-gray-800 dark:via-purple-900/30 dark:to-pink-900/30 backdrop-blur-lg p-4">
+        {/* Enhanced Input Area */}
+        <div className="border-t border-gray-200/50 dark:border-gray-700/50 bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl p-6">
           <div className="max-w-4xl mx-auto">
-            <div className="flex items-end space-x-3 bg-white/50 dark:bg-gray-800/50 rounded-2xl p-3 shadow-lg backdrop-blur-sm border border-orange-200/30 dark:border-purple-700/30">
+            <div className="flex items-end space-x-4 bg-white/70 dark:bg-gray-800/70 rounded-3xl p-4 shadow-2xl backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 hover:shadow-3xl transition-all duration-300">
               <div className="flex-1">
                 <Textarea
                   ref={textareaRef}
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
                   onKeyDown={handleKeyPress}
-                  placeholder="Type your message..."
-                  className="min-h-[44px] max-h-32 resize-none border-0 bg-transparent focus:ring-0 focus:outline-none text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
+                  placeholder="Message Flamingo AI..."
+                  className="min-h-[48px] max-h-36 resize-none border-0 bg-transparent focus:ring-0 focus:outline-none text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 text-base leading-relaxed"
                   disabled={isLoading}
                   data-testid="input-message"
                 />
@@ -446,18 +532,23 @@ export default function ModernChatInterface({ conversationId, initialMessages = 
                 whileTap={{ scale: 0.95 }}
               >
                 <Button
+                  ref={sendButtonRef}
                   onClick={handleSendMessage}
                   disabled={!inputValue.trim() || isLoading}
-                  className="bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white border-0 h-11 px-4 shadow-lg hover:shadow-xl transition-all duration-300"
+                  className="bg-gradient-to-r from-orange-500 via-pink-500 to-purple-500 hover:from-orange-600 hover:via-pink-600 hover:to-purple-600 text-white border-0 h-12 w-12 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 disabled:opacity-50 disabled:scale-95"
                   data-testid="button-send"
                 >
                   {isLoading ? (
-                    <Loader2 className="h-4 w-4 animate-spin" />
+                    <Loader2 className="h-5 w-5 animate-spin" />
                   ) : (
-                    <Send className="h-4 w-4" />
+                    <Send className="h-5 w-5" />
                   )}
                 </Button>
               </motion.div>
+            </div>
+            {/* Input hint */}
+            <div className="flex items-center justify-center mt-3 text-xs text-gray-500 dark:text-gray-400">
+              <span>Press Enter to send, Shift + Enter for new line</span>
             </div>
           </div>
         </div>

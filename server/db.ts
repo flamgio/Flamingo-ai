@@ -217,6 +217,7 @@ export async function provisionAdminAccounts() {
           email: account.email,
           password: account.password,
           role: account.role as 'admin' | 'manager',
+          isPremium: true,
         });
 
         console.log(`✅ Created ${account.role} account: ${account.email}`);

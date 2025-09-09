@@ -2,7 +2,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getQueryFn, apiRequest } from "@/lib/queryClient";
 import type { User } from "@shared/schema";
 import { useLocation } from "wouter";
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 
 interface AuthResponse {
   user: User;
@@ -25,54 +25,14 @@ interface SignupCredentials {
 export function useAuth() {
   const [, setLocation] = useLocation();
   const queryClient = useQueryClient();
-  const [isLoading, setIsLoading] = useState(true);
-  const [user, setUser] = useState<User | null | undefined>(undefined);
 
-  const refreshToken = useCallback(async (): Promise<boolean> => {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      setUser(null);
-      setIsLoading(false);
-      return false;
-    }
-
-    try {
-      // Verify the current token is still valid
-      const response = await fetch('/api/user', {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (response.ok) {
-        const userData = await response.json();
-        setUser(userData);
-        setIsLoading(false);
-        return true;
-      }
-
-      // Token is invalid, remove it
-      localStorage.removeItem('token');
-      setUser(null);
-      setIsLoading(false);
-      return false;
-    } catch (error) {
-      console.error('Token refresh failed:', error);
-      localStorage.removeItem('token');
-      setUser(null);
-      setIsLoading(false);
-      return false;
-    }
-  }, []);
-
-  // Initialize auth state by trying to refresh token
-  // This should ideally be done within a context provider or a top-level component
-  // For simplicity in this example, we call it directly. In a real app, consider useEffect.
-  // useEffect(() => {
-  //   refreshToken();
-  // }, [refreshToken]);
-
+  // Use React Query for user data
+  const { data: user, isLoading, error, refetch } = useQuery({
+    queryKey: ["/api/user"],
+    queryFn: getQueryFn,
+    retry: false,
+    staleTime: 5 * 60 * 1000, // 5 minutes
+  });
 
   const loginMutation = useMutation({
     mutationFn: async (credentials: LoginCredentials) => {
@@ -151,27 +111,24 @@ export function useAuth() {
       const data = await response.json();
 
       if (response.ok && data.token) {
-        localStorage.setItem('token', data.token);
-        setUser(data.user);
-        setIsLoading(false);
+        localStorage.setItem('flamingo-token', data.token);
+        queryClient.setQueryData(["/api/user"], data.user);
+        queryClient.invalidateQueries({ queryKey: ["/api/user"] });
         return { success: true, message: 'Login successful' };
       } else {
-        setIsLoading(false);
         return { success: false, message: data.message || 'Login failed' };
       }
     } catch (error) {
       console.error('Login error:', error);
-      setIsLoading(false);
       return { success: false, message: 'Network error. Please try again.' };
     }
-  }, []);
-
+  }, [queryClient]);
 
   return {
-    user: user,
-    isLoading: isLoading,
-    error: loginMutation.error || signupMutation.error,
-    login: login,
+    user: user || null,
+    isLoading,
+    error: error || loginMutation.error || signupMutation.error,
+    login,
     signup: signupMutation.mutateAsync,
     logout: logoutMutation.mutateAsync,
     isAuthenticated: !!user,
@@ -179,5 +136,6 @@ export function useAuth() {
     signupError: signupMutation.error,
     isLoginLoading: loginMutation.isPending,
     isSignupLoading: signupMutation.isPending,
+    refetch,
   };
 }

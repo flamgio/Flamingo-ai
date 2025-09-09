@@ -1,162 +1,206 @@
-import { useState, useCallback, useEffect } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { getQueryFn } from "@/lib/queryClient";
-import { apiRequest, enhancePrompt } from "@/lib/api"; // Assuming enhancePrompt is available here
-import type { Conversation, Message } from "@shared/schema";
-import { useAuth } from "./use-auth";
-import { useMobile } from "./use-mobile"; // Assuming useMobile hook is available here
 
-export function useChat() {
-  const queryClient = useQueryClient();
+import { useState, useCallback, useRef, useEffect } from 'react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useAuth } from './use-auth';
+
+interface Message {
+  id: string;
+  role: 'user' | 'assistant';
+  content: string;
+  timestamp?: string;
+  selectedModel?: string;
+  metadata?: any;
+}
+
+interface Conversation {
+  id: string;
+  title: string;
+  userId: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export function useChat(conversationId?: string) {
   const { user } = useAuth();
-  const isMobile = useMobile(); // Assuming useMobile hook is called here
-  const [currentConversationId, setCurrentConversationId] = useState<string | null>(null);
-  const [conversations, setConversations] = useState<Conversation[]>([]); // State for conversations
+  const queryClient = useQueryClient();
+  const [isTyping, setIsTyping] = useState(false);
+  const [currentMessage, setCurrentMessage] = useState('');
+  const abortControllerRef = useRef<AbortController | null>(null);
 
   // Fetch conversations
-  const { data: fetchedConversations = [], isLoading: isConversationsLoading } = useQuery<Conversation[]>({
+  const { data: conversations = [], isLoading: conversationsLoading } = useQuery({
     queryKey: ['/api/conversations'],
-    queryFn: getQueryFn({ on401: "throw" }),
+    queryFn: async () => {
+      const token = localStorage.getItem('flamingo-token');
+      if (!token) throw new Error('No auth token');
+      
+      const response = await fetch('/api/conversations', {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+      
+      if (!response.ok) throw new Error('Failed to fetch conversations');
+      return response.json();
+    },
     enabled: !!user,
+    staleTime: 30000,
   });
-
-  useEffect(() => {
-    if (fetchedConversations) {
-      setConversations(fetchedConversations);
-    }
-  }, [fetchedConversations]);
 
   // Fetch messages for current conversation
-  const { data: messages = [], isLoading: isMessagesLoading, refetch: refetchMessages } = useQuery<Message[]>({
-    queryKey: ['/api/conversations', currentConversationId, 'messages'],
-    queryFn: getQueryFn({ on401: "throw" }),
-    enabled: !!user && !!currentConversationId,
-    refetchOnWindowFocus: false,
-    staleTime: 0, // Always fetch fresh data
+  const { data: messages = [], isLoading: messagesLoading, refetch: refetchMessages } = useQuery({
+    queryKey: ['/api/conversations', conversationId, 'messages'],
+    queryFn: async () => {
+      if (!conversationId) return [];
+      
+      const token = localStorage.getItem('flamingo-token');
+      if (!token) throw new Error('No auth token');
+      
+      const response = await fetch(`/api/conversations/${conversationId}/messages`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+      
+      if (!response.ok) throw new Error('Failed to fetch messages');
+      return response.json();
+    },
+    enabled: !!conversationId && !!user,
+    staleTime: 10000,
   });
 
-  const refreshConversations = useCallback(async () => {
-    try {
-      // Assuming getConversations fetches conversations, this might need adjustment
-      const response = await apiRequest('GET', '/api/conversations');
-      const data = await response.json();
-      setConversations(data);
+  // Create conversation mutation
+  const createConversationMutation = useMutation({
+    mutationFn: async (title: string) => {
+      const token = localStorage.getItem('flamingo-token');
+      if (!token) throw new Error('No auth token');
+      
+      const response = await fetch('/api/conversations', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ title }),
+      });
+      
+      if (!response.ok) throw new Error('Failed to create conversation');
+      return response.json();
+    },
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/conversations'] });
-    } catch (error) {
-      console.error('Failed to refresh conversations:', error);
-    }
-  }, [queryClient]);
+    },
+  });
 
   // Send message mutation
   const sendMessageMutation = useMutation({
-    mutationFn: async (content: string) => {
-      let conversationId = currentConversationId;
+    mutationFn: async ({ prompt, conversationId: convId, selectedModel }: {
+      prompt: string;
+      conversationId?: string;
+      selectedModel?: string;
+    }) => {
+      const token = localStorage.getItem('flamingo-token');
+      if (!token) throw new Error('No auth token');
 
-      // Create new conversation if none exists
-      if (!conversationId) {
-        const conversationResponse = await apiRequest('POST', '/api/conversations', {
-          title: content.substring(0, 50) + (content.length > 50 ? '...' : '')
-        });
-
-        if (!conversationResponse.ok) {
-          throw new Error('Failed to create conversation');
-        }
-
-        const newConversation = await conversationResponse.json();
-        conversationId = newConversation.id;
-        setCurrentConversationId(conversationId);
-
-        // Update conversations immediately
-        setConversations(prev => [newConversation, ...prev]);
-      }
-
-      // Send message to chat API
-      const response = await apiRequest('POST', '/api/agent', {
-        prompt: content,
-        conversationId: conversationId,
-        selectedModel: 'auto',
-        useEnhancement: false
+      // Create abort controller for this request
+      abortControllerRef.current = new AbortController();
+      
+      const response = await fetch('/api/agent', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          prompt,
+          conversationId: convId,
+          selectedModel: selectedModel || 'gpt-3.5-turbo',
+          useEnhancement: false,
+        }),
+        signal: abortControllerRef.current.signal,
       });
-
+      
       if (!response.ok) {
-        const errorData = await response.text();
-        throw new Error(`Failed to send message: ${errorData}`);
+        const errorData = await response.json().catch(() => ({ message: 'Unknown error' }));
+        throw new Error(errorData.message || 'Failed to send message');
       }
-
-      const result = await response.json();
-      return { result, conversationId };
+      
+      return response.json();
     },
-    onMutate: async (content: string) => {
-      // Cancel any outgoing refetches so they don't overwrite our optimistic update
-      const conversationId = currentConversationId;
-      if (conversationId) {
-        await queryClient.cancelQueries({
-          queryKey: ['/api/conversations', conversationId, 'messages']
-        });
-
-        // Snapshot the previous value
-        const previousMessages = queryClient.getQueryData(['/api/conversations', conversationId, 'messages']);
-
-        // Optimistically update to the new value with user message
-        const optimisticUserMessage = {
-          id: `temp-${Date.now()}`,
-          content: content,
-          role: 'user',
-          conversationId: conversationId,
-          createdAt: new Date(),
-          selectedModel: null
-        };
-
-        queryClient.setQueryData(
-          ['/api/conversations', conversationId, 'messages'],
-          (old: any[] = []) => [...old, optimisticUserMessage]
-        );
-
-        return { previousMessages, conversationId };
-      }
-    },
-    onSuccess: async (data) => {
-      const { conversationId } = data;
-
-      // Invalidate queries to trigger fresh data fetch
+    onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['/api/conversations'] });
-      queryClient.invalidateQueries({
-        queryKey: ['/api/conversations', conversationId, 'messages']
-      });
-
-      // Force immediate refetch of messages for current conversation
-      if (conversationId === currentConversationId && refetchMessages) {
-        await refetchMessages();
+      if (conversationId) {
+        queryClient.invalidateQueries({ queryKey: ['/api/conversations', conversationId, 'messages'] });
       }
-
-      // Refresh conversations list
-      await refreshConversations();
+      setIsTyping(false);
+      setCurrentMessage('');
     },
-    onError: (error, variables, context: any) => {
-      console.error("Error sending message:", error);
-
-      // If we have context and conversationId, restore previous messages
-      if (context?.conversationId && context?.previousMessages) {
-        queryClient.setQueryData(
-          ['/api/conversations', context.conversationId, 'messages'],
-          context.previousMessages
-        );
-      }
-    }
+    onError: (error) => {
+      console.error('Send message error:', error);
+      setIsTyping(false);
+      setCurrentMessage('');
+    },
   });
 
-  const currentConversation = conversations.find(c => c.id === currentConversationId);
-  const isLoading = isConversationsLoading || isMessagesLoading || sendMessageMutation.isPending;
-  const error = sendMessageMutation.error; // Assuming mutation can have an error property
+  const sendMessage = useCallback(async (prompt: string, selectedModel?: string) => {
+    if (!prompt.trim() || !user) return;
+
+    setIsTyping(true);
+    setCurrentMessage('');
+
+    try {
+      await sendMessageMutation.mutateAsync({
+        prompt: prompt.trim(),
+        conversationId,
+        selectedModel,
+      });
+    } catch (error) {
+      console.error('Failed to send message:', error);
+      setIsTyping(false);
+    }
+  }, [user, conversationId, sendMessageMutation]);
+
+  const createConversation = useCallback(async (title: string) => {
+    try {
+      return await createConversationMutation.mutateAsync(title);
+    } catch (error) {
+      console.error('Failed to create conversation:', error);
+      throw error;
+    }
+  }, [createConversationMutation]);
+
+  const stopGeneration = useCallback(() => {
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+      abortControllerRef.current = null;
+    }
+    setIsTyping(false);
+    setCurrentMessage('');
+  }, []);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
+    };
+  }, []);
 
   return {
-    conversations,
     messages,
-    currentConversation,
-    sendMessage: sendMessageMutation.mutateAsync,
-    isLoading,
-    setCurrentConversation: setCurrentConversationId,
-    refreshConversations, // Added refreshConversations
-    isMobile // Exposing isMobile
+    conversations,
+    isLoading: messagesLoading || conversationsLoading,
+    isTyping,
+    currentMessage,
+    sendMessage,
+    createConversation,
+    stopGeneration,
+    refetchMessages,
+    error: sendMessageMutation.error,
+    isCreatingConversation: createConversationMutation.isPending,
+    isSending: sendMessageMutation.isPending,
   };
 }

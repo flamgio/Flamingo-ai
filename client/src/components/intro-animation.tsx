@@ -1,4 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
+import { gsap } from 'gsap';
+import { useGSAP } from '@gsap/react';
 import '../new-intro-styles.css';
 
 interface IntroAnimationProps {
@@ -6,19 +8,65 @@ interface IntroAnimationProps {
 }
 
 const IntroAnimation: React.FC<IntroAnimationProps> = ({ onComplete }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const titleRef = useRef<HTMLDivElement>(null);
+  const particlesRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(() => {
+    if (!containerRef.current) return;
+
+    const tl = gsap.timeline({
+      onComplete: () => {
+        // Enhanced exit animation
+        gsap.to(containerRef.current, {
+          opacity: 0,
+          scale: 1.1,
+          duration: 0.8,
+          ease: "power2.inOut",
+          onComplete
+        });
+      }
+    });
+
+    // Enhanced entrance animations with GSAP
+    tl.fromTo(".flamingo-main-title", 
+      { opacity: 0, y: 100, scale: 0.5 },
+      { opacity: 1, y: 0, scale: 1, duration: 1.5, ease: "back.out(1.7)" }
+    )
+    .fromTo(".intro-text-subtitle", 
+      { opacity: 0, y: 50 },
+      { opacity: 1, y: 0, duration: 1, ease: "power2.out" },
+      "-=0.5"
+    )
+    .fromTo(".particle", 
+      { opacity: 0, scale: 0 },
+      { 
+        opacity: 1, 
+        scale: 1, 
+        duration: 0.5,
+        stagger: 0.1,
+        ease: "back.out(1.7)" 
+      },
+      "-=1"
+    );
+
+    // Wait for 5 seconds total, then complete
+    tl.to({}, { duration: 2 });
+  }, [onComplete]);
+
   useEffect(() => {
-    // Complete the animation after 6 seconds
-    const completeTimer = setTimeout(() => {
+    // Fallback timer in case GSAP fails
+    const fallbackTimer = setTimeout(() => {
       onComplete();
-    }, 6000);
+    }, 7000);
 
     return () => {
-      clearTimeout(completeTimer);
+      clearTimeout(fallbackTimer);
     };
   }, [onComplete]);
 
   return (
-    <div className="fixed inset-0 z-50 bg-gradient-to-br from-gray-900 via-black to-gray-800 flex items-center justify-center overflow-hidden">
+    <div ref={containerRef} className="fixed inset-0 z-50 bg-gradient-to-br from-gray-900 via-black to-gray-800 flex items-center justify-center overflow-hidden">
       {/* Black and White Background Effects */}
       <div className="absolute inset-0">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-white/10 rounded-full blur-3xl animate-pulse"></div>
@@ -176,19 +224,19 @@ const IntroAnimation: React.FC<IntroAnimationProps> = ({ onComplete }) => {
         </div>
 
         {/* FLAMINGO AI Main Text */}
-        <div className="intro-text-container relative z-20">
-          <h1 className="flamingo-main-title animate-title-entrance">
+        <div ref={titleRef} className="intro-text-container relative z-20">
+          <h1 className="flamingo-main-title">
             <span className="title-word flamingo-word">FLAMINGO</span>
             <span className="title-word ai-word">AI</span>
           </h1>
-          <div className="intro-text-subtitle animate-subtitle-fade">
+          <div className="intro-text-subtitle">
             <span className="text-stream">The Evo<span className="evolution-text">lution</span> of AI Assistance</span>
           </div>
         </div>
       </div>
       
       {/* Enhanced Floating Particles */}
-      <div className="flamingo-particles">
+      <div ref={particlesRef} className="flamingo-particles">
         <div className="particle particle-1"></div>
         <div className="particle particle-2"></div>
         <div className="particle particle-3"></div>

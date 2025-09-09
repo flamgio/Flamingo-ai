@@ -1,13 +1,16 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useLocation } from "wouter";
 import { useAuth } from "@/hooks/use-auth";
 import { motion } from "framer-motion";
+import { gsap } from "gsap";
+import { useGSAP } from "@gsap/react";
 import { Button } from "@/components/ui/button";
 import { DashboardSidebar } from "@/components/dashboard-sidebar";
 import { AnalyticsChart } from "@/components/analytics-chart";
 import { useScreenTime } from "@/hooks/use-screen-time";
 import { useUserAnalytics } from "@/hooks/use-user-analytics";
 import { useRealTimeClock } from "@/hooks/use-real-time-clock";
+import { animations, gsapUtils } from "@/lib/animations";
 import logoImg from "@/assets/logo.png";
 
 export default function Dashboard() {
@@ -17,6 +20,13 @@ export default function Dashboard() {
   const { formattedTime, sessionTime } = useScreenTime();
   const { analytics, trackPageVisit, trackScreenTime } = useUserAnalytics();
   const { formattedTime: clockTime, formattedDate } = useRealTimeClock();
+  
+  // GSAP refs for animations
+  const containerRef = useRef<HTMLDivElement>(null);
+  const statsCardsRef = useRef<HTMLDivElement>(null);
+  const chartsRef = useRef<HTMLDivElement>(null);
+  const actionCardsRef = useRef<HTMLDivElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
 
   // Real user analytics data
   const activityData = analytics.activityData;
@@ -46,6 +56,90 @@ export default function Dashboard() {
     }
   }, [sessionTime, trackScreenTime, user]);
 
+  // GSAP animations on mount
+  useGSAP(() => {
+    if (!user || !containerRef.current) return;
+
+    const tl = gsap.timeline();
+
+    // Header entrance
+    tl.fromTo(headerRef.current,
+      { opacity: 0, y: -50 },
+      { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }
+    )
+    
+    // Stats cards staggered entrance
+    .fromTo(statsCardsRef.current?.children || [],
+      { opacity: 0, y: 30, scale: 0.9 },
+      { 
+        opacity: 1, 
+        y: 0, 
+        scale: 1,
+        duration: 0.6,
+        stagger: 0.15,
+        ease: "back.out(1.7)"
+      },
+      "-=0.4"
+    )
+    
+    // Charts entrance
+    .fromTo(chartsRef.current?.children || [],
+      { opacity: 0, x: -50 },
+      { 
+        opacity: 1, 
+        x: 0,
+        duration: 0.8,
+        stagger: 0.2,
+        ease: "power2.out"
+      },
+      "-=0.2"
+    )
+    
+    // Action cards entrance
+    .fromTo(actionCardsRef.current?.children || [],
+      { opacity: 0, y: 50, rotationY: -15 },
+      { 
+        opacity: 1, 
+        y: 0, 
+        rotationY: 0,
+        duration: 0.8,
+        stagger: 0.2,
+        ease: "power2.out"
+      },
+      "-=0.4"
+    );
+
+    // Add hover animations to stats cards
+    const statsCards = statsCardsRef.current?.children;
+    if (statsCards) {
+      Array.from(statsCards).forEach((card) => {
+        const element = card as HTMLElement;
+        
+        element.addEventListener('mouseenter', () => {
+          gsap.to(element, {
+            y: -5,
+            scale: 1.02,
+            rotationY: 2,
+            boxShadow: "0 20px 40px rgba(168, 85, 247, 0.3)",
+            duration: 0.3,
+            ease: "power2.out"
+          });
+        });
+        
+        element.addEventListener('mouseleave', () => {
+          gsap.to(element, {
+            y: 0,
+            scale: 1,
+            rotationY: 0,
+            boxShadow: "0 0 0 rgba(168, 85, 247, 0)",
+            duration: 0.3,
+            ease: "power2.out"
+          });
+        });
+      });
+    }
+  }, [user]);
+
   const handleStartChat = () => {
     setLocation('/chat');
   };
@@ -68,7 +162,7 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="flex min-h-screen bg-black overflow-hidden relative">
+    <div ref={containerRef} className="flex min-h-screen bg-black overflow-hidden relative">
       {/* Mobile Sidebar Overlay */}
       {sidebarCollapsed && (
         <div 
@@ -93,7 +187,7 @@ export default function Dashboard() {
         </div>
 
         {/* Header with Screen Time */}
-        <div className="relative z-10 p-3 sm:p-6 border-b border-purple-500/20">
+        <div ref={headerRef} className="relative z-10 p-3 sm:p-6 border-b border-purple-500/20">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div className="flex-1">
               <div className="flex items-center gap-3 lg:hidden">
@@ -130,55 +224,59 @@ export default function Dashboard() {
         {/* Dashboard Content */}
         <div className="relative z-10 p-3 sm:p-6 overflow-y-auto" style={{ height: 'calc(100vh - 120px)' }}>
           {/* Stats Cards Row */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6 mb-6 sm:mb-8">
+          <div ref={statsCardsRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6 mb-6 sm:mb-8">
             {/* Quick Stats */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="bg-gradient-to-br from-purple-600/20 to-pink-600/20 backdrop-blur-md border border-purple-400/30 rounded-lg p-3 sm:p-4"
-            >
+            <div className="bg-gradient-to-br from-purple-600/20 to-pink-600/20 backdrop-blur-md border border-purple-400/30 rounded-xl p-4 sm:p-6 hover:border-purple-400/50 transition-all duration-300 cursor-pointer stats-card">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-purple-200/70 text-sm">Total Messages</p>
-                  <p className="text-2xl font-bold text-white">247</p>
+                  <p className="text-purple-200/70 text-sm font-medium">Total Messages</p>
+                  <p className="text-3xl font-bold text-white mt-1 stats-number">247</p>
+                  <div className="flex items-center mt-2">
+                    <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse mr-2"></div>
+                    <span className="text-xs text-green-400">+12 today</span>
+                  </div>
                 </div>
-                <i className="fas fa-comment text-purple-300 text-2xl"></i>
+                <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center">
+                  <i className="fas fa-comment text-white text-xl"></i>
+                </div>
               </div>
-            </motion.div>
+            </div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="bg-gradient-to-br from-purple-600/20 to-pink-600/20 backdrop-blur-md border border-purple-400/30 rounded-lg p-3 sm:p-4"
-            >
+            <div className="bg-gradient-to-br from-blue-600/20 to-cyan-600/20 backdrop-blur-md border border-blue-400/30 rounded-xl p-4 sm:p-6 hover:border-blue-400/50 transition-all duration-300 cursor-pointer stats-card">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-purple-200/70 text-sm">Conversations</p>
-                  <p className="text-2xl font-bold text-white">18</p>
+                  <p className="text-blue-200/70 text-sm font-medium">Conversations</p>
+                  <p className="text-3xl font-bold text-white mt-1 stats-number">18</p>
+                  <div className="flex items-center mt-2">
+                    <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse mr-2"></div>
+                    <span className="text-xs text-blue-400">3 active</span>
+                  </div>
                 </div>
-                <i className="fas fa-comments text-purple-300 text-2xl"></i>
+                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center">
+                  <i className="fas fa-comments text-white text-xl"></i>
+                </div>
               </div>
-            </motion.div>
+            </div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="bg-gradient-to-br from-purple-600/20 to-pink-600/20 backdrop-blur-md border border-purple-400/30 rounded-lg p-3 sm:p-4"
-            >
+            <div className="bg-gradient-to-br from-orange-600/20 to-red-600/20 backdrop-blur-md border border-orange-400/30 rounded-xl p-4 sm:p-6 hover:border-orange-400/50 transition-all duration-300 cursor-pointer stats-card">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-purple-200/70 text-sm">Active Time</p>
-                  <p className="text-2xl font-bold text-white">4h 32m</p>
+                  <p className="text-orange-200/70 text-sm font-medium">Active Time</p>
+                  <p className="text-3xl font-bold text-white mt-1 stats-number">4h 32m</p>
+                  <div className="flex items-center mt-2">
+                    <div className="w-2 h-2 bg-orange-500 rounded-full animate-pulse mr-2"></div>
+                    <span className="text-xs text-orange-400">This session</span>
+                  </div>
                 </div>
-                <i className="fas fa-clock text-purple-300 text-2xl"></i>
+                <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-500 rounded-xl flex items-center justify-center">
+                  <i className="fas fa-clock text-white text-xl"></i>
+                </div>
               </div>
-            </motion.div>
+            </div>
           </div>
 
           {/* Analytics Charts Row */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-8 mb-6 sm:mb-8">
+          <div ref={chartsRef} className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-8 mb-6 sm:mb-8">
             <AnalyticsChart 
               data={activityData} 
               type="line" 
@@ -194,7 +292,7 @@ export default function Dashboard() {
           </div>
 
           {/* Action Cards Row */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-8">
+          <div ref={actionCardsRef} className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-8">
             {/* Chat Card */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}

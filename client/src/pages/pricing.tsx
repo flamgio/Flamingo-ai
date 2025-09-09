@@ -1,19 +1,41 @@
 import { useLocation } from "wouter";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { useState, useRef } from "react";
 import { useTheme } from "@/components/ui/theme-provider";
+import { gsap } from "gsap";
+import { useGSAP } from "@gsap/react";
 import logoImg from "@/assets/logo.png";
 import { ParallaxPageWrapper, ParallaxAnimation } from "@/components/parallax-animation";
 import { CryptoPayment } from "@/components/crypto-payment";
-import { Moon, Sun } from "lucide-react";
+import { Moon, Sun, Check, Star, Sparkles, Zap, Crown } from "lucide-react";
 import "../styles/new-theme-toggle.css";
+
+// Premium pricing plans data
+interface PricingPlan {
+  name: string;
+  price: string;
+  period: string;
+  description: string;
+  features: string[];
+  popular?: boolean;
+  badge?: string;
+  buttonText: string;
+  buttonAction: () => void;
+}
 
 export default function Pricing() {
   const [, setLocation] = useLocation();
   const { theme, toggleTheme } = useTheme();
   const [showCryptoModal, setShowCryptoModal] = useState(false);
   const [showPaymentOptions, setShowPaymentOptions] = useState(false);
+  
+  // GSAP refs for premium animations
+  const containerRef = useRef<HTMLDivElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
+  const cardsRef = useRef<HTMLDivElement>(null);
 
   const handleBackToDashboard = () => {
     setLocation('/dashboard');
@@ -27,6 +49,110 @@ export default function Pricing() {
     navigator.clipboard.writeText(text);
     alert(`${type} address copied to clipboard!`);
   };
+  
+  // Premium pricing plans
+  const pricingPlans: PricingPlan[] = [
+    {
+      name: "Flamingo Free",
+      price: "$0",
+      period: "/forever",
+      description: "Perfect for getting started with AI assistance",
+      badge: "Free Forever",
+      features: [
+        "Basic AI conversations",
+        "5 messages per day",
+        "Standard response speed",
+        "Community support",
+        "Basic text generation"
+      ],
+      buttonText: "Current Plan",
+      buttonAction: () => setLocation('/dashboard')
+    },
+    {
+      name: "Flamingo Premium",
+      price: "$5",
+      period: "/month",
+      description: "For power users and professionals",
+      badge: "Most Popular",
+      popular: true,
+      features: [
+        "Unlimited AI conversations",
+        "Advanced AI reasoning",
+        "Priority response speed",
+        "Premium models access",
+        "Enhanced creativity tools",
+        "Complex problem solving",
+        "24/7 premium support",
+        "API access",
+        "Custom integrations"
+      ],
+      buttonText: "Upgrade Now",
+      buttonAction: () => setShowPaymentOptions(true)
+    }
+  ];
+  
+  // Premium GSAP animations
+  useGSAP(() => {
+    if (!containerRef.current) return;
+    
+    const tl = gsap.timeline({ delay: 0.2 });
+    
+    // Header entrance
+    tl.fromTo(headerRef.current,
+      { opacity: 0, y: -50, scale: 0.9 },
+      { opacity: 1, y: 0, scale: 1, duration: 1, ease: "back.out(1.7)" }
+    )
+    
+    // Cards staggered entrance with 3D effect
+    .fromTo(cardsRef.current?.children || [],
+      { 
+        opacity: 0, 
+        y: 100, 
+        rotationY: -15, 
+        scale: 0.8 
+      },
+      { 
+        opacity: 1, 
+        y: 0, 
+        rotationY: 0, 
+        scale: 1,
+        duration: 0.8,
+        stagger: 0.2,
+        ease: "back.out(1.7)"
+      },
+      "-=0.5"
+    );
+    
+    // Add hover animations to cards
+    const cards = cardsRef.current?.children;
+    if (cards) {
+      Array.from(cards).forEach((card) => {
+        const element = card as HTMLElement;
+        
+        element.addEventListener('mouseenter', () => {
+          gsap.to(element, {
+            y: -10,
+            scale: 1.05,
+            rotationY: 5,
+            boxShadow: "0 25px 50px rgba(139, 92, 246, 0.3)",
+            duration: 0.3,
+            ease: "power2.out"
+          });
+        });
+        
+        element.addEventListener('mouseleave', () => {
+          gsap.to(element, {
+            y: 0,
+            scale: 1,
+            rotationY: 0,
+            boxShadow: "0 0 0 rgba(139, 92, 246, 0)",
+            duration: 0.3,
+            ease: "power2.out"
+          });
+        });
+      });
+    }
+  }, []);
 
   return (
     <ParallaxPageWrapper>
@@ -101,91 +227,98 @@ export default function Pricing() {
           </p>
         </motion.div>
 
-        {/* Pricing Cards */}
-        <div className="flex flex-wrap justify-center gap-8 max-w-4xl">
-          {/* Free Plan */}
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-          >
-            <div className="card">
-              <div className="title">Free Plan</div>
-              <div className="pricing">
-                $0<span className="pricing-time">/month</span>
-              </div>
-              <div className="sub-title">Perfect for getting started</div>
-              <ul className="list">
-                <li className="list-item">
-                  <span className="check">✓</span>
-                  Basic intelligent conversations
-                </li>
-                <li className="list-item">
-                  <span className="check">✓</span>
-                  Quick responses for simple questions
-                </li>
-                <li className="list-item">
-                  <span className="check">✓</span>
-                  Limited daily conversations
-                </li>
-                <li className="list-item">
-                  <span className="check">✓</span>
-                  Standard response quality
-                </li>
-                <li className="list-item">
-                  <span className="check">✓</span>
-                  Basic text generation
-                </li>
-              </ul>
-              <button className="button" onClick={() => setLocation('/dashboard')}>
-                <span className="text-button">Current Plan</span>
-              </button>
-            </div>
-          </motion.div>
+        {/* Premium Pricing Cards */}
+        <div ref={cardsRef} className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+          {pricingPlans.map((plan, index) => (
+            <Card 
+              key={plan.name}
+              className={`relative overflow-hidden backdrop-blur-xl transition-all duration-300 ${
+                plan.popular 
+                  ? 'border-2 border-gradient-to-r from-purple-500 to-pink-500 bg-gradient-to-br from-purple-900/40 via-black/60 to-pink-900/40 shadow-2xl shadow-purple-500/20' 
+                  : 'border border-white/20 bg-gradient-to-br from-white/10 to-white/5 hover:border-purple-500/50'
+              }`}
+              data-testid={`pricing-card-${index}`}
+            >
+              {/* Glow effect for premium plan */}
+              {plan.popular && (
+                <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-pink-500/20 animate-pulse pointer-events-none" />
+              )}
+              
+              {/* Popular badge */}
+              {plan.popular && (
+                <div className="absolute -top-1 -right-1 z-10">
+                  <Badge className="bg-gradient-to-r from-purple-500 to-pink-500 text-white border-0 px-3 py-1 font-semibold flex items-center gap-1">
+                    <Crown className="w-3 h-3" />
+                    {plan.badge}
+                  </Badge>
+                </div>
+              )}
+              
+              <CardHeader className="text-center pb-6 relative z-10">
+                <div className="flex items-center justify-center mb-4">
+                  {plan.popular ? (
+                    <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center shadow-lg animate-pulse">
+                      <Sparkles className="w-8 h-8 text-white" />
+                    </div>
+                  ) : (
+                    <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full flex items-center justify-center shadow-lg">
+                      <Zap className="w-8 h-8 text-white" />
+                    </div>
+                  )}
+                </div>
+                
+                <CardTitle className="text-2xl font-bold text-white mb-2">
+                  {plan.name}
+                </CardTitle>
+                
+                <div className="flex items-baseline justify-center mb-4">
+                  <span className={`text-5xl font-bold ${
+                    plan.popular 
+                      ? 'bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent' 
+                      : 'text-blue-400'
+                  }`}>
+                    {plan.price}
+                  </span>
+                  <span className="text-white/60 ml-1">{plan.period}</span>
+                </div>
+                
+                <p className="text-white/80 text-sm leading-relaxed">
+                  {plan.description}
+                </p>
+              </CardHeader>
 
-          {/* Paid Plan */}
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-          >
-            <div className="card">
-              <div className="title">Premium Plan</div>
-              <div className="pricing">
-                $5<span className="pricing-time">/month</span>
-              </div>
-              <div className="sub-title">For power users and professionals</div>
-              <ul className="list">
-                <li className="list-item">
-                  <span className="check">✓</span>
-                  Unlimited AI conversations
-                </li>
-                <li className="list-item">
-                  <span className="check">✓</span>
-                  Advanced AI reasoning and analysis
-                </li>
-                <li className="list-item">
-                  <span className="check">✓</span>
-                  Priority response speed
-                </li>
-                <li className="list-item">
-                  <span className="check">✓</span>
-                  Enhanced creativity and writing
-                </li>
-                <li className="list-item">
-                  <span className="check">✓</span>
-                  Complex problem solving
-                </li>
-                <li className="list-item">
-                  <span className="check">✓</span>
-                  Premium support
-                </li>
-              </ul>
-              <button className="button" onClick={() => setShowCryptoModal(true)}>
-                <span className="text-button">Choose Payment Method</span>
-              </button>
-            </div>
-          </motion.div>
+              <CardContent className="pt-0 relative z-10">
+                <ul className="space-y-4 mb-8">
+                  {plan.features.map((feature, featureIndex) => (
+                    <li key={featureIndex} className="flex items-start space-x-3 group">
+                      <div className={`w-5 h-5 rounded-full flex items-center justify-center mt-0.5 transition-all duration-300 group-hover:scale-110 ${
+                        plan.popular 
+                          ? 'bg-gradient-to-r from-purple-500 to-pink-500 shadow-lg shadow-purple-500/30' 
+                          : 'bg-gradient-to-r from-green-500 to-emerald-500 shadow-lg shadow-green-500/30'
+                      }`}>
+                        <Check className="w-3 h-3 text-white" />
+                      </div>
+                      <span className="text-white/90 text-sm leading-relaxed flex-1">
+                        {feature}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+
+                <Button 
+                  onClick={plan.buttonAction}
+                  className={`w-full py-3 font-semibold transition-all duration-300 ${
+                    plan.popular
+                      ? 'bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white shadow-lg shadow-purple-500/30 hover:shadow-purple-500/50 hover:scale-105'
+                      : 'bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:scale-105'
+                  }`}
+                  data-testid={`button-${plan.name.toLowerCase().replace(' ', '-')}`}
+                >
+                  {plan.buttonText}
+                </Button>
+              </CardContent>
+            </Card>
+          ))}
         </div>
 
         {/* Crypto Payment Modal */}

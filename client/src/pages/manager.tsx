@@ -324,22 +324,22 @@ export default function Manager() {
         <div ref={contentRef}>
           <Tabs value={currentTab} onValueChange={setCurrentTab} className="w-full">
             <div className="overflow-x-auto">
-              <TabsList className="grid grid-cols-4 w-full min-w-[400px] bg-black/40 backdrop-blur-xl border border-orange-500/20">
-                <TabsTrigger value="overview" data-testid="tab-overview" className="text-xs sm:text-sm data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-600 data-[state=active]:to-pink-600 data-[state=active]:text-white">
+              <TabsList className="grid grid-cols-4 w-full min-w-[400px] bg-[#1a1a1a] backdrop-blur-xl border border-[#22c55e]/20">
+                <TabsTrigger value="overview" data-testid="tab-overview" className="text-xs sm:text-sm data-[state=active]:bg-[#22c55e]/20 data-[state=active]:border data-[state=active]:border-[#22c55e]/50 data-[state=active]:text-[#22c55e]">
                   <BarChart3 className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
                   <span className="hidden sm:inline">Overview</span>
                   <span className="sm:hidden">Stats</span>
                 </TabsTrigger>
-                <TabsTrigger value="users" data-testid="tab-users" className="text-xs sm:text-sm data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-600 data-[state=active]:to-pink-600 data-[state=active]:text-white">
+                <TabsTrigger value="users" data-testid="tab-users" className="text-xs sm:text-sm data-[state=active]:bg-[#22c55e]/20 data-[state=active]:border data-[state=active]:border-[#22c55e]/50 data-[state=active]:text-[#22c55e]">
                   <Users className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
                   Users
                 </TabsTrigger>
-                <TabsTrigger value="analytics" data-testid="tab-analytics" className="text-xs sm:text-sm data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-600 data-[state=active]:to-pink-600 data-[state=active]:text-white">
+                <TabsTrigger value="analytics" data-testid="tab-analytics" className="text-xs sm:text-sm data-[state=active]:bg-[#22c55e]/20 data-[state=active]:border data-[state=active]:border-[#22c55e]/50 data-[state=active]:text-[#22c55e]">
                   <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
                   <span className="hidden sm:inline">Analytics</span>
                   <span className="sm:hidden">Charts</span>
                 </TabsTrigger>
-                <TabsTrigger value="settings" data-testid="tab-settings" className="text-xs sm:text-sm data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-600 data-[state=active]:to-pink-600 data-[state=active]:text-white">
+                <TabsTrigger value="settings" data-testid="tab-settings" className="text-xs sm:text-sm data-[state=active]:bg-[#22c55e]/20 data-[state=active]:border data-[state=active]:border-[#22c55e]/50 data-[state=active]:text-[#22c55e]">
                   <Settings className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
                   <span className="hidden sm:inline">Settings</span>
                   <span className="sm:hidden">Config</span>
@@ -350,7 +350,7 @@ export default function Manager() {
             <TabsContent value="overview" className="mt-6">
               <div className="space-y-6">
                 {/* Enhanced Stats */}
-                <Card className="bg-black/60 backdrop-blur-xl border border-orange-500/30 shadow-2xl">
+                <Card className="bg-[#1a1a1a] backdrop-blur-xl border border-[#22c55e]/20 shadow-2xl">
                   <CardHeader>
                     <CardTitle className="flex items-center text-white">
                       <Activity className="w-5 h-5 mr-2 text-orange-400" />

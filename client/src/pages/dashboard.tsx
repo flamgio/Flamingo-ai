@@ -298,32 +298,32 @@ export default function Dashboard() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5, ease: "easeOut" }}
-              className="relative h-[16em] sm:h-[18em] w-full border-2 border-[rgba(75,30,133,0.5)] rounded-[1.5em] bg-gradient-to-br from-[rgba(75,30,133,1)] via-purple-700/80 to-[rgba(75,30,133,0.2)] text-white p-[1em] sm:p-[1.5em] flex justify-center items-left flex-col gap-[0.8em] sm:gap-[1em] backdrop-blur-[12px] hover:shadow-xl hover:shadow-purple-500/20 transition-all duration-300 group/card hover:-translate-y-1"
+              className="relative h-[16em] sm:h-[18em] w-full border-2 border-[#22c55e]/40 rounded-[1.5em] bg-gradient-to-br from-[#1a1a1a] via-[#0c0c0c]/80 to-[#1a1a1a]/20 text-white p-[1em] sm:p-[1.5em] flex justify-center items-left flex-col gap-[0.8em] sm:gap-[1em] backdrop-blur-[12px] hover:shadow-xl hover:shadow-[#22c55e]/20 transition-all duration-300 group/card hover:-translate-y-1"
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-purple-600/30 via-fuchsia-500/20 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-500 rounded-[1.5em]"></div>
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(120,50,190,0.1),transparent_60%)] group-hover/card:animate-pulse"></div>
+              <div className="absolute inset-0 bg-gradient-to-br from-[#22c55e]/20 via-[#16a34a]/10 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-500 rounded-[1.5em]"></div>
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(34,197,94,0.1),transparent_60%)] group-hover/card:animate-pulse"></div>
 
               <div className="absolute top-4 right-4 flex gap-2">
-                <div className="w-2 h-2 rounded-full bg-purple-300/50"></div>
-                <div className="w-2 h-2 rounded-full bg-purple-300/30"></div>
-                <div className="w-2 h-2 rounded-full bg-purple-300/10"></div>
+                <div className="w-2 h-2 rounded-full bg-[#22c55e]/50"></div>
+                <div className="w-2 h-2 rounded-full bg-[#22c55e]/30"></div>
+                <div className="w-2 h-2 rounded-full bg-[#22c55e]/10"></div>
               </div>
 
               <div className="relative z-10 transition-transform duration-300 group-hover/card:translate-y-[-2px] space-y-3">
-                <h1 className="text-[1.8em] sm:text-[2.2em] font-bold bg-gradient-to-r from-white via-purple-100 to-purple-200 bg-clip-text text-transparent">
+                <h1 className="text-[1.8em] sm:text-[2.2em] font-bold bg-gradient-to-r from-white via-[#22c55e] to-[#16a34a] bg-clip-text text-transparent">
                   Chat
                 </h1>
-                <p className="text-[0.9em] text-purple-100/90 leading-relaxed font-light">
+                <p className="text-[0.9em] text-gray-300/90 leading-relaxed font-light">
                   Experience intelligent conversations with advanced technology. Start your journey into seamless communication and discover powerful response capabilities.
                 </p>
               </div>
 
               <button
                 onClick={handleStartChat}
-                className="relative h-fit w-fit px-[1.4em] py-[0.7em] mt-2 border-[1px] border-purple-300/30 rounded-full flex justify-center items-center gap-[0.7em] overflow-hidden group/btn hover:border-purple-300/50 hover:shadow-lg hover:shadow-purple-500/20 active:scale-95 transition-all duration-300 backdrop-blur-[12px] bg-purple-500/10"
+                className="relative h-fit w-fit px-[1.4em] py-[0.7em] mt-2 border-[1px] border-[#22c55e]/40 rounded-full flex justify-center items-center gap-[0.7em] overflow-hidden group/btn hover:border-[#22c55e]/60 hover:shadow-lg hover:shadow-[#22c55e]/20 active:scale-95 transition-all duration-300 backdrop-blur-[12px] bg-[#22c55e]/10"
                 data-testid="start-chat-btn"
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-purple-600/40 via-fuchsia-500/40 to-purple-600/40 translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-700"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-[#22c55e]/40 via-[#16a34a]/40 to-[#22c55e]/40 translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-700"></div>
                 <p className="relative z-10 font-medium tracking-wide">Begin Journey</p>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -341,7 +341,7 @@ export default function Dashboard() {
                 </svg>
               </button>
 
-              <div className="absolute bottom-4 left-4 w-8 h-8 rounded-full bg-gradient-to-br from-purple-400/20 to-transparent blur-sm group-hover/card:animate-pulse"></div>
+              <div className="absolute bottom-4 left-4 w-8 h-8 rounded-full bg-gradient-to-br from-[#22c55e]/20 to-transparent blur-sm group-hover/card:animate-pulse"></div>
             </motion.div>
 
             {/* Premium Features Card */}
@@ -349,32 +349,32 @@ export default function Dashboard() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.3 }}
-              className="relative h-[18em] w-full border-2 border-[rgba(75,30,133,0.5)] rounded-[1.5em] bg-gradient-to-br from-[rgba(75,30,133,1)] via-purple-700/80 to-[rgba(75,30,133,0.2)] text-white p-[1.5em] flex justify-center items-left flex-col gap-[1em] backdrop-blur-[12px] hover:shadow-2xl hover:shadow-purple-500/30 transition-all duration-500 group/card hover:-translate-y-1"
+              className="relative h-[18em] w-full border-2 border-[#16a34a]/40 rounded-[1.5em] bg-gradient-to-br from-[#1a1a1a] via-[#0c0c0c]/80 to-[#1a1a1a]/20 text-white p-[1.5em] flex justify-center items-left flex-col gap-[1em] backdrop-blur-[12px] hover:shadow-2xl hover:shadow-[#16a34a]/30 transition-all duration-500 group/card hover:-translate-y-1"
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-purple-600/30 via-fuchsia-500/20 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-500 rounded-[1.5em]"></div>
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(120,50,190,0.1),transparent_60%)] group-hover/card:animate-pulse"></div>
+              <div className="absolute inset-0 bg-gradient-to-br from-[#16a34a]/20 via-[#15803d]/10 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-500 rounded-[1.5em]"></div>
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(22,163,74,0.1),transparent_60%)] group-hover/card:animate-pulse"></div>
 
               <div className="absolute top-4 right-4 flex gap-2">
-                <div className="w-2 h-2 rounded-full bg-purple-300/50"></div>
-                <div className="w-2 h-2 rounded-full bg-purple-300/30"></div>
-                <div className="w-2 h-2 rounded-full bg-purple-300/10"></div>
+                <div className="w-2 h-2 rounded-full bg-[#16a34a]/50"></div>
+                <div className="w-2 h-2 rounded-full bg-[#16a34a]/30"></div>
+                <div className="w-2 h-2 rounded-full bg-[#16a34a]/10"></div>
               </div>
 
               <div className="relative z-10 transition-transform duration-300 group-hover/card:translate-y-[-2px] space-y-3">
-                <h1 className="text-[1.8em] sm:text-[2.2em] font-bold bg-gradient-to-r from-white via-purple-100 to-purple-200 bg-clip-text text-transparent">
+                <h1 className="text-[1.8em] sm:text-[2.2em] font-bold bg-gradient-to-r from-white via-[#16a34a] to-[#15803d] bg-clip-text text-transparent">
                   Premium
                 </h1>
-                <p className="text-[0.9em] text-purple-100/90 leading-relaxed font-light">
+                <p className="text-[0.9em] text-gray-300/90 leading-relaxed font-light">
                   Unlock unlimited potential with premium features. Enhanced capabilities, priority support, and exclusive tools await your exploration.
                 </p>
               </div>
 
               <button
                 onClick={() => setLocation('/pricing')}
-                className="relative h-fit w-fit px-[1.4em] py-[0.7em] mt-2 border-[1px] border-purple-300/30 rounded-full flex justify-center items-center gap-[0.7em] overflow-hidden group/btn hover:border-purple-300/50 hover:shadow-lg hover:shadow-purple-500/20 active:scale-95 transition-all duration-300 backdrop-blur-[12px] bg-purple-500/10"
+                className="relative h-fit w-fit px-[1.4em] py-[0.7em] mt-2 border-[1px] border-[#16a34a]/40 rounded-full flex justify-center items-center gap-[0.7em] overflow-hidden group/btn hover:border-[#16a34a]/60 hover:shadow-lg hover:shadow-[#16a34a]/20 active:scale-95 transition-all duration-300 backdrop-blur-[12px] bg-[#16a34a]/10"
                 data-testid="pricing-btn"
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-purple-600/40 via-fuchsia-500/40 to-purple-600/40 translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-700"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-[#16a34a]/40 via-[#15803d]/40 to-[#16a34a]/40 translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-700"></div>
                 <p className="relative z-10 font-medium tracking-wide">Explore Now</p>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -392,7 +392,7 @@ export default function Dashboard() {
                 </svg>
               </button>
 
-              <div className="absolute bottom-4 left-4 w-8 h-8 rounded-full bg-gradient-to-br from-purple-400/20 to-transparent blur-sm group-hover/card:animate-pulse"></div>
+              <div className="absolute bottom-4 left-4 w-8 h-8 rounded-full bg-gradient-to-br from-[#16a34a]/20 to-transparent blur-sm group-hover/card:animate-pulse"></div>
             </motion.div>
           </div>
         </div>

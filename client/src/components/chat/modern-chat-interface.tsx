@@ -345,7 +345,7 @@ export default function ModernChatInterface({ conversationId, initialMessages = 
                 className="text-center max-w-lg px-6"
               >
                 <motion.div 
-                  className="w-24 h-24 bg-gradient-to-r from-orange-500 via-pink-500 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-8 shadow-2xl relative overflow-hidden"
+                  className="w-24 h-24 bg-gradient-to-r from-[#22c55e] via-[#16a34a] to-[#15803d] rounded-full flex items-center justify-center mx-auto mb-8 shadow-2xl relative overflow-hidden border-2 border-[#22c55e]/30"
                   animate={{ 
                     rotate: [0, 5, -5, 0],
                     scale: [1, 1.05, 1]
@@ -353,22 +353,22 @@ export default function ModernChatInterface({ conversationId, initialMessages = 
                   transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
                 >
                   <span className="text-white font-bold text-3xl z-10">FA</span>
-                  <div className="absolute inset-0 rounded-full bg-gradient-to-r from-orange-300 to-pink-300 opacity-30 animate-pulse"></div>
-                  <div className="absolute -inset-2 rounded-full bg-gradient-to-r from-orange-400 to-pink-400 opacity-20 animate-ping"></div>
+                  <div className="absolute inset-0 rounded-full bg-gradient-to-r from-[#22c55e]/30 to-[#16a34a]/30 opacity-40 animate-pulse"></div>
+                  <div className="absolute -inset-2 rounded-full bg-[#22c55e]/20 opacity-30 animate-ping"></div>
                 </motion.div>
                 <motion.div
                   initial={{ y: 30, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: 0.4, duration: 0.8 }}
                 >
-                  <h3 className="text-3xl font-bold bg-gradient-to-r from-orange-600 via-pink-600 to-purple-600 bg-clip-text text-transparent mb-4">
+                  <h3 className="text-3xl font-bold bg-gradient-to-r from-[#22c55e] via-[#16a34a] to-[#15803d] bg-clip-text text-transparent mb-4">
                     Welcome to Flamingo AI
                   </h3>
                   <p className="text-gray-600 dark:text-gray-400 text-lg leading-relaxed mb-6">
                     Experience the future of AI conversation. I'm here to assist you with intelligent responses, creative solutions, and engaging discussions.
                   </p>
                   <div className="flex items-center justify-center space-x-2 text-sm text-gray-500 dark:text-gray-400">
-                    <Sparkles className="w-4 h-4 text-orange-500" />
+                    <Sparkles className="w-4 h-4 text-[#22c55e]" />
                     <span>Powered by advanced AI models</span>
                   </div>
                 </motion.div>
@@ -387,10 +387,10 @@ export default function ModernChatInterface({ conversationId, initialMessages = 
                   <div className={`flex items-end space-x-3 max-w-[85%] ${message.role === 'user' ? 'flex-row-reverse space-x-reverse' : ''}`}>
                     {/* Avatar */}
                     <motion.div 
-                      className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 shadow-xl border-2 border-white/20 ${
+                      className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 shadow-xl border-2 border-[#22c55e]/30 ${
                         message.role === 'user' 
-                          ? 'bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-600' 
-                          : 'bg-gradient-to-br from-orange-500 via-pink-500 to-red-500'
+                          ? 'bg-gradient-to-br from-[#22c55e] via-[#16a34a] to-[#15803d]' 
+                          : 'bg-gradient-to-br from-[#1a1a1a] via-[#2a2a2a] to-[#1a1a1a] border-[#22c55e]/50'
                       }`}
                       whileHover={{ scale: 1.1, rotate: 5 }}
                       transition={{ type: "spring", stiffness: 400, damping: 10 }}
@@ -410,14 +410,14 @@ export default function ModernChatInterface({ conversationId, initialMessages = 
                         {/* Message bubble with tail */}
                         <div className={`relative rounded-2xl p-4 shadow-xl backdrop-blur-sm ${
                           message.role === 'user'
-                            ? 'bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-600 text-white ml-4'
-                            : 'bg-white/90 dark:bg-gray-800/90 border border-gray-200/50 dark:border-gray-700/50 mr-4 text-gray-900 dark:text-white'
+                            ? 'bg-gradient-to-br from-[#22c55e] via-[#16a34a] to-[#15803d] text-white ml-4 shadow-[0_0_20px_rgba(34,197,94,0.3)]'
+                            : 'bg-[#1a1a1a]/90 border border-[#22c55e]/20 mr-4 text-white shadow-[0_0_15px_rgba(34,197,94,0.1)]'
                         }`}>
                           {/* Message tail */}
                           <div className={`absolute w-3 h-3 rotate-45 ${
                             message.role === 'user'
-                              ? 'bg-gradient-to-br from-blue-500 to-purple-600 -left-1 bottom-4'
-                              : 'bg-white/90 dark:bg-gray-800/90 border-l border-b border-gray-200/50 dark:border-gray-700/50 -right-1 bottom-4'
+                              ? 'bg-gradient-to-br from-[#22c55e] to-[#15803d] -left-1 bottom-4'
+                              : 'bg-[#1a1a1a]/90 border-l border-b border-[#22c55e]/20 -right-1 bottom-4'
                           }`}></div>
                           
                           {/* Message content */}
@@ -435,16 +435,16 @@ export default function ModernChatInterface({ conversationId, initialMessages = 
                           
                           {/* Assistant message footer */}
                           {message.role === 'assistant' && (
-                            <div className="flex items-center justify-between mt-4 pt-3 border-t border-gray-200/50 dark:border-gray-600/50">
+                            <div className="flex items-center justify-between mt-4 pt-3 border-t border-[#22c55e]/20">
                               <div className="flex items-center space-x-2">
                                 <div className="flex items-center space-x-1">
-                                  <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                                  <span className="text-xs font-medium text-gray-600 dark:text-gray-400">
+                                  <div className="w-2 h-2 bg-[#22c55e] rounded-full animate-pulse shadow-[0_0_8px_rgba(34,197,94,0.6)]"></div>
+                                  <span className="text-xs font-medium text-[#22c55e]/80">
                                     {message.selectedModel || 'Flamingo AI'}
                                   </span>
                                 </div>
                                 <div className="w-1 h-1 bg-gray-400 rounded-full"></div>
-                                <span className="text-xs text-gray-500 dark:text-gray-400">
+                                <span className="text-xs text-gray-400">
                                   {message.createdAt ? new Date(message.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ''}
                                 </span>
                               </div>
@@ -452,13 +452,13 @@ export default function ModernChatInterface({ conversationId, initialMessages = 
                                 variant="ghost"
                                 size="icon"
                                 onClick={() => copyToClipboard(message.content, message.id)}
-                                className="h-7 w-7 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors"
+                                className="h-7 w-7 hover:bg-[#22c55e]/10 rounded-full transition-colors"
                                 data-testid="button-copy-message"
                               >
                                 {copiedMessageId === message.id ? (
-                                  <Check className="h-3 w-3 text-green-500" />
+                                  <Check className="h-3 w-3 text-[#22c55e]" />
                                 ) : (
-                                  <Copy className="h-3 w-3 text-gray-500" />
+                                  <Copy className="h-3 w-3 text-gray-400 hover:text-[#22c55e]" />
                                 )}
                               </Button>
                             </div>
@@ -468,7 +468,7 @@ export default function ModernChatInterface({ conversationId, initialMessages = 
                       
                       {/* Message timestamp for user messages */}
                       {message.role === 'user' && (
-                        <div className="text-xs text-gray-500 dark:text-gray-400 mt-1 mr-6">
+                        <div className="text-xs text-gray-400 mt-1 mr-6">
                           {message.createdAt ? new Date(message.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ''}
                         </div>
                       )}
@@ -485,20 +485,20 @@ export default function ModernChatInterface({ conversationId, initialMessages = 
                   className="flex justify-start"
                 >
                   <div className="flex items-end space-x-3 max-w-[85%]">
-                    <div className="w-10 h-10 bg-gradient-to-br from-orange-500 via-pink-500 to-red-500 rounded-full flex items-center justify-center shadow-xl border-2 border-white/20">
+                    <div className="w-10 h-10 bg-gradient-to-br from-[#1a1a1a] via-[#2a2a2a] to-[#1a1a1a] rounded-full flex items-center justify-center shadow-xl border-2 border-[#22c55e]/50">
                       <span className="text-white text-sm font-bold drop-shadow-sm">FA</span>
                     </div>
-                    <div className="relative rounded-2xl p-4 bg-white/90 dark:bg-gray-800/90 border border-gray-200/50 dark:border-gray-700/50 shadow-xl backdrop-blur-sm mr-4">
+                    <div className="relative rounded-2xl p-4 bg-[#1a1a1a]/90 border border-[#22c55e]/20 shadow-xl backdrop-blur-sm mr-4 shadow-[0_0_15px_rgba(34,197,94,0.1)]">
                       {/* Typing tail */}
-                      <div className="absolute w-3 h-3 rotate-45 bg-white/90 dark:bg-gray-800/90 border-l border-b border-gray-200/50 dark:border-gray-700/50 -right-1 bottom-4"></div>
+                      <div className="absolute w-3 h-3 rotate-45 bg-[#1a1a1a]/90 border-l border-b border-[#22c55e]/20 -right-1 bottom-4"></div>
                       
                       <div ref={typingIndicatorRef} className="flex items-center space-x-2">
                         <div className="flex space-x-1">
-                          <div className="typing-dot w-2 h-2 bg-orange-500 rounded-full"></div>
-                          <div className="typing-dot w-2 h-2 bg-pink-500 rounded-full"></div>
-                          <div className="typing-dot w-2 h-2 bg-purple-500 rounded-full"></div>
+                          <div className="typing-dot w-2 h-2 bg-[#22c55e] rounded-full shadow-[0_0_8px_rgba(34,197,94,0.6)]"></div>
+                          <div className="typing-dot w-2 h-2 bg-[#16a34a] rounded-full shadow-[0_0_8px_rgba(22,163,74,0.6)]"></div>
+                          <div className="typing-dot w-2 h-2 bg-[#15803d] rounded-full shadow-[0_0_8px_rgba(21,128,61,0.6)]"></div>
                         </div>
-                        <span className="text-sm text-gray-600 dark:text-gray-400 font-medium">Flamingo is thinking...</span>
+                        <span className="text-sm text-[#22c55e]/80 font-medium">Flamingo is thinking...</span>
                       </div>
                     </div>
                   </div>
@@ -510,9 +510,9 @@ export default function ModernChatInterface({ conversationId, initialMessages = 
         </div>
 
         {/* Enhanced Input Area */}
-        <div className="border-t border-gray-200/50 dark:border-gray-700/50 bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl p-6">
+        <div className="border-t border-[#22c55e]/20 bg-[#0c0c0c]/80 backdrop-blur-xl p-6">
           <div className="max-w-4xl mx-auto">
-            <div className="flex items-end space-x-4 bg-white/70 dark:bg-gray-800/70 rounded-3xl p-4 shadow-2xl backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 hover:shadow-3xl transition-all duration-300">
+            <div className="flex items-end space-x-4 bg-[#1a1a1a]/80 rounded-3xl p-4 shadow-2xl backdrop-blur-sm border border-[#22c55e]/20 hover:shadow-[0_0_30px_rgba(34,197,94,0.2)] transition-all duration-300">
               <div className="flex-1">
                 <Textarea
                   ref={textareaRef}
@@ -520,7 +520,7 @@ export default function ModernChatInterface({ conversationId, initialMessages = 
                   onChange={(e) => setInputValue(e.target.value)}
                   onKeyDown={handleKeyPress}
                   placeholder="Message Flamingo AI..."
-                  className="min-h-[48px] max-h-36 resize-none border-0 bg-transparent focus:ring-0 focus:outline-none text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 text-base leading-relaxed"
+                  className="min-h-[48px] max-h-36 resize-none border-0 bg-transparent focus:ring-0 focus:outline-none text-white placeholder-gray-400 text-base leading-relaxed"
                   disabled={isLoading}
                   data-testid="input-message"
                 />
@@ -533,7 +533,7 @@ export default function ModernChatInterface({ conversationId, initialMessages = 
                   ref={sendButtonRef}
                   onClick={handleSendMessage}
                   disabled={!inputValue.trim() || isLoading}
-                  className="bg-gradient-to-r from-orange-500 via-pink-500 to-purple-500 hover:from-orange-600 hover:via-pink-600 hover:to-purple-600 text-white border-0 h-12 w-12 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 disabled:opacity-50 disabled:scale-95"
+                  className="bg-gradient-to-r from-[#22c55e] via-[#16a34a] to-[#15803d] hover:from-[#16a34a] hover:via-[#15803d] hover:to-[#166534] text-white border-0 h-12 w-12 rounded-full shadow-xl hover:shadow-[0_0_25px_rgba(34,197,94,0.5)] transition-all duration-300 disabled:opacity-50 disabled:scale-95"
                   data-testid="button-send"
                 >
                   {isLoading ? (
@@ -545,7 +545,7 @@ export default function ModernChatInterface({ conversationId, initialMessages = 
               </motion.div>
             </div>
             {/* Input hint */}
-            <div className="flex items-center justify-center mt-3 text-xs text-gray-500 dark:text-gray-400">
+            <div className="flex items-center justify-center mt-3 text-xs text-gray-400">
               <span>Press Enter to send, Shift + Enter for new line</span>
             </div>
           </div>

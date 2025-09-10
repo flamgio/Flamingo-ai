@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { useGSAP } from '@gsap/react';
+import { Sparkles } from 'lucide-react';
 import '../new-intro-styles.css';
 
 interface IntroAnimationProps {
@@ -11,6 +12,8 @@ const IntroAnimation: React.FC<IntroAnimationProps> = ({ onComplete }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLDivElement>(null);
   const particlesRef = useRef<HTMLDivElement>(null);
+  const droppingLogoRef = useRef<HTMLDivElement>(null);
+  const attachingLogoRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
     if (!containerRef.current) return;
@@ -28,14 +31,40 @@ const IntroAnimation: React.FC<IntroAnimationProps> = ({ onComplete }) => {
       }
     });
 
+    // Dropping Logo Animation - Big logo dropping from middle
+    tl.fromTo(".dropping-logo", 
+      { scale: 3, y: -400, rotation: 180, opacity: 1 },
+      { 
+        scale: 1, 
+        y: 0, 
+        rotation: 0, 
+        opacity: 1,
+        duration: 2.5, 
+        ease: "bounce.out" 
+      }
+    )
     // Enhanced entrance animations with GSAP
-    tl.fromTo(".flamingo-main-title", 
+    .fromTo(".flamingo-main-title", 
       { opacity: 0, y: 100, scale: 0.5 },
-      { opacity: 1, y: 0, scale: 1, duration: 1.5, ease: "backOut" }
+      { opacity: 1, y: 0, scale: 1, duration: 1.5, ease: "backOut" },
+      "-=1"
     )
     .fromTo(".intro-text-subtitle", 
       { opacity: 0, y: 50 },
       { opacity: 1, y: 0, duration: 1, ease: "power2.out" },
+      "-=0.5"
+    )
+    // Small logo dropping and attaching to Flamingo AI text
+    .fromTo(".attaching-logo", 
+      { scale: 0, x: 0, y: -300, opacity: 0 },
+      { 
+        scale: 0.4, 
+        x: 20, 
+        y: 0, 
+        opacity: 1,
+        duration: 1.2,
+        ease: "bounce.out" 
+      },
       "-=0.5"
     )
     .fromTo(".particle", 
@@ -72,6 +101,13 @@ const IntroAnimation: React.FC<IntroAnimationProps> = ({ onComplete }) => {
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-white/10 rounded-full blur-3xl animate-pulse"></div>
         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-white/5 rounded-full blur-3xl animate-pulse"></div>
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-full bg-gradient-radial from-white/5 to-transparent"></div>
+      </div>
+
+      {/* Dropping Logo Animation */}
+      <div ref={droppingLogoRef} className="dropping-logo absolute top-1/4 left-1/2 transform -translate-x-1/2 z-30">
+        <div className="w-32 h-32 bg-gradient-to-br from-purple-600 to-purple-700 rounded-full flex items-center justify-center shadow-2xl border-4 border-purple-400/30">
+          <Sparkles className="w-16 h-16 text-white" />
+        </div>
       </div>
 
       {/* Main Animation Container */}
@@ -225,12 +261,20 @@ const IntroAnimation: React.FC<IntroAnimationProps> = ({ onComplete }) => {
 
         {/* FLAMINGO AI Main Text */}
         <div ref={titleRef} className="intro-text-container relative z-20">
-          <h1 className="flamingo-main-title">
-            <span className="title-word flamingo-word">FLAMINGO</span>
-            <span className="title-word ai-word">AI</span>
+          <h1 className="flamingo-main-title text-white">
+            <span className="title-word flamingo-word text-white">FLAMINGO</span>
+            <span className="title-word ai-word text-white relative inline-flex items-center">
+              AI
+              {/* Small Logo Attaching to Flamingo AI */}
+              <div ref={attachingLogoRef} className="attaching-logo absolute -right-8 top-1/2 transform -translate-y-1/2">
+                <div className="w-8 h-8 bg-gradient-to-br from-purple-600 to-purple-700 rounded-full flex items-center justify-center shadow-lg">
+                  <Sparkles className="w-4 h-4 text-white" />
+                </div>
+              </div>
+            </span>
           </h1>
           <div className="intro-text-subtitle">
-            <span className="text-stream">The Evo<span className="evolution-text">lution</span> of AI Assistance</span>
+            <span className="text-stream text-white">The Evo<span className="evolution-text text-white">lution</span> of AI Assistance</span>
           </div>
         </div>
       </div>

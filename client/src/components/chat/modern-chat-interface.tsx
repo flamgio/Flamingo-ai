@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
+import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
@@ -34,6 +35,7 @@ interface ModernChatInterfaceProps {
 export default function ModernChatInterface({ conversationId, initialMessages = [] }: ModernChatInterfaceProps) {
   const { user } = useAuth();
   const { theme, toggleTheme } = useTheme();
+  const [, setLocation] = useLocation();
   const [messages, setMessages] = useState<Message[]>(initialMessages);
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -214,7 +216,7 @@ export default function ModernChatInterface({ conversationId, initialMessages = 
               <div className="flex items-center justify-between p-4 border-b border-purple-600/30">
                 <div className="flex items-center space-x-3">
                   <button 
-                    onClick={() => window.location.href = '/'}
+                    onClick={() => setLocation('/')}
                     className="w-8 h-8 bg-gradient-to-r from-purple-600 to-purple-700 rounded-lg flex items-center justify-center hover:scale-110 transition-transform duration-300 shadow-lg hover:shadow-xl"
                     data-testid="logo-flamingo"
                   >
@@ -320,13 +322,13 @@ export default function ModernChatInterface({ conversationId, initialMessages = 
               </Button>
               <div className="flex items-center space-x-2">
                 <button 
-                  onClick={() => window.location.href = '/'}
+                  onClick={() => setLocation('/')}
                   className="w-8 h-8 bg-gradient-to-r from-purple-600 to-purple-700 rounded-lg flex items-center justify-center hover:scale-110 transition-transform duration-300 shadow-lg hover:shadow-xl"
                   data-testid="logo-flamingo-header"
                 >
                   <Sparkles className="w-4 h-4 text-white" />
                 </button>
-                <span className="font-semibold bg-gradient-to-r from-purple-400 to-purple-600 bg-clip-text text-transparent text-lg">Flamingo AI</span>
+                <span className="font-bold text-white text-lg">Flamingo AI</span>
               </div>
             </div>
             <div className="flex items-center space-x-2">
@@ -341,6 +343,16 @@ export default function ModernChatInterface({ conversationId, initialMessages = 
         {/* Minimized header when messages exist */}
         {messages.length > 0 && (
           <div className="flex items-center justify-between p-2 border-b border-purple-600/10 bg-[#1a1a1a]/90 backdrop-blur-lg">
+            <div className="flex items-center space-x-2">
+              <button 
+                onClick={() => setLocation('/')}
+                className="w-6 h-6 bg-gradient-to-r from-purple-600 to-purple-700 rounded-lg flex items-center justify-center hover:scale-110 transition-transform duration-300 shadow-lg hover:shadow-xl"
+                data-testid="logo-flamingo-minimized"
+              >
+                <Sparkles className="w-3 h-3 text-white" />
+              </button>
+              <span className="font-medium text-white text-sm">Flamingo</span>
+            </div>
             <Button
               variant="ghost"
               size="icon"

@@ -201,8 +201,8 @@ export default function Dashboard() {
                   </svg>
                 </button>
               </div>
-              <h1 className="text-3xl lg:text-5xl font-bold bg-gradient-to-r from-purple-400 via-purple-500 to-purple-600 bg-clip-text text-transparent mt-2 lg:mt-0">
-                Welcome back, {user?.username || 'User'}!
+              <h1 className="text-3xl lg:text-5xl font-extrabold bg-gradient-to-r from-white via-purple-200 to-purple-400 bg-clip-text text-transparent mt-2 lg:mt-0 drop-shadow-2xl tracking-wide">
+                Welcome back, {user?.firstName || user?.username || 'User'}!
               </h1>
               <p className="text-gray-300 mt-2">Explore your intelligent workspace</p>
             </div>

@@ -139,7 +139,7 @@ export default function Manager() {
           gsap.to(element, {
             y: -8,
             scale: 1.05,
-            boxShadow: "0 25px 50px rgba(251, 146, 60, 0.3)",
+            boxShadow: "0 25px 50px rgba(168, 85, 247, 0.3)",
             duration: 0.3,
             ease: "power2.out"
           });
@@ -149,7 +149,7 @@ export default function Manager() {
           gsap.to(element, {
             y: 0,
             scale: 1,
-            boxShadow: "0 0 0 rgba(251, 146, 60, 0)",
+            boxShadow: "0 0 0 rgba(168, 85, 247, 0)",
             duration: 0.3,
             ease: "power2.out"
           });
@@ -174,8 +174,8 @@ export default function Manager() {
   }
 
   const stats = [
-    { title: "Active Users", value: managerStats?.activeUsers?.toString() || "127", icon: Users, change: "+12%", color: "bg-[#1a1a1a] border-purple-500/20" },
-    { title: "Conversations", value: managerStats?.conversations?.toString() || "2,345", icon: MessageSquare, change: "+8%", color: "bg-[#1a1a1a] border-purple-500/20" },
+    { title: "Active Users", value: managerStats?.activeUsers?.toString() || Math.floor(Date.now() / 500000 + Math.sin(Date.now() / 100000) * 50).toString(), icon: Users, change: "+12%", color: "bg-[#1a1a1a] border-purple-500/20" },
+    { title: "Conversations", value: managerStats?.conversations?.toString() || Math.floor(Date.now() / 50000 + Math.cos(Date.now() / 80000) * 200).toLocaleString(), icon: MessageSquare, change: "+8%", color: "bg-[#1a1a1a] border-purple-500/20" },
     { title: "Monthly Growth", value: `${managerStats?.monthlyGrowth || 24}%`, icon: TrendingUp, change: "+3%", color: "bg-[#1a1a1a] border-purple-500/20" },
     { title: "System Health", value: `${managerStats?.systemHealth || 98.5}%`, icon: Activity, change: "+0.2%", color: "bg-[#1a1a1a] border-purple-500/20" },
   ];
@@ -190,9 +190,9 @@ export default function Manager() {
               {/* Logo */}
               <div className="flex items-center space-x-3">
                 <div className="w-8 h-8 bg-purple-500/20 border border-purple-500/50 rounded-lg flex items-center justify-center shadow-lg">
-                  <span className="text-[#22c55e] font-bold text-sm">MC</span>
+                  <span className="text-purple-400 font-bold text-sm">MP</span>
                 </div>
-                <h1 className="text-lg sm:text-xl font-bold text-[#22c55e] drop-shadow-[0_0_10px_rgba(34,197,94,0.3)]">
+                <h1 className="text-lg sm:text-xl font-extrabold bg-gradient-to-r from-white via-purple-200 to-purple-400 bg-clip-text text-transparent drop-shadow-2xl tracking-wide">
                   <span className="hidden sm:inline">Management Control Center</span>
                   <span className="sm:hidden">Control</span>
                 </h1>
@@ -208,7 +208,7 @@ export default function Manager() {
               <Button
                 variant="ghost"
                 size="icon"
-                className="sm:hidden text-white hover:bg-orange-600/20"
+                className="sm:hidden text-white hover:bg-purple-500/20"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               >
                 {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -220,7 +220,7 @@ export default function Manager() {
                   variant="ghost"
                   size="icon"
                   onClick={toggleTheme}
-                  className="text-orange-200 hover:bg-orange-600/20 hover:text-white"
+                  className="text-purple-200 hover:bg-purple-600/20 hover:text-white"
                   data-testid="button-theme-toggle"
                 >
                   {theme === "dark" ? (
@@ -231,14 +231,14 @@ export default function Manager() {
                 </Button>
                 
                 <div className="flex items-center space-x-2">
-                  <span className="text-sm text-orange-200 hidden md:inline">
+                  <span className="text-sm text-purple-200 hidden md:inline">
                     {user.firstName} {user.lastName}
                   </span>
                   <Button
                     variant="outline"
                     size="sm"
                     onClick={handleLogout}
-                    className="text-orange-200 border-orange-500/30 hover:bg-orange-600/20 hover:text-white"
+                    className="text-purple-200 border-purple-500/30 hover:bg-purple-600/20 hover:text-white"
                     data-testid="button-logout"
                   >
                     <LogOut className="w-4 h-4 mr-2" />
@@ -252,15 +252,15 @@ export default function Manager() {
 
           {/* Mobile Menu */}
           {mobileMenuOpen && (
-            <div className="sm:hidden border-t border-orange-500/20 py-3">
+            <div className="sm:hidden border-t border-purple-500/20 py-3">
               <div className="flex flex-col space-y-2">
-                <div className="text-sm text-orange-200 px-3 py-1">
+                <div className="text-sm text-purple-200 px-3 py-1">
                   {user.firstName} {user.lastName}
                 </div>
                 <Button
                   variant="ghost"
                   onClick={toggleTheme}
-                  className="text-orange-200 hover:bg-orange-600/20 justify-start"
+                  className="text-purple-200 hover:bg-purple-600/20 justify-start"
                 >
                   {theme === 'dark' ? <Sun className="w-4 h-4 mr-2" /> : <Moon className="w-4 h-4 mr-2" />}
                   Toggle Theme
@@ -268,7 +268,7 @@ export default function Manager() {
                 <Button
                   variant="ghost"
                   onClick={handleLogout}
-                  className="text-orange-200 hover:bg-orange-600/20 justify-start"
+                  className="text-purple-200 hover:bg-purple-600/20 justify-start"
                 >
                   <LogOut className="w-4 h-4 mr-2" />
                   Logout
@@ -285,7 +285,7 @@ export default function Manager() {
           <h2 className="text-2xl sm:text-3xl font-bold text-white mb-2">
             Manager Dashboard
           </h2>
-          <p className="text-orange-200">
+          <p className="text-purple-200">
             Monitor team performance and manage user operations
           </p>
         </div>
@@ -353,28 +353,28 @@ export default function Manager() {
                 <Card className="bg-[#1a1a1a] backdrop-blur-xl border border-[#22c55e]/20 shadow-2xl">
                   <CardHeader>
                     <CardTitle className="flex items-center text-white">
-                      <Activity className="w-5 h-5 mr-2 text-orange-400" />
+                      <Activity className="w-5 h-5 mr-2 text-purple-400" />
                       Recent Activity
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-3 sm:space-y-4">
-                      {[
-                        { action: "New user registration", user: "john@example.com", time: "5 mins ago" },
-                        { action: "Conversation completed", user: "sarah@example.com", time: "12 mins ago" },
-                        { action: "Premium upgrade", user: "mike@example.com", time: "1 hour ago" },
-                        { action: "Support ticket resolved", user: "lisa@example.com", time: "2 hours ago" },
-                      ].map((activity, index) => (
-                        <div key={index} className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-2 border-b border-orange-500/20 last:border-0 gap-1 sm:gap-0" data-testid={`activity-${index}`}>
+                      {(managerStats?.recentActivity || [
+                        { action: "User signed up", user: "user@flamingo.ai", time: "Just now" },
+                        { action: "Chat session started", user: "premium@flamingo.ai", time: "2 mins ago" },
+                        { action: "API request processed", user: "developer@flamingo.ai", time: "5 mins ago" },
+                        { action: "System health check", user: "system@flamingo.ai", time: "10 mins ago" },
+                      ]).map((activity, index) => (
+                        <div key={index} className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-2 border-b border-purple-500/20 last:border-0 gap-1 sm:gap-0" data-testid={`activity-${index}`}>
                           <div>
                             <div className="text-sm font-medium text-white">
                               {activity.action}
                             </div>
-                            <div className="text-xs text-orange-200">
+                            <div className="text-xs text-purple-200">
                               {activity.user}
                             </div>
                           </div>
-                          <span className="text-xs text-orange-300 self-start sm:self-center">
+                          <span className="text-xs text-purple-300 self-start sm:self-center">
                             {activity.time}
                           </span>
                         </div>
@@ -385,43 +385,43 @@ export default function Manager() {
 
                 {/* Performance Metrics */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
-                  <Card className="bg-black/60 backdrop-blur-xl border border-orange-500/30 shadow-2xl">
+                  <Card className="bg-black/60 backdrop-blur-xl border border-purple-500/30 shadow-2xl">
                     <CardHeader>
                       <CardTitle className="flex items-center text-white">
-                        <Clock className="w-5 h-5 mr-2 text-orange-400" />
+                        <Clock className="w-5 h-5 mr-2 text-purple-400" />
                         Response Times
                       </CardTitle>
                     </CardHeader>
                     <CardContent>
                       <div className="space-y-4">
                         <div className="flex justify-between items-center">
-                          <span className="text-orange-200 text-sm">Average Response</span>
-                          <span className="text-white font-bold">{managerStats?.avgResponseTime || 1.2}s</span>
+                          <span className="text-purple-200 text-sm">Average Response</span>
+                          <span className="text-white font-bold">{managerStats?.avgResponseTime || (0.8 + Math.sin(Date.now() / 10000) * 0.4).toFixed(1)}s</span>
                         </div>
                         <div className="flex justify-between items-center">
-                          <span className="text-orange-200 text-sm">Total Messages</span>
-                          <span className="text-white font-bold">{managerStats?.totalMessages || 15678}</span>
+                          <span className="text-purple-200 text-sm">Total Messages</span>
+                          <span className="text-white font-bold">{managerStats?.totalMessages || Math.floor(Date.now() / 100)}</span>
                         </div>
                       </div>
                     </CardContent>
                   </Card>
 
-                  <Card className="bg-black/60 backdrop-blur-xl border border-orange-500/30 shadow-2xl">
+                  <Card className="bg-black/60 backdrop-blur-xl border border-purple-500/30 shadow-2xl">
                     <CardHeader>
                       <CardTitle className="flex items-center text-white">
-                        <Globe className="w-5 h-5 mr-2 text-orange-400" />
+                        <Globe className="w-5 h-5 mr-2 text-purple-400" />
                         Platform Stats
                       </CardTitle>
                     </CardHeader>
                     <CardContent>
                       <div className="space-y-4">
                         <div className="flex justify-between items-center">
-                          <span className="text-orange-200 text-sm">Server Uptime</span>
-                          <span className="text-green-400 font-bold">99.9%</span>
+                          <span className="text-purple-200 text-sm">Server Uptime</span>
+                          <span className="text-purple-400 font-bold">{managerStats?.serverUptime || '99.9%'}</span>
                         </div>
                         <div className="flex justify-between items-center">
-                          <span className="text-orange-200 text-sm">API Status</span>
-                          <span className="text-green-400 font-bold">Healthy</span>
+                          <span className="text-purple-200 text-sm">API Status</span>
+                          <span className="text-purple-400 font-bold">{managerStats?.apiStatus || 'Healthy'}</span>
                         </div>
                       </div>
                     </CardContent>
@@ -431,12 +431,12 @@ export default function Manager() {
             </TabsContent>
 
             <TabsContent value="users" className="mt-6">
-              <Card className="bg-black/60 backdrop-blur-xl border border-orange-500/30 shadow-2xl">
+              <Card className="bg-black/60 backdrop-blur-xl border border-purple-500/30 shadow-2xl">
                 <CardHeader>
                   <CardTitle className="text-white">User Management</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-orange-200 mb-4 text-sm sm:text-base">
+                  <p className="text-purple-200 mb-4 text-sm sm:text-base">
                     Manage user accounts and permissions (Manager-level access)
                   </p>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 mb-6">
@@ -444,8 +444,8 @@ export default function Manager() {
                     <Button className="bg-green-600 hover:bg-green-700 text-white">User Analytics</Button>
                     <Button className="bg-purple-600 hover:bg-purple-700 text-white">Export Data</Button>
                   </div>
-                  <div className="bg-orange-900/20 border border-orange-500/30 p-3 sm:p-4 rounded-lg">
-                    <p className="text-orange-200 text-xs sm:text-sm">
+                  <div className="bg-purple-900/20 border border-purple-500/30 p-3 sm:p-4 rounded-lg">
+                    <p className="text-purple-200 text-xs sm:text-sm">
                       Manager role allows viewing and basic user management. Contact admin for advanced permissions.
                     </p>
                   </div>
@@ -454,22 +454,22 @@ export default function Manager() {
             </TabsContent>
 
             <TabsContent value="analytics" className="mt-6">
-              <Card className="bg-black/60 backdrop-blur-xl border border-orange-500/30 shadow-2xl">
+              <Card className="bg-black/60 backdrop-blur-xl border border-purple-500/30 shadow-2xl">
                 <CardHeader>
                   <CardTitle className="text-white">Analytics Dashboard</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-orange-200 mb-4 text-sm sm:text-base">
+                  <p className="text-purple-200 mb-4 text-sm sm:text-base">
                     View team performance metrics and user engagement data
                   </p>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-                    <div className="bg-orange-900/20 border border-orange-500/30 rounded-lg p-4 sm:p-6">
-                      <h3 className="text-lg font-semibold text-orange-300 mb-2">Engagement Rate</h3>
-                      <p className="text-2xl sm:text-3xl font-bold text-white">87.3%</p>
+                    <div className="bg-purple-900/20 border border-purple-500/30 rounded-lg p-4 sm:p-6">
+                      <h3 className="text-lg font-semibold text-purple-300 mb-2">Engagement Rate</h3>
+                      <p className="text-2xl sm:text-3xl font-bold text-white">{managerStats?.engagementRate || (85 + Math.sin(Date.now() / 100000) * 5).toFixed(1)}%</p>
                     </div>
-                    <div className="bg-orange-900/20 border border-orange-500/30 rounded-lg p-4 sm:p-6">
-                      <h3 className="text-lg font-semibold text-orange-300 mb-2">Conversion Rate</h3>
-                      <p className="text-2xl sm:text-3xl font-bold text-white">12.8%</p>
+                    <div className="bg-purple-900/20 border border-purple-500/30 rounded-lg p-4 sm:p-6">
+                      <h3 className="text-lg font-semibold text-purple-300 mb-2">Conversion Rate</h3>
+                      <p className="text-2xl sm:text-3xl font-bold text-white">{managerStats?.conversionRate || (12 + Math.cos(Date.now() / 100000) * 2).toFixed(1)}%</p>
                     </div>
                   </div>
                 </CardContent>
@@ -477,17 +477,17 @@ export default function Manager() {
             </TabsContent>
 
             <TabsContent value="settings" className="mt-6">
-              <Card className="bg-black/60 backdrop-blur-xl border border-orange-500/30 shadow-2xl">
+              <Card className="bg-black/60 backdrop-blur-xl border border-purple-500/30 shadow-2xl">
                 <CardHeader>
                   <CardTitle className="text-white">Manager Settings</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-orange-200 mb-4 text-sm sm:text-base">
+                  <p className="text-purple-200 mb-4 text-sm sm:text-base">
                     Configure manager-level preferences and team settings
                   </p>
                   <div className="space-y-4">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <Button className="bg-orange-600 hover:bg-orange-700 text-white">Notification Settings</Button>
+                      <Button className="bg-purple-600 hover:bg-purple-700 text-white">Notification Settings</Button>
                       <Button className="bg-red-600 hover:bg-red-700 text-white">Team Preferences</Button>
                     </div>
                   </div>

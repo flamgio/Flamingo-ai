@@ -192,11 +192,9 @@ export default function Pricing() {
         onClick={() => setLocation('/')}
         className="fixed top-6 left-6 z-50 flex items-center space-x-3 hover:opacity-80 transition-opacity"
       >
-        <img 
-          src={logoImg} 
-          alt="Flamingo" 
-          className="h-12 w-12 rounded-lg shadow-lg shadow-white/20" 
-        />
+        <div className="w-12 h-12 bg-gradient-to-br from-purple-600 to-purple-700 rounded-lg flex items-center justify-center shadow-lg shadow-purple-500/20">
+          <Sparkles className="w-6 h-6 text-white" />
+        </div>
         <span className="text-white text-xl font-bold">Flamingo</span>
       </button>
 

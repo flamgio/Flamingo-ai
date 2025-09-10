@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/use-auth";
 import { useTheme } from "@/components/ui/theme-provider";
 import { motion } from "framer-motion";
-import { Moon, Sun } from "lucide-react";
+import { Moon, Sun, Sparkles } from "lucide-react";
 
 export default function Landing() {
   const [, setLocation] = useLocation();
@@ -96,17 +96,6 @@ export default function Landing() {
         {/* Content */}
         <div className="relative z-10 flex items-center justify-center h-full">
           <div className="text-center">
-            {/* Logo Animation */}
-            <motion.div
-              initial={{ scale: 0, rotate: -360 }}
-              animate={{ scale: 1, rotate: 0 }}
-              transition={{ duration: 2, ease: "easeOut" }}
-              className="mb-8"
-            >
-              <div className="w-32 h-32 bg-gradient-to-br from-white via-blue-100 to-purple-200 rounded-full flex items-center justify-center mb-6 mx-auto shadow-2xl border-4 border-white/20">
-                <span className="text-6xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">FA</span>
-              </div>
-            </motion.div>
 
             {/* Welcome Text */}
             <motion.div
@@ -116,11 +105,11 @@ export default function Landing() {
               className="mb-8"
             >
               <h1 className="text-5xl md:text-7xl font-bold mb-4">
-                <span className="bg-gradient-to-r from-white via-blue-200 to-purple-200 bg-clip-text text-transparent">
+                <span className="text-white">
                   Welcome To
                 </span>
                 <br />
-                <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent animate-pulse">
+                <span className="text-white">
                   Flamingo AI
                 </span>
               </h1>
@@ -132,7 +121,7 @@ export default function Landing() {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 3.5, duration: 2, ease: "easeOut" }}
             >
-              <p className="text-2xl md:text-4xl font-semibold bg-gradient-to-r from-blue-300 via-purple-300 to-pink-300 bg-clip-text text-transparent">
+              <p className="text-2xl md:text-4xl font-semibold text-white">
                 The Evolution of AI Assistant
               </p>
             </motion.div>

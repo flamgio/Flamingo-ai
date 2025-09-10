@@ -6,6 +6,7 @@ import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import WelcomePopup from "@/components/welcome-popup";
 import { motion } from "framer-motion";
+import { Sparkles } from "lucide-react";
 import { ParallaxPageWrapper, ParallaxAnimation } from "@/components/parallax-animation";
 import { animations, gsapUtils } from "@/lib/animations";
 import "../styles/auth.css";
@@ -131,8 +132,8 @@ export default function Login() {
       <div className="fixed top-0 left-0 right-0 z-50 p-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center border border-gray-600 shadow-lg">
-              <span className="text-white font-bold text-sm">FA</span>
+            <div className="w-8 h-8 bg-gradient-to-br from-purple-600 to-purple-700 rounded-lg flex items-center justify-center shadow-lg shadow-purple-500/20">
+              <Sparkles className="w-4 h-4 text-white" />
             </div>
             <button
               onClick={() => setLocation('/')}

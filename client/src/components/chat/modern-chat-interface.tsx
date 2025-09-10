@@ -110,8 +110,8 @@ export default function ModernChatInterface({ conversationId, initialMessages = 
     setIsTyping(true);
 
     try {
-      const token = localStorage.getItem('flamgio-token');
-      const response = await fetch('/api/agent', {
+      const token = localStorage.getItem('flamingo-token');
+      const response = await fetch('/api/chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -119,9 +119,7 @@ export default function ModernChatInterface({ conversationId, initialMessages = 
         },
         body: JSON.stringify({
           prompt: messageContent,
-          conversationId: conversationId,
-          selectedModel: 'gpt-3.5-turbo',
-          useEnhancement: false
+          enhanced: null // Match the API schema
         })
       });
 

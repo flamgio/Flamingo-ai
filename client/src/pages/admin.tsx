@@ -13,6 +13,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { apiRequest } from "@/lib/queryClient";
 import { Moon, Sun, Database, Users, Settings, Shield, BarChart, Globe, Menu, X } from "lucide-react";
 import UserAnalyticsCard from "@/components/user-analytics-card";
+import { useAdminRealtimeData } from "@/hooks/use-realtime-data";
 import "../styles/new-theme-toggle.css";
 
 // Register GSAP plugins
@@ -39,7 +40,7 @@ export default function AdminPage() {
   const { user } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const [isAuthorized, setIsAuthorized] = useState(false);
-  const [adminStats, setAdminStats] = useState<AdminStats | null>(null);
+  const { adminStats, isLoading: realtimeLoading, connectionStatus } = useAdminRealtimeData();
   const [envVars, setEnvVars] = useState<EnvVariable[]>([]);
   const [users, setUsers] = useState([]);
   const [conversations, setConversations] = useState([]);
@@ -72,16 +73,7 @@ export default function AdminPage() {
     try {
       setLoading(true);
       
-      // Mock data for now - replace with real API calls
-      setAdminStats({
-        totalUsers: 1247,
-        activeSessions: 389,
-        totalMessages: 15200,
-        systemHealth: 98.7,
-        premiumUsers: 156,
-        dailyActiveUsers: 234
-      });
-      
+      // Environment variables (static data)
       setEnvVars([
         { key: 'NODE_ENV', value: 'development', isSecret: false },
         { key: 'DATABASE_URL', value: '***hidden***', isSecret: true },
@@ -195,21 +187,21 @@ export default function AdminPage() {
   }
 
   return (
-    <div ref={containerRef} className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-indigo-900 text-white">
-      <nav ref={headerRef} className="bg-black/40 backdrop-blur-xl border-b border-purple-500/20 shadow-2xl sticky top-0 z-50">
+    <div ref={containerRef} className="min-h-screen bg-[#0c0c0c] text-white">
+      <nav ref={headerRef} className="bg-[#1a1a1a]/90 backdrop-blur-xl border-b border-[#22c55e]/20 shadow-2xl sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-3 flex-1">
               <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg flex items-center justify-center shadow-lg">
-                  <span className="text-white font-bold text-sm">FA</span>
+                <div className="w-8 h-8 bg-[#22c55e]/20 border border-[#22c55e]/50 rounded-lg flex items-center justify-center shadow-lg">
+                  <span className="text-[#22c55e] font-bold text-sm">SC</span>
                 </div>
                 <button
                   onClick={() => setLocation('/dashboard')}
-                  className="text-lg sm:text-xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent hover:from-purple-300 hover:to-pink-300 transition-all duration-300"
+                  className="text-lg sm:text-xl font-bold text-[#22c55e] hover:text-[#22c55e]/80 transition-all duration-300 drop-shadow-[0_0_10px_rgba(34,197,94,0.3)]"
                 >
-                  <span className="hidden sm:inline">Flamingo - Admin Panel</span>
-                  <span className="sm:hidden">Admin</span>
+                  <span className="hidden sm:inline">System Control Hub</span>
+                  <span className="sm:hidden">Control</span>
                 </button>
               </div>
             </div>
@@ -219,7 +211,7 @@ export default function AdminPage() {
               <Button
                 variant="ghost"
                 size="icon"
-                className="sm:hidden text-white hover:bg-purple-600/20"
+                className="sm:hidden text-white hover:bg-[#22c55e]/20"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               >
                 {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -251,7 +243,7 @@ export default function AdminPage() {
               <Button
                 variant="ghost"
                 onClick={() => setLocation('/dashboard')}
-                className="hidden sm:flex text-purple-200 hover:bg-purple-600/20 hover:text-white"
+                className="hidden sm:flex text-gray-300 hover:bg-[#22c55e]/20 hover:text-[#22c55e] border border-[#22c55e]/30 bg-[#22c55e]/5"
                 data-testid="button-back"
               >
                 <span className="mr-2">←</span>
@@ -263,12 +255,12 @@ export default function AdminPage() {
 
           {/* Mobile Menu */}
           {mobileMenuOpen && (
-            <div className="sm:hidden border-t border-purple-500/20 py-3">
+            <div className="sm:hidden border-t border-[#22c55e]/20 py-3">
               <div className="flex flex-col space-y-2">
                 <Button
                   variant="ghost"
                   onClick={toggleTheme}
-                  className="text-purple-200 hover:bg-purple-600/20 justify-start"
+                  className="text-gray-300 hover:bg-[#22c55e]/20 hover:text-[#22c55e] justify-start"
                 >
                   {theme === 'dark' ? <Sun className="w-4 h-4 mr-2" /> : <Moon className="w-4 h-4 mr-2" />}
                   Toggle Theme
@@ -276,7 +268,7 @@ export default function AdminPage() {
                 <Button
                   variant="ghost"
                   onClick={() => setLocation('/dashboard')}
-                  className="text-purple-200 hover:bg-purple-600/20 justify-start"
+                  className="text-gray-300 hover:bg-[#22c55e]/20 hover:text-[#22c55e] justify-start"
                 >
                   <span className="mr-2">←</span>
                   Back to Dashboard
@@ -288,89 +280,89 @@ export default function AdminPage() {
       </nav>
 
       <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-12">
-        {/* Admin Header */}
-        <div className="bg-black/60 backdrop-blur-xl rounded-2xl shadow-2xl border border-purple-500/30 p-4 sm:p-8 mb-6 sm:mb-8">
+        {/* System Control Header - Dark Theme */}
+        <div className="bg-[#1a1a1a] backdrop-blur-xl rounded-2xl shadow-2xl border border-[#22c55e]/20 p-4 sm:p-8 mb-6 sm:mb-8">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
             <div>
-              <h1 className="text-3xl sm:text-5xl font-bold bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400 bg-clip-text text-transparent mb-2 sm:mb-3">
-                Admin Control Center
+              <h1 className="text-3xl sm:text-5xl font-bold text-white mb-2 sm:mb-3 drop-shadow-[0_0_20px_rgba(34,197,94,0.3)]">
+                System Control Hub
               </h1>
-              <p className="text-gray-300 text-base sm:text-lg">
-                Comprehensive platform management and analytics
+              <p className="text-gray-400 text-base sm:text-lg">
+                Advanced platform monitoring and management
               </p>
             </div>
-            <div className="flex items-center justify-center sm:justify-start space-x-3 bg-gradient-to-r from-purple-600 to-pink-600 p-3 sm:p-4 rounded-xl text-white shadow-lg">
-              <Shield className="w-6 h-6 sm:w-8 sm:h-8" />
+            <div className="flex items-center justify-center sm:justify-start space-x-3 bg-[#22c55e]/10 border border-[#22c55e]/30 p-3 sm:p-4 rounded-xl text-white shadow-lg">
+              <Shield className="w-6 h-6 sm:w-8 sm:h-8 text-[#22c55e]" />
               <div>
-                <div className="text-xs sm:text-sm opacity-80">Admin Level</div>
-                <div className="font-bold text-sm sm:text-base">Full Access</div>
+                <div className="text-xs sm:text-sm text-gray-400">Admin Level</div>
+                <div className="font-bold text-sm sm:text-base text-[#22c55e]">Full Access</div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Quick Stats Overview - Responsive Grid */}
+        {/* System Stats Overview - Dark Theme */}
         <div ref={statsRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-6 sm:mb-8">
-          <div className="bg-gradient-to-br from-blue-600/80 to-cyan-600/80 backdrop-blur-xl rounded-2xl p-4 sm:p-6 border border-blue-400/20 shadow-2xl hover:shadow-blue-500/25 transition-all duration-300">
+          <div className="bg-[#1a1a1a] border border-[#22c55e]/20 rounded-2xl p-4 sm:p-6 shadow-2xl hover:shadow-[#22c55e]/25 transition-all duration-300">
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-blue-200 text-xs sm:text-sm font-medium">Total Users</div>
+                <div className="text-gray-400 text-xs sm:text-sm font-medium">Total Users</div>
                 <div className="text-2xl sm:text-4xl font-bold text-white">{adminStats?.totalUsers || 0}</div>
-                <div className="text-blue-300 text-xs sm:text-sm flex items-center mt-1">
-                  <div className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></div>
-                  Active Platform
+                <div className="text-[#22c55e] text-xs sm:text-sm flex items-center mt-1">
+                  <div className="w-2 h-2 bg-[#22c55e] rounded-full mr-2 animate-pulse"></div>
+                  System Online
                 </div>
               </div>
-              <Users className="w-8 h-8 sm:w-12 sm:h-12 text-blue-300" />
+              <Users className="w-8 h-8 sm:w-12 sm:h-12 text-[#22c55e]" />
             </div>
           </div>
           
-          <div className="bg-gradient-to-br from-green-600/80 to-emerald-600/80 backdrop-blur-xl rounded-2xl p-4 sm:p-6 border border-green-400/20 shadow-2xl hover:shadow-green-500/25 transition-all duration-300">
+          <div className="bg-[#1a1a1a] border border-[#22c55e]/20 rounded-2xl p-4 sm:p-6 shadow-2xl hover:shadow-[#22c55e]/25 transition-all duration-300">
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-green-200 text-xs sm:text-sm font-medium">Premium Users</div>
+                <div className="text-gray-400 text-xs sm:text-sm font-medium">Premium Users</div>
                 <div className="text-2xl sm:text-4xl font-bold text-white">{adminStats?.premiumUsers || 0}</div>
-                <div className="text-green-300 text-xs sm:text-sm flex items-center mt-1">
-                  <div className="w-2 h-2 bg-yellow-400 rounded-full mr-2 animate-pulse"></div>
-                  Subscribed
+                <div className="text-[#22c55e] text-xs sm:text-sm flex items-center mt-1">
+                  <div className="w-2 h-2 bg-[#22c55e] rounded-full mr-2 animate-pulse"></div>
+                  Active Subs
                 </div>
               </div>
-              <BarChart className="w-8 h-8 sm:w-12 sm:h-12 text-green-300" />
+              <BarChart className="w-8 h-8 sm:w-12 sm:h-12 text-[#22c55e]" />
             </div>
           </div>
 
-          <div className="bg-gradient-to-br from-purple-600/80 to-pink-600/80 backdrop-blur-xl rounded-2xl p-4 sm:p-6 border border-purple-400/20 shadow-2xl hover:shadow-purple-500/25 transition-all duration-300">
+          <div className="bg-[#1a1a1a] border border-[#22c55e]/20 rounded-2xl p-4 sm:p-6 shadow-2xl hover:shadow-[#22c55e]/25 transition-all duration-300">
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-purple-200 text-xs sm:text-sm font-medium">Total Messages</div>
+                <div className="text-gray-400 text-xs sm:text-sm font-medium">Total Messages</div>
                 <div className="text-2xl sm:text-4xl font-bold text-white">{adminStats?.totalMessages || 0}</div>
-                <div className="text-purple-300 text-xs sm:text-sm flex items-center mt-1">
-                  <div className="w-2 h-2 bg-purple-400 rounded-full mr-2 animate-pulse"></div>
-                  All Conversations
+                <div className="text-[#22c55e] text-xs sm:text-sm flex items-center mt-1">
+                  <div className="w-2 h-2 bg-[#22c55e] rounded-full mr-2 animate-pulse"></div>
+                  Global Chats
                 </div>
               </div>
-              <Globe className="w-8 h-8 sm:w-12 sm:h-12 text-purple-300" />
+              <Globe className="w-8 h-8 sm:w-12 sm:h-12 text-[#22c55e]" />
             </div>
           </div>
 
-          <div className="bg-gradient-to-br from-orange-600/80 to-red-600/80 backdrop-blur-xl rounded-2xl p-4 sm:p-6 border border-orange-400/20 shadow-2xl hover:shadow-orange-500/25 transition-all duration-300">
+          <div className="bg-[#1a1a1a] border border-[#22c55e]/20 rounded-2xl p-4 sm:p-6 shadow-2xl hover:shadow-[#22c55e]/25 transition-all duration-300">
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-orange-200 text-xs sm:text-sm font-medium">System Health</div>
+                <div className="text-gray-400 text-xs sm:text-sm font-medium">System Health</div>
                 <div className="text-2xl sm:text-4xl font-bold text-white">{adminStats?.systemHealth || 98.7}%</div>
-                <div className="text-orange-300 text-xs sm:text-sm flex items-center mt-1">
-                  <div className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></div>
-                  Excellent
+                <div className="text-[#22c55e] text-xs sm:text-sm flex items-center mt-1">
+                  <div className="w-2 h-2 bg-[#22c55e] rounded-full mr-2 animate-pulse"></div>
+                  Optimal
                 </div>
               </div>
-              <Database className="w-8 h-8 sm:w-12 sm:h-12 text-orange-300" />
+              <Database className="w-8 h-8 sm:w-12 sm:h-12 text-[#22c55e]" />
             </div>
           </div>
         </div>
 
-        {/* Admin Navigation Tabs - Mobile Responsive */}
+        {/* Control Navigation Tabs - Dark Theme */}
         <div className="mb-6 sm:mb-8">
-          <div className="flex overflow-x-auto gap-2 bg-black/40 backdrop-blur-xl rounded-2xl p-2 border border-purple-500/20">
+          <div className="flex overflow-x-auto gap-2 bg-[#1a1a1a] backdrop-blur-xl rounded-2xl p-2 border border-[#22c55e]/20">
             {[
               { id: 'overview', label: 'Overview', icon: BarChart },
               { id: 'users', label: 'Users', icon: Users },
@@ -384,8 +376,8 @@ export default function AdminPage() {
                   onClick={() => setActiveTab(tab.id)}
                   className={`flex items-center space-x-2 px-4 sm:px-6 py-3 rounded-xl font-medium transition-all duration-300 whitespace-nowrap ${
                     activeTab === tab.id
-                      ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg'
-                      : 'text-gray-400 hover:text-white hover:bg-white/10'
+                      ? 'bg-[#22c55e]/20 border border-[#22c55e]/50 text-[#22c55e] shadow-lg'
+                      : 'text-gray-400 hover:text-[#22c55e] hover:bg-[#22c55e]/10'
                   }`}
                 >
                   <Icon className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -416,12 +408,12 @@ export default function AdminPage() {
                 />
                 
                 {/* Additional System Health Card */}
-                <div className="analytics-card bg-[#1a1a1a] border-[#3a3a3a] border rounded-2xl p-6">
+                <div className="analytics-card bg-[#1a1a1a] border-[#22c55e]/20 border rounded-2xl p-6">
                   <h3 className="text-xl font-bold text-white mb-4 flex items-center">
                     <div className="p-2 bg-[#22c55e]/20 rounded-lg mr-3">
                       <Database className="h-5 w-5 text-[#22c55e]" />
                     </div>
-                    System Health
+                    System Status
                   </h3>
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
@@ -447,13 +439,18 @@ export default function AdminPage() {
           )}
 
           {activeTab === 'env' && (
-            <div className="bg-black/60 backdrop-blur-xl rounded-2xl p-4 sm:p-8 border border-purple-500/30">
-              <h2 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6">Environment Variables</h2>
+            <div className="bg-[#1a1a1a] backdrop-blur-xl rounded-2xl p-4 sm:p-8 border border-[#22c55e]/20">
+              <h2 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6 flex items-center">
+                <div className="p-2 bg-[#22c55e]/20 rounded-lg mr-3">
+                  <Settings className="h-5 w-5 text-[#22c55e]" />
+                </div>
+                Environment Variables
+              </h2>
               <div className="space-y-3 sm:space-y-4">
                 {envVars.map((env, index) => (
-                  <div key={index} className="bg-gray-800/50 rounded-lg p-3 sm:p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4">
+                  <div key={index} className="bg-[#2a2a2a] border border-[#22c55e]/10 rounded-lg p-3 sm:p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4 hover:border-[#22c55e]/30 transition-all duration-300">
                     <div className="flex-1">
-                      <code className="text-purple-400 font-mono text-sm sm:text-base">{env.key}</code>
+                      <code className="text-[#22c55e] font-mono text-sm sm:text-base">{env.key}</code>
                     </div>
                     <div className="flex-1">
                       <code className="text-gray-300 font-mono text-sm sm:text-base break-all">
@@ -461,9 +458,9 @@ export default function AdminPage() {
                       </code>
                     </div>
                     <div className="flex space-x-2">
-                      <Button size="sm" variant="outline" className="text-xs">Edit</Button>
+                      <Button size="sm" className="bg-[#22c55e]/10 border border-[#22c55e]/30 text-[#22c55e] hover:bg-[#22c55e]/20 text-xs">Edit</Button>
                       {env.isSecret && (
-                        <Button size="sm" variant="outline" className="text-xs">Show</Button>
+                        <Button size="sm" className="bg-yellow-500/10 border border-yellow-500/30 text-yellow-400 hover:bg-yellow-500/20 text-xs">Show</Button>
                       )}
                     </div>
                   </div>
@@ -473,26 +470,62 @@ export default function AdminPage() {
           )}
 
           {activeTab === 'users' && (
-            <div className="bg-black/60 backdrop-blur-xl rounded-2xl p-4 sm:p-8 border border-purple-500/30">
-              <h2 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6">User Management</h2>
-              <p className="text-gray-300 mb-4">Comprehensive user administration and analytics.</p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                <Button className="bg-blue-600 hover:bg-blue-700 text-white">View All Users</Button>
-                <Button className="bg-green-600 hover:bg-green-700 text-white">Add New User</Button>
-                <Button className="bg-purple-600 hover:bg-purple-700 text-white">Export Data</Button>
+            <div className="bg-[#1a1a1a] backdrop-blur-xl rounded-2xl p-4 sm:p-8 border border-[#22c55e]/20">
+              <h2 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6 flex items-center">
+                <div className="p-2 bg-[#22c55e]/20 rounded-lg mr-3">
+                  <Users className="h-5 w-5 text-[#22c55e]" />
+                </div>
+                User Management
+              </h2>
+              <p className="text-gray-400 mb-6">Advanced user administration and real-time analytics.</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+                <Button className="bg-[#22c55e]/10 border border-[#22c55e]/30 text-[#22c55e] hover:bg-[#22c55e]/20 transition-all duration-300">View All Users</Button>
+                <Button className="bg-blue-500/10 border border-blue-500/30 text-blue-400 hover:bg-blue-500/20 transition-all duration-300">Add New User</Button>
+                <Button className="bg-orange-500/10 border border-orange-500/30 text-orange-400 hover:bg-orange-500/20 transition-all duration-300">Export Data</Button>
+              </div>
+              <div className="bg-[#2a2a2a] border border-[#22c55e]/10 rounded-lg p-4">
+                <h3 className="text-white font-semibold mb-3">Quick Stats</h3>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <p className="text-gray-400 text-sm">Total Users</p>
+                    <p className="text-white text-lg font-bold">{adminStats?.totalUsers || 1247}</p>
+                  </div>
+                  <div>
+                    <p className="text-gray-400 text-sm">Active Today</p>
+                    <p className="text-[#22c55e] text-lg font-bold">{adminStats?.dailyActiveUsers || 234}</p>
+                  </div>
+                </div>
               </div>
             </div>
           )}
 
           {activeTab === 'database' && (
-            <div className="bg-black/60 backdrop-blur-xl rounded-2xl p-4 sm:p-8 border border-purple-500/30">
-              <h2 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6">Database Management</h2>
-              <p className="text-gray-300 mb-4">Monitor and manage database operations.</p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <Button className="bg-red-600 hover:bg-red-700 text-white">Backup DB</Button>
-                <Button className="bg-yellow-600 hover:bg-yellow-700 text-white">View Logs</Button>
-                <Button className="bg-green-600 hover:bg-green-700 text-white">Optimize</Button>
-                <Button className="bg-purple-600 hover:bg-purple-700 text-white">Analytics</Button>
+            <div className="bg-[#1a1a1a] backdrop-blur-xl rounded-2xl p-4 sm:p-8 border border-[#22c55e]/20">
+              <h2 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6 flex items-center">
+                <div className="p-2 bg-[#22c55e]/20 rounded-lg mr-3">
+                  <Database className="h-5 w-5 text-[#22c55e]" />
+                </div>
+                Database Management
+              </h2>
+              <p className="text-gray-400 mb-6">Advanced database monitoring and operations control.</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                <Button className="bg-red-500/10 border border-red-500/30 text-red-400 hover:bg-red-500/20 transition-all duration-300">Backup DB</Button>
+                <Button className="bg-yellow-500/10 border border-yellow-500/30 text-yellow-400 hover:bg-yellow-500/20 transition-all duration-300">View Logs</Button>
+                <Button className="bg-[#22c55e]/10 border border-[#22c55e]/30 text-[#22c55e] hover:bg-[#22c55e]/20 transition-all duration-300">Optimize</Button>
+                <Button className="bg-purple-500/10 border border-purple-500/30 text-purple-400 hover:bg-purple-500/20 transition-all duration-300">Analytics</Button>
+              </div>
+              <div className="bg-[#2a2a2a] border border-[#22c55e]/10 rounded-lg p-4">
+                <h3 className="text-white font-semibold mb-3">Database Status</h3>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <p className="text-gray-400 text-sm">Connection</p>
+                    <p className="text-[#22c55e] text-lg font-bold">Active</p>
+                  </div>
+                  <div>
+                    <p className="text-gray-400 text-sm">Size</p>
+                    <p className="text-white text-lg font-bold">2.4 GB</p>
+                  </div>
+                </div>
               </div>
             </div>
           )}

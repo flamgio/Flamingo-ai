@@ -26,6 +26,8 @@ import {
   Globe,
   Clock
 } from "lucide-react";
+import ManagerReportsCard from "@/components/manager-reports-card";
+import { useManagerRealtimeData } from "@/hooks/use-realtime-data";
 
 // Register GSAP plugins
 gsap.registerPlugin(ScrollTrigger);
@@ -45,7 +47,7 @@ export default function Manager() {
   const { theme, toggleTheme } = useTheme();
   const [currentTab, setCurrentTab] = useState("overview");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [managerStats, setManagerStats] = useState<ManagerStats | null>(null);
+  const { managerStats, isLoading: realtimeLoading, connectionStatus } = useManagerRealtimeData();
   const [loading, setLoading] = useState(true);
 
   // GSAP refs
@@ -68,15 +70,8 @@ export default function Manager() {
     try {
       setLoading(true);
       
-      // Mock data - replace with real API calls
-      setManagerStats({
-        activeUsers: 127,
-        conversations: 2345,
-        monthlyGrowth: 24,
-        systemHealth: 98.5,
-        totalMessages: 15678,
-        avgResponseTime: 1.2
-      });
+      // Static configuration data only
+      // Real-time stats handled by useManagerRealtimeData hook
       
     } catch (error) {
       console.error('Failed to fetch manager data:', error);
@@ -169,42 +164,42 @@ export default function Manager() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-orange-900 via-red-900 to-pink-900 flex items-center justify-center">
+      <div className="min-h-screen bg-[#0c0c0c] flex items-center justify-center">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-orange-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-white text-lg">Loading Manager Panel...</p>
+          <div className="w-16 h-16 border-4 border-[#22c55e] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-white text-lg">Loading Management Center...</p>
         </div>
       </div>
     );
   }
 
   const stats = [
-    { title: "Active Users", value: managerStats?.activeUsers?.toString() || "127", icon: Users, change: "+12%", color: "from-blue-600 to-cyan-600" },
-    { title: "Conversations", value: managerStats?.conversations?.toString() || "2,345", icon: MessageSquare, change: "+8%", color: "from-green-600 to-emerald-600" },
-    { title: "Monthly Growth", value: `${managerStats?.monthlyGrowth || 24}%`, icon: TrendingUp, change: "+3%", color: "from-purple-600 to-pink-600" },
-    { title: "System Health", value: `${managerStats?.systemHealth || 98.5}%`, icon: Activity, change: "+0.2%", color: "from-orange-600 to-red-600" },
+    { title: "Active Users", value: managerStats?.activeUsers?.toString() || "127", icon: Users, change: "+12%", color: "bg-[#1a1a1a] border-[#22c55e]/20" },
+    { title: "Conversations", value: managerStats?.conversations?.toString() || "2,345", icon: MessageSquare, change: "+8%", color: "bg-[#1a1a1a] border-[#22c55e]/20" },
+    { title: "Monthly Growth", value: `${managerStats?.monthlyGrowth || 24}%`, icon: TrendingUp, change: "+3%", color: "bg-[#1a1a1a] border-[#22c55e]/20" },
+    { title: "System Health", value: `${managerStats?.systemHealth || 98.5}%`, icon: Activity, change: "+0.2%", color: "bg-[#1a1a1a] border-[#22c55e]/20" },
   ];
 
   return (
-    <div ref={containerRef} className="min-h-screen bg-gradient-to-br from-orange-900 via-red-900 to-pink-900">
+    <div ref={containerRef} className="min-h-screen bg-[#0c0c0c] text-white">
       {/* Header */}
-      <header ref={headerRef} className="bg-black/40 backdrop-blur-xl border-b border-orange-500/20 shadow-2xl sticky top-0 z-50">
+      <header ref={headerRef} className="bg-[#1a1a1a]/90 backdrop-blur-xl border-b border-[#22c55e]/20 shadow-2xl sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center space-x-3 flex-1">
               {/* Logo */}
               <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 bg-gradient-to-r from-orange-500 to-pink-500 rounded-lg flex items-center justify-center shadow-lg">
-                  <span className="text-white font-bold text-sm">FA</span>
+                <div className="w-8 h-8 bg-[#22c55e]/20 border border-[#22c55e]/50 rounded-lg flex items-center justify-center shadow-lg">
+                  <span className="text-[#22c55e] font-bold text-sm">MC</span>
                 </div>
-                <h1 className="text-lg sm:text-xl font-bold bg-gradient-to-r from-orange-400 to-pink-400 bg-clip-text text-transparent">
-                  <span className="hidden sm:inline">Flamingo Manager</span>
-                  <span className="sm:hidden">Manager</span>
+                <h1 className="text-lg sm:text-xl font-bold text-[#22c55e] drop-shadow-[0_0_10px_rgba(34,197,94,0.3)]">
+                  <span className="hidden sm:inline">Management Control Center</span>
+                  <span className="sm:hidden">Control</span>
                 </h1>
               </div>
-              <Badge variant="secondary" className="hidden sm:inline-flex bg-orange-600/20 text-orange-300 border-orange-500/30">
+              <Badge variant="secondary" className="hidden sm:inline-flex bg-[#22c55e]/10 text-[#22c55e] border-[#22c55e]/30">
                 <Shield className="w-3 h-3 mr-1" />
-                Manager Portal
+                Management Portal
               </Badge>
             </div>
 
@@ -300,23 +295,23 @@ export default function Manager() {
           {stats.map((stat, index) => {
             const Icon = stat.icon;
             return (
-              <Card key={index} data-testid={`card-stat-${index}`} className={`bg-gradient-to-br ${stat.color}/80 backdrop-blur-xl border-0 shadow-2xl hover:shadow-orange-500/25 transition-all duration-300`}>
+              <Card key={index} data-testid={`card-stat-${index}`} className={`${stat.color} border rounded-2xl shadow-2xl hover:shadow-[#22c55e]/25 transition-all duration-300`}>
                 <CardContent className="p-4 sm:p-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-xs sm:text-sm text-white/70 mb-1 font-medium">
+                      <p className="text-xs sm:text-sm text-gray-400 mb-1 font-medium">
                         {stat.title}
                       </p>
                       <p className="text-xl sm:text-2xl font-bold text-white">
                         {stat.value}
                       </p>
-                      <p className="text-xs sm:text-sm text-white/80 flex items-center mt-1">
-                        <div className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></div>
+                      <p className="text-xs sm:text-sm text-[#22c55e] flex items-center mt-1">
+                        <div className="w-2 h-2 bg-[#22c55e] rounded-full mr-2 animate-pulse"></div>
                         {stat.change}
                       </p>
                     </div>
-                    <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
-                      <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 bg-[#22c55e]/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
+                      <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-[#22c55e]" />
                     </div>
                   </div>
                 </CardContent>

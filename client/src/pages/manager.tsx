@@ -367,12 +367,12 @@ export default function Manager() {
                       ].map((activity, index) => (
                         <div key={index} className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-2 border-b border-orange-500/20 last:border-0 gap-1 sm:gap-0" data-testid={`activity-${index}`}>
                           <div>
-                            <p className="text-sm font-medium text-white">
+                            <div className="text-sm font-medium text-white">
                               {activity.action}
-                            </p>
-                            <p className="text-xs text-orange-200">
+                            </div>
+                            <div className="text-xs text-orange-200">
                               {activity.user}
-                            </p>
+                            </div>
                           </div>
                           <span className="text-xs text-orange-300 self-start sm:self-center">
                             {activity.time}

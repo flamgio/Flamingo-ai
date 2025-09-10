@@ -337,7 +337,7 @@ export default function ModernChatInterface({ conversationId, initialMessages = 
         </div>
 
         {/* Messages Area */}
-        <div ref={chatContainerRef} className="flex-1 overflow-y-auto p-4 space-y-6 bg-gradient-to-b from-white/50 via-orange-50/30 to-pink-50/40 dark:from-gray-900/50 dark:via-purple-900/20 dark:to-pink-900/20 backdrop-blur-sm">
+        <div ref={chatContainerRef} className="relative flex-1 overflow-y-auto p-4 space-y-6 bg-gradient-to-b from-white/50 via-orange-50/30 to-pink-50/40 dark:from-gray-900/50 dark:via-purple-900/20 dark:to-pink-900/20 backdrop-blur-sm">
           {messages.length === 0 ? (
             <div className="flex-1 flex items-center justify-center min-h-[400px]">
               <motion.div 

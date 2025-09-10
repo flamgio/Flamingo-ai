@@ -32,22 +32,22 @@ export const animations = {
     transition: { duration: 0.4, ease: "backOut" }
   },
 
-  // Button hover effects
+  // Enhanced Button hover effects with neon glow
   buttonHover: {
     whileHover: { 
       scale: 1.05,
-      boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)"
+      boxShadow: "0 20px 25px -5px rgba(34, 197, 94, 0.3), 0 10px 10px -5px rgba(34, 197, 94, 0.1), 0 0 20px rgba(34, 197, 94, 0.4)"
     },
     whileTap: { scale: 0.95 },
     transition: { type: "spring", stiffness: 400, damping: 17 }
   },
 
-  // Card animations
+  // Enhanced Card animations with neon glow
   cardHover: {
     whileHover: { 
-      y: -5,
+      y: -8,
       scale: 1.02,
-      boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)"
+      boxShadow: "0 25px 50px -12px rgba(34, 197, 94, 0.2), 0 0 30px rgba(34, 197, 94, 0.3)"
     },
     transition: { duration: 0.3, ease: "power2.out" }
   },
@@ -175,17 +175,124 @@ export const gsapUtils = {
     });
   },
 
-  // Glow effect animation
+  // Enhanced Glow effect animation with neon green
   glowEffect: (element: HTMLElement) => {
     gsap.set(element, {
-      filter: "drop-shadow(0 0 10px rgba(59, 130, 246, 0.5))"
+      filter: "drop-shadow(0 0 10px rgba(34, 197, 94, 0.5))"
     });
     
     gsap.to(element, {
-      filter: "drop-shadow(0 0 20px rgba(59, 130, 246, 0.8))",
+      filter: "drop-shadow(0 0 25px rgba(34, 197, 94, 0.8))",
       duration: 0.3,
       ease: "power2.out",
       paused: true
+    });
+  },
+
+  // Advanced scroll reveal with stagger
+  scrollReveal: (elements: NodeListOf<Element> | Element[], options = {}) => {
+    const defaults = {
+      y: 60,
+      opacity: 0,
+      duration: 0.8,
+      stagger: 0.1,
+      ease: "power3.out"
+    };
+    const config = { ...defaults, ...options };
+    
+    gsap.fromTo(elements, 
+      { 
+        y: config.y, 
+        opacity: config.opacity 
+      },
+      {
+        y: 0,
+        opacity: 1,
+        duration: config.duration,
+        stagger: config.stagger,
+        ease: config.ease,
+        scrollTrigger: {
+          trigger: elements[0] || elements,
+          start: "top 80%",
+          end: "bottom 20%",
+          toggleActions: "play none none reverse"
+        }
+      }
+    );
+  },
+
+  // Neon pulse animation
+  neonPulse: (element: HTMLElement, color = "34, 197, 94") => {
+    gsap.to(element, {
+      boxShadow: `0 0 20px rgba(${color}, 0.8), 0 0 40px rgba(${color}, 0.4)`,
+      duration: 1.5,
+      repeat: -1,
+      yoyo: true,
+      ease: "power2.inOut"
+    });
+  },
+
+  // Chart line drawing animation
+  drawChartLine: (pathElement: SVGPathElement, duration = 2) => {
+    const pathLength = pathElement.getTotalLength();
+    
+    gsap.set(pathElement, {
+      strokeDasharray: pathLength,
+      strokeDashoffset: pathLength
+    });
+    
+    return gsap.to(pathElement, {
+      strokeDashoffset: 0,
+      duration: duration,
+      ease: "power2.inOut"
+    });
+  },
+
+  // Counter animation with easing
+  animateCounter: (element: HTMLElement, endValue: number, duration = 1.5, delay = 0) => {
+    const obj = { value: 0 };
+    
+    return gsap.to(obj, {
+      value: endValue,
+      duration: duration,
+      delay: delay,
+      ease: "power2.out",
+      onUpdate: function() {
+        element.textContent = Math.round(obj.value).toString();
+      }
+    });
+  },
+
+  // Enhanced button glow on hover
+  buttonGlowHover: (element: HTMLElement) => {
+    const enterAnimation = gsap.to(element, {
+      boxShadow: "0 0 30px rgba(34, 197, 94, 0.6), 0 0 60px rgba(34, 197, 94, 0.3)",
+      scale: 1.05,
+      duration: 0.3,
+      ease: "power2.out",
+      paused: true
+    });
+    
+    const leaveAnimation = gsap.to(element, {
+      boxShadow: "0 0 10px rgba(34, 197, 94, 0.2)",
+      scale: 1,
+      duration: 0.3,
+      ease: "power2.out",
+      paused: true
+    });
+    
+    element.addEventListener('mouseenter', () => enterAnimation.play());
+    element.addEventListener('mouseleave', () => leaveAnimation.play());
+  },
+
+  // Floating animation for UI elements
+  floatingAnimation: (element: HTMLElement) => {
+    gsap.to(element, {
+      y: "-=10",
+      duration: 2,
+      repeat: -1,
+      yoyo: true,
+      ease: "power2.inOut"
     });
   }
 };

@@ -149,7 +149,7 @@ export default function Dashboard() {
     return (
       <div className="min-h-screen bg-[#0c0c0c] flex items-center justify-center">
         <div className="text-white text-center">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-[#22c55e] mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-purple-500 mx-auto mb-4"></div>
           <p>Loading dashboard...</p>
         </div>
       </div>
@@ -163,11 +163,12 @@ export default function Dashboard() {
 
   return (
     <div ref={containerRef} className="flex min-h-screen bg-[#0c0c0c] overflow-hidden relative">
-      {/* Mobile Sidebar Overlay */}
+      {/* Mobile Sidebar Overlay - Using 768px breakpoint for consistency */}
       {!sidebarCollapsed && (
         <div 
-          className="fixed inset-0 bg-[#0c0c0c]/80 z-40 lg:hidden"
+          className="fixed inset-0 bg-[#0c0c0c]/80 backdrop-blur-sm z-40 md:hidden transition-opacity duration-300"
           onClick={() => setSidebarCollapsed(true)}
+          style={{ WebkitTapHighlightColor: 'transparent' }}
         />
       )}
       
@@ -181,39 +182,39 @@ export default function Dashboard() {
       <div className="flex-1 min-h-screen overflow-hidden relative">
         {/* Background Effects */}
         <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-gradient-to-br from-[#22c55e]/10 via-[#0c0c0c] to-[#16a34a]/10"></div>
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#22c55e]/5 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-[#22c55e]/10 rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-[#0c0c0c] to-purple-700/10"></div>
+          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse"></div>
         </div>
 
         {/* Header with Screen Time */}
-        <div ref={headerRef} className="relative z-10 p-3 sm:p-6 lg:p-8 border-b border-[#22c55e]/20 animate-premium-fade-in">
+        <div ref={headerRef} className="relative z-10 p-3 sm:p-6 lg:p-8 border-b border-purple-500/20 animate-premium-fade-in">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 lg:gap-6">
             <div className="flex-1">
-              <div className="flex items-center gap-3 lg:hidden">
+              <div className="flex items-center gap-3 md:hidden">
                 <button
                   onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-                  className="text-white hover:text-[#22c55e] transition-colors p-2 rounded-lg hover:bg-[#22c55e]/20 touch-manipulation interactive-scale"
+                  className="text-white hover:text-purple-400 transition-colors p-2 rounded-lg hover:bg-purple-500/20 touch-manipulation interactive-scale"
                 >
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
                   </svg>
                 </button>
               </div>
-              <h1 className="text-3xl lg:text-5xl font-bold bg-gradient-to-r from-[#22c55e] via-[#16a34a] to-[#15803d] bg-clip-text text-transparent mt-2 lg:mt-0">
+              <h1 className="text-3xl lg:text-5xl font-bold bg-gradient-to-r from-purple-400 via-purple-500 to-purple-600 bg-clip-text text-transparent mt-2 lg:mt-0">
                 Welcome back, {user?.username || 'User'}!
               </h1>
               <p className="text-gray-300 mt-2">Explore your intelligent workspace</p>
             </div>
-            <div className="bg-[#1a1a1a] border border-[#22c55e]/20 rounded-xl shadow-[0_0_20px_rgba(34,197,94,0.1)] hover:shadow-[0_0_30px_rgba(34,197,94,0.2)] transition-all duration-300 px-4 sm:px-6 py-4 w-full sm:w-auto lg:min-w-[280px]">
+            <div className="bg-[#1a1a1a] border border-purple-500/20 rounded-xl shadow-[0_0_20px_rgba(168,85,247,0.1)] hover:shadow-[0_0_30px_rgba(168,85,247,0.2)] transition-all duration-300 px-4 sm:px-6 py-4 w-full sm:w-auto lg:min-w-[280px]">
               <div className="text-center space-y-3">
                 <div>
-                  <p className="text-sm text-[#22c55e]/70">Current Time</p>
+                  <p className="text-sm text-purple-400/70">Current Time</p>
                   <p className="text-lg font-bold text-white" data-testid="current-time">{clockTime}</p>
                   <p className="text-sm text-gray-400">{formattedDate}</p>
                 </div>
-                <div className="border-t border-[#22c55e]/20 pt-3">
-                  <p className="text-sm text-[#22c55e]/70">Session Time</p>
+                <div className="border-t border-purple-500/20 pt-3">
+                  <p className="text-sm text-purple-400/70">Session Time</p>
                   <p className="text-xl font-bold text-white" data-testid="session-time">{formattedTime}</p>
                 </div>
               </div>
@@ -226,49 +227,49 @@ export default function Dashboard() {
           {/* Stats Cards Row */}
           <div ref={statsCardsRef} className="grid-premium gap-4 sm:gap-6 lg:gap-8 mb-8 lg:mb-12">
             {/* Quick Stats */}
-            <div className="bg-[#1a1a1a] border border-[#22c55e]/30 rounded-xl shadow-[0_0_15px_rgba(34,197,94,0.2)] hover:shadow-[0_0_25px_rgba(34,197,94,0.3)] transition-all duration-300 p-5 sm:p-6 lg:p-8 stats-card">
+            <div className="bg-[#1a1a1a] border border-purple-500/30 rounded-xl shadow-[0_0_15px_rgba(168,85,247,0.2)] hover:shadow-[0_0_25px_rgba(168,85,247,0.3)] transition-all duration-300 p-5 sm:p-6 lg:p-8 stats-card">
               <div className="flex items-center justify-between">
                 <div className="space-y-2">
-                  <p className="text-sm text-[#22c55e]/70">Total Messages</p>
+                  <p className="text-sm text-purple-400/70">Total Messages</p>
                   <p className="text-2xl lg:text-4xl font-bold text-white stats-number">247</p>
                   <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-[#22c55e] rounded-full animate-pulse shadow-[0_0_8px_rgba(34,197,94,0.6)]"></div>
-                    <span className="text-sm text-[#22c55e]">+12 today</span>
+                    <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse shadow-[0_0_8px_rgba(168,85,247,0.6)]"></div>
+                    <span className="text-sm text-purple-400">+12 today</span>
                   </div>
                 </div>
-                <div className="w-14 h-14 lg:w-16 lg:h-16 bg-gradient-to-br from-[#22c55e] to-[#16a34a] rounded-xl flex items-center justify-center shadow-[0_0_20px_rgba(34,197,94,0.4)]">
+                <div className="w-14 h-14 lg:w-16 lg:h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center shadow-[0_0_20px_rgba(168,85,247,0.4)]">
                   <i className="fas fa-comment text-white text-xl lg:text-2xl"></i>
                 </div>
               </div>
             </div>
 
-            <div className="bg-[#1a1a1a] border border-[#22c55e]/30 rounded-xl shadow-[0_0_15px_rgba(34,197,94,0.2)] hover:shadow-[0_0_25px_rgba(34,197,94,0.3)] transition-all duration-300 p-5 sm:p-6 lg:p-8 stats-card">
+            <div className="bg-[#1a1a1a] border border-purple-500/30 rounded-xl shadow-[0_0_15px_rgba(168,85,247,0.2)] hover:shadow-[0_0_25px_rgba(168,85,247,0.3)] transition-all duration-300 p-5 sm:p-6 lg:p-8 stats-card">
               <div className="flex items-center justify-between">
                 <div className="space-y-2">
-                  <p className="text-sm text-[#22c55e]/70">Conversations</p>
+                  <p className="text-sm text-purple-400/70">Conversations</p>
                   <p className="text-2xl lg:text-4xl font-bold text-white stats-number">18</p>
                   <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-[#16a34a] rounded-full animate-pulse shadow-[0_0_8px_rgba(22,163,74,0.6)]"></div>
-                    <span className="text-sm text-[#16a34a]">3 active</span>
+                    <div className="w-2 h-2 bg-purple-600 rounded-full animate-pulse shadow-[0_0_8px_rgba(147,51,234,0.6)]"></div>
+                    <span className="text-sm text-purple-600">3 active</span>
                   </div>
                 </div>
-                <div className="w-14 h-14 lg:w-16 lg:h-16 bg-gradient-to-br from-[#16a34a] to-[#15803d] rounded-xl flex items-center justify-center shadow-[0_0_20px_rgba(22,163,74,0.4)]">
+                <div className="w-14 h-14 lg:w-16 lg:h-16 bg-gradient-to-br from-purple-600 to-purple-700 rounded-xl flex items-center justify-center shadow-[0_0_20px_rgba(147,51,234,0.4)]">
                   <i className="fas fa-comments text-white text-xl lg:text-2xl"></i>
                 </div>
               </div>
             </div>
 
-            <div className="bg-[#1a1a1a] border border-[#22c55e]/30 rounded-xl shadow-[0_0_15px_rgba(34,197,94,0.2)] hover:shadow-[0_0_25px_rgba(34,197,94,0.3)] transition-all duration-300 p-5 sm:p-6 lg:p-8 stats-card">
+            <div className="bg-[#1a1a1a] border border-purple-500/30 rounded-xl shadow-[0_0_15px_rgba(168,85,247,0.2)] hover:shadow-[0_0_25px_rgba(168,85,247,0.3)] transition-all duration-300 p-5 sm:p-6 lg:p-8 stats-card">
               <div className="flex items-center justify-between">
                 <div className="space-y-2">
-                  <p className="text-sm text-[#22c55e]/70">Active Time</p>
+                  <p className="text-sm text-purple-400/70">Active Time</p>
                   <p className="text-2xl lg:text-4xl font-bold text-white stats-number">4h 32m</p>
                   <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-[#15803d] rounded-full animate-pulse shadow-[0_0_8px_rgba(21,128,61,0.6)]"></div>
-                    <span className="text-sm text-[#15803d]">This session</span>
+                    <div className="w-2 h-2 bg-purple-700 rounded-full animate-pulse shadow-[0_0_8px_rgba(109,40,217,0.6)]"></div>
+                    <span className="text-sm text-purple-700">This session</span>
                   </div>
                 </div>
-                <div className="w-14 h-14 lg:w-16 lg:h-16 bg-gradient-to-br from-[#15803d] to-[#166534] rounded-xl flex items-center justify-center shadow-[0_0_20px_rgba(21,128,61,0.4)]">
+                <div className="w-14 h-14 lg:w-16 lg:h-16 bg-gradient-to-br from-purple-700 to-purple-800 rounded-xl flex items-center justify-center shadow-[0_0_20px_rgba(109,40,217,0.4)]">
                   <i className="fas fa-clock text-white text-xl lg:text-2xl"></i>
                 </div>
               </div>
@@ -281,13 +282,13 @@ export default function Dashboard() {
               data={activityData} 
               type="line" 
               title="Weekly Activity" 
-              color="#22c55e"
+              color="#a855f7"
             />
             <AnalyticsChart 
               data={usageData} 
               type="bar" 
               title="Feature Usage" 
-              color="#16a34a"
+              color="#9333ea"
             />
           </div>
 
@@ -298,19 +299,19 @@ export default function Dashboard() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5, ease: "easeOut" }}
-              className="relative h-[16em] sm:h-[18em] w-full border-2 border-[#22c55e]/40 rounded-[1.5em] bg-gradient-to-br from-[#1a1a1a] via-[#0c0c0c]/80 to-[#1a1a1a]/20 text-white p-[1em] sm:p-[1.5em] flex justify-center items-left flex-col gap-[0.8em] sm:gap-[1em] backdrop-blur-[12px] hover:shadow-xl hover:shadow-[#22c55e]/20 transition-all duration-300 group/card hover:-translate-y-1"
+              className="relative h-[16em] sm:h-[18em] w-full border-2 border-purple-500/40 rounded-[1.5em] bg-gradient-to-br from-[#1a1a1a] via-[#0c0c0c]/80 to-[#1a1a1a]/20 text-white p-[1em] sm:p-[1.5em] flex justify-center items-left flex-col gap-[0.8em] sm:gap-[1em] backdrop-blur-[12px] hover:shadow-xl hover:shadow-purple-500/20 transition-all duration-300 group/card hover:-translate-y-1"
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-[#22c55e]/20 via-[#16a34a]/10 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-500 rounded-[1.5em]"></div>
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(34,197,94,0.1),transparent_60%)] group-hover/card:animate-pulse"></div>
+              <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 via-purple-600/10 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-500 rounded-[1.5em]"></div>
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(168,85,247,0.1),transparent_60%)] group-hover/card:animate-pulse"></div>
 
               <div className="absolute top-4 right-4 flex gap-2">
-                <div className="w-2 h-2 rounded-full bg-[#22c55e]/50"></div>
-                <div className="w-2 h-2 rounded-full bg-[#22c55e]/30"></div>
-                <div className="w-2 h-2 rounded-full bg-[#22c55e]/10"></div>
+                <div className="w-2 h-2 rounded-full bg-purple-400/50"></div>
+                <div className="w-2 h-2 rounded-full bg-purple-400/30"></div>
+                <div className="w-2 h-2 rounded-full bg-purple-400/10"></div>
               </div>
 
               <div className="relative z-10 transition-transform duration-300 group-hover/card:translate-y-[-2px] space-y-3">
-                <h1 className="text-[1.8em] sm:text-[2.2em] font-bold bg-gradient-to-r from-white via-[#22c55e] to-[#16a34a] bg-clip-text text-transparent">
+                <h1 className="text-[1.8em] sm:text-[2.2em] font-bold bg-gradient-to-r from-white via-purple-400 to-purple-500 bg-clip-text text-transparent">
                   Chat
                 </h1>
                 <p className="text-[0.9em] text-gray-300/90 leading-relaxed font-light">
@@ -320,10 +321,10 @@ export default function Dashboard() {
 
               <button
                 onClick={handleStartChat}
-                className="relative h-fit w-fit px-[1.4em] py-[0.7em] mt-2 border-[1px] border-[#22c55e]/40 rounded-full flex justify-center items-center gap-[0.7em] overflow-hidden group/btn hover:border-[#22c55e]/60 hover:shadow-lg hover:shadow-[#22c55e]/20 active:scale-95 transition-all duration-300 backdrop-blur-[12px] bg-[#22c55e]/10"
+                className="relative h-fit w-fit px-[1.4em] py-[0.7em] mt-2 border-[1px] border-purple-500/40 rounded-full flex justify-center items-center gap-[0.7em] overflow-hidden group/btn hover:border-purple-500/60 hover:shadow-lg hover:shadow-purple-500/20 active:scale-95 transition-all duration-300 backdrop-blur-[12px] bg-purple-500/10"
                 data-testid="start-chat-btn"
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-[#22c55e]/40 via-[#16a34a]/40 to-[#22c55e]/40 translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-700"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-purple-500/40 via-purple-600/40 to-purple-500/40 translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-700"></div>
                 <p className="relative z-10 font-medium tracking-wide">Begin Journey</p>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -341,7 +342,7 @@ export default function Dashboard() {
                 </svg>
               </button>
 
-              <div className="absolute bottom-4 left-4 w-8 h-8 rounded-full bg-gradient-to-br from-[#22c55e]/20 to-transparent blur-sm group-hover/card:animate-pulse"></div>
+              <div className="absolute bottom-4 left-4 w-8 h-8 rounded-full bg-gradient-to-br from-purple-500/20 to-transparent blur-sm group-hover/card:animate-pulse"></div>
             </motion.div>
 
             {/* Premium Features Card */}
@@ -349,19 +350,19 @@ export default function Dashboard() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.3 }}
-              className="relative h-[18em] w-full border-2 border-[#16a34a]/40 rounded-[1.5em] bg-gradient-to-br from-[#1a1a1a] via-[#0c0c0c]/80 to-[#1a1a1a]/20 text-white p-[1.5em] flex justify-center items-left flex-col gap-[1em] backdrop-blur-[12px] hover:shadow-2xl hover:shadow-[#16a34a]/30 transition-all duration-500 group/card hover:-translate-y-1"
+              className="relative h-[18em] w-full border-2 border-purple-600/40 rounded-[1.5em] bg-gradient-to-br from-[#1a1a1a] via-[#0c0c0c]/80 to-[#1a1a1a]/20 text-white p-[1.5em] flex justify-center items-left flex-col gap-[1em] backdrop-blur-[12px] hover:shadow-2xl hover:shadow-purple-600/30 transition-all duration-500 group/card hover:-translate-y-1"
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-[#16a34a]/20 via-[#15803d]/10 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-500 rounded-[1.5em]"></div>
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(22,163,74,0.1),transparent_60%)] group-hover/card:animate-pulse"></div>
+              <div className="absolute inset-0 bg-gradient-to-br from-purple-600/20 via-purple-700/10 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-500 rounded-[1.5em]"></div>
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(147,51,234,0.1),transparent_60%)] group-hover/card:animate-pulse"></div>
 
               <div className="absolute top-4 right-4 flex gap-2">
-                <div className="w-2 h-2 rounded-full bg-[#16a34a]/50"></div>
-                <div className="w-2 h-2 rounded-full bg-[#16a34a]/30"></div>
-                <div className="w-2 h-2 rounded-full bg-[#16a34a]/10"></div>
+                <div className="w-2 h-2 rounded-full bg-purple-500/50"></div>
+                <div className="w-2 h-2 rounded-full bg-purple-500/30"></div>
+                <div className="w-2 h-2 rounded-full bg-purple-500/10"></div>
               </div>
 
               <div className="relative z-10 transition-transform duration-300 group-hover/card:translate-y-[-2px] space-y-3">
-                <h1 className="text-[1.8em] sm:text-[2.2em] font-bold bg-gradient-to-r from-white via-[#16a34a] to-[#15803d] bg-clip-text text-transparent">
+                <h1 className="text-[1.8em] sm:text-[2.2em] font-bold bg-gradient-to-r from-white via-purple-500 to-purple-600 bg-clip-text text-transparent">
                   Premium
                 </h1>
                 <p className="text-[0.9em] text-gray-300/90 leading-relaxed font-light">
@@ -371,10 +372,10 @@ export default function Dashboard() {
 
               <button
                 onClick={() => setLocation('/pricing')}
-                className="relative h-fit w-fit px-[1.4em] py-[0.7em] mt-2 border-[1px] border-[#16a34a]/40 rounded-full flex justify-center items-center gap-[0.7em] overflow-hidden group/btn hover:border-[#16a34a]/60 hover:shadow-lg hover:shadow-[#16a34a]/20 active:scale-95 transition-all duration-300 backdrop-blur-[12px] bg-[#16a34a]/10"
+                className="relative h-fit w-fit px-[1.4em] py-[0.7em] mt-2 border-[1px] border-purple-600/40 rounded-full flex justify-center items-center gap-[0.7em] overflow-hidden group/btn hover:border-purple-600/60 hover:shadow-lg hover:shadow-purple-600/20 active:scale-95 transition-all duration-300 backdrop-blur-[12px] bg-purple-600/10"
                 data-testid="pricing-btn"
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-[#16a34a]/40 via-[#15803d]/40 to-[#16a34a]/40 translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-700"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-purple-600/40 via-purple-700/40 to-purple-600/40 translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-700"></div>
                 <p className="relative z-10 font-medium tracking-wide">Explore Now</p>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -392,7 +393,7 @@ export default function Dashboard() {
                 </svg>
               </button>
 
-              <div className="absolute bottom-4 left-4 w-8 h-8 rounded-full bg-gradient-to-br from-[#16a34a]/20 to-transparent blur-sm group-hover/card:animate-pulse"></div>
+              <div className="absolute bottom-4 left-4 w-8 h-8 rounded-full bg-gradient-to-br from-purple-600/20 to-transparent blur-sm group-hover/card:animate-pulse"></div>
             </motion.div>
           </div>
         </div>

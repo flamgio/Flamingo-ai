@@ -166,7 +166,7 @@ export default function Manager() {
     return (
       <div className="min-h-screen bg-[#0c0c0c] flex items-center justify-center">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-[#22c55e] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <div className="w-16 h-16 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
           <p className="text-white text-lg">Loading Management Center...</p>
         </div>
       </div>
@@ -174,22 +174,22 @@ export default function Manager() {
   }
 
   const stats = [
-    { title: "Active Users", value: managerStats?.activeUsers?.toString() || "127", icon: Users, change: "+12%", color: "bg-[#1a1a1a] border-[#22c55e]/20" },
-    { title: "Conversations", value: managerStats?.conversations?.toString() || "2,345", icon: MessageSquare, change: "+8%", color: "bg-[#1a1a1a] border-[#22c55e]/20" },
-    { title: "Monthly Growth", value: `${managerStats?.monthlyGrowth || 24}%`, icon: TrendingUp, change: "+3%", color: "bg-[#1a1a1a] border-[#22c55e]/20" },
-    { title: "System Health", value: `${managerStats?.systemHealth || 98.5}%`, icon: Activity, change: "+0.2%", color: "bg-[#1a1a1a] border-[#22c55e]/20" },
+    { title: "Active Users", value: managerStats?.activeUsers?.toString() || "127", icon: Users, change: "+12%", color: "bg-[#1a1a1a] border-purple-500/20" },
+    { title: "Conversations", value: managerStats?.conversations?.toString() || "2,345", icon: MessageSquare, change: "+8%", color: "bg-[#1a1a1a] border-purple-500/20" },
+    { title: "Monthly Growth", value: `${managerStats?.monthlyGrowth || 24}%`, icon: TrendingUp, change: "+3%", color: "bg-[#1a1a1a] border-purple-500/20" },
+    { title: "System Health", value: `${managerStats?.systemHealth || 98.5}%`, icon: Activity, change: "+0.2%", color: "bg-[#1a1a1a] border-purple-500/20" },
   ];
 
   return (
     <div ref={containerRef} className="min-h-screen bg-[#0c0c0c] text-white">
       {/* Header */}
-      <header ref={headerRef} className="bg-[#1a1a1a]/90 backdrop-blur-xl border-b border-[#22c55e]/20 shadow-2xl sticky top-0 z-50">
+      <header ref={headerRef} className="bg-[#1a1a1a]/90 backdrop-blur-xl border-b border-purple-500/20 shadow-2xl sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center space-x-3 flex-1">
               {/* Logo */}
               <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 bg-[#22c55e]/20 border border-[#22c55e]/50 rounded-lg flex items-center justify-center shadow-lg">
+                <div className="w-8 h-8 bg-purple-500/20 border border-purple-500/50 rounded-lg flex items-center justify-center shadow-lg">
                   <span className="text-[#22c55e] font-bold text-sm">MC</span>
                 </div>
                 <h1 className="text-lg sm:text-xl font-bold text-[#22c55e] drop-shadow-[0_0_10px_rgba(34,197,94,0.3)]">
@@ -197,7 +197,7 @@ export default function Manager() {
                   <span className="sm:hidden">Control</span>
                 </h1>
               </div>
-              <Badge variant="secondary" className="hidden sm:inline-flex bg-[#22c55e]/10 text-[#22c55e] border-[#22c55e]/30">
+              <Badge variant="secondary" className="hidden sm:inline-flex bg-purple-500/10 text-purple-400 border-purple-500/30">
                 <Shield className="w-3 h-3 mr-1" />
                 Management Portal
               </Badge>
@@ -231,7 +231,7 @@ export default function Manager() {
                 </Button>
                 
                 <div className="flex items-center space-x-2">
-                  <span className="text-sm text-orange-200 hidden lg:inline">
+                  <span className="text-sm text-orange-200 hidden md:inline">
                     {user.firstName} {user.lastName}
                   </span>
                   <Button
@@ -242,8 +242,8 @@ export default function Manager() {
                     data-testid="button-logout"
                   >
                     <LogOut className="w-4 h-4 mr-2" />
-                    <span className="hidden lg:inline">Logout</span>
-                    <span className="lg:hidden">Exit</span>
+                    <span className="hidden md:inline">Logout</span>
+                    <span className="md:hidden">Exit</span>
                   </Button>
                 </div>
               </div>

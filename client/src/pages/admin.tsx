@@ -188,17 +188,17 @@ export default function AdminPage() {
 
   return (
     <div ref={containerRef} className="min-h-screen bg-[#0c0c0c] text-white">
-      <nav ref={headerRef} className="bg-[#1a1a1a]/90 backdrop-blur-xl border-b border-[#22c55e]/20 shadow-2xl sticky top-0 z-50">
+      <nav ref={headerRef} className="bg-[#1a1a1a]/90 backdrop-blur-xl border-b border-purple-500/20 shadow-2xl sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-3 flex-1">
               <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-[#22c55e]/20 border border-[#22c55e]/50 rounded-lg flex items-center justify-center shadow-lg">
-                  <span className="text-[#22c55e] font-bold text-sm">SC</span>
+                <div className="w-8 h-8 bg-purple-500/20 border border-purple-500/50 rounded-lg flex items-center justify-center shadow-lg">
+                  <span className="text-purple-400 font-bold text-sm">SC</span>
                 </div>
                 <button
                   onClick={() => setLocation('/dashboard')}
-                  className="text-lg sm:text-xl font-bold text-[#22c55e] hover:text-[#22c55e]/80 transition-all duration-300 drop-shadow-[0_0_10px_rgba(34,197,94,0.3)]"
+                  className="text-lg sm:text-xl font-bold text-purple-400 hover:text-purple-400/80 transition-all duration-300 drop-shadow-[0_0_10px_rgba(168,85,247,0.3)]"
                 >
                   <span className="hidden sm:inline">System Control Hub</span>
                   <span className="sm:hidden">Control</span>
@@ -211,7 +211,7 @@ export default function AdminPage() {
               <Button
                 variant="ghost"
                 size="icon"
-                className="sm:hidden text-white hover:bg-[#22c55e]/20"
+                className="sm:hidden text-white hover:bg-purple-500/20"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               >
                 {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -243,24 +243,24 @@ export default function AdminPage() {
               <Button
                 variant="ghost"
                 onClick={() => setLocation('/dashboard')}
-                className="hidden sm:flex text-gray-300 hover:bg-[#22c55e]/20 hover:text-[#22c55e] border border-[#22c55e]/30 bg-[#22c55e]/5"
+                className="hidden sm:flex text-gray-300 hover:bg-purple-500/20 hover:text-purple-400 border border-purple-500/30 bg-purple-500/5"
                 data-testid="button-back"
               >
                 <span className="mr-2">←</span>
-                <span className="hidden lg:inline">Back to Dashboard</span>
-                <span className="lg:hidden">Back</span>
+                <span className="hidden md:inline">Back to Dashboard</span>
+                <span className="md:hidden">Back</span>
               </Button>
             </div>
           </div>
 
           {/* Mobile Menu */}
           {mobileMenuOpen && (
-            <div className="sm:hidden border-t border-[#22c55e]/20 py-3">
+            <div className="sm:hidden border-t border-purple-500/20 py-3">
               <div className="flex flex-col space-y-2">
                 <Button
                   variant="ghost"
                   onClick={toggleTheme}
-                  className="text-gray-300 hover:bg-[#22c55e]/20 hover:text-[#22c55e] justify-start"
+                  className="text-gray-300 hover:bg-purple-500/20 hover:text-purple-400 justify-start"
                 >
                   {theme === 'dark' ? <Sun className="w-4 h-4 mr-2" /> : <Moon className="w-4 h-4 mr-2" />}
                   Toggle Theme
@@ -268,7 +268,7 @@ export default function AdminPage() {
                 <Button
                   variant="ghost"
                   onClick={() => setLocation('/dashboard')}
-                  className="text-gray-300 hover:bg-[#22c55e]/20 hover:text-[#22c55e] justify-start"
+                  className="text-gray-300 hover:bg-purple-500/20 hover:text-purple-400 justify-start"
                 >
                   <span className="mr-2">←</span>
                   Back to Dashboard

@@ -50,22 +50,22 @@ export function DashboardSidebar({ isCollapsed, onToggle, className }: Dashboard
 
   return (
     <div className={cn(
-      "h-screen bg-gradient-to-b from-[#0c0c0c] via-[#1a1a1a] to-[#0c0c0c] border-r border-[#22c55e]/30 backdrop-blur-xl transition-all duration-300 relative lg:static fixed inset-y-0 left-0 z-50",
-      isCollapsed ? "w-16 lg:w-16" : "w-64 lg:w-72",
-      "lg:translate-x-0",
-      isCollapsed ? "-translate-x-full lg:translate-x-0" : "translate-x-0",
+      "h-screen bg-gradient-to-b from-[#0c0c0c] via-[#1a1a1a] to-[#0c0c0c] border-r border-purple-500/30 backdrop-blur-xl transition-all duration-300 relative md:static fixed inset-y-0 left-0 z-50",
+      isCollapsed ? "w-16 md:w-16" : "w-64 md:w-72",
+      "md:translate-x-0",
+      isCollapsed ? "-translate-x-full md:translate-x-0" : "translate-x-0",
       className
     )}>
       {/* Background Effects */}
       <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-gradient-to-br from-[#22c55e]/10 via-[#0c0c0c] to-[#16a34a]/5"></div>
-        <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-[#22c55e]/5 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-32 h-32 bg-[#16a34a]/10 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-[#0c0c0c] to-purple-600/5"></div>
+        <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-purple-500/5 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-32 h-32 bg-purple-600/10 rounded-full blur-3xl animate-pulse"></div>
       </div>
 
       <div className="relative z-10 flex flex-col h-full">
         {/* Logo Section */}
-        <div className="p-4 border-b border-[#22c55e]/20">
+        <div className="p-4 border-b border-purple-500/20">
           <button 
             onClick={() => setLocation('/')}
             className="flex items-center space-x-3 hover:opacity-80 transition-opacity w-full"
@@ -74,10 +74,10 @@ export function DashboardSidebar({ isCollapsed, onToggle, className }: Dashboard
             <img 
               src={logoImg} 
               alt="Flamingo AI" 
-              className="h-8 w-8 rounded-lg shadow-lg shadow-[#22c55e]/20" 
+              className="h-8 w-8 rounded-lg shadow-lg shadow-purple-500/20" 
             />
             {!isCollapsed && (
-              <span className="text-white text-lg font-bold bg-gradient-to-r from-[#22c55e] to-[#16a34a] bg-clip-text text-transparent">
+              <span className="text-white text-lg font-bold bg-gradient-to-r from-purple-400 to-purple-500 bg-clip-text text-transparent">
                 Flamingo AI
               </span>
             )}
@@ -90,7 +90,7 @@ export function DashboardSidebar({ isCollapsed, onToggle, className }: Dashboard
             variant="ghost"
             size="sm"
             onClick={onToggle}
-            className="w-full text-white/70 hover:text-white hover:bg-white/10 transition-all duration-200"
+            className="w-full text-gray-200 hover:text-white hover:bg-white/10 transition-all duration-200"
             data-testid="sidebar-toggle"
           >
             <i className={`fas ${isCollapsed ? 'fa-chevron-right' : 'fa-chevron-left'}`}></i>
@@ -107,12 +107,12 @@ export function DashboardSidebar({ isCollapsed, onToggle, className }: Dashboard
               className={cn(
                 "w-full flex items-center space-x-3 px-3 py-3 rounded-lg transition-all duration-200 group",
                 item.active 
-                  ? "bg-gradient-to-r from-[#22c55e]/20 to-[#16a34a]/30 text-white border border-[#22c55e]/40 shadow-[0_0_15px_rgba(34,197,94,0.3)]" 
-                  : "text-white/70 hover:text-white hover:bg-[#22c55e]/10 hover:shadow-[0_0_10px_rgba(34,197,94,0.2)]"
+                  ? "bg-gradient-to-r from-purple-500/20 to-purple-600/30 text-white border border-purple-500/40 shadow-[0_0_15px_rgba(168,85,247,0.3)]" 
+                  : "text-gray-200 hover:text-white hover:bg-purple-500/10 hover:shadow-[0_0_10px_rgba(168,85,247,0.2)]"
               )}
               data-testid={`nav-${item.name.toLowerCase()}`}
             >
-              <i className={`${item.icon} text-lg ${item.active ? 'text-[#22c55e]' : 'text-white/70 group-hover:text-[#22c55e]'}`}></i>
+              <i className={`${item.icon} text-lg ${item.active ? 'text-purple-400' : 'text-white/70 group-hover:text-purple-400'}`}></i>
               {!isCollapsed && (
                 <span className="font-medium">{item.name}</span>
               )}
@@ -123,7 +123,7 @@ export function DashboardSidebar({ isCollapsed, onToggle, className }: Dashboard
         {/* Social Media Links */}
         <div className="px-4 py-3 border-t border-purple-500/20">
           {!isCollapsed && (
-            <div className="text-white/50 text-xs font-medium mb-3 uppercase tracking-wider">
+            <div className="text-gray-200 text-xs font-medium mb-3 uppercase tracking-wider">
               Connect With Us
             </div>
           )}

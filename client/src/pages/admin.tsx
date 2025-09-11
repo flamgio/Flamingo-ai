@@ -27,7 +27,18 @@ interface AdminStats {
   systemHealth: number;
   premiumUsers: number;
   dailyActiveUsers: number;
+  apiRequestsToday?: number;
+  serverUptime?: number;
+  userGrowth?: number;
+  chatGrowth?: number;
+  lastUpdated?: string;
+  avgResponseTime?: number;
+  activeModels?: number;
+  apiRequests?: number;
 }
+
+type AdminUsersResponse = { users: any[] };
+type AdminConversationsResponse = { conversations: any[] };
 
 interface EnvVariable {
   key: string;
@@ -42,8 +53,8 @@ export default function AdminPage() {
   const [isAuthorized, setIsAuthorized] = useState(false);
   const { adminStats, isLoading: realtimeLoading, connectionStatus } = useAdminRealtimeData();
   const [envVars, setEnvVars] = useState<EnvVariable[]>([]);
-  const [users, setUsers] = useState([]);
-  const [conversations, setConversations] = useState([]);
+  const [users, setUsers] = useState<any[]>([]);
+  const [conversations, setConversations] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('overview');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -78,12 +89,12 @@ export default function AdminPage() {
       console.log('Admin analytics data:', analyticsResponse);
       
       // Fetch admin users data
-      const usersResponse = await apiRequest('/api/admin/users');
-      setUsers(usersResponse.users || []);
+      const usersResponse = await apiRequest<AdminUsersResponse>('/api/admin/users');
+      setUsers((usersResponse as any).data?.users || (usersResponse as any).users || (usersResponse as any) || []);
       
       // Fetch admin conversations data  
-      const conversationsResponse = await apiRequest('/api/admin/conversations');
-      setConversations(conversationsResponse.conversations || []);
+      const conversationsResponse = await apiRequest<AdminConversationsResponse>('/api/admin/conversations');
+      setConversations((conversationsResponse as any).data?.conversations || (conversationsResponse as any).conversations || (conversationsResponse as any) || []);
       
       // Environment variables (static data)
       setEnvVars([
@@ -420,9 +431,9 @@ export default function AdminPage() {
                     activeUsers: adminStats?.dailyActiveUsers || Math.floor(Date.now() / 500000),
                     premiumUsers: adminStats?.premiumUsers || Math.floor(Date.now() / 1000000),
                     openChats: adminStats?.activeSessions || Math.floor(Date.now() / 800000),
-                    userGrowth: adminStats?.userGrowth || Math.round((Math.sin(Date.now() / 100000) + 1) * 10 * 100) / 100,
-                    chatGrowth: adminStats?.chatGrowth || Math.round((Math.cos(Date.now() / 100000) + 1) * 15 * 100) / 100,
-                    lastUpdated: adminStats?.lastUpdated || "Updated just now"
+                    userGrowth: (adminStats as any)?.userGrowth || Math.round((Math.sin(Date.now() / 100000) + 1) * 10 * 100) / 100,
+                    chatGrowth: (adminStats as any)?.chatGrowth || Math.round((Math.cos(Date.now() / 100000) + 1) * 15 * 100) / 100,
+                    lastUpdated: (adminStats as any)?.lastUpdated || "Updated just now"
                   }}
                   className=""
                 />
@@ -443,15 +454,15 @@ export default function AdminPage() {
                       </div>
                       <div className="flex items-center justify-between">
                         <span className="text-gray-400">Response Time</span>
-                        <span className="text-lg font-bold text-white">{adminStats?.avgResponseTime || Math.floor(50 + Math.sin(Date.now() / 10000) * 30)}ms</span>
+                        <span className="text-lg font-bold text-white">{(adminStats as any)?.avgResponseTime || Math.floor(50 + Math.sin(Date.now() / 10000) * 30)}ms</span>
                       </div>
                       <div className="flex items-center justify-between">
                         <span className="text-gray-400">Active Models</span>
-                        <span className="text-lg font-bold text-white">{adminStats?.activeModels || 7}</span>
+                        <span className="text-lg font-bold text-white">{(adminStats as any)?.activeModels || 7}</span>
                       </div>
                       <div className="flex items-center justify-between">
                         <span className="text-gray-400">API Requests Today</span>
-                        <span className="text-lg font-bold text-white">{adminStats?.apiRequests || Math.floor(Date.now() / 100)}</span>
+                        <span className="text-lg font-bold text-white">{(adminStats as any)?.apiRequests || Math.floor(Date.now() / 100)}</span>
                       </div>
                     </div>
                   </CardContent>

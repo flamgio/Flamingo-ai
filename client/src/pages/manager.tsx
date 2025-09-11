@@ -28,6 +28,7 @@ import {
 } from "lucide-react";
 import ManagerReportsCard from "@/components/manager-reports-card";
 import { useManagerRealtimeData } from "@/hooks/use-realtime-data";
+import { apiRequest } from "@/lib/queryClient";
 
 // Register GSAP plugins
 gsap.registerPlugin(ScrollTrigger);
@@ -39,6 +40,18 @@ interface ManagerStats {
   systemHealth: number;
   totalMessages: number;
   avgResponseTime: number;
+  openChats?: number;
+  serverUptime?: number;
+  apiStatus?: string;
+  engagementRate?: number;
+  conversionRate?: number;
+  recentActivity?: any[];
+}
+
+interface ManagerRealStats {
+  totalUsers: number;
+  totalConversations: number;
+  premiumUsers: number;
 }
 
 export default function Manager() {
@@ -49,7 +62,7 @@ export default function Manager() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { managerStats, isLoading: realtimeLoading, connectionStatus } = useManagerRealtimeData();
   const [loading, setLoading] = useState(true);
-  const [realStats, setRealStats] = useState(null);
+  const [realStats, setRealStats] = useState<ManagerRealStats | null>(null);
 
   // GSAP refs
   const containerRef = useRef<HTMLDivElement>(null);
@@ -75,8 +88,8 @@ export default function Manager() {
       const response = await apiRequest('/api/manager/stats');
       console.log('Manager stats data:', response);
       
-      if (response.data?.stats || response.stats) {
-        setRealStats(response.data?.stats || response.stats);
+      if ((response as any).data?.stats || (response as any).stats) {
+        setRealStats((response as any).data?.stats || (response as any).stats);
       }
       
       setLoading(false);
@@ -367,12 +380,12 @@ export default function Manager() {
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-3 sm:space-y-4">
-                      {(managerStats?.recentActivity || [
+                      {((managerStats as any)?.recentActivity || [
                         { action: "User signed up", user: "user@flamingo.ai", time: "Just now" },
                         { action: "Chat session started", user: "premium@flamingo.ai", time: "2 mins ago" },
                         { action: "API request processed", user: "developer@flamingo.ai", time: "5 mins ago" },
                         { action: "System health check", user: "system@flamingo.ai", time: "10 mins ago" },
-                      ]).map((activity, index) => (
+                      ]).map((activity: any, index: number) => (
                         <div key={index} className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-2 border-b border-purple-500/20 last:border-0 gap-1 sm:gap-0" data-testid={`activity-${index}`}>
                           <div>
                             <div className="text-sm font-medium text-white">
@@ -425,11 +438,11 @@ export default function Manager() {
                       <div className="space-y-4">
                         <div className="flex justify-between items-center">
                           <span className="text-purple-200 text-sm">Server Uptime</span>
-                          <span className="text-purple-400 font-bold">{managerStats?.serverUptime || '99.9%'}</span>
+                          <span className="text-purple-400 font-bold">{(managerStats as any)?.serverUptime || '99.9%'}</span>
                         </div>
                         <div className="flex justify-between items-center">
                           <span className="text-purple-200 text-sm">API Status</span>
-                          <span className="text-purple-400 font-bold">{managerStats?.apiStatus || 'Healthy'}</span>
+                          <span className="text-purple-400 font-bold">{(managerStats as any)?.apiStatus || 'Healthy'}</span>
                         </div>
                       </div>
                     </CardContent>
@@ -499,11 +512,11 @@ export default function Manager() {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                     <div className="bg-purple-900/20 border border-purple-500/30 rounded-lg p-4 sm:p-6">
                       <h3 className="text-lg font-semibold text-purple-300 mb-2">Engagement Rate</h3>
-                      <p className="text-2xl sm:text-3xl font-bold text-white">{managerStats?.engagementRate || (85 + Math.sin(Date.now() / 100000) * 5).toFixed(1)}%</p>
+                      <p className="text-2xl sm:text-3xl font-bold text-white">{(managerStats as any)?.engagementRate || (85 + Math.sin(Date.now() / 100000) * 5).toFixed(1)}%</p>
                     </div>
                     <div className="bg-purple-900/20 border border-purple-500/30 rounded-lg p-4 sm:p-6">
                       <h3 className="text-lg font-semibold text-purple-300 mb-2">Conversion Rate</h3>
-                      <p className="text-2xl sm:text-3xl font-bold text-white">{managerStats?.conversionRate || (12 + Math.cos(Date.now() / 100000) * 2).toFixed(1)}%</p>
+                      <p className="text-2xl sm:text-3xl font-bold text-white">{(managerStats as any)?.conversionRate || (12 + Math.cos(Date.now() / 100000) * 2).toFixed(1)}%</p>
                     </div>
                   </div>
                 </CardContent>

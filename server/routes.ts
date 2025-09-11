@@ -79,7 +79,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Authentication routes
   app.post("/api/auth/signup", async (req, res) => {
     try {
-      const { email, firstName, lastName, password } = req.body;
+      const { email, firstName, lastName, password }: { email: string; firstName: string; lastName: string; password: string } = req.body;
 
       // Validation
       if (!email || !firstName || !lastName || !password) {
@@ -651,7 +651,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/admin/users", authenticateAdmin, async (req, res) => {
     try {
       const allUsers = await db.select().from(users);
-      const usersWithoutPasswords = allUsers.map(({ password, ...user }) => ({
+      const usersWithoutPasswords = allUsers.map(({ password, ...user }: { password: string; [key: string]: any }) => ({
         ...user,
         conversationCount: 0,
         lastActive: 'Recently',

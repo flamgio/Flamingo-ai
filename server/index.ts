@@ -35,8 +35,11 @@ app.use((req, res, next) => {
     const duration = Date.now() - start;
     if (path.startsWith("/api")) {
       let logLine = `${req.method} ${path} ${res.statusCode} in ${duration}ms`;
-      if (capturedJsonResponse) {
-        logLine += ` :: ${JSON.stringify(capturedJsonResponse)}`;
+      
+      // Only log response body in development mode and sanitize sensitive data
+      if (process.env.NODE_ENV === 'development' && capturedJsonResponse) {
+        const sanitizedResponse = sanitizeResponse(capturedJsonResponse);
+        logLine += ` :: ${JSON.stringify(sanitizedResponse)}`;
       }
 
       if (logLine.length > 80) {
@@ -49,6 +52,32 @@ app.use((req, res, next) => {
 
   next();
 });
+
+// Function to sanitize sensitive data from response logs
+function sanitizeResponse(response: Record<string, any>): Record<string, any> {
+  const sensitiveFields = ['password', 'token', 'secret', 'key', 'apiKey', 'refreshToken', 'accessToken'];
+  const sanitized = { ...response };
+  
+  // Recursively sanitize nested objects
+  const sanitizeObject = (obj: any): any => {
+    if (Array.isArray(obj)) {
+      return obj.map(sanitizeObject);
+    } else if (obj && typeof obj === 'object') {
+      const newObj: any = {};
+      for (const [key, value] of Object.entries(obj)) {
+        if (sensitiveFields.some(field => key.toLowerCase().includes(field.toLowerCase()))) {
+          newObj[key] = '[REDACTED]';
+        } else {
+          newObj[key] = sanitizeObject(value);
+        }
+      }
+      return newObj;
+    }
+    return obj;
+  };
+  
+  return sanitizeObject(sanitized);
+}
 
 (async () => {
   // Validate environment variables at startup

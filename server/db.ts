@@ -183,23 +183,33 @@ export async function initializeDatabase() {
   }
 }
 
-// Admin account provisioning function (credentials hidden in environment)
+// Admin account provisioning function (secure credential handling)
 export async function provisionAdminAccounts() {
   try {
+    // Only provision demo accounts in development environment
+    if (process.env.NODE_ENV === 'production') {
+      console.log('🔒 Skipping demo account provisioning in production');
+      return;
+    }
+
+    // Use environment variables for credentials
+    const adminPassword = process.env.ADMIN_PASSWORD || 'AdminFlamingo69';
+    const managerPassword = process.env.MANAGER_PASSWORD || 'ManagerFlamingo69';
+
     const adminAccounts = [
       {
         email: 'Flamingo@admin.flam',
         firstName: 'Flamingo',
         lastName: 'Admin',
         role: 'admin',
-        password: process.env.ADMIN_PASSWORD || 'AdminFlamingo69'
+        password: adminPassword
       },
       {
         email: 'Flamingo@manager.flam',
         firstName: 'Flamingo',
         lastName: 'Manager',
         role: 'manager',
-        password: process.env.MANAGER_PASSWORD || 'ManagerFlamingo69'
+        password: managerPassword
       }
     ];
 
@@ -220,11 +230,13 @@ export async function provisionAdminAccounts() {
           isPremium: true,
         });
 
-        console.log(`✅ Created ${account.role} account: ${account.email}`);
+        console.log(`✅ Created development ${account.role} account: ${account.email}`);
       } else {
-        console.log(`⚡ ${account.role} account already exists: ${account.email}`);
+        console.log(`⚡ Development ${account.role} account already exists: ${account.email}`);
       }
     }
+    
+    console.log('⚠️  Use environment variables ADMIN_PASSWORD and MANAGER_PASSWORD to override default credentials');
   } catch (error) {
     console.error('Error provisioning admin accounts:', error);
   }

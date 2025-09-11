@@ -15,45 +15,58 @@ interface User {
 // In-memory user storage
 const users: Map<string, User> = new Map();
 
-// Pre-seed admin and manager accounts
+// Pre-seed admin and manager accounts for development only
 const seedUsers = async () => {
-  // Admin account: Flamingo@admin.flam / AdminFlamingo69
+  // Only seed demo accounts in development environment
+  if (process.env.NODE_ENV === 'production') {
+    return;
+  }
+
+  // Use environment variables for credentials with secure fallbacks
+  const adminPassword = process.env.ADMIN_PASSWORD || 'AdminFlamingo69';
+  const managerPassword = process.env.MANAGER_PASSWORD || 'ManagerFlamingo69';
+  
+  // Admin account
   const adminId = 'admin-001';
   const adminUser: User = {
     id: adminId,
     email: 'Flamingo@admin.flam',
     firstName: 'Flamingo',
     lastName: 'Admin',
-    password: await bcrypt.hash('AdminFlamingo69', 10),
+    password: await bcrypt.hash(adminPassword, 10),
     role: 'admin',
     isPremium: true
   };
   users.set(adminId, adminUser);
 
-  // Manager account: Flamingo@manager.flam / ManagerFlamingo69
+  // Manager account
   const managerId = 'manager-001';
   const managerUser: User = {
     id: managerId,
     email: 'Flamingo@manager.flam', 
     firstName: 'Flamingo',
     lastName: 'Manager',
-    password: await bcrypt.hash('ManagerFlamingo69', 10),
+    password: await bcrypt.hash(managerPassword, 10),
     role: 'manager',
     isPremium: true
   };
   users.set(managerId, managerUser);
 
-  console.log('✅ Seeded admin and manager accounts');
-  console.log('Admin: Flamingo@admin.flam / AdminFlamingo69');
-  console.log('Manager: Flamingo@manager.flam / ManagerFlamingo69');
+  // Log account creation without revealing credentials
+  console.log('✅ Seeded development admin and manager accounts');
+  console.log('🔐 Admin account: Flamingo@admin.flam');
+  console.log('🔐 Manager account: Flamingo@manager.flam');
+  console.log('⚠️  Use environment variables ADMIN_PASSWORD and MANAGER_PASSWORD to override default credentials');
 };
 
-// Initialize seeded users
-seedUsers();
+// Initialize seeded users only in development
+if (process.env.NODE_ENV !== 'production') {
+  seedUsers();
+}
 
 export const authFallback = {
   async findUserByEmail(email: string): Promise<User | null> {
-    for (const user of users.values()) {
+    for (const user of Array.from(users.values())) {
       if (user.email === email) {
         return user;
       }

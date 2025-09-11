@@ -1927,4 +1927,143 @@
 /*                          END PREMIUM DESIGN SYSTEM                          */
 /* ============================================================================ */
 
+/* Moon Effect Card Background */
+.moon-card {
+  background: linear-gradient(45deg, #000000, #0a0a2e);
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+  box-shadow: 0 0 20px rgba(0, 0, 255, 0.1);
+  isolation: isolate;
+}
+
+.moon-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(100, 149, 237, 0.3);
+}
+
+/* Moon decoration container */
+.moon-decor {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Enhanced Moon with Craters */
+.moon {
+  height: 80px;
+  width: 80px;
+  background: linear-gradient(145deg, #f0f0f0, #ffffff);
+  border-radius: 50%;
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  box-shadow: 0 0 40px rgba(235, 235, 235, 0.5), inset -5px -5px 15px rgba(0, 0, 0, 0.2);
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: moonFloat 6s ease-in-out infinite;
+}
+
+/* Moon Craters */
+.crater {
+  position: absolute;
+  background: rgba(200, 200, 200, 0.3);
+  border-radius: 50%;
+  box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.1);
+  animation: craterPulse 4s ease-in-out infinite;
+}
+
+.crater-1 { width: 15px; height: 15px; top: 20px; left: 15px; animation-delay: -1s; }
+.crater-2 { width: 20px; height: 20px; top: 45px; left: 40px; animation-delay: -2s; }
+.crater-3 { width: 12px; height: 12px; top: 55px; left: 20px; animation-delay: -3s; }
+
+/* Stars container */
+.stars {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+/* Enhanced Blubs (Falling Stars) */
+.blub {
+  position: absolute;
+  height: calc(3px * var(--j));
+  width: calc(1px * var(--j));
+  background: linear-gradient(90deg, rgba(255, 255, 255, 1) 0%, rgba(173, 216, 230, 1) 100%);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 30px rgba(173, 216, 230, 0.6);
+  animation: starFall linear infinite reverse;
+  animation-duration: calc(40s / var(--i));
+  rotate: 25deg;
+  opacity: 0.8;
+  filter: blur(calc(0.5px * var(--j)));
+  left: calc(10% * var(--i));
+  animation-delay: calc(-2s * var(--i));
+}
+
+.blub-1 { --i: 11; --j: 2; }
+.blub-2 { --i: 12; --j: 1; }
+.blub-3 { --i: 6; --j: 1; }
+.blub-4 { --i: 9; --j: 3; }
+.blub-5 { --i: 4; --j: 2; }
+.blub-6 { --i: 16; --j: 2; }
+.blub-7 { --i: 3; --j: 1; }
+.blub-8 { --i: 7; --j: 1; }
+.blub-9 { --i: 14; --j: 2; }
+.blub-10 { --i: 8; --j: 1; }
+
+/* Keyframes for animations */
+@keyframes starFall {
+  0% { transform: translateY(250px) scale(0.3) rotate(25deg); }
+  100% { transform: translateY(-40px) scale(1.2) rotate(25deg); }
+}
+
+@keyframes moonFloat {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-5px) rotate(1deg); }
+}
+
+@keyframes craterPulse {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.1); }
+}
+
+/* Hover Effects */
+.moon-card:hover .moon {
+  box-shadow: 0 0 60px rgba(173, 216, 230, 0.7), inset -8px -8px 20px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(145deg, #e0ffff, #ffffff);
+  animation-duration: 3s;
+}
+
+.moon-card:hover .blub {
+  animation-duration: calc(30s / var(--i));
+  opacity: 1;
+}
+
+/* Card content container to keep content visible above moon */
+.moon-card-content {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Accessibility: Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .moon-card {
+    transition: none;
+  }
+  
+  .moon,
+  .crater,
+  .blub {
+    animation: none !important;
+  }
+  
+  .moon-card:hover {
+    transform: none;
+  }
+}
+
 

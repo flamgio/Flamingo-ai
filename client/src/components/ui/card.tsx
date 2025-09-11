@@ -4,16 +4,42 @@ import { cn } from "@/lib/utils"
 
 const Card = React.forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
+  React.HTMLAttributes<HTMLDivElement> & { noMoonEffect?: boolean }
+>(({ className, noMoonEffect = false, children, ...props }, ref) => (
   <div
     ref={ref}
     className={cn(
       "rounded-lg border bg-card text-card-foreground shadow-sm",
+      !noMoonEffect && "moon-card",
       className
     )}
     {...props}
-  />
+  >
+    {!noMoonEffect && (
+      <div className="moon-decor" aria-hidden="true">
+        <div className="moon">
+          <span className="crater crater-1" />
+          <span className="crater crater-2" />
+          <span className="crater crater-3" />
+        </div>
+        <div className="stars">
+          <span className="blub blub-1" />
+          <span className="blub blub-2" />
+          <span className="blub blub-3" />
+          <span className="blub blub-4" />
+          <span className="blub blub-5" />
+          <span className="blub blub-6" />
+          <span className="blub blub-7" />
+          <span className="blub blub-8" />
+          <span className="blub blub-9" />
+          <span className="blub blub-10" />
+        </div>
+      </div>
+    )}
+    <div className={cn(!noMoonEffect && "moon-card-content")}>
+      {children}
+    </div>
+  </div>
 ))
 Card.displayName = "Card"
 

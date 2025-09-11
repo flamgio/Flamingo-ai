@@ -5,7 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import { queryClient } from "./lib/queryClient";
-import VideoLanding from "./pages/video-landing";
+import Landing from "./pages/landing";
 import Login from "./pages/login";
 import SignUp from "./pages/signup";
 import Dashboard from "./pages/dashboard";
@@ -14,7 +14,6 @@ import Pricing from "./pages/pricing";
 import Settings from "./pages/settings";
 import Help from "./pages/help";
 import NotFound from "./pages/not-found";
-import IntroAnimation from "./components/intro-animation";
 import { ErrorBoundary } from "react-error-boundary";
 
 function ErrorFallback({ error }: { error: Error }) {
@@ -44,7 +43,7 @@ function ErrorFallback({ error }: { error: Error }) {
 function Router() {
   return (
     <Switch>
-      <Route path="/" component={VideoLanding} />
+      <Route path="/" component={Landing} />
       <Route path="/login" component={Login} />
       <Route path="/signup" component={SignUp} />
       <Route path="/dashboard" component={Dashboard} />
@@ -68,28 +67,6 @@ function Router() {
 }
 
 function App() {
-  const [showIntro, setShowIntro] = useState<boolean>(() => {
-    // Check if intro has been seen in this session
-    const introSeen = localStorage.getItem('flamingo-intro-seen');
-    return !introSeen;
-  });
-
-  const handleIntroComplete = () => {
-    localStorage.setItem('flamingo-intro-seen', 'true');
-    setShowIntro(false);
-  };
-
-  // Show intro animation first if not seen
-  if (showIntro) {
-    return (
-      <ErrorBoundary FallbackComponent={ErrorFallback}>
-        <ThemeProvider defaultTheme="light" storageKey="flamingo-theme">
-          <IntroAnimation onComplete={handleIntroComplete} />
-        </ThemeProvider>
-      </ErrorBoundary>
-    );
-  }
-
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <QueryClientProvider client={queryClient}>

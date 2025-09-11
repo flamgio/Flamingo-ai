@@ -1,16 +1,34 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/use-auth";
 import { useTheme } from "@/components/ui/theme-provider";
 import { motion } from "framer-motion";
-import { Moon, Sun, Sparkles } from "lucide-react";
+import { gsap } from "gsap";
+import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import IntroAnimation from "@/components/intro-animation";
+import "../styles/video-landing.css";
+
+// Register GSAP plugins
+gsap.registerPlugin(ScrollTrigger);
 
 export default function Landing() {
   const [, setLocation] = useLocation();
   const { user, isLoading } = useAuth();
   const { toggleTheme, theme } = useTheme();
-  const [showIntro, setShowIntro] = useState(true);
+  const [showIntro, setShowIntro] = useState<boolean>(() => {
+    // Check if intro has been seen in this session
+    const introSeen = localStorage.getItem('flamingo-intro-seen');
+    return !introSeen;
+  });
+  
+  // GSAP refs for premium animations
+  const containerRef = useRef<HTMLDivElement>(null);
+  const heroRef = useRef<HTMLDivElement>(null);
+  const navRef = useRef<HTMLElement>(null);
+  const featuresRef = useRef<HTMLElement>(null);
+  const chatPreviewRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (user) {
@@ -18,13 +36,10 @@ export default function Landing() {
     }
   }, [user, setLocation]);
 
-  useEffect(() => {
-    // Show intro animation for 10 seconds
-    const timer = setTimeout(() => {
-      setShowIntro(false);
-    }, 10000);
-    return () => clearTimeout(timer);
-  }, []);
+  const handleIntroComplete = () => {
+    localStorage.setItem('flamingo-intro-seen', 'true');
+    setShowIntro(false);
+  };
 
   const handleGetStarted = () => {
     if (user) {
@@ -34,542 +49,650 @@ export default function Landing() {
     }
   };
 
-  if (showIntro) {
-    return (
-      <div className="fixed inset-0 z-50 bg-gradient-to-br from-indigo-900 via-purple-800 to-blue-900 overflow-hidden">
-        {/* Animated Background */}
-        <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-gradient-to-r from-purple-600/20 via-blue-600/30 to-indigo-600/20 animate-pulse"></div>
-          
-          {/* Floating Particles */}
-          {[...Array(50)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute w-1 h-1 bg-white/40 rounded-full"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-              }}
-              animate={{
-                y: [0, -100, 0],
-                opacity: [0, 1, 0],
-                scale: [0.5, 1.5, 0.5],
-              }}
-              transition={{
-                duration: 4 + Math.random() * 3,
-                repeat: Infinity,
-                delay: Math.random() * 3,
-              }}
-            />
-          ))}
-          
-          {/* Gradient Orbs */}
-          <motion.div
-            className="absolute top-20 left-20 w-32 h-32 bg-gradient-to-r from-blue-400 to-purple-600 rounded-full blur-xl opacity-70"
-            animate={{
-              x: [0, 100, 0],
-              y: [0, 50, 0],
-              scale: [1, 1.2, 1],
-            }}
-            transition={{
-              duration: 6,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-          />
-          <motion.div
-            className="absolute bottom-20 right-20 w-24 h-24 bg-gradient-to-r from-pink-400 to-blue-500 rounded-full blur-xl opacity-60"
-            animate={{
-              x: [0, -80, 0],
-              y: [0, -40, 0],
-              scale: [1, 1.3, 1],
-            }}
-            transition={{
-              duration: 5,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: 1,
-            }}
-          />
-        </div>
+  // Premium GSAP animations on page load
+  useGSAP(() => {
+    if (!containerRef.current) return;
 
-        {/* Content */}
-        <div className="relative z-10 flex items-center justify-center h-full">
-          <div className="text-center">
+    // Main timeline for entrance animations
+    const tl = gsap.timeline({ delay: 0.2 });
 
-            {/* Welcome Text */}
-            <motion.div
-              initial={{ opacity: 0, y: 100 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.5, duration: 1.5, ease: "easeOut" }}
-              className="mb-8"
-            >
-              <h1 className="text-5xl md:text-7xl font-bold mb-4">
-                <span className="text-white">
-                  Welcome To
-                </span>
-                <br />
-                <span className="text-white">
-                  Flamingo AI
-                </span>
-              </h1>
-            </motion.div>
+    // Navigation slide down with fade
+    tl.fromTo(navRef.current,
+      { y: -100, opacity: 0 },
+      { y: 0, opacity: 1, duration: 1, ease: "power3.out" }
+    )
 
-            {/* Subtitle Animation */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 3.5, duration: 2, ease: "easeOut" }}
-            >
-              <p className="text-2xl md:text-4xl font-semibold text-white">
-                The Evolution of AI Assistant
-              </p>
-            </motion.div>
+    // Hero section staggered entrance
+    .fromTo(".hero-title", 
+      { opacity: 0, y: 80, scale: 0.8 },
+      { opacity: 1, y: 0, scale: 1, duration: 1.5, ease: "back.out(1.7)" },
+      "-=0.5"
+    )
+    .fromTo(".hero-description",
+      { opacity: 0, y: 50 },
+      { opacity: 1, y: 0, duration: 1, ease: "power2.out" },
+      "-=1"
+    )
+    .fromTo(".hero-actions",
+      { opacity: 0, y: 40, scale: 0.9 },
+      { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: "back.out(1.7)" },
+      "-=0.6"
+    )
+    .fromTo(".feature-pills",
+      { opacity: 0, y: 30 },
+      { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" },
+      "-=0.4"
+    )
 
-            {/* Animated Lines */}
-            <motion.div
-              initial={{ width: 0 }}
-              animate={{ width: "100%" }}
-              transition={{ delay: 5.5, duration: 2 }}
-              className="h-1 bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 mx-auto mt-8 max-w-md rounded-full"
-            />
-
-            {/* Loading Animation */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 7, duration: 1 }}
-              className="mt-12 flex items-center justify-center space-x-2"
-            >
-              {[...Array(5)].map((_, i) => (
-                <motion.div
-                  key={i}
-                  className="w-3 h-3 bg-white rounded-full"
-                  animate={{
-                    scale: [1, 1.5, 1],
-                    opacity: [0.5, 1, 0.5],
-                  }}
-                  transition={{
-                    duration: 1,
-                    repeat: Infinity,
-                    delay: i * 0.2,
-                  }}
-                />
-              ))}
-            </motion.div>
-
-            {/* Final Fade Effect */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 8.5, duration: 1.5 }}
-              className="absolute inset-0 bg-gradient-to-t from-transparent via-transparent to-white/10"
-            />
-          </div>
-        </div>
-      </div>
+    // Chat preview slide in from right
+    .fromTo(chatPreviewRef.current,
+      { opacity: 0, x: 150, rotationY: -20 },
+      { opacity: 1, x: 0, rotationY: 0, duration: 1.2, ease: "power3.out" },
+      "-=1.5"
     );
+
+    // Scroll-triggered animations for features
+    if (featuresRef.current) {
+      const featureCards = featuresRef.current.querySelectorAll('.feature-card');
+      
+      gsap.fromTo(featureCards, 
+        {
+          opacity: 0,
+          y: 100,
+          rotationX: -15,
+          scale: 0.8
+        },
+        {
+          opacity: 1,
+          y: 0,
+          rotationX: 0,
+          scale: 1,
+          duration: 1,
+          stagger: 0.15,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: featuresRef.current,
+            start: "top 80%",
+            end: "bottom 20%",
+            toggleActions: "play none none reverse"
+          }
+        }
+      );
+    }
+
+    // Floating animations for environment elements
+    gsap.to(".cloud", {
+      x: "random(-20, 20)",
+      y: "random(-10, 10)",
+      duration: "random(3, 5)",
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut",
+      stagger: 0.5
+    });
+
+    gsap.to(".particle", {
+      y: "random(-30, 30)",
+      x: "random(-20, 20)",
+      rotation: "random(-180, 180)",
+      duration: "random(4, 8)",
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut",
+      stagger: 0.2
+    });
+
+    // Premium button hover effects
+    const buttons = document.querySelectorAll('.primary-cta, .secondary-cta, .card-button');
+    buttons.forEach(button => {
+      const element = button as HTMLElement;
+      
+      element.addEventListener('mouseenter', () => {
+        gsap.to(element, {
+          scale: 1.05,
+          y: -3,
+          boxShadow: "0 20px 40px rgba(120, 50, 190, 0.4)",
+          duration: 0.3,
+          ease: "power2.out"
+        });
+      });
+      
+      element.addEventListener('mouseleave', () => {
+        gsap.to(element, {
+          scale: 1,
+          y: 0,
+          boxShadow: "0 0 0 rgba(120, 50, 190, 0)",
+          duration: 0.3,
+          ease: "power2.out"
+        });
+      });
+    });
+
+  }, []);
+
+  // Show intro animation first if not seen
+  if (showIntro) {
+    return <IntroAnimation onComplete={handleIntroComplete} />;
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-sky-100 via-blue-200 to-indigo-300 relative overflow-hidden">
-      {/* Background Mountains and Shapes */}
-      <div className="absolute inset-0">
-        {/* Mountain Shapes */}
-        <svg className="absolute inset-0 w-full h-full" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice">
-          <defs>
-            <linearGradient id="mountain1" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#60a5fa" stopOpacity="0.8"/>
-              <stop offset="100%" stopColor="#3b82f6" stopOpacity="0.9"/>
-            </linearGradient>
-            <linearGradient id="mountain2" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#93c5fd" stopOpacity="0.6"/>
-              <stop offset="100%" stopColor="#60a5fa" stopOpacity="0.7"/>
-            </linearGradient>
-          </defs>
-          <polygon fill="url(#mountain1)" points="0,400 300,200 600,350 900,150 1200,300 1200,800 0,800"/>
-          <polygon fill="url(#mountain2)" points="200,450 500,250 800,400 1200,200 1200,800 0,800"/>
-        </svg>
-
-        {/* Floating Particles */}
-        <div className="absolute inset-0">
-          {[...Array(20)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute w-2 h-2 bg-white/30 rounded-full"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-              }}
-              animate={{
-                y: [0, -50, 0],
-                opacity: [0.3, 0.8, 0.3],
-              }}
-              transition={{
-                duration: 3 + Math.random() * 2,
-                repeat: Infinity,
-                delay: Math.random() * 2,
-              }}
-            />
-          ))}
-        </div>
-      </div>
-
+    <div ref={containerRef} className="video-landing-container">
       {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/20 backdrop-blur-lg border-b border-white/30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              className="flex items-center space-x-2"
-            >
-              <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center shadow-lg">
-                <span className="text-blue-600 font-bold text-sm">FA</span>
+      <nav ref={navRef} className="landing-nav">
+        <div className="nav-content">
+          <div className="nav-left">
+            <div className="logo-container" onClick={() => setLocation('/')} style={{cursor: 'pointer'}}>
+              <div className="logo-icon">
+                <span>FA</span>
               </div>
-              <span className="text-xl font-bold text-white">
-                Flamingo AI
-              </span>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="flex items-center space-x-4"
+              <span className="brand-text">Flamingo</span>
+            </div>
+          </div>
+          
+          <div className="nav-right">
+            <label className="theme-switch">
+              <input 
+                type="checkbox" 
+                checked={theme === 'dark'}
+                onChange={toggleTheme}
+              />
+              <span className="theme-slider"></span>
+            </label>
+            
+            <Button
+              onClick={handleGetStarted}
+              disabled={isLoading}
+              className="nav-cta-btn"
             >
-              <Button
-                onClick={toggleTheme}
-                variant="ghost"
-                size="icon"
-                className="text-white hover:bg-white/20 rounded-full"
-              >
-                {theme === "light" ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
-              </Button>
-              <Button
-                onClick={handleGetStarted}
-                disabled={isLoading}
-                className="bg-white/90 text-blue-600 hover:bg-white px-6 py-2 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl font-semibold"
-              >
-                {isLoading ? 'Loading...' : 'Start Chatting'}
-              </Button>
-            </motion.div>
+              {isLoading ? 'Loading...' : 'Start Chatting'}
+            </Button>
           </div>
         </div>
       </nav>
 
-      {/* Hero Section */}
-      <div className="relative z-10 flex items-center justify-center min-h-screen px-4">
-        <div className="text-center max-w-4xl mx-auto">
-          <motion.h1
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.5 }}
-            className="text-6xl md:text-7xl font-bold mb-6"
-          >
-            <span className="bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-600 bg-clip-text text-transparent">
-              Powerful Features for
-            </span>
-            <br />
-            <span className="bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 bg-clip-text text-transparent">
-              Modern AI Experience
-            </span>
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.8 }}
-            className="text-xl md:text-2xl text-white/90 mb-12 max-w-2xl mx-auto"
-          >
-            Discover cutting-edge AI capabilities with intelligent model selection, persistent memory, and seamless conversations powered by advanced technology.
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 1.1 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center items-center"
-          >
-            <Button
-              onClick={handleGetStarted}
-              className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-8 py-4 text-lg rounded-full transition-all duration-300 shadow-lg hover:shadow-xl"
-            >
-              Start Your Journey
-            </Button>
-          </motion.div>
+      {/* Background Environment */}
+      <div className="environment-container">
+        {/* Sky and Atmosphere */}
+        <div className="sky-layer"></div>
+        <div className="clouds-layer">
+          <div className="cloud cloud-1"></div>
+          <div className="cloud cloud-2"></div>
+          <div className="cloud cloud-3"></div>
         </div>
-      </div>
 
-      {/* Feature Cards */}
-      <div className="relative z-10 py-20 px-4">
-        <div className="max-w-6xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl font-bold text-white mb-4">
-              Experience Next-Generation AI
-            </h2>
-            <p className="text-xl text-white/80 max-w-2xl mx-auto">
-              Explore our comprehensive suite of AI-powered features designed for seamless interaction and intelligent assistance.
-            </p>
-          </motion.div>
+        {/* Mountain Ranges - Multiple Layers for Depth */}
+        <div className="mountains-container">
+          <div className="mountain-range mountain-back"></div>
+          <div className="mountain-range mountain-mid"></div>
+          <div className="mountain-range mountain-front"></div>
+        </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {/* AI Model Selection Card */}
-            <motion.div
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              viewport={{ once: true }}
-              className="card"
-            >
-              <div className="card__border"></div>
-              <div className="card_title__container">
-                <div className="flex items-center space-x-3 mb-2">
-                  <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center">
-                    <i className="fas fa-brain text-white text-sm"></i>
-                  </div>
-                  <h3 className="card_title">AI Model Selection</h3>
-                </div>
-                <p className="card_paragraph">Multiple AI models to choose from</p>
-              </div>
-              <hr className="line" />
-              <ul className="card__list">
-                <li className="card__list_item">
-                  <span className="check">
-                    <svg className="check_svg" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
-                    </svg>
-                  </span>
-                  <span className="list_text">GPT models</span>
-                </li>
-                <li className="card__list_item">
-                  <span className="check">
-                    <svg className="check_svg" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
-                    </svg>
-                  </span>
-                  <span className="list_text">Claude models</span>
-                </li>
-                <li className="card__list_item">
-                  <span className="check">
-                    <svg className="check_svg" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
-                    </svg>
-                  </span>
-                  <span className="list_text">Custom selection</span>
-                </li>
-              </ul>
-              <button 
-                className="button"
-                onClick={() => setLocation('/signup')}
-              >
-                Explore Now
-              </button>
-            </motion.div>
+        {/* Waterfalls */}
+        <div className="waterfalls-container">
+          <div className="waterfall waterfall-main">
+            <div className="water-stream"></div>
+            <div className="water-splash"></div>
+          </div>
+          <div className="waterfall waterfall-side">
+            <div className="water-stream"></div>
+            <div className="water-splash"></div>
+          </div>
+        </div>
 
-            {/* PostgreSQL Memory Card */}
-            <motion.div
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              viewport={{ once: true }}
-              className="card"
-            >
-              <div className="card__border"></div>
-              <div className="card_title__container">
-                <div className="flex items-center space-x-3 mb-2">
-                  <div className="w-8 h-8 bg-gradient-to-br from-green-500 to-teal-600 rounded-lg flex items-center justify-center">
-                    <i className="fas fa-database text-white text-sm"></i>
-                  </div>
-                  <h3 className="card_title text-3d-gradient">PostgreSQL Memory</h3>
-                </div>
-                <p className="card_paragraph">Persistent conversation storage</p>
-              </div>
-              <hr className="line" />
-              <ul className="card__list">
-                <li className="card__list_item">
-                  <span className="check">
-                    <svg className="check_svg" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
-                    </svg>
-                  </span>
-                  <span className="list_text">User-specific storage</span>
-                </li>
-                <li className="card__list_item">
-                  <span className="check">
-                    <svg className="check_svg" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
-                    </svg>
-                  </span>
-                  <span className="list_text">Chat history</span>
-                </li>
-                <li className="card__list_item">
-                  <span className="check">
-                    <svg className="check_svg" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
-                    </svg>
-                  </span>
-                  <span className="list_text">Easy access</span>
-                </li>
-              </ul>
-              <button 
-                className="button"
-                onClick={() => setLocation('/signup')}
-              >
-                Explore Now
-              </button>
-            </motion.div>
+        {/* Birds Flying */}
+        <div className="birds-container">
+          <div className="bird-group group-1">
+            <div className="bird bird-1"></div>
+            <div className="bird bird-2"></div>
+            <div className="bird bird-3"></div>
+          </div>
+          <div className="bird-group group-2">
+            <div className="bird bird-4"></div>
+            <div className="bird bird-5"></div>
+          </div>
+        </div>
 
-            {/* User Settings Card */}
-            <motion.div
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              viewport={{ once: true }}
-              className="card"
-            >
-              <div className="card__border"></div>
-              <div className="card_title__container">
-                <div className="flex items-center space-x-3 mb-2">
-                  <div className="w-8 h-8 bg-gradient-to-br from-orange-500 to-red-600 rounded-lg flex items-center justify-center">
-                    <i className="fas fa-cog text-white text-sm"></i>
-                  </div>
-                  <h3 className="card_title text-holographic">User Settings</h3>
-                </div>
-                <p className="card_paragraph">Customize your experience</p>
-              </div>
-              <hr className="line" />
-              <ul className="card__list">
-                <li className="card__list_item">
-                  <span className="check">
-                    <svg className="check_svg" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
-                    </svg>
-                  </span>
-                  <span className="list_text">Personal settings</span>
-                </li>
-                <li className="card__list_item">
-                  <span className="check">
-                    <svg className="check_svg" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
-                    </svg>
-                  </span>
-                  <span className="list_text">Model preferences</span>
-                </li>
-                <li className="card__list_item">
-                  <span className="check">
-                    <svg className="check_svg" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
-                    </svg>
-                  </span>
-                  <span className="list_text">Chat customization</span>
-                </li>
-              </ul>
-              <button 
-                className="button"
-                onClick={() => setLocation('/signup')}
-              >
-                Explore Now
-              </button>
-            </motion.div>
-
-            {/* Premium Plan Card - Glass Effect */}
-            <motion.div
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              viewport={{ once: true }}
-              className="relative bg-gradient-to-br from-white/20 to-white/10 dark:from-purple-900/30 dark:to-pink-900/20 backdrop-blur-xl border border-white/30 dark:border-purple-400/30 rounded-2xl p-6 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:bg-white/25 dark:hover:bg-purple-900/40 hover:scale-105 max-w-80 cursor-pointer group"
-            >
-              {/* Premium Badge */}
-              <div className="absolute -top-3 -right-3 bg-gradient-to-r from-purple-500 to-pink-600 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg animate-pulse">
-                PREMIUM
-              </div>
-              
-              {/* Glass Border Effect */}
-              <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-purple-400/20 via-pink-400/20 to-indigo-400/20 p-0.5 -z-10">
-                <div className="w-full h-full bg-white/10 dark:bg-black/20 rounded-2xl"></div>
-              </div>
-
-              <div className="relative z-10">
-                {/* Title Section */}
-                <div className="flex items-center space-x-3 mb-4">
-                  <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center shadow-lg">
-                    <i className="fas fa-crown text-white text-lg animate-bounce"></i>
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-bold bg-gradient-to-r from-purple-600 to-pink-600 dark:from-purple-300 dark:to-pink-300 bg-clip-text text-transparent">
-                      Premium Access
-                    </h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-300">
-                      Unlock advanced AI capabilities
-                    </p>
-                  </div>
-                </div>
-
-                {/* Divider */}
-                <div className="w-full h-px bg-gradient-to-r from-transparent via-purple-400/50 to-transparent mb-4"></div>
-
-                {/* Features List */}
-                <ul className="space-y-3 mb-6">
-                  <li className="flex items-center space-x-3 group/item">
-                    <div className="w-5 h-5 bg-gradient-to-r from-purple-500 to-pink-600 rounded-full flex items-center justify-center flex-shrink-0 shadow-sm">
-                      <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
-                      </svg>
-                    </div>
-                    <span className="text-sm font-medium text-gray-700 dark:text-gray-200 group-hover/item:text-purple-600 dark:group-hover/item:text-purple-300 transition-colors">
-                      Unlimited conversations
-                    </span>
-                  </li>
-                  <li className="flex items-center space-x-3 group/item">
-                    <div className="w-5 h-5 bg-gradient-to-r from-purple-500 to-pink-600 rounded-full flex items-center justify-center flex-shrink-0 shadow-sm">
-                      <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
-                      </svg>
-                    </div>
-                    <span className="text-sm font-medium text-gray-700 dark:text-gray-200 group-hover/item:text-purple-600 dark:group-hover/item:text-purple-300 transition-colors">
-                      Priority response speed
-                    </span>
-                  </li>
-                  <li className="flex items-center space-x-3 group/item">
-                    <div className="w-5 h-5 bg-gradient-to-r from-purple-500 to-pink-600 rounded-full flex items-center justify-center flex-shrink-0 shadow-sm">
-                      <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
-                      </svg>
-                    </div>
-                    <span className="text-sm font-medium text-gray-700 dark:text-gray-200 group-hover/item:text-purple-600 dark:group-hover/item:text-purple-300 transition-colors">
-                      Advanced AI models
-                    </span>
-                  </li>
-                </ul>
-
-                {/* Premium Button */}
-                <button 
-                  className="w-full bg-gradient-to-r from-purple-500 via-pink-500 to-indigo-500 hover:from-purple-600 hover:via-pink-600 hover:to-indigo-600 text-white font-semibold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 active:scale-95"
-                  onClick={() => setLocation('/pricing')}
-                >
-                  <span className="flex items-center justify-center space-x-2">
-                    <i className="fas fa-star text-yellow-300"></i>
-                    <span>Get Premium</span>
-                    <i className="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
-                  </span>
-                </button>
-              </div>
-
-              {/* Ambient Glow Effect */}
-              <div className="absolute -inset-1 bg-gradient-to-r from-purple-600 via-pink-600 to-indigo-600 rounded-2xl opacity-20 blur-sm group-hover:opacity-30 transition-opacity -z-20"></div>
-            </motion.div>
+        {/* Particles and Atmosphere */}
+        <div className="particles-container">
+          <div className="particle-mist"></div>
+          <div className="floating-particles">
+            {[...Array(12)].map((_, i) => (
+              <div key={i} className={`particle particle-${i + 1}`}></div>
+            ))}
           </div>
         </div>
       </div>
+
+      {/* Main Content */}
+      <div className="main-content">
+        <div className="hero-section">
+          <h1 className="hero-title typography-display-lg animate-premium-fade-in text-balance">
+            <span className="title-line-1 flamingo-gradient-text">Experience the</span>
+            <span className="title-line-2 flamingo-gradient-text">Future of AI</span>
+            <span className="title-line-3 flamingo-gradient-text">Chat Platform</span>
+          </h1>
+
+          <p className="hero-description typography-body-lg animate-premium-slide-up text-balance max-w-2xl mx-auto">
+            Discover seamless conversations with our intelligent AI platform. 
+            Built with privacy-first design and cutting-edge technology for 
+            the ultimate chat experience.
+          </p>
+
+          <div className="hero-actions flex gap-6 justify-center items-center animate-premium-scale-in">
+            <Button
+              onClick={handleGetStarted}
+              disabled={isLoading}
+              size="lg"
+              className="primary-cta interactive-scale interactive-glow flamingo-gradient shadow-premium-lg px-8 py-4 typography-body font-semibold"
+            >
+              <span>🚀</span>
+              {isLoading ? 'Loading...' : 'Get Started'}
+            </Button>
+            
+            <Button
+              variant="outline"
+              size="lg"
+              className="secondary-cta interactive-lift border-premium backdrop-blur-premium px-8 py-4 typography-body font-semibold"
+            >
+              <span>▶️</span>
+              Watch Demo
+            </Button>
+          </div>
+
+          {/* Feature Pills */}
+          <div className="feature-pills flex gap-4 justify-center flex-wrap animate-premium-fade-in">
+            <div className="pill card-premium interactive-scale px-6 py-3 typography-body-sm font-medium">
+              🛡️ Secure & Private
+            </div>
+            <div className="pill card-premium interactive-scale px-6 py-3 typography-body-sm font-medium">
+              ⚡ Lightning Fast
+            </div>
+            <div className="pill card-premium interactive-scale px-6 py-3 typography-body-sm font-medium">
+              🧠 AI-Powered
+            </div>
+          </div>
+        </div>
+
+        {/* Floating Chat Preview */}
+        <div ref={chatPreviewRef} className="chat-preview">
+          <div className="chat-window">
+            <div className="chat-header">
+              <div className="window-controls">
+                <div className="control red"></div>
+                <div className="control yellow"></div>
+                <div className="control green"></div>
+              </div>
+              <span className="chat-title">Flamingo AI Chat</span>
+            </div>
+            
+            <div className="chat-messages">
+              <div className="message user-message">
+                <div className="message-content">
+                  How does your AI system work?
+                </div>
+              </div>
+              
+              <div className="message ai-message">
+                <div className="message-avatar">🤖</div>
+                <div className="message-content">
+                  <div className="typing-indicator">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                  </div>
+                  <p>Great question! Our intelligent platform routes conversations to the most suitable AI models for optimal responses.</p>
+                  <ul>
+                    <li>🎯 Smart model selection</li>
+                    <li>⚡ Real-time processing</li>
+                    <li>🔒 Privacy protected</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Scroll Indicator */}
+      <div className="scroll-indicator">
+        <div className="scroll-mouse">
+          <div className="scroll-wheel"></div>
+        </div>
+        <span>Scroll to explore</span>
+      </div>
+
+      {/* Features Section with Cards */}
+      <section ref={featuresRef} className="features-section">
+        <div className="features-container">
+          <motion.div 
+            className="features-header"
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.2 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="features-title">
+              <span className="gradient-text">Powerful Features</span> for
+              <br />
+              <span className="gradient-text-alt">Modern AI Experience</span>
+            </h2>
+            <p className="features-description">
+              Discover innovative AI features designed for seamless user experience,
+              performance, and reliability in every conversation.
+            </p>
+          </motion.div>
+
+          <div className="features-grid">
+            {/* AI Model Selection Card */}
+            <motion.div 
+              className="feature-card card-3d"
+              initial={{ opacity: 0, y: 60, rotateY: -15 }}
+              whileInView={{ opacity: 1, y: 0, rotateY: 0 }}
+              transition={{ duration: 0.8, delay: 0.1 }}
+              viewport={{ once: true }}
+              whileHover={{ 
+                y: -10, 
+                rotateY: 5,
+                transition: { duration: 0.3 } 
+              }}
+            >
+              <div className="card-glow"></div>
+              <div className="card-content">
+                <div className="card-header">
+                  <div className="card-icon brain-icon">
+                    <i className="fas fa-brain"></i>
+                  </div>
+                  <h3 className="card-title">Model Selection</h3>
+                </div>
+                <p className="card-description">Multiple intelligent models to choose from</p>
+                <div className="card-divider"></div>
+                <ul className="card-features">
+                  <li>
+                    <span className="feature-check">✓</span>
+                    <span>Advanced models</span>
+                  </li>
+                  <li>
+                    <span className="feature-check">✓</span>
+                    <span>Premium models</span>
+                  </li>
+                  <li>
+                    <span className="feature-check">✓</span>
+                    <span>Custom selection</span>
+                  </li>
+                </ul>
+                <button className="card-button">
+                  <span>Explore Now</span>
+                  <i className="fas fa-arrow-right"></i>
+                </button>
+              </div>
+            </motion.div>
+
+            {/* PostgreSQL Memory Card */}
+            <motion.div 
+              className="feature-card card-3d"
+              initial={{ opacity: 0, y: 60, rotateY: 15 }}
+              whileInView={{ opacity: 1, y: 0, rotateY: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              viewport={{ once: true }}
+              whileHover={{ 
+                y: -10, 
+                rotateY: -5,
+                transition: { duration: 0.3 } 
+              }}
+            >
+              <div className="card-glow"></div>
+              <div className="card-content">
+                <div className="card-header">
+                  <div className="card-icon database-icon">
+                    <i className="fas fa-database"></i>
+                  </div>
+                  <h3 className="card-title">PostgreSQL Memory</h3>
+                </div>
+                <p className="card-description">Persistent conversation storage</p>
+                <div className="card-divider"></div>
+                <ul className="card-features">
+                  <li>
+                    <span className="feature-check">✓</span>
+                    <span>User-specific storage</span>
+                  </li>
+                  <li>
+                    <span className="feature-check">✓</span>
+                    <span>Chat history</span>
+                  </li>
+                  <li>
+                    <span className="feature-check">✓</span>
+                    <span>Easy access</span>
+                  </li>
+                </ul>
+                <button className="card-button">
+                  <span>Explore Now</span>
+                  <i className="fas fa-arrow-right"></i>
+                </button>
+              </div>
+            </motion.div>
+
+            {/* User Settings Card */}
+            <motion.div 
+              className="feature-card card-3d"
+              initial={{ opacity: 0, y: 60, rotateY: -10 }}
+              whileInView={{ opacity: 1, y: 0, rotateY: 0 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              viewport={{ once: true }}
+              whileHover={{ 
+                y: -10, 
+                rotateY: 8,
+                transition: { duration: 0.3 } 
+              }}
+            >
+              <div className="card-glow"></div>
+              <div className="card-content">
+                <div className="card-header">
+                  <div className="card-icon settings-icon">
+                    <i className="fas fa-cog"></i>
+                  </div>
+                  <h3 className="card-title">User Settings</h3>
+                </div>
+                <p className="card-description">Customize your experience</p>
+                <div className="card-divider"></div>
+                <ul className="card-features">
+                  <li>
+                    <span className="feature-check">✓</span>
+                    <span>Personal preferences</span>
+                  </li>
+                  <li>
+                    <span className="feature-check">✓</span>
+                    <span>Theme options</span>
+                  </li>
+                  <li>
+                    <span className="feature-check">✓</span>
+                    <span>Privacy controls</span>
+                  </li>
+                </ul>
+                <button className="card-button">
+                  <span>Explore Now</span>
+                  <i className="fas fa-arrow-right"></i>
+                </button>
+              </div>
+            </motion.div>
+
+            {/* Real-time Chat Card */}
+            <motion.div 
+              className="feature-card card-3d"
+              initial={{ opacity: 0, y: 60, rotateY: 12 }}
+              whileInView={{ opacity: 1, y: 0, rotateY: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              viewport={{ once: true }}
+              whileHover={{ 
+                y: -10, 
+                rotateY: -6,
+                transition: { duration: 0.3 } 
+              }}
+            >
+              <div className="card-glow"></div>
+              <div className="card-content">
+                <div className="card-header">
+                  <div className="card-icon chat-icon">
+                    <i className="fas fa-comments"></i>
+                  </div>
+                  <h3 className="card-title">Real-time Chat</h3>
+                </div>
+                <p className="card-description">Instant intelligent conversations</p>
+                <div className="card-divider"></div>
+                <ul className="card-features">
+                  <li>
+                    <span className="feature-check">✓</span>
+                    <span>Lightning fast responses</span>
+                  </li>
+                  <li>
+                    <span className="feature-check">✓</span>
+                    <span>Multi-turn conversations</span>
+                  </li>
+                  <li>
+                    <span className="feature-check">✓</span>
+                    <span>Smart context awareness</span>
+                  </li>
+                </ul>
+                <button className="card-button">
+                  <span>Explore Now</span>
+                  <i className="fas fa-arrow-right"></i>
+                </button>
+              </div>
+            </motion.div>
+
+            {/* Security & Privacy Card */}
+            <motion.div 
+              className="feature-card card-3d"
+              initial={{ opacity: 0, y: 60, rotateY: -8 }}
+              whileInView={{ opacity: 1, y: 0, rotateY: 0 }}
+              transition={{ duration: 0.8, delay: 0.5 }}
+              viewport={{ once: true }}
+              whileHover={{ 
+                y: -10, 
+                rotateY: 10,
+                transition: { duration: 0.3 } 
+              }}
+            >
+              <div className="card-glow"></div>
+              <div className="card-content">
+                <div className="card-header">
+                  <div className="card-icon security-icon">
+                    <i className="fas fa-shield-alt"></i>
+                  </div>
+                  <h3 className="card-title">Security & Privacy</h3>
+                </div>
+                <p className="card-description">Your data, protected always</p>
+                <div className="card-divider"></div>
+                <ul className="card-features">
+                  <li>
+                    <span className="feature-check">✓</span>
+                    <span>End-to-end encryption</span>
+                  </li>
+                  <li>
+                    <span className="feature-check">✓</span>
+                    <span>Privacy-first design</span>
+                  </li>
+                  <li>
+                    <span className="feature-check">✓</span>
+                    <span>Secure authentication</span>
+                  </li>
+                </ul>
+                <button className="card-button">
+                  <span>Explore Now</span>
+                  <i className="fas fa-arrow-right"></i>
+                </button>
+              </div>
+            </motion.div>
+
+            {/* Analytics & Insights Card */}
+            <motion.div 
+              className="feature-card card-3d"
+              initial={{ opacity: 0, y: 60, rotateY: 15 }}
+              whileInView={{ opacity: 1, y: 0, rotateY: 0 }}
+              transition={{ duration: 0.8, delay: 0.6 }}
+              viewport={{ once: true }}
+              whileHover={{ 
+                y: -10, 
+                rotateY: -4,
+                transition: { duration: 0.3 } 
+              }}
+            >
+              <div className="card-glow"></div>
+              <div className="card-content">
+                <div className="card-header">
+                  <div className="card-icon analytics-icon">
+                    <i className="fas fa-chart-line"></i>
+                  </div>
+                  <h3 className="card-title">Analytics & Insights</h3>
+                </div>
+                <p className="card-description">Track your AI interactions</p>
+                <div className="card-divider"></div>
+                <ul className="card-features">
+                  <li>
+                    <span className="feature-check">✓</span>
+                    <span>Usage statistics</span>
+                  </li>
+                  <li>
+                    <span className="feature-check">✓</span>
+                    <span>Performance metrics</span>
+                  </li>
+                  <li>
+                    <span className="feature-check">✓</span>
+                    <span>Detailed reports</span>
+                  </li>
+                </ul>
+                <button className="card-button">
+                  <span>Explore Now</span>
+                  <i className="fas fa-arrow-right"></i>
+                </button>
+              </div>
+            </motion.div>
+
+            {/* Glassmorphism Highlight Card */}
+            <motion.div 
+              className="feature-card glassmorphism-card"
+              initial={{ opacity: 0, y: 60, scale: 0.8 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 1, delay: 0.7 }}
+              viewport={{ once: true }}
+              whileHover={{ 
+                y: -15, 
+                scale: 1.05,
+                transition: { duration: 0.3 } 
+              }}
+            >
+              <div className="glass-backdrop"></div>
+              <div className="card-content">
+                <div className="card-header">
+                  <div className="card-icon premium-icon">
+                    <i className="fas fa-crown"></i>
+                  </div>
+                  <h3 className="card-title premium-title">Premium Experience</h3>
+                </div>
+                <p className="card-description">Unlock the full potential of AI</p>
+                <div className="card-divider glass-divider"></div>
+                <ul className="card-features">
+                  <li>
+                    <span className="feature-check premium-check">✨</span>
+                    <span>Advanced AI models</span>
+                  </li>
+                  <li>
+                    <span className="feature-check premium-check">✨</span>
+                    <span>Priority processing</span>
+                  </li>
+                  <li>
+                    <span className="feature-check premium-check">✨</span>
+                    <span>Unlimited conversations</span>
+                  </li>
+                </ul>
+                <button className="card-button premium-button">
+                  <span>Get Premium</span>
+                  <i className="fas fa-sparkles"></i>
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

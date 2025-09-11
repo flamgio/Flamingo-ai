@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { Sparkles } from 'lucide-react';
-import '../new-intro-styles.css';
+import '../styles/intro-animation.css';
 
 interface IntroAnimationProps {
   onComplete: () => void;

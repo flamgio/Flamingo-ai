@@ -25,7 +25,7 @@ const seedUsers = async () => {
   // Use environment variables for credentials with secure fallbacks
   const adminPassword = process.env.ADMIN_PASSWORD || 'AdminFlamingo69';
   const managerPassword = process.env.MANAGER_PASSWORD || 'ManagerFlamingo69';
-  
+
   // Admin account
   const adminId = 'admin-001';
   const adminUser: User = {
@@ -87,7 +87,7 @@ export const authFallback = {
   }): Promise<User> {
     const userId = `user-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
     const hashedPassword = await bcrypt.hash(userData.password, 10);
-    
+
     const user: User = {
       id: userId,
       email: userData.email,
@@ -106,14 +106,12 @@ export const authFallback = {
     return bcrypt.compare(password, hashedPassword);
   },
 
+  // Generate JWT token
   generateToken(userId: string): string {
-    return jwt.sign(
-      { userId }, 
-      process.env.JWT_SECRET || 'flamingo-ai-development-secret-key-2024-please-change-in-production',
-      { expiresIn: '7d' }
-    );
+    return jwt.sign({ userId }, process.env.JWT_SECRET || 'flamingo-ai-development-secret-key-2024-please-change-in-production', { expiresIn: '7d' });
   },
 
+  // Verify JWT token
   verifyToken(token: string): { userId: string } | null {
     try {
       return jwt.verify(token, process.env.JWT_SECRET || 'flamingo-ai-development-secret-key-2024-please-change-in-production') as { userId: string };

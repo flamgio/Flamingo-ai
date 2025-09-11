@@ -60,10 +60,9 @@ if (!DATABASE_URL) {
 const sequelize = new Sequelize(DATABASE_URL, {
   dialect: 'postgres',
   dialectOptions: {
-    ssl: {
-      require: true,
-      rejectUnauthorized: false
-    }
+    ssl: process.env.NODE_ENV === 'production' 
+      ? { require: true, rejectUnauthorized: true }
+      : { require: true, rejectUnauthorized: false }
   },
   logging: process.env.NODE_ENV === 'development' ? console.log : false,
   pool: {

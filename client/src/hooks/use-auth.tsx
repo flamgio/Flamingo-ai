@@ -50,10 +50,21 @@ export function useAuth() {
       queryClient.setQueryData(["/api/user"], data.user);
       
       // Small delay to ensure token is set
-      await new Promise(resolve => setTimeout(resolve, 50));
+      await new Promise(resolve => setTimeout(resolve, 100));
       
       // Invalidate and refetch user data
       await queryClient.invalidateQueries({ queryKey: ["/api/user"] });
+      
+      // Auto-redirect based on user role after successful login
+      setTimeout(() => {
+        if (data.user.role === 'admin') {
+          setLocation('/admin');
+        } else if (data.user.role === 'manager') {
+          setLocation('/manager');
+        } else {
+          setLocation('/dashboard');
+        }
+      }, 200);
     },
     onError: (error: any) => {
       console.error('Login failed:', error);

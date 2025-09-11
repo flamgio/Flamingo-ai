@@ -225,78 +225,80 @@ export default function Dashboard() {
 
         {/* Dashboard Content */}
         <div className="relative z-10 p-3 sm:p-6 lg:p-8 overflow-y-auto custom-scrollbar" style={{ height: 'calc(100vh - 120px)' }}>
-          {/* Stats Cards Row - Moon Card Effects */}
+          {/* Stats Cards Row */}
           <div ref={statsCardsRef} className="grid-premium gap-4 sm:gap-6 lg:gap-8 mb-8 lg:mb-12">
             {/* Quick Stats */}
-            <Card className="border-purple-500/30 hover:shadow-[0_0_25px_rgba(168,85,247,0.3)] transition-all duration-300 stats-card" data-testid="card-dashboard-messages">
-              <CardContent className="p-5 sm:p-6 lg:p-8">
-                <div className="flex items-center justify-between">
-                  <div className="space-y-2">
-                    <p className="text-sm text-purple-400/70">Total Messages</p>
-                    <p className="text-2xl lg:text-4xl font-bold text-white stats-number">247</p>
-                    <div className="flex items-center gap-2">
-                      <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse shadow-[0_0_8px_rgba(168,85,247,0.6)]"></div>
-                      <span className="text-sm text-purple-400">+12 today</span>
-                    </div>
-                  </div>
-                  <div className="w-14 h-14 lg:w-16 lg:h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center shadow-[0_0_20px_rgba(168,85,247,0.4)]">
-                    <i className="fas fa-comment text-white text-xl lg:text-2xl"></i>
+            <div className="bg-[#1a1a1a] border border-purple-500/30 rounded-xl shadow-[0_0_15px_rgba(168,85,247,0.2)] hover:shadow-[0_0_25px_rgba(168,85,247,0.3)] transition-all duration-300 p-5 sm:p-6 lg:p-8 stats-card">
+              <div className="flex items-center justify-between">
+                <div className="space-y-2">
+                  <p className="text-sm text-purple-400/70">Total Messages</p>
+                  <p className="text-2xl lg:text-4xl font-bold text-white stats-number">247</p>
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse shadow-[0_0_8px_rgba(168,85,247,0.6)]"></div>
+                    <span className="text-sm text-purple-400">+12 today</span>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
+                <div className="w-14 h-14 lg:w-16 lg:h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center shadow-[0_0_20px_rgba(168,85,247,0.4)]">
+                  <i className="fas fa-comment text-white text-xl lg:text-2xl"></i>
+                </div>
+              </div>
+            </div>
 
-            <Card className="border-purple-500/30 hover:shadow-[0_0_25px_rgba(168,85,247,0.3)] transition-all duration-300 stats-card" data-testid="card-dashboard-conversations">
-              <CardContent className="p-5 sm:p-6 lg:p-8">
-                <div className="flex items-center justify-between">
-                  <div className="space-y-2">
-                    <p className="text-sm text-purple-400/70">Conversations</p>
-                    <p className="text-2xl lg:text-4xl font-bold text-white stats-number">18</p>
-                    <div className="flex items-center gap-2">
-                      <div className="w-2 h-2 bg-purple-600 rounded-full animate-pulse shadow-[0_0_8px_rgba(147,51,234,0.6)]"></div>
-                      <span className="text-sm text-purple-600">3 active</span>
-                    </div>
-                  </div>
-                  <div className="w-14 h-14 lg:w-16 lg:h-16 bg-gradient-to-br from-purple-600 to-purple-700 rounded-xl flex items-center justify-center shadow-[0_0_20px_rgba(147,51,234,0.4)]">
-                    <i className="fas fa-comments text-white text-xl lg:text-2xl"></i>
+            <div className="bg-[#1a1a1a] border border-purple-500/30 rounded-xl shadow-[0_0_15px_rgba(168,85,247,0.2)] hover:shadow-[0_0_25px_rgba(168,85,247,0.3)] transition-all duration-300 p-5 sm:p-6 lg:p-8 stats-card">
+              <div className="flex items-center justify-between">
+                <div className="space-y-2">
+                  <p className="text-sm text-purple-400/70">Conversations</p>
+                  <p className="text-2xl lg:text-4xl font-bold text-white stats-number">18</p>
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-purple-600 rounded-full animate-pulse shadow-[0_0_8px_rgba(147,51,234,0.6)]"></div>
+                    <span className="text-sm text-purple-600">3 active</span>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
+                <div className="w-14 h-14 lg:w-16 lg:h-16 bg-gradient-to-br from-purple-600 to-purple-700 rounded-xl flex items-center justify-center shadow-[0_0_20px_rgba(147,51,234,0.4)]">
+                  <i className="fas fa-comments text-white text-xl lg:text-2xl"></i>
+                </div>
+              </div>
+            </div>
 
-            <Card className="border-purple-500/30 hover:shadow-[0_0_25px_rgba(168,85,247,0.3)] transition-all duration-300 stats-card" data-testid="card-dashboard-active-time">
-              <CardContent className="p-5 sm:p-6 lg:p-8">
-                <div className="flex items-center justify-between">
-                  <div className="space-y-2">
-                    <p className="text-sm text-purple-400/70">Active Time</p>
-                    <p className="text-2xl lg:text-4xl font-bold text-white stats-number">4h 32m</p>
-                    <div className="flex items-center gap-2">
-                      <div className="w-2 h-2 bg-purple-700 rounded-full animate-pulse shadow-[0_0_8px_rgba(109,40,217,0.6)]"></div>
-                      <span className="text-sm text-purple-700">This session</span>
-                    </div>
-                  </div>
-                  <div className="w-14 h-14 lg:w-16 lg:h-16 bg-gradient-to-br from-purple-700 to-purple-800 rounded-xl flex items-center justify-center shadow-[0_0_20px_rgba(109,40,217,0.4)]">
-                    <i className="fas fa-clock text-white text-xl lg:text-2xl"></i>
+            <div className="bg-[#1a1a1a] border border-purple-500/30 rounded-xl shadow-[0_0_15px_rgba(168,85,247,0.2)] hover:shadow-[0_0_25px_rgba(168,85,247,0.3)] transition-all duration-300 p-5 sm:p-6 lg:p-8 stats-card">
+              <div className="flex items-center justify-between">
+                <div className="space-y-2">
+                  <p className="text-sm text-purple-400/70">Active Time</p>
+                  <p className="text-2xl lg:text-4xl font-bold text-white stats-number">4h 32m</p>
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-purple-700 rounded-full animate-pulse shadow-[0_0_8px_rgba(109,40,217,0.6)]"></div>
+                    <span className="text-sm text-purple-700">This session</span>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
+                <div className="w-14 h-14 lg:w-16 lg:h-16 bg-gradient-to-br from-purple-700 to-purple-800 rounded-xl flex items-center justify-center shadow-[0_0_20px_rgba(109,40,217,0.4)]">
+                  <i className="fas fa-clock text-white text-xl lg:text-2xl"></i>
+                </div>
+              </div>
+            </div>
           </div>
 
-          {/* Analytics Charts Row */}
+          {/* Analytics Charts Row - Moon Card Effects */}
           <div ref={chartsRef} className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-8 mb-6 sm:mb-8">
-            <AnalyticsChart 
-              data={activityData} 
-              type="line" 
-              title="Weekly Activity" 
-              color="#a855f7"
-            />
-            <AnalyticsChart 
-              data={usageData} 
-              type="bar" 
-              title="Feature Usage" 
-              color="#9333ea"
-            />
+            <Card className="border-purple-500/30" data-testid="card-weekly-activity">
+              <CardContent className="p-0">
+                <AnalyticsChart 
+                  data={activityData} 
+                  type="line" 
+                  title="Weekly Activity" 
+                  color="#a855f7"
+                />
+              </CardContent>
+            </Card>
+            <Card className="border-purple-500/30" data-testid="card-feature-usage">
+              <CardContent className="p-0">
+                <AnalyticsChart 
+                  data={usageData} 
+                  type="bar" 
+                  title="Feature Usage" 
+                  color="#9333ea"
+                />
+              </CardContent>
+            </Card>
           </div>
 
           {/* Action Cards Row */}

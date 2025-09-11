@@ -20,14 +20,10 @@ export function AnalyticsChart({ data, type = 'line', title, color = '#8b5cf6' }
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="relative h-[18em] w-full border-2 border-[rgba(75,30,133,0.5)] rounded-[1.5em] bg-gradient-to-br from-[rgba(75,30,133,1)] via-purple-700/80 to-[rgba(75,30,133,0.2)] text-white p-[1.5em] backdrop-blur-[12px] hover:shadow-xl hover:shadow-purple-500/20 transition-all duration-300 group/card hover:-translate-y-1"
+      className="relative h-[18em] w-full text-white p-[1.5em] transition-all duration-300 group/card"
     >
-      {/* Background Effects */}
-      <div className="absolute inset-0 bg-gradient-to-br from-purple-600/30 via-fuchsia-500/20 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-500 rounded-[1.5em]"></div>
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(120,50,190,0.1),transparent_60%)] group-hover/card:animate-pulse"></div>
-
       {/* Decorative dots */}
-      <div className="absolute top-4 right-4 flex gap-2">
+      <div className="absolute top-4 right-4 flex gap-2 z-10">
         <div className="w-2 h-2 rounded-full bg-purple-300/50"></div>
         <div className="w-2 h-2 rounded-full bg-purple-300/30"></div>
         <div className="w-2 h-2 rounded-full bg-purple-300/10"></div>

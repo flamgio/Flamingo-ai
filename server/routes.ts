@@ -1,8 +1,8 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { neon } from "@neondatabase/serverless";
-import { drizzle } from "drizzle-orm/neon-http";
+import { drizzle } from "drizzle-orm/postgres-js";
+import postgres from "postgres";
 import { eq } from "drizzle-orm";
 import { users, conversations, messages, payments } from "../shared/schema";
 import {
@@ -20,22 +20,26 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { authFallback } from "./auth-fallback";
 
-// Initialize Drizzle with Neon (with fallback)
+// Initialize Drizzle with Xata PostgreSQL (with fallback)
 let db: any = null;
 let useFallback = false;
 
 try {
   if (process.env.DATABASE_URL) {
-    // For Neon, always use SSL but don't verify self-signed certificates in development
-    const connectionOptions = {
-      ssl: true,
-      sslMode: 'require'
-    };
-
-    const sql = neon(process.env.DATABASE_URL, connectionOptions);
+    // Configure PostgreSQL connection for Xata
+    const connectionString = process.env.DATABASE_URL;
+    
+    // Create postgres client with SSL configuration for Xata
+    const sql = postgres(connectionString, {
+      ssl: process.env.NODE_ENV === 'production' ? 'require' : 'prefer',
+      max: 10,
+      idle_timeout: 20,
+      connect_timeout: 10,
+    });
+    
     db = drizzle(sql);
-
-    console.log('✅ Database initialized with Drizzle/Neon');
+    
+    console.log('✅ Database initialized with Drizzle/Xata PostgreSQL');
   } else {
     console.log('⚠️  DATABASE_URL not found, using in-memory fallback');
     useFallback = true;

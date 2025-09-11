@@ -56,7 +56,7 @@ if (!DATABASE_URL) {
   throw new Error("DATABASE_URL environment variable is required");
 }
 
-// Create Sequelize instance with SSL support
+// Create Sequelize instance with SSL support for Xata
 const sequelize = new Sequelize(DATABASE_URL, {
   dialect: 'postgres',
   dialectOptions: {

@@ -365,4 +365,47 @@
   .intro-text-subtitle {
     font-size: 1rem;
   }
+
+  /* Fix logo positioning on mobile to not overlap "Evo" text */
+  .attaching-logo {
+    position: relative !important;
+    right: auto !important;
+    top: auto !important;
+    transform: none !important;
+    display: inline-flex !important;
+    margin-left: 0.5rem !important;
+    vertical-align: middle !important;
+  }
+
+  .attaching-logo .w-8.h-8 {
+    width: 1.5rem !important;
+    height: 1.5rem !important;
+  }
+
+  .attaching-logo .w-4.h-4 {
+    width: 0.75rem !important;
+    height: 0.75rem !important;
+  }
+}
+
+/* Additional responsive breakpoint for very small screens */
+@media (max-width: 480px) {
+  .flamingo-main-title {
+    font-size: 2rem;
+  }
+  
+  .intro-text-subtitle {
+    font-size: 0.9rem;
+  }
+
+  /* Make logo even smaller on very small screens */
+  .attaching-logo .w-8.h-8 {
+    width: 1.25rem !important;
+    height: 1.25rem !important;
+  }
+
+  .attaching-logo .w-4.h-4 {
+    width: 0.6rem !important;
+    height: 0.6rem !important;
+  }
 }

@@ -101,7 +101,7 @@ function getModelsByComplexity(complexity: 'small' | 'medium' | 'high'): string[
 
 function shouldSkipEnhancement(prompt: string): boolean {
   const lowerPrompt = prompt.toLowerCase();
-  return lowerPrompt.includes('!no enchace') || lowerPrompt.includes('!no enhance');
+  return lowerPrompt.includes('!no enhance');
 }
 
 async function enhancePrompt(prompt: string): Promise<string> {
@@ -138,7 +138,7 @@ export async function routePrompt(userPrompt: string, opts: RouteOptions = {}): 
   }
 
   // Remove enhancement skip tokens from final prompt
-  finalPrompt = finalPrompt.replace(/!no enchace|!no enhance/gi, '').trim();
+  finalPrompt = finalPrompt.replace(/!no enhance/gi, '').trim();
   
   const selectedProvider = getProviderByComplexity(complexity);
   console.log(`[${requestId}] Routing to ${selectedProvider.name} for ${complexity} complexity task: ${task}`);

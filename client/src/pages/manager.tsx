@@ -49,6 +49,7 @@ export default function Manager() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { managerStats, isLoading: realtimeLoading, connectionStatus } = useManagerRealtimeData();
   const [loading, setLoading] = useState(true);
+  const [realStats, setRealStats] = useState(null);
 
   // GSAP refs
   const containerRef = useRef<HTMLDivElement>(null);
@@ -70,8 +71,15 @@ export default function Manager() {
     try {
       setLoading(true);
       
-      // Static configuration data only
-      // Real-time stats handled by useManagerRealtimeData hook
+      // Fetch real manager stats data
+      const response = await apiRequest('/api/manager/stats');
+      console.log('Manager stats data:', response);
+      
+      if (response.data?.stats || response.stats) {
+        setRealStats(response.data?.stats || response.stats);
+      }
+      
+      setLoading(false);
       
     } catch (error) {
       console.error('Failed to fetch manager data:', error);
@@ -174,10 +182,10 @@ export default function Manager() {
   }
 
   const stats = [
-    { title: "Active Users", value: managerStats?.activeUsers?.toString() || Math.floor(Date.now() / 500000 + Math.sin(Date.now() / 100000) * 50).toString(), icon: Users, change: "+12%", color: "bg-[#1a1a1a] border-purple-500/20" },
-    { title: "Conversations", value: managerStats?.conversations?.toString() || Math.floor(Date.now() / 50000 + Math.cos(Date.now() / 80000) * 200).toLocaleString(), icon: MessageSquare, change: "+8%", color: "bg-[#1a1a1a] border-purple-500/20" },
-    { title: "Monthly Growth", value: `${managerStats?.monthlyGrowth || 24}%`, icon: TrendingUp, change: "+3%", color: "bg-[#1a1a1a] border-purple-500/20" },
-    { title: "System Health", value: `${managerStats?.systemHealth || 98.5}%`, icon: Activity, change: "+0.2%", color: "bg-[#1a1a1a] border-purple-500/20" },
+    { title: "Total Users", value: realStats?.totalUsers?.toString() || "0", icon: Users, change: "Real DB Data", color: "bg-[#1a1a1a] border-purple-500/20" },
+    { title: "Conversations", value: realStats?.totalConversations?.toString() || "0", icon: MessageSquare, change: "Live Count", color: "bg-[#1a1a1a] border-purple-500/20" },
+    { title: "Premium Users", value: realStats?.premiumUsers?.toString() || "0", icon: TrendingUp, change: "Subscriptions", color: "bg-[#1a1a1a] border-purple-500/20" },
+    { title: "System Status", value: "Online", icon: Activity, change: "All Systems Go", color: "bg-[#1a1a1a] border-purple-500/20" },
   ];
 
   return (

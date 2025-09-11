@@ -73,6 +73,18 @@ export default function AdminPage() {
     try {
       setLoading(true);
       
+      // Fetch real admin analytics data
+      const analyticsResponse = await apiRequest('/api/admin/analytics');
+      console.log('Admin analytics data:', analyticsResponse);
+      
+      // Fetch admin users data
+      const usersResponse = await apiRequest('/api/admin/users');
+      setUsers(usersResponse.users || []);
+      
+      // Fetch admin conversations data  
+      const conversationsResponse = await apiRequest('/api/admin/conversations');
+      setConversations(conversationsResponse.conversations || []);
+      
       // Environment variables (static data)
       setEnvVars([
         { key: 'NODE_ENV', value: 'development', isSecret: false },
@@ -309,10 +321,10 @@ export default function AdminPage() {
                 <Users className="w-8 h-8 sm:w-12 sm:h-12 text-[#22c55e]" />
                 <div className="flex-1">
                   <div className="text-gray-400 text-xs sm:text-sm font-medium">Total Users</div>
-                  <div className="text-2xl sm:text-4xl font-bold text-white">{adminStats?.totalUsers || 0}</div>
+                  <div className="text-2xl sm:text-4xl font-bold text-white">{users.length || 0}</div>
                   <div className="text-[#22c55e] text-xs sm:text-sm flex items-center mt-1">
                     <div className="w-2 h-2 bg-[#22c55e] rounded-full mr-2 animate-pulse"></div>
-                    System Online
+                    {users.filter((u: any) => u.role === 'admin').length} Admins
                   </div>
                 </div>
               </div>
@@ -325,7 +337,7 @@ export default function AdminPage() {
                 <BarChart className="w-8 h-8 sm:w-12 sm:h-12 text-[#22c55e]" />
                 <div className="flex-1">
                   <div className="text-gray-400 text-xs sm:text-sm font-medium">Premium Users</div>
-                  <div className="text-2xl sm:text-4xl font-bold text-white">{adminStats?.premiumUsers || 0}</div>
+                  <div className="text-2xl sm:text-4xl font-bold text-white">{users.filter((u: any) => u.isPremium).length || 0}</div>
                   <div className="text-[#22c55e] text-xs sm:text-sm flex items-center mt-1">
                     <div className="w-2 h-2 bg-[#22c55e] rounded-full mr-2 animate-pulse"></div>
                     Active Subs
@@ -340,8 +352,8 @@ export default function AdminPage() {
               <div className="flex items-center gap-4">
                 <Globe className="w-8 h-8 sm:w-12 sm:h-12 text-[#22c55e]" />
                 <div className="flex-1">
-                  <div className="text-gray-400 text-xs sm:text-sm font-medium">Total Messages</div>
-                  <div className="text-2xl sm:text-4xl font-bold text-white">{adminStats?.totalMessages || 0}</div>
+                  <div className="text-gray-400 text-xs sm:text-sm font-medium">Total Conversations</div>
+                  <div className="text-2xl sm:text-4xl font-bold text-white">{conversations.length || 0}</div>
                   <div className="text-[#22c55e] text-xs sm:text-sm flex items-center mt-1">
                     <div className="w-2 h-2 bg-[#22c55e] rounded-full mr-2 animate-pulse"></div>
                     Global Chats

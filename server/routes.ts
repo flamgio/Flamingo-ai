@@ -565,8 +565,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const allPayments = await db.select().from(payments);
 
       // Calculate analytics
-      const totalScreenTime = allUsers.reduce((sum, user) => sum + (user.screenTime || 0), 0);
-      const activeUsers = allUsers.filter(user => {
+      const totalScreenTime = allUsers.reduce((sum: number, user: any) => sum + (user.screenTime || 0), 0);
+      const activeUsers = allUsers.filter((user: any) => {
         const lastActive = user.lastActive ? new Date(user.lastActive) : new Date(user.createdAt);
         const now = new Date();
         const daysDiff = (now.getTime() - lastActive.getTime()) / (1000 * 3600 * 24);
@@ -583,12 +583,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
           avgScreenTimePerUser: Math.round(totalScreenTime / Math.max(allUsers.length, 1))
         },
         userGrowth: {
-          thisMonth: allUsers.filter(user => {
+          thisMonth: allUsers.filter((user: any) => {
             const created = new Date(user.createdAt);
             const now = new Date();
             return created.getMonth() === now.getMonth() && created.getFullYear() === now.getFullYear();
           }).length,
-          lastMonth: allUsers.filter(user => {
+          lastMonth: allUsers.filter((user: any) => {
             const created = new Date(user.createdAt);
             const lastMonth = new Date();
             lastMonth.setMonth(lastMonth.getMonth() - 1);
@@ -596,7 +596,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           }).length
         },
         engagement: {
-          dailyActiveUsers: allUsers.filter(user => {
+          dailyActiveUsers: allUsers.filter((user: any) => {
             const lastActive = user.lastActive ? new Date(user.lastActive) : new Date(user.createdAt);
             const now = new Date();
             const daysDiff = (now.getTime() - lastActive.getTime()) / (1000 * 3600 * 24);
@@ -606,8 +606,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         },
         revenue: {
           totalPayments: allPayments.length,
-          completedPayments: allPayments.filter(p => p.status === 'completed').length,
-          pendingPayments: allPayments.filter(p => p.status === 'pending').length
+          completedPayments: allPayments.filter((p: any) => p.status === 'completed').length,
+          pendingPayments: allPayments.filter((p: any) => p.status === 'pending').length
         }
       };
 

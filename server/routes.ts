@@ -25,11 +25,37 @@ let db: any = null;
 let useFallback = false;
 
 try {
-  const sql = neon(process.env.DATABASE_URL!);
-  db = drizzle(sql);
-  console.log('✅ Database initialized with Drizzle/Neon');
+  if (process.env.DATABASE_URL) {
+    const connectionOptions: any = {};
+
+    // Handle SSL configuration properly for Neon
+    if (process.env.NODE_ENV === 'production') {
+      connectionOptions.ssl = 'require';
+    } else {
+      // In development, try to connect without SSL first
+      connectionOptions.ssl = false;
+    }
+
+    const sql = neon(process.env.DATABASE_URL, connectionOptions);
+    db = drizzle(sql);
+
+    // Test the connection
+    await db.select().from(users).limit(1).catch(() => {
+      // If SSL fails in development, try with SSL required but not verified
+      if (process.env.NODE_ENV !== 'production') {
+        const sslSql = neon(process.env.DATABASE_URL, { ssl: 'require' });
+        db = drizzle(sslSql);
+      }
+    });
+
+    console.log('✅ Database initialized with Drizzle/Neon');
+  } else {
+    console.log('⚠️  DATABASE_URL not found, using in-memory fallback');
+    useFallback = true;
+  }
 } catch (error) {
   console.log('⚠️  Database connection failed, using in-memory fallback');
+  console.log('Database error:', error);
   useFallback = true;
 }
 
@@ -102,16 +128,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
         'flamingo@admin.flam', 'flamingo@manager.flam', 'flamingo@owner.flam'
       ];
       const reservedUsernames = ['admin', 'manager', 'owner', 'flamingo', 'root', 'administrator', 'support'];
-      
+
       const emailLower = email.toLowerCase();
       const firstNameLower = firstName.toLowerCase();
       const lastNameLower = lastName.toLowerCase();
-      
+
       // Check reserved emails
       if (reservedEmails.some(reserved => reserved.toLowerCase() === emailLower)) {
         return res.status(403).json({ message: "This email address is reserved for system use" });
       }
-      
+
       // Check reserved usernames in first/last name
       if (reservedUsernames.some(reserved => 
         firstNameLower === reserved || lastNameLower === reserved || 
@@ -382,14 +408,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/enhance-prompt", authenticateToken, async (req: AuthRequest, res) => {
     try {
       const { prompt } = req.body;
-      
+
       if (!prompt) {
         return res.status(400).json({ error: "Prompt is required" });
       }
 
       // Simple enhancement logic
       const enhancedPrompt = `Please provide a detailed and comprehensive response to the following: ${prompt}. Include relevant examples, explanations, and context where appropriate.`;
-      
+
       res.json({ 
         enhancedPrompt,
         enhanced: enhancedPrompt,
@@ -520,7 +546,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/payments", authenticateToken, async (req: AuthRequest, res) => {
     try {
       const { amount, currency, method, walletAddress, metadata } = req.body;
-      
+
       const payment = await db
         .insert(payments)
         .values({

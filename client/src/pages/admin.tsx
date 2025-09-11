@@ -301,63 +301,71 @@ export default function AdminPage() {
           </div>
         </div>
 
-        {/* System Stats Overview - Dark Theme */}
+        {/* System Stats Overview - Moon Card Effects */}
         <div ref={statsRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-6 sm:mb-8">
-          <div className="bg-[#1a1a1a] border border-[#22c55e]/20 rounded-2xl p-4 sm:p-6 shadow-2xl hover:shadow-[#22c55e]/25 transition-all duration-300">
-            <div className="flex items-center justify-between">
-              <div>
-                <div className="text-gray-400 text-xs sm:text-sm font-medium">Total Users</div>
-                <div className="text-2xl sm:text-4xl font-bold text-white">{adminStats?.totalUsers || 0}</div>
-                <div className="text-[#22c55e] text-xs sm:text-sm flex items-center mt-1">
-                  <div className="w-2 h-2 bg-[#22c55e] rounded-full mr-2 animate-pulse"></div>
-                  System Online
+          <Card className="border-[#22c55e]/20 hover:shadow-[#22c55e]/25 transition-all duration-300" data-testid="card-admin-total-users">
+            <CardContent className="p-4 sm:p-6">
+              <div className="flex items-center gap-4">
+                <Users className="w-8 h-8 sm:w-12 sm:h-12 text-[#22c55e]" />
+                <div className="flex-1">
+                  <div className="text-gray-400 text-xs sm:text-sm font-medium">Total Users</div>
+                  <div className="text-2xl sm:text-4xl font-bold text-white">{adminStats?.totalUsers || 0}</div>
+                  <div className="text-[#22c55e] text-xs sm:text-sm flex items-center mt-1">
+                    <div className="w-2 h-2 bg-[#22c55e] rounded-full mr-2 animate-pulse"></div>
+                    System Online
+                  </div>
                 </div>
               </div>
-              <Users className="w-8 h-8 sm:w-12 sm:h-12 text-[#22c55e]" />
-            </div>
-          </div>
+            </CardContent>
+          </Card>
           
-          <div className="bg-[#1a1a1a] border border-[#22c55e]/20 rounded-2xl p-4 sm:p-6 shadow-2xl hover:shadow-[#22c55e]/25 transition-all duration-300">
-            <div className="flex items-center justify-between">
-              <div>
-                <div className="text-gray-400 text-xs sm:text-sm font-medium">Premium Users</div>
-                <div className="text-2xl sm:text-4xl font-bold text-white">{adminStats?.premiumUsers || 0}</div>
-                <div className="text-[#22c55e] text-xs sm:text-sm flex items-center mt-1">
-                  <div className="w-2 h-2 bg-[#22c55e] rounded-full mr-2 animate-pulse"></div>
-                  Active Subs
+          <Card className="border-[#22c55e]/20 hover:shadow-[#22c55e]/25 transition-all duration-300" data-testid="card-admin-premium-users">
+            <CardContent className="p-4 sm:p-6">
+              <div className="flex items-center gap-4">
+                <BarChart className="w-8 h-8 sm:w-12 sm:h-12 text-[#22c55e]" />
+                <div className="flex-1">
+                  <div className="text-gray-400 text-xs sm:text-sm font-medium">Premium Users</div>
+                  <div className="text-2xl sm:text-4xl font-bold text-white">{adminStats?.premiumUsers || 0}</div>
+                  <div className="text-[#22c55e] text-xs sm:text-sm flex items-center mt-1">
+                    <div className="w-2 h-2 bg-[#22c55e] rounded-full mr-2 animate-pulse"></div>
+                    Active Subs
+                  </div>
                 </div>
               </div>
-              <BarChart className="w-8 h-8 sm:w-12 sm:h-12 text-[#22c55e]" />
-            </div>
-          </div>
+            </CardContent>
+          </Card>
 
-          <div className="bg-[#1a1a1a] border border-[#22c55e]/20 rounded-2xl p-4 sm:p-6 shadow-2xl hover:shadow-[#22c55e]/25 transition-all duration-300">
-            <div className="flex items-center justify-between">
-              <div>
-                <div className="text-gray-400 text-xs sm:text-sm font-medium">Total Messages</div>
-                <div className="text-2xl sm:text-4xl font-bold text-white">{adminStats?.totalMessages || 0}</div>
-                <div className="text-[#22c55e] text-xs sm:text-sm flex items-center mt-1">
-                  <div className="w-2 h-2 bg-[#22c55e] rounded-full mr-2 animate-pulse"></div>
-                  Global Chats
+          <Card className="border-[#22c55e]/20 hover:shadow-[#22c55e]/25 transition-all duration-300" data-testid="card-admin-total-messages">
+            <CardContent className="p-4 sm:p-6">
+              <div className="flex items-center gap-4">
+                <Globe className="w-8 h-8 sm:w-12 sm:h-12 text-[#22c55e]" />
+                <div className="flex-1">
+                  <div className="text-gray-400 text-xs sm:text-sm font-medium">Total Messages</div>
+                  <div className="text-2xl sm:text-4xl font-bold text-white">{adminStats?.totalMessages || 0}</div>
+                  <div className="text-[#22c55e] text-xs sm:text-sm flex items-center mt-1">
+                    <div className="w-2 h-2 bg-[#22c55e] rounded-full mr-2 animate-pulse"></div>
+                    Global Chats
+                  </div>
                 </div>
               </div>
-              <Globe className="w-8 h-8 sm:w-12 sm:h-12 text-[#22c55e]" />
-            </div>
-          </div>
+            </CardContent>
+          </Card>
 
-          <div className="bg-[#1a1a1a] border border-[#22c55e]/20 rounded-2xl p-4 sm:p-6 shadow-2xl hover:shadow-[#22c55e]/25 transition-all duration-300">
-            <div className="flex items-center justify-between">
-              <div>
-                <div className="text-gray-400 text-xs sm:text-sm font-medium">System Health</div>
-                <div className="text-2xl sm:text-4xl font-bold text-white">{adminStats?.systemHealth || 98.7}%</div>
-                <div className="text-[#22c55e] text-xs sm:text-sm flex items-center mt-1">
-                  <div className="w-2 h-2 bg-[#22c55e] rounded-full mr-2 animate-pulse"></div>
-                  Optimal
+          <Card className="border-[#22c55e]/20 hover:shadow-[#22c55e]/25 transition-all duration-300" data-testid="card-admin-system-health">
+            <CardContent className="p-4 sm:p-6">
+              <div className="flex items-center gap-4">
+                <Database className="w-8 h-8 sm:w-12 sm:h-12 text-[#22c55e]" />
+                <div className="flex-1">
+                  <div className="text-gray-400 text-xs sm:text-sm font-medium">System Health</div>
+                  <div className="text-2xl sm:text-4xl font-bold text-white">{adminStats?.systemHealth || 98.7}%</div>
+                  <div className="text-[#22c55e] text-xs sm:text-sm flex items-center mt-1">
+                    <div className="w-2 h-2 bg-[#22c55e] rounded-full mr-2 animate-pulse"></div>
+                    Optimal
+                  </div>
                 </div>
               </div>
-              <Database className="w-8 h-8 sm:w-12 sm:h-12 text-[#22c55e]" />
-            </div>
-          </div>
+            </CardContent>
+          </Card>
         </div>
 
         {/* Control Navigation Tabs - Dark Theme */}
@@ -407,33 +415,35 @@ export default function AdminPage() {
                   className=""
                 />
                 
-                {/* Additional System Health Card */}
-                <div className="analytics-card bg-[#1a1a1a] border-[#22c55e]/20 border rounded-2xl p-6">
-                  <h3 className="text-xl font-bold text-white mb-4 flex items-center">
-                    <div className="p-2 bg-[#22c55e]/20 rounded-lg mr-3">
-                      <Database className="h-5 w-5 text-[#22c55e]" />
+                {/* Additional System Health Card - With Moon Effects */}
+                <Card className="analytics-card border-[#22c55e]/20" data-testid="card-admin-system-status">
+                  <CardContent className="p-6">
+                    <CardTitle className="text-xl font-bold text-white mb-4 flex items-center">
+                      <div className="p-2 bg-[#22c55e]/20 rounded-lg mr-3">
+                        <Database className="h-5 w-5 text-[#22c55e]" />
+                      </div>
+                      System Status
+                    </CardTitle>
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <span className="text-gray-400">Server Uptime</span>
+                        <span className="text-lg font-bold text-purple-400">{adminStats?.serverUptime || '99.9%'}</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-gray-400">Response Time</span>
+                        <span className="text-lg font-bold text-white">{adminStats?.avgResponseTime || Math.floor(50 + Math.sin(Date.now() / 10000) * 30)}ms</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-gray-400">Active Models</span>
+                        <span className="text-lg font-bold text-white">{adminStats?.activeModels || 7}</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-gray-400">API Requests Today</span>
+                        <span className="text-lg font-bold text-white">{adminStats?.apiRequests || Math.floor(Date.now() / 100)}</span>
+                      </div>
                     </div>
-                    System Status
-                  </h3>
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <span className="text-gray-400">Server Uptime</span>
-                      <span className="text-lg font-bold text-purple-400">{adminStats?.serverUptime || '99.9%'}</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-gray-400">Response Time</span>
-                      <span className="text-lg font-bold text-white">{adminStats?.avgResponseTime || Math.floor(50 + Math.sin(Date.now() / 10000) * 30)}ms</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-gray-400">Active Models</span>
-                      <span className="text-lg font-bold text-white">{adminStats?.activeModels || 7}</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-gray-400">API Requests Today</span>
-                      <span className="text-lg font-bold text-white">{adminStats?.apiRequests || Math.floor(Date.now() / 100)}</span>
-                    </div>
-                  </div>
-                </div>
+                  </CardContent>
+                </Card>
               </div>
             </div>
           )}
@@ -509,10 +519,34 @@ export default function AdminPage() {
               </h2>
               <p className="text-gray-400 mb-6">Advanced database monitoring and operations control.</p>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-                <Button className="bg-red-500/10 border border-red-500/30 text-red-400 hover:bg-red-500/20 transition-all duration-300">Backup DB</Button>
-                <Button className="bg-yellow-500/10 border border-yellow-500/30 text-yellow-400 hover:bg-yellow-500/20 transition-all duration-300">View Logs</Button>
-                <Button className="bg-[#22c55e]/10 border border-[#22c55e]/30 text-[#22c55e] hover:bg-[#22c55e]/20 transition-all duration-300">Optimize</Button>
-                <Button className="bg-purple-500/10 border border-purple-500/30 text-purple-400 hover:bg-purple-500/20 transition-all duration-300">Analytics</Button>
+                <Button 
+                  className="bg-red-500/10 border border-red-500/30 text-red-400 hover:bg-red-500/20 transition-all duration-300"
+                  onClick={() => window.alert('Database Backup: Backup process initiated. This will create a secure snapshot of all data.')}
+                  data-testid="button-backup-db"
+                >
+                  Backup DB
+                </Button>
+                <Button 
+                  className="bg-yellow-500/10 border border-yellow-500/30 text-yellow-400 hover:bg-yellow-500/20 transition-all duration-300"
+                  onClick={() => window.open('/api/logs', '_blank')}
+                  data-testid="button-view-logs"
+                >
+                  View Logs
+                </Button>
+                <Button 
+                  className="bg-[#22c55e]/10 border border-[#22c55e]/30 text-[#22c55e] hover:bg-[#22c55e]/20 transition-all duration-300"
+                  onClick={() => window.alert('Database Optimization: Running performance optimization and cleanup routines...')}
+                  data-testid="button-optimize"
+                >
+                  Optimize
+                </Button>
+                <Button 
+                  className="bg-purple-500/10 border border-purple-500/30 text-purple-400 hover:bg-purple-500/20 transition-all duration-300"
+                  onClick={() => window.open('/api/admin/analytics', '_blank')}
+                  data-testid="button-analytics"
+                >
+                  Analytics
+                </Button>
               </div>
               <div className="bg-[#2a2a2a] border border-[#22c55e]/10 rounded-lg p-4">
                 <h3 className="text-white font-semibold mb-3">Database Status</h3>

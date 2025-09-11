@@ -297,8 +297,11 @@ export default function Manager() {
             return (
               <Card key={index} data-testid={`card-stat-${index}`} className={`${stat.color} border rounded-2xl shadow-2xl hover:shadow-[#22c55e]/25 transition-all duration-300`}>
                 <CardContent className="p-4 sm:p-6">
-                  <div className="flex items-center justify-between">
-                    <div>
+                  <div className="flex items-center gap-4">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 bg-[#22c55e]/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
+                      <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-[#22c55e]" />
+                    </div>
+                    <div className="flex-1">
                       <p className="text-xs sm:text-sm text-gray-400 mb-1 font-medium">
                         {stat.title}
                       </p>
@@ -309,9 +312,6 @@ export default function Manager() {
                         <div className="w-2 h-2 bg-[#22c55e] rounded-full mr-2 animate-pulse"></div>
                         {stat.change}
                       </p>
-                    </div>
-                    <div className="w-10 h-10 sm:w-12 sm:h-12 bg-[#22c55e]/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
-                      <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-[#22c55e]" />
                     </div>
                   </div>
                 </CardContent>
@@ -440,9 +440,35 @@ export default function Manager() {
                     Manage user accounts and permissions (Manager-level access)
                   </p>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 mb-6">
-                    <Button className="bg-blue-600 hover:bg-blue-700 text-white">View All Users</Button>
-                    <Button className="bg-green-600 hover:bg-green-700 text-white">User Analytics</Button>
-                    <Button className="bg-purple-600 hover:bg-purple-700 text-white">Export Data</Button>
+                    <Button 
+                      className="bg-blue-600 hover:bg-blue-700 text-white"
+                      onClick={() => window.open('/admin', '_blank')}
+                      data-testid="button-view-users"
+                    >
+                      View All Users
+                    </Button>
+                    <Button 
+                      className="bg-green-600 hover:bg-green-700 text-white"
+                      onClick={() => window.alert('User Analytics: Coming soon with detailed user insights!')}
+                      data-testid="button-user-analytics"
+                    >
+                      User Analytics
+                    </Button>
+                    <Button 
+                      className="bg-purple-600 hover:bg-purple-700 text-white"
+                      onClick={() => {
+                        const data = JSON.stringify({ users: managerStats, timestamp: new Date() }, null, 2);
+                        const blob = new Blob([data], { type: 'application/json' });
+                        const url = URL.createObjectURL(blob);
+                        const link = document.createElement('a');
+                        link.href = url;
+                        link.download = `manager_data_${new Date().toISOString().split('T')[0]}.json`;
+                        link.click();
+                      }}
+                      data-testid="button-export-data"
+                    >
+                      Export Data
+                    </Button>
                   </div>
                   <div className="bg-purple-900/20 border border-purple-500/30 p-3 sm:p-4 rounded-lg">
                     <p className="text-purple-200 text-xs sm:text-sm">
@@ -487,8 +513,20 @@ export default function Manager() {
                   </p>
                   <div className="space-y-4">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <Button className="bg-purple-600 hover:bg-purple-700 text-white">Notification Settings</Button>
-                      <Button className="bg-red-600 hover:bg-red-700 text-white">Team Preferences</Button>
+                      <Button 
+                        className="bg-purple-600 hover:bg-purple-700 text-white"
+                        onClick={() => window.alert('Notification Settings: Email and push notification preferences will be configured here.')}
+                        data-testid="button-notification-settings"
+                      >
+                        Notification Settings
+                      </Button>
+                      <Button 
+                        className="bg-red-600 hover:bg-red-700 text-white"
+                        onClick={() => window.alert('Team Preferences: Team workflow and collaboration settings will be managed here.')}
+                        data-testid="button-team-preferences"
+                      >
+                        Team Preferences
+                      </Button>
                     </div>
                   </div>
                 </CardContent>

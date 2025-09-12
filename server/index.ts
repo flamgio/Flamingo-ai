@@ -33,7 +33,8 @@ app.use((req, res, next) => {
 
   res.on("finish", () => {
     const duration = Date.now() - start;
-    if (path.startsWith("/api")) {
+    // Only log important API requests, skip HEAD requests and health checks
+    if (path.startsWith("/api") && req.method !== 'HEAD' && !path.endsWith('/health')) {
       let logLine = `${req.method} ${path} ${res.statusCode} in ${duration}ms`;
       
       // Only log response body in development mode and sanitize sensitive data

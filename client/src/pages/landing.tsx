@@ -267,9 +267,9 @@ export default function Landing() {
       <div className="main-content">
         <div className="hero-section">
           <h1 className="hero-title typography-display-lg animate-premium-fade-in text-balance">
-            <span className="title-line-1 flamingo-gradient-text">Experience the</span>
-            <span className="title-line-2 flamingo-gradient-text">Future of AI</span>
-            <span className="title-line-3 flamingo-gradient-text">Chat Platform</span>
+            <span className="title-line-1">Experience the</span>
+            <span className="title-line-2">Future of AI</span>
+            <span className="title-line-3">Chat Platform</span>
           </h1>
 
           <p className="hero-description typography-body-lg animate-premium-slide-up text-balance max-w-2xl mx-auto">
@@ -283,7 +283,7 @@ export default function Landing() {
               onClick={handleGetStarted}
               disabled={isLoading}
               size="lg"
-              className="primary-cta interactive-scale interactive-glow flamingo-gradient shadow-premium-lg px-8 py-4 typography-body font-semibold"
+              className="primary-cta interactive-scale interactive-glow shadow-premium-lg px-8 py-4 typography-body font-semibold"
             >
               <span>🚀</span>
               {isLoading ? 'Loading...' : 'Get Started'}
@@ -372,9 +372,9 @@ export default function Landing() {
             viewport={{ once: true }}
           >
             <h2 className="features-title">
-              <span className="gradient-text">Powerful Features</span> for
+              <span>Powerful Features</span> for
               <br />
-              <span className="gradient-text-alt">Modern AI Experience</span>
+              <span>Modern AI Experience</span>
             </h2>
             <p className="features-description">
               Discover innovative AI features designed for seamless user experience,

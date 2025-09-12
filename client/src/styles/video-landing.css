@@ -8,29 +8,14 @@
   transition: all 0.3s ease;
 }
 
-/* Light Mode Background - Natural Video Colors */
+/* Light Mode Background - Simple White */
 .video-landing-container {
-  background: linear-gradient(180deg, 
-    #87CEEB 0%,     /* Natural sky blue */
-    #ADD8E6 15%,    /* Light sky blue */
-    #E0F6FF 30%,    /* Very pale blue */
-    #F0F8FF 45%,    /* Alice blue */
-    #E6F3FF 60%,    /* Soft blue-white */
-    #DFF2FF 75%,    /* Pale mountain blue */
-    #D6EFFF 90%,    /* Light water blue */
-    #CCEBFF 100%    /* Soft horizon blue */
-  );
+  background: #ffffff;
 }
 
 /* Dark Mode Background */
 .dark .video-landing-container {
-  background: linear-gradient(180deg, 
-    #1a1a2e 0%,     /* Dark navy */
-    #16213e 25%,    /* Darker blue */
-    #0f172a 50%,    /* Very dark blue */
-    #1e293b 75%,    /* Dark slate */
-    #0f172a 100%    /* Very dark blue */
-  );
+  background: #1a1a1a;
 }
 
 /* Navigation */
@@ -1019,14 +1004,11 @@ input:checked + .theme-slider:before {
   cursor: pointer;
 }
 
-/* Light Mode Cards - Natural Video Colors */
+/* Light Mode Cards - Simple White */
 .feature-card {
-  background: linear-gradient(135deg, 
-    rgba(255, 255, 255, 0.92) 0%, 
-    rgba(240, 248, 255, 0.85) 50%,
-    rgba(255, 255, 255, 0.88) 100%);
-  border: 1px solid rgba(135, 206, 235, 0.3);
-  box-shadow: 0 8px 32px rgba(135, 206, 235, 0.2);
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
 /* Dark Mode Cards - Subtle and Dark */
@@ -1072,10 +1054,10 @@ input:checked + .theme-slider:before {
   transition: opacity 0.3s ease;
 }
 
-/* Light Mode Card Glow - Natural Video Colors */
+/* Light Mode Card Glow - Simple */
 .card-glow {
   background: linear-gradient(45deg, 
-    #87CEEB, #ADD8E6, #B0E0E6, #87CEEB, #98D8E8, #87CEEB);
+    rgba(0, 0, 0, 0.1), rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0.05), rgba(255, 255, 255, 0.1));
   background-size: 300% 300%;
 }
 
@@ -1134,13 +1116,13 @@ input:checked + .theme-slider:before {
   transform: scale(1.1) rotateY(180deg);
 }
 
-/* Card Icons - Natural Video Color Palette */
-.brain-icon { background: linear-gradient(135deg, #87CEEB, #4682B4); }
-.database-icon { background: linear-gradient(135deg, #40E0D0, #20B2AA); }
-.settings-icon { background: linear-gradient(135deg, #B0E0E6, #4682B4); }
-.chat-icon { background: linear-gradient(135deg, #87CEFA, #6495ED); }
-.security-icon { background: linear-gradient(135deg, #ADD8E6, #4169E1); }
-.analytics-icon { background: linear-gradient(135deg, #98D8E8, #5F9EA0); }
+/* Card Icons - Simple Colors */
+.brain-icon { background: linear-gradient(135deg, #666666, #333333); }
+.database-icon { background: linear-gradient(135deg, #777777, #444444); }
+.settings-icon { background: linear-gradient(135deg, #666666, #333333); }
+.chat-icon { background: linear-gradient(135deg, #888888, #555555); }
+.security-icon { background: linear-gradient(135deg, #666666, #333333); }
+.analytics-icon { background: linear-gradient(135deg, #777777, #444444); }
 
 .card-title {
   font-size: 1.3rem;
@@ -1466,10 +1448,58 @@ input:checked + .theme-slider:before {
   }
 }
 
-/* Enhanced Card Styles */
+/* Enhanced Card Styles with Moon Animation */
 .feature-card {
   position: relative;
   z-index: 100;
   transform-style: preserve-3d;
   transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+/* Moon Animation for Cards */
+.feature-card::after {
+  content: '🌙';
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 1.5rem;
+  opacity: 0.3;
+  animation: moonFloat 4s ease-in-out infinite;
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+
+.feature-card:hover::after {
+  opacity: 0.7;
+  animation: moonFloatHover 2s ease-in-out infinite;
+  transform: scale(1.2);
+}
+
+@keyframes moonFloat {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+    opacity: 0.3;
+  }
+  25% {
+    transform: translateY(-10px) rotate(5deg);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translateY(-5px) rotate(-3deg);
+    opacity: 0.4;
+  }
+  75% {
+    transform: translateY(-12px) rotate(7deg);
+    opacity: 0.6;
+  }
+}
+
+@keyframes moonFloatHover {
+  0%, 100% {
+    transform: translateY(-5px) rotate(0deg) scale(1.2);
+  }
+  50% {
+    transform: translateY(-15px) rotate(10deg) scale(1.3);
+  }
 }

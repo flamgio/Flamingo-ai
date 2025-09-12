@@ -315,6 +315,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Manager route for viewing user conversations (without admin privileges)
+  app.get("/api/manager/conversations", authenticateToken, authenticateRole('manager'), async (req, res) => {
+    try {
+      const conversations = await Conversation.findAll({
+        include: [{
+          model: User,
+          attributes: ['firstName', 'lastName', 'email']
+        }],
+        order: [['createdAt', 'DESC']],
+        limit: 50, // Managers get limited view compared to admin's 100
+        attributes: ['id', 'title', 'createdAt', 'updatedAt'] // Less data than admin
+      });
+
+      res.json({ conversations });
+    } catch (error) {
+      console.error('Manager get conversations error:', error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  });
+
   const server = createServer(app);
   return server;
 }

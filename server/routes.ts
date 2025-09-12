@@ -23,6 +23,7 @@ import { authFallback } from "./auth-fallback";
 // Initialize Drizzle with Xata PostgreSQL (with fallback)
 let db: any = null;
 let useFallback = false;
+let dbHealthy = true; // Track database health for better fallback decisions
 
 try {
   if (process.env.DATABASE_URL) {
@@ -76,9 +77,10 @@ function authenticateRole(requiredRole: 'admin' | 'manager' | 'user') {
           if (dbUsers.length > 0) {
             user = dbUsers[0];
           }
-        } catch (dbError) {
-          console.log('Database error in role auth, falling back to memory auth');
-          useFallback = true;
+        } catch (dbError: any) {
+          console.warn('Database error in role auth, using fallback for this request:', dbError?.message || dbError);
+          dbHealthy = false;
+          // Use fallback for this request without permanently switching
           decoded = authFallback.verifyToken(token);
           if (decoded) {
             user = await authFallback.findUserById(decoded.userId);
@@ -247,8 +249,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
             isPasswordValid = await comparePassword(password, user.password);
           }
         } catch (dbError) {
-          console.log('Database error, falling back to memory auth:', dbError);
-          useFallback = true;
+          console.warn('Database error in login, using fallback for this request:', dbError);
+          dbHealthy = false;
           user = await authFallback.findUserByEmail(email);
           if (user) {
             isPasswordValid = await authFallback.validatePassword(password, user.password);

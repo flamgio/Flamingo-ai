@@ -1,5 +1,6 @@
 
 import { Router } from "express";
+import { geminiEnhancer } from './gemini-enhancer';
 
 const router = Router();
 
@@ -11,8 +12,9 @@ router.post("/enhance-prompt", async (req, res) => {
       return res.status(400).json({ error: "Prompt is required" });
     }
 
-    // Simple enhancement logic - you can replace this with actual AI enhancement
-    const enhancedPrompt = `Please provide a detailed and comprehensive response to the following: ${prompt}. Include relevant examples, explanations, and context where appropriate.`;
+    // Use the consolidated Gemini enhancement system
+    const result = await geminiEnhancer.enhancePrompt(prompt);
+    const enhancedPrompt = result.enhanced;
     
     res.json({ 
       enhancedPrompt,

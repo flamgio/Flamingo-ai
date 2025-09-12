@@ -1,5 +1,6 @@
 
 let hf: any = null;
+import { geminiEnhancer } from './gemini-enhancer';
 
 interface AIResponse {
   content: string;
@@ -255,8 +256,21 @@ class AICoordinator {
   }
 
   private async enhancePrompt(prompt: string): Promise<string> {
-    // Simple prompt enhancement
-    return `Please provide a comprehensive and helpful response to: ${prompt}`;
+    try {
+      // Check if enhancement is needed
+      if (!geminiEnhancer.needsEnhancement(prompt)) {
+        return prompt;
+      }
+      
+      // Use sophisticated Gemini enhancement
+      const result = await geminiEnhancer.enhancePrompt(prompt);
+      console.log(`Enhanced prompt: "${prompt.slice(0, 50)}..." -> "${result.enhanced.slice(0, 50)}..."`);
+      return result.enhanced;
+    } catch (error) {
+      console.warn('Enhancement failed, using original prompt:', error);
+      // Graceful fallback to original prompt
+      return prompt;
+    }
   }
 
   private estimateTokens(text: string): number {

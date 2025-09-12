@@ -8,6 +8,7 @@ import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import IntroAnimation from "@/components/intro-animation";
+import logoImg from "@/assets/logo.png";
 import "../styles/video-landing.css";
 
 // Register GSAP plugins
@@ -182,9 +183,7 @@ export default function Landing() {
         <div className="nav-content">
           <div className="nav-left">
             <div className="logo-container" onClick={() => setLocation('/')} style={{cursor: 'pointer'}}>
-              <div className="logo-icon">
-                <span>FA</span>
-              </div>
+              <img src={logoImg} alt="Flamingo" className="logo-img" />
               <span className="brand-text">Flamingo</span>
             </div>
           </div>

@@ -58,7 +58,7 @@ const IntroAnimation: React.FC<IntroAnimationProps> = ({ onComplete }) => {
     .fromTo(".attaching-logo", 
       { scale: 0, x: 0, y: -300, opacity: 0 },
       { 
-        scale: 0.4, 
+        scale: 1.0, 
         x: 20, 
         y: 0, 
         opacity: 1,
@@ -266,9 +266,9 @@ const IntroAnimation: React.FC<IntroAnimationProps> = ({ onComplete }) => {
             <span className="title-word ai-word text-white relative inline-flex items-center">
               AI
               {/* Small Logo Attaching to Flamingo AI */}
-              <div ref={attachingLogoRef} className="attaching-logo absolute -right-8 top-1/2 transform -translate-y-1/2">
-                <div className="w-8 h-8 bg-gradient-to-br from-purple-600 to-purple-700 rounded-full flex items-center justify-center shadow-lg">
-                  <Sparkles className="w-4 h-4 text-white" />
+              <div ref={attachingLogoRef} className="attaching-logo absolute -right-12 top-1/2 transform -translate-y-1/2">
+                <div className="w-12 h-12 bg-gradient-to-br from-purple-600 to-purple-700 rounded-full flex items-center justify-center shadow-lg">
+                  <Sparkles className="w-6 h-6 text-white" />
                 </div>
               </div>
             </span>

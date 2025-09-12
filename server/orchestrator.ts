@@ -26,35 +26,23 @@ const providers = [
 
 function classifyTask(prompt: string): { task: string; complexity: 'small' | 'medium' | 'high' } {
   const lowerPrompt = prompt.toLowerCase();
-  const promptLength = prompt.trim().length;
   const wordCount = getWordCount(prompt);
   
-  // High complexity tasks - Route to Puter.js
-  if (
-    lowerPrompt.includes('code') || lowerPrompt.includes('programming') || 
-    lowerPrompt.includes('debug') || lowerPrompt.includes('function') ||
-    lowerPrompt.includes('complex') || lowerPrompt.includes('analyze') ||
-    lowerPrompt.includes('multi-step') || lowerPrompt.includes('reasoning') ||
-    lowerPrompt.includes('logic') || lowerPrompt.includes('research') ||
-    lowerPrompt.includes('create') || lowerPrompt.includes('develop') ||
-    lowerPrompt.includes('explain in detail') || lowerPrompt.includes('comprehensive') ||
-    wordCount > 100 || promptLength > 500
-  ) {
+  // Simplified classification with better efficiency
+  const highComplexityKeywords = ['code', 'programming', 'debug', 'analyze', 'complex', 'research', 'create', 'develop'];
+  const simpleKeywords = ['hi', 'hello', 'simple', 'basic'];
+  
+  // High complexity: Long prompts or specific keywords
+  if (wordCount > 100 || highComplexityKeywords.some(keyword => lowerPrompt.includes(keyword))) {
     return { task: 'high-complexity', complexity: 'high' };
   }
   
-  // Small complexity tasks - Route to HuggingFace
-  if (
-    lowerPrompt.includes('hi') || lowerPrompt.includes('hello') ||
-    lowerPrompt.includes('clean') || lowerPrompt.includes('sentiment') ||
-    lowerPrompt.includes('simple') || lowerPrompt.includes('basic') ||
-    wordCount <= 20 || promptLength <= 100 ||
-    lowerPrompt.match(/^(hi|hello|hey|good morning|good afternoon|good evening)[\s\!]*$/i)
-  ) {
+  // Small complexity: Short prompts or greetings
+  if (wordCount <= 20 || simpleKeywords.some(keyword => lowerPrompt.includes(keyword))) {
     return { task: 'small-task', complexity: 'small' };
   }
   
-  // Medium complexity tasks - Route to OpenRouter
+  // Medium complexity: Everything else
   return { task: 'medium-task', complexity: 'medium' };
 }
 
@@ -63,16 +51,13 @@ function getWordCount(text: string): number {
 }
 
 function getProviderByComplexity(complexity: 'small' | 'medium' | 'high'): { name: string; adapter: any } {
-  switch (complexity) {
-    case 'small':
-      return providers[1]; // HuggingFace (Provider 2) for small tasks
-    case 'medium':
-      return providers[0]; // OpenRouter (Provider 1) for medium tasks
-    case 'high':
-      return providers[2]; // Puter.js (Provider 3) for high complexity
-    default:
-      return providers[0]; // Default to OpenRouter
-  }
+  const providerMap = {
+    'small': providers[1],   // HuggingFace
+    'medium': providers[0],  // OpenRouter  
+    'high': providers[2]     // Puter.js
+  };
+  
+  return providerMap[complexity] || providers[0]; // Default to OpenRouter with better fallback
 }
 
 function getModelsByComplexity(complexity: 'small' | 'medium' | 'high'): string[] {

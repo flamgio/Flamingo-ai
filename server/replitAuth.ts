@@ -6,7 +6,7 @@ import session from "express-session";
 import type { Express, RequestHandler } from "express";
 import memoize from "memoizee";
 import connectPg from "connect-pg-simple";
-import { db } from "./db";
+import { sequelize } from "./db";
 import { users } from "@shared/schema";
 import { eq } from "drizzle-orm";
 

@@ -151,13 +151,15 @@ export default function AdminPage() {
       "-=0.6"
     );
 
-    // Add hover animations to stats cards
+    // Add hover animations to stats cards with proper cleanup
     const statsCards = statsRef.current?.children;
+    const eventListeners: { element: HTMLElement; enter: () => void; leave: () => void; }[] = [];
+    
     if (statsCards) {
       Array.from(statsCards).forEach((card) => {
         const element = card as HTMLElement;
         
-        element.addEventListener('mouseenter', () => {
+        const enterHandler = () => {
           gsap.to(element, {
             y: -8,
             scale: 1.05,
@@ -165,9 +167,9 @@ export default function AdminPage() {
             duration: 0.3,
             ease: "power2.out"
           });
-        });
+        };
         
-        element.addEventListener('mouseleave', () => {
+        const leaveHandler = () => {
           gsap.to(element, {
             y: 0,
             scale: 1,
@@ -175,9 +177,22 @@ export default function AdminPage() {
             duration: 0.3,
             ease: "power2.out"
           });
-        });
+        };
+        
+        element.addEventListener('mouseenter', enterHandler);
+        element.addEventListener('mouseleave', leaveHandler);
+        
+        eventListeners.push({ element, enter: enterHandler, leave: leaveHandler });
       });
     }
+    
+    // Cleanup function
+    return () => {
+      eventListeners.forEach(({ element, enter, leave }) => {
+        element.removeEventListener('mouseenter', enter);
+        element.removeEventListener('mouseleave', leave);
+      });
+    };
   }, [isAuthorized, loading]);
 
   if (!isAuthorized) {

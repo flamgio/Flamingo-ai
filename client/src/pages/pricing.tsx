@@ -388,7 +388,7 @@ export default function Pricing() {
                 </button>
 
                 <button 
-                  onClick={() => alert('NowPayments integration coming soon!')}
+                  onClick={() => alert('Normal payment method coming soon!')}
                   className="w-full p-4 border-2 border-blue-200 dark:border-blue-500/30 rounded-xl hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors"
                 >
                   <div className="flex items-center justify-center space-x-3">

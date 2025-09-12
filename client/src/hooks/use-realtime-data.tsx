@@ -23,17 +23,17 @@ interface RealtimeDataHook {
 
 export function useRealtimeData(): RealtimeDataHook {
   const [data, setData] = useState<RealtimeMetrics>({
-    totalUsers: 1247,
-    activeUsers: 234,
-    premiumUsers: 89,
-    totalMessages: 15420,
-    activeSessions: 156,
-    systemHealth: 98.7,
-    avgResponseTime: 1.2,
-    apiRequestsToday: 2847,
-    serverUptime: 99.9,
-    openChats: 156,
-    lastUpdated: 'Just now'
+    totalUsers: 0,
+    activeUsers: 0,
+    premiumUsers: 0,
+    totalMessages: 0,
+    activeSessions: 0,
+    systemHealth: 0,
+    avgResponseTime: 0,
+    apiRequestsToday: 0,
+    serverUptime: 0,
+    openChats: 0,
+    lastUpdated: 'Loading...'
   });
   
   const [isLoading, setIsLoading] = useState(false);
